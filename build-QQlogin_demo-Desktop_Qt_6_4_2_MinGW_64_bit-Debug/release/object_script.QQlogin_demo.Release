@@ -1,0 +1,10 @@
+release/main.o
+release/lgoin.o
+release/my_dialog.o
+release/my_findpasswd.o
+release/my_register.o
+release/qrc_images.o
+release/moc_lgoin.o
+release/moc_my_dialog.o
+release/moc_my_findpasswd.o
+release/moc_my_register.o

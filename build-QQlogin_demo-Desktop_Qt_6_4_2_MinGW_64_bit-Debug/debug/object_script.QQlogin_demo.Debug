@@ -1,0 +1,10 @@
+debug/main.o
+debug/lgoin.o
+debug/my_dialog.o
+debug/my_findpasswd.o
+debug/my_register.o
+debug/qrc_images.o
+debug/moc_lgoin.o
+debug/moc_my_dialog.o
+debug/moc_my_findpasswd.o
+debug/moc_my_register.o

@@ -1,0 +1,22 @@
+# ninja log v5
+66	87	0	clean	c33c14fa286ae157
+18	792	7051287151199926	E:/QT/build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/sieve_autogen/mocs_compilation.cpp	974f20e12b831726
+18	792	7051287151199926	sieve_autogen/mocs_compilation.cpp	974f20e12b831726
+18	792	7051287151199926	E:/QT/build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/sieve_autogen/timestamp	974f20e12b831726
+5438	5933	7051287202567506	sieve.exe	da876981a5d6cb80
+465	2600	7049061058404800	CMakeFiles/sieve.dir/mywork.cpp.obj	c83a4193ed04cc49
+966	1084	7049037088331083	E:/QT/build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/sieve_autogen/EWIEGA46WW/qrc_res.cpp	9c0e3ee87b264810
+1117	1354	7049037091176402	CMakeFiles/sieve.dir/sieve_autogen/EWIEGA46WW/qrc_res.cpp.obj	1b58c5b36f2bee2
+883	3497	7049041396412434	CMakeFiles/sieve.dir/main.cpp.obj	d9f11dca938eb305
+894	3511	7049041396578412	CMakeFiles/sieve.dir/sieve_autogen/mocs_compilation.cpp.obj	1584193a1d446f18
+1	66	0	CMakeFiles/clean.additional	adcc2f785672e3a3
+797	5437	7051287197643890	CMakeFiles/sieve.dir/mainwindow.cpp.obj	3a12e2e63f4ac109
+18	792	7051287151199926	sieve_autogen/timestamp	974f20e12b831726
+966	1084	7049037088331083	sieve_autogen/EWIEGA46WW/qrc_res.cpp	9c0e3ee87b264810
+10	587	7051287446359630	sieve_autogen/timestamp	974f20e12b831726
+10	587	7051287446359630	sieve_autogen/mocs_compilation.cpp	974f20e12b831726
+10	587	7051287446359630	E:/QT/build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/sieve_autogen/timestamp	974f20e12b831726
+10	587	7051287446359630	E:/QT/build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/sieve_autogen/mocs_compilation.cpp	974f20e12b831726
+607	3137	7051287471873930	CMakeFiles/sieve.dir/mywork.cpp.obj	c83a4193ed04cc49
+591	4141	7051287481876108	CMakeFiles/sieve.dir/mainwindow.cpp.obj	3a12e2e63f4ac109
+4141	4512	7051287485485737	sieve.exe	da876981a5d6cb80

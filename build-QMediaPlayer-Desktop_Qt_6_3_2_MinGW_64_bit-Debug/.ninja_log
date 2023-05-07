@@ -1,0 +1,24 @@
+# ninja log v5
+18	1022	7048947708584812	QMediaPlayer_autogen/mocs_compilation.cpp	6737e8af0046306c
+1200	4435	7048933364646037	CMakeFiles/QMediaPlayer.dir/videowidget.cpp.obj	b0ab0d33ec1ee74a
+1	98	0	CMakeFiles/clean.additional	c313c7df7a6a27c5
+2278	2427	7043096538778189	QMediaPlayer_autogen/EWIEGA46WW/qrc_res.cpp	f551af6ae2184773
+1	873	7043098295749546	build.ninja	878dc365fab0f8d9
+4978	25151	7047985191173098	CMakeFiles/QMediaPlayer.dir/QMediaPlayer_autogen/mocs_compilation.cpp.obj	53c7c2da9491afff
+2488	2740	7043096541943304	CMakeFiles/QMediaPlayer.dir/QMediaPlayer_autogen/EWIEGA46WW/qrc_res.cpp.obj	80749cc1d7aabd63
+99	135	0	clean	c33c14fa286ae157
+5026	12394	7047985063636876	CMakeFiles/QMediaPlayer.dir/myplaintextedit.cpp.obj	925892cb91b77b0f
+16191	16879	7048947867063251	QMediaPlayer.exe	346b37508d01c6ef
+18	1022	7048947708584812	E:/QT/build-QMediaPlayer-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/QMediaPlayer_autogen/timestamp	6737e8af0046306c
+5000	24710	7047985186825831	CMakeFiles/QMediaPlayer.dir/main.cpp.obj	8a6308fcd516c92b
+1031	16189	7048947860037737	CMakeFiles/QMediaPlayer.dir/mainwindow.cpp.obj	9025d15b7eb45a7f
+18	1022	7048947708584812	E:/QT/build-QMediaPlayer-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/QMediaPlayer_autogen/mocs_compilation.cpp	6737e8af0046306c
+18	1022	7048947708584812	QMediaPlayer_autogen/timestamp	6737e8af0046306c
+2557	4821	7043093841275558	CMakeFiles/QMediaPlayer.dir/plaintextedit.cpp.obj	7ab35ae04b503dd2
+2278	2427	7043096538778189	E:/QT/build-QMediaPlayer-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/QMediaPlayer_autogen/EWIEGA46WW/qrc_res.cpp	f551af6ae2184773
+17	1046	7048949769574302	QMediaPlayer_autogen/timestamp	6737e8af0046306c
+17	1046	7048949769574302	QMediaPlayer_autogen/mocs_compilation.cpp	6737e8af0046306c
+17	1046	7048949769574302	E:/QT/build-QMediaPlayer-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/QMediaPlayer_autogen/timestamp	6737e8af0046306c
+17	1046	7048949769574302	E:/QT/build-QMediaPlayer-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/QMediaPlayer_autogen/mocs_compilation.cpp	6737e8af0046306c
+1057	15956	7048949918649563	CMakeFiles/QMediaPlayer.dir/mainwindow.cpp.obj	9025d15b7eb45a7f
+15957	16576	7048949924811085	QMediaPlayer.exe	346b37508d01c6ef

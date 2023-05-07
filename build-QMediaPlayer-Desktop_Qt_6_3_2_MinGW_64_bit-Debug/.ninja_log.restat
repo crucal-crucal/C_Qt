@@ -1,0 +1,17 @@
+# ninja log v5
+99	135	0	clean	c33c14fa286ae157
+9	1164	7043098303135967	QMediaPlayer_autogen/mocs_compilation.cpp	6737e8af0046306c
+14481	15033	7043097446702202	QMediaPlayer.exe	93f3a3019529d543
+2687	14348	7043097439866039	CMakeFiles/QMediaPlayer.dir/QMediaPlayer_autogen/mocs_compilation.cpp.obj	53c7c2da9491afff
+1	873	7043098315521974	build.ninja	878dc365fab0f8d9
+9	1164	7043098303135967	E:/QT/build-QMediaPlayer-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/QMediaPlayer_autogen/timestamp	6737e8af0046306c
+2673	14016	7043097436567061	CMakeFiles/QMediaPlayer.dir/main.cpp.obj	8a6308fcd516c92b
+2703	14480	7043097441196489	CMakeFiles/QMediaPlayer.dir/mainwindow.cpp.obj	9025d15b7eb45a7f
+2278	2427	7043096538778189	QMediaPlayer_autogen/EWIEGA46WW/qrc_res.cpp	f551af6ae2184773
+1	98	0	CMakeFiles/clean.additional	c313c7df7a6a27c5
+2455	4960	7043096564145725	CMakeFiles/QMediaPlayer.dir/videowidget.cpp.obj	b0ab0d33ec1ee74a
+9	1164	7043098303135967	QMediaPlayer_autogen/timestamp	6737e8af0046306c
+9	1164	7043098303135967	E:/QT/build-QMediaPlayer-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/QMediaPlayer_autogen/mocs_compilation.cpp	6737e8af0046306c
+2278	2427	7043096538778189	E:/QT/build-QMediaPlayer-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/QMediaPlayer_autogen/EWIEGA46WW/qrc_res.cpp	f551af6ae2184773
+2557	4821	7043093841275558	CMakeFiles/QMediaPlayer.dir/plaintextedit.cpp.obj	7ab35ae04b503dd2
+2488	2740	7043096541943304	CMakeFiles/QMediaPlayer.dir/QMediaPlayer_autogen/EWIEGA46WW/qrc_res.cpp.obj	80749cc1d7aabd63

@@ -1,0 +1,36 @@
+{
+	"BUILD_DIR" : "E:/QT/build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/My_calculator_autogen",
+	"CMAKE_BINARY_DIR" : "E:/QT/build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "E:/QT/build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "E:/QT/My_calculator",
+	"CMAKE_SOURCE_DIR" : "E:/QT/My_calculator",
+	"INCLUDE_DIR" : "E:/QT/build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/My_calculator_autogen/include",
+	"INPUTS" : 
+	[
+		"E:/QT/My_calculator/images/passwd-focus.png",
+		"E:/QT/My_calculator/images/qrcode-hover.png",
+		"E:/QT/My_calculator/images/drop-down.png",
+		"E:/QT/My_calculator/images/drop-down-hover.png",
+		"E:/QT/My_calculator/images/min(1).png",
+		"E:/QT/My_calculator/images/1 (2).jpg",
+		"E:/QT/My_calculator/images/drop-down-on-hover.png",
+		"E:/QT/My_calculator/images/username.png",
+		"E:/QT/My_calculator/images/check.png",
+		"E:/QT/My_calculator/images/drop-down-on.png",
+		"E:/QT/My_calculator/images/qrcode.png",
+		"E:/QT/My_calculator/images/close(1).png",
+		"E:/QT/My_calculator/images/passwd.png",
+		"E:/QT/My_calculator/images/username-focus.png",
+		"E:/QT/My_calculator/images/01e9d25debe9e7a801213853a781cd.gif"
+	],
+	"LOCK_FILE" : "E:/QT/build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/CMakeFiles/My_calculator_autogen.dir/AutoRcc_res_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "res" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_res.cpp",
+	"RCC_EXECUTABLE" : "D:/QT/6.3.2/mingw_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "E:/QT/build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/CMakeFiles/My_calculator_autogen.dir/AutoRcc_res_EWIEGA46WW_Used.txt",
+	"SOURCE" : "E:/QT/My_calculator/res.qrc",
+	"VERBOSITY" : 0
+}

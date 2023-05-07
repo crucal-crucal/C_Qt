@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-8077dec1b52ea6d3c1d8.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Shaking_sieve",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Shaking_sieve::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Shaking_sieve-Debug-5bc47ed1eb6ab3fd6541.json",
+					"name" : "Shaking_sieve",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Shaking_sieve_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Shaking_sieve_autogen-Debug-f34b61b90f23049e9f30.json",
+					"name" : "Shaking_sieve_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Shaking_sieve_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Shaking_sieve_autogen_timestamp_deps-Debug-db2f36fe280e2c12fc2e.json",
+					"name" : "Shaking_sieve_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "E:/QT/build-Shaking_sieve-Desktop_Qt_6_3_2_MinGW_64_bit-Debug",
+		"source" : "E:/QT/Shaking_sieve"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

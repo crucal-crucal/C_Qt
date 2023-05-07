@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>1/OIP-C.jfif</file>
+        <file>1/tuichu.png</file>
+    </qresource>
+</RCC>

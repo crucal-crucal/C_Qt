@@ -1,0 +1,14 @@
+# ninja log v5
+452	592	7048705665566775	multithreading_autogen/EWIEGA46WW/qrc_images.cpp	70074c07ff27500f
+452	592	7048705665566775	E:/QT/build-multithreading-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/multithreading_autogen/EWIEGA46WW/qrc_images.cpp	70074c07ff27500f
+8	449	7048705664157592	multithreading_autogen/timestamp	9267406edbedb455
+3006	3369	7048697864340844	multithreading.exe	3d3c3423e1b1e20
+1	851	7048705658784432	build.ninja	de44f974321d794d
+8	449	7048705664157592	multithreading_autogen/mocs_compilation.cpp	9267406edbedb455
+8	449	7048705664157592	E:/QT/build-multithreading-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/multithreading_autogen/mocs_compilation.cpp	9267406edbedb455
+8	449	7048705664157592	E:/QT/build-multithreading-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/multithreading_autogen/timestamp	9267406edbedb455
+1284	5445	7048691057514717	CMakeFiles/multithreading.dir/multithreading_autogen/mocs_compilation.cpp.obj	80903170fcd78dfb
+1299	5465	7048691057705091	CMakeFiles/multithreading.dir/main.cpp.obj	c6daa9523876216f
+1333	4665	7048691049691823	CMakeFiles/multithreading.dir/mythread.cpp.obj	1fd634d0b1585f4a
+606	712	7048705666811847	CMakeFiles/multithreading.dir/multithreading_autogen/EWIEGA46WW/qrc_images.cpp.obj	56885e75072908fc
+500	3005	7048697860769293	CMakeFiles/multithreading.dir/widget.cpp.obj	4152018db8f3f686

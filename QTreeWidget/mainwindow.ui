@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>788</width>
+    <height>523</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>448</width>
+         <height>407</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="labPic">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>788</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>目录树</string>
+    </property>
+    <addaction name="actAddFiles"/>
+    <addaction name="actDeleteItem"/>
+    <addaction name="actAddFolder"/>
+    <addaction name="actScanItems"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>视图</string>
+    </property>
+    <addaction name="actZoomFitH"/>
+    <addaction name="actZoomIn"/>
+    <addaction name="actZoomFitW"/>
+    <addaction name="actZoomOut"/>
+    <addaction name="actZoomRealSize"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="sizeGripEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actAddFolder"/>
+   <addaction name="actAddFiles"/>
+   <addaction name="actDeleteItem"/>
+   <addaction name="actScanItems"/>
+   <addaction name="separator"/>
+   <addaction name="actZoomFitH"/>
+   <addaction name="actZoomFitW"/>
+   <addaction name="actZoomRealSize"/>
+   <addaction name="actZoomIn"/>
+   <addaction name="actZoomOut"/>
+   <addaction name="separator"/>
+   <addaction name="actDockFloat"/>
+   <addaction name="actDockVisible"/>
+   <addaction name="separator"/>
+   <addaction name="exit"/>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget">
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QTreeWidget" name="treeFiles"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="actZoomFitH">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/101.bmp</normaloff>:/images/101.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>适合高度</string>
+   </property>
+  </action>
+  <action name="actZoomFitW">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/102.bmp</normaloff>:/images/102.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>适合宽度</string>
+   </property>
+  </action>
+  <action name="actZoomIn">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/300.bmp</normaloff>:/images/300.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>放大显示</string>
+   </property>
+  </action>
+  <action name="actZoomOut">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/301.bmp</normaloff>:/images/301.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>缩小显示</string>
+   </property>
+  </action>
+  <action name="actZoomRealSize">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/127.bmp</normaloff>:/images/127.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>实际大小</string>
+   </property>
+  </action>
+  <action name="actAddFolder">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/upfold1.bmp</normaloff>:/images/upfold1.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>添加目录</string>
+   </property>
+  </action>
+  <action name="actAddFiles">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/120.bmp</normaloff>:/images/120.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>添加文件</string>
+   </property>
+  </action>
+  <action name="actDeleteItem">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/delete1.bmp</normaloff>:/images/delete1.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>删除节点</string>
+   </property>
+  </action>
+  <action name="actScanItems">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/folder1.bmp</normaloff>:/images/folder1.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>遍历节点</string>
+   </property>
+  </action>
+  <action name="actDockVisible">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/103.bmp</normaloff>:/images/103.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>窗口可见</string>
+   </property>
+  </action>
+  <action name="actDockFloat">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/104.bmp</normaloff>:/images/104.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>窗口浮动</string>
+   </property>
+  </action>
+  <action name="exit">
+   <property name="icon">
+    <iconset resource="images.qrc">
+     <normaloff>:/images/exit.bmp</normaloff>:/images/exit.bmp</iconset>
+   </property>
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

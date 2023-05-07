@@ -1,0 +1,19 @@
+{
+	"BUILD_DIR" : "E:/QT/build-multithreading-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/multithreading_autogen",
+	"CMAKE_BINARY_DIR" : "E:/QT/build-multithreading-Desktop_Qt_6_3_2_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "E:/QT/build-multithreading-Desktop_Qt_6_3_2_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "E:/QT/multithreading",
+	"CMAKE_SOURCE_DIR" : "E:/QT/multithreading",
+	"INCLUDE_DIR" : "E:/QT/build-multithreading-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/multithreading_autogen/include",
+	"INPUTS" : [],
+	"LOCK_FILE" : "E:/QT/build-multithreading-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/CMakeFiles/multithreading_autogen.dir/AutoRcc_images_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "images" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_images.cpp",
+	"RCC_EXECUTABLE" : "D:/QT/6.3.2/mingw_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "E:/QT/build-multithreading-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/CMakeFiles/multithreading_autogen.dir/AutoRcc_images_EWIEGA46WW_Used.txt",
+	"SOURCE" : "E:/QT/multithreading/images.qrc",
+	"VERBOSITY" : 0
+}
