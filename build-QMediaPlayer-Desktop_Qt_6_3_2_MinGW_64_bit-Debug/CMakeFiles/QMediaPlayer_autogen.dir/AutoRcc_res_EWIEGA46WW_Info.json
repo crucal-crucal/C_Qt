@@ -152,7 +152,7 @@
 	"OPTIONS" : [ "-name", "res" ],
 	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
 	"OUTPUT_NAME" : "qrc_res.cpp",
-	"RCC_EXECUTABLE" : "D:/QT/6.3.2/mingw_64/./bin/rcc.exe",
+	"RCC_EXECUTABLE" : "D:/Qt/6.3.2/mingw_64/./bin/rcc.exe",
 	"RCC_LIST_OPTIONS" : [ "--list" ],
 	"SETTINGS_FILE" : "E:/QT/build-QMediaPlayer-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/CMakeFiles/QMediaPlayer_autogen.dir/AutoRcc_res_EWIEGA46WW_Used.txt",
 	"SOURCE" : "E:/QT/QMediaPlayer/res.qrc",

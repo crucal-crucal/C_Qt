@@ -13,24 +13,26 @@ void MainWindow::setIcon()
     ui->tbtn_mute->setIcon(style()->standardIcon(QStyle::SP_MediaVolume));
 }
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     setAcceptDrops(true);
     ui->setupUi(this);
-    this->resize(450, 340);
-    this->setWindowFlags(Qt::FramelessWindowHint);//隐藏窗口边框
+    this->resize(1000, 600);
+//    this->setWindowFlags(Qt::FramelessWindowHint);//隐藏窗口边框
+    m_network = new MyNetWork(this);
+
     player = new QMediaPlayer;
     this->output = new QAudioOutput(this);
     player->setAudioOutput(output);
     ui->m_widget->hide();
     ui->plainTextEdit->hide();
     ui->lab_pixmap->hide();
-    //m_videoWidget = new videowidget;
+
     player->setVideoOutput(ui->m_widget);
     setIcon();
-
 
     ui->btn_cycle->setChecked(1);
     ui->tbtn_play->setChecked(0);
@@ -54,23 +56,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(player, &QMediaPlayer::playbackStateChanged, this,  &MainWindow::do_stateChanged);
 
-//    connect(player,&QMediaPlayer::positionChanged,      //播放位置发生变化
-//            this, &MainWindow::do_positionChanged);
-
-//    connect(player,&QMediaPlayer::durationChanged,      //播放源长度发生变化
-//            this, &MainWindow::do_durationChanged);
-
-//    connect(player, &QMediaPlayer::sourceChanged,       //播放源发生变化
-//            this, &MainWindow::do_sourceChanged);
-
-//    connect(player, &QMediaPlayer::metaDataChanged,     //元数据发生变化
-//            this,  &MainWindow::do_metaDataChanged);
+    connect(m_network, &MyNetWork::SearchFinished, this, [&](QVector<music> v){
+        m_music = v;
+    });
 }
+
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
 void MainWindow::do_stateChanged(QMediaPlayer::PlaybackState state)
 {//播放器状态变化时执行，更新按钮状态，或播放下一曲
@@ -89,6 +85,7 @@ void MainWindow::do_stateChanged(QMediaPlayer::PlaybackState state)
         player->play();
     }
 }
+
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
@@ -117,9 +114,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             ispause = false;
         }
     }
+    else if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+    {
+        on_Btn_Search_clicked();
+    }
     QMainWindow::keyPressEvent(event);
-//    event->accept();
 }
+
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
@@ -127,6 +128,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     ui->plainTextEdit->resize(this->width()-10, sz.height());
     event->accept();
 }
+
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
@@ -143,6 +145,7 @@ void MainWindow::dragEnterEvent(QDragEnterEvent *event)
         event->ignore();
     }
 }
+
 
 void MainWindow::dropEvent(QDropEvent *event)
 {
@@ -169,28 +172,16 @@ void MainWindow::dropEvent(QDropEvent *event)
     event->accept();
 }
 
-void MainWindow::on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
-{
-    if(current!=nullptr)
-    {
-        //qDebug()<<current->text();
-        player->setSource(QUrl::fromLocalFile(current->text()));
-        ui->statusbar->showMessage(current->text().section("/", -1, -1));
-        player->play();
-        loopplay=true;
-    }
-}
-
 
 void MainWindow::on_tbtn_play_clicked(bool checked)
 {
     QListWidgetItem *item = ui->listWidget->currentItem();
     if(item!=nullptr)
     {
-        QString filname = ui->listWidget->currentItem()->text();
-        ui->statusbar->showMessage(filname.section("/", -1, -1));
-        player->setSource(QUrl::fromLocalFile(filname));
+        auto row = ui->listWidget->currentRow();
+        player->setSource(m_music[row].url);
         player->play();
+        ui->statusbar->showMessage(m_music[row].title + "-" + m_music[row].Author + "-" + m_music[row].Album);
         loopplay=false;
     }
     else
@@ -236,10 +227,10 @@ void MainWindow::on_tbtn_next_clicked()
         int count = ui->listWidget->count(), row = ui->listWidget->currentRow();
         row++;
         row %= count;
-        //player->setSource(QUrl::fromLocalFile(ui->listWidget->item(row)->text()));
         ui->listWidget->setCurrentRow(row);
-        player->setSource(QUrl::fromLocalFile(ui->listWidget->currentItem()->text()));
+        player->setSource(m_music[row].url);
         player->play();
+        ui->statusbar->showMessage(m_music[row].title + "-" + m_music[row].Author + "-" + m_music[row].Album);
     }
     else
     {
@@ -250,7 +241,7 @@ void MainWindow::on_tbtn_next_clicked()
 
 void MainWindow::on_listWidget_doubleClicked(const QModelIndex &index)
 {
-    currentrow = index.row();
+//    currentrow = index.row();
 }
 
 
@@ -260,18 +251,18 @@ void MainWindow::on_tbtn_last_clicked()
     if(item!=nullptr)
     {
         int count = ui->listWidget->count(), row = ui->listWidget->currentRow();
-        row--;
-        row %= count;
-        //player->setSource(QUrl::fromLocalFile(ui->listWidget->item(currentrow)->text()));
+        row = (row - 1 + count) % count;
         ui->listWidget->setCurrentRow(row);
-        player->setSource(QUrl::fromLocalFile(ui->listWidget->currentItem()->text()));
+        player->setSource(m_music[row].url);
         player->play();
+        ui->statusbar->showMessage(m_music[row].title + "-" + m_music[row].Author + "-" + m_music[row].Album);
     }
     else
     {
         QMessageBox::information(this, "提示信息", "没有歌了");
     }
 }
+
 
 void MainWindow::on_hSlider_sound_valueChanged(int value)
 {
@@ -366,3 +357,26 @@ void MainWindow::on_action_exit_triggered()
     this->close();
     player->pause();
 }
+
+
+void MainWindow::on_Btn_Search_clicked()
+{
+    QString str = ui->lineEdit->text();
+    m_network->search(str);
+    for (auto &c:m_music)
+    {
+        My_Item *item = new My_Item(c.title, c.Author, c.Album);
+        QListWidgetItem *aitem = new QListWidgetItem();
+        ui->listWidget->addItem(aitem);
+        ui->listWidget->setItemWidget(aitem, item);
+    }
+}
+
+
+void MainWindow::on_listWidget_currentRowChanged(int currentRow)
+{
+    ui->statusbar->showMessage(m_music[currentRow].title + "-" + m_music[currentRow].Author + "-" + m_music[currentRow].Album);
+    player->setSource(m_music[currentRow].url);
+    player->play();
+}
+

@@ -24,8 +24,12 @@ set(PROJECT_SOURCES
         videowidget.h
         videowidget.cpp
         res.qrc
-        myplaintextedit.cpp
-        myplaintextedit.h
+        mynetwork.cpp
+        mynetwork.h
+        my_music.cpp
+        my_music.h
+        my_item.cpp
+        my_item.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

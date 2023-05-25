@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-09dec59b6a326c9c95bf.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "multithreading",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "multithreading::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-multithreading-Debug-039f522c5c6ffc1ff8a9.json",
+					"name" : "multithreading",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "multithreading_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-multithreading_autogen-Debug-517444dd4602e0d06834.json",
+					"name" : "multithreading_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "multithreading_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-multithreading_autogen_timestamp_deps-Debug-739b6a6e2608a529dbaf.json",
+					"name" : "multithreading_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "E:/QT/build-multithreading-Desktop_Qt_6_3_2_MinGW_64_bit-Debug",
+		"source" : "E:/QT/multithreading"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

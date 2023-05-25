@@ -127,6 +127,11 @@ E:/QT/Test/widget.h
  mdp:D:/Qt/6.3.2/mingw_64/include/QtGui/qvectornd.h
  mdp:D:/Qt/6.3.2/mingw_64/include/QtGui/qwindowdefs.h
  mdp:D:/Qt/6.3.2/mingw_64/include/QtGui/qwindowdefs_win.h
+ mdp:D:/Qt/6.3.2/mingw_64/include/QtSql/QSqlDatabase
+ mdp:D:/Qt/6.3.2/mingw_64/include/QtSql/qsqldatabase.h
+ mdp:D:/Qt/6.3.2/mingw_64/include/QtSql/qtsql-config.h
+ mdp:D:/Qt/6.3.2/mingw_64/include/QtSql/qtsqlexports.h
+ mdp:D:/Qt/6.3.2/mingw_64/include/QtSql/qtsqlglobal.h
  mdp:D:/Qt/6.3.2/mingw_64/include/QtWidgets/QWidget
  mdp:D:/Qt/6.3.2/mingw_64/include/QtWidgets/qsizepolicy.h
  mdp:D:/Qt/6.3.2/mingw_64/include/QtWidgets/qtwidgets-config.h

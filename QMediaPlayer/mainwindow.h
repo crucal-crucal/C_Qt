@@ -14,7 +14,11 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <Qurl>
+#include <QListView>
 #include "videowidget.h"
+#include "mynetwork.h"
+#include "my_music.h"
+#include "my_item.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -33,10 +37,7 @@ public:
 
 private slots:
 
-    void on_listWidget_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-
     void on_tbtn_play_clicked(bool checked);
-
 
     void on_tbtn_pause_clicked(bool checked);
 
@@ -72,14 +73,20 @@ private slots:
 
     void on_action_exit_triggered();
 
+    void on_Btn_Search_clicked();
+
+    void on_listWidget_currentRowChanged(int currentRow);
+
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;
     QAudioOutput *output;
-    QLabel *lab;
-    //videowidget *m_videoWidget;
+    QStringList m_strlist;
     bool loopplay, ispause = false, video_isshow = false, plain_isshow = false, label_isshow = false;
-    int currentrow;
+//    int currentrow;
+    MyNetWork *m_network;
+    QVector<music> m_music;
+    My_Item *m_item;
 
     // QWidget interface
 protected:

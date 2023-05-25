@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = D:\QT\Tools\CMake_64\bin\cmake.exe --regenerate-during-build -SE:\QT\My_aiqiyi -BE:\QT\build-My_aiqiyi-Desktop_Qt_6_3_2_MinGW_64_bit-Debug
+  command = D:\Qt\Tools\CMake_64\bin\cmake.exe --regenerate-during-build -SE:\QT\My_aiqiyi -BE:\QT\build-My_aiqiyi-Desktop_Qt_6_3_2_MinGW_64_bit-Debug
   description = Re-running CMake...
   generator = 1
 
@@ -51,7 +51,7 @@ rule RERUN_CMAKE
 # Rule for cleaning additional files.
 
 rule CLEAN_ADDITIONAL
-  command = D:\QT\Tools\CMake_64\bin\cmake.exe -DCONFIG=$CONFIG -P CMakeFiles\clean_additional.cmake
+  command = D:\Qt\Tools\CMake_64\bin\cmake.exe -DCONFIG=$CONFIG -P CMakeFiles\clean_additional.cmake
   description = Cleaning additional files...
 
 

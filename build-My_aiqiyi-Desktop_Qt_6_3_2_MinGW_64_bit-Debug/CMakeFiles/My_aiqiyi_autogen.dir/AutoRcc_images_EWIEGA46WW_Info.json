@@ -18,7 +18,7 @@
 	"OPTIONS" : [ "-name", "images" ],
 	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
 	"OUTPUT_NAME" : "qrc_images.cpp",
-	"RCC_EXECUTABLE" : "D:/QT/6.3.2/mingw_64/./bin/rcc.exe",
+	"RCC_EXECUTABLE" : "D:/Qt/6.3.2/mingw_64/./bin/rcc.exe",
 	"RCC_LIST_OPTIONS" : [ "--list" ],
 	"SETTINGS_FILE" : "E:/QT/build-My_aiqiyi-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/CMakeFiles/My_aiqiyi_autogen.dir/AutoRcc_images_EWIEGA46WW_Used.txt",
 	"SOURCE" : "E:/QT/My_aiqiyi/images.qrc",

@@ -5,6 +5,8 @@ QMediaPlayer_autogen/timestamp: \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QEvent \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QFlags \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QIODevice \
+  D:/Qt/6.3.2/mingw_64/include/QtCore/QJsonArray \
+  D:/Qt/6.3.2/mingw_64/include/QtCore/QJsonObject \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QList \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QMargins \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QMetaType \
@@ -21,6 +23,7 @@ QMediaPlayer_autogen/timestamp: \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QStringList \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QUrl \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QVariant \
+  D:/Qt/6.3.2/mingw_64/include/QtCore/QVector \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QtCore \
   D:/Qt/6.3.2/mingw_64/include/QtCore/QtCoreDepends \
   D:/Qt/6.3.2/mingw_64/include/QtCore/q20algorithm.h \
@@ -249,6 +252,7 @@ QMediaPlayer_autogen/timestamp: \
   D:/Qt/6.3.2/mingw_64/include/QtGui/QResizeEvent \
   D:/Qt/6.3.2/mingw_64/include/QtGui/QShortcut \
   D:/Qt/6.3.2/mingw_64/include/QtGui/QSurfaceFormat \
+  D:/Qt/6.3.2/mingw_64/include/QtGui/QTextBlock \
   D:/Qt/6.3.2/mingw_64/include/QtGui/QTransform \
   D:/Qt/6.3.2/mingw_64/include/QtGui/QVector3D \
   D:/Qt/6.3.2/mingw_64/include/QtGui/QWindow \
@@ -365,6 +369,7 @@ QMediaPlayer_autogen/timestamp: \
   D:/Qt/6.3.2/mingw_64/include/QtGui/qwindowdefs.h \
   D:/Qt/6.3.2/mingw_64/include/QtGui/qwindowdefs_win.h \
   D:/Qt/6.3.2/mingw_64/include/QtMultimedia/QAudioOutput \
+  D:/Qt/6.3.2/mingw_64/include/QtMultimedia/QMediaPlayer \
   D:/Qt/6.3.2/mingw_64/include/QtMultimedia/QtMultimedia \
   D:/Qt/6.3.2/mingw_64/include/QtMultimedia/QtMultimediaDepends \
   D:/Qt/6.3.2/mingw_64/include/QtMultimedia/qaudio.h \
@@ -405,6 +410,7 @@ QMediaPlayer_autogen/timestamp: \
   D:/Qt/6.3.2/mingw_64/include/QtMultimediaWidgets/qtmultimediawidgetsversion.h \
   D:/Qt/6.3.2/mingw_64/include/QtMultimediaWidgets/qvideowidget.h \
   D:/Qt/6.3.2/mingw_64/include/QtNetwork/QNetworkAccessManager \
+  D:/Qt/6.3.2/mingw_64/include/QtNetwork/QNetworkReply \
   D:/Qt/6.3.2/mingw_64/include/QtNetwork/QNetworkRequest \
   D:/Qt/6.3.2/mingw_64/include/QtNetwork/QSslConfiguration \
   D:/Qt/6.3.2/mingw_64/include/QtNetwork/QSslPreSharedKeyAuthenticator \
@@ -455,10 +461,12 @@ QMediaPlayer_autogen/timestamp: \
   D:/Qt/6.3.2/mingw_64/include/QtNetwork/qtnetworkversion.h \
   D:/Qt/6.3.2/mingw_64/include/QtNetwork/qudpsocket.h \
   D:/Qt/6.3.2/mingw_64/include/QtWidgets/QCommonStyle \
+  D:/Qt/6.3.2/mingw_64/include/QtWidgets/QLabel \
   D:/Qt/6.3.2/mingw_64/include/QtWidgets/QLayout \
+  D:/Qt/6.3.2/mingw_64/include/QtWidgets/QListView \
   D:/Qt/6.3.2/mingw_64/include/QtWidgets/QMainWindow \
-  D:/Qt/6.3.2/mingw_64/include/QtWidgets/QPlainTextEdit \
   D:/Qt/6.3.2/mingw_64/include/QtWidgets/QScrollerProperties \
+  D:/Qt/6.3.2/mingw_64/include/QtWidgets/QWidget \
   D:/Qt/6.3.2/mingw_64/include/QtWidgets/QtWidgets \
   D:/Qt/6.3.2/mingw_64/include/QtWidgets/QtWidgetsDepends \
   D:/Qt/6.3.2/mingw_64/include/QtWidgets/qabstractbutton.h \
@@ -1180,8 +1188,12 @@ QMediaPlayer_autogen/timestamp: \
   E:/QT/QMediaPlayer/main.cpp \
   E:/QT/QMediaPlayer/mainwindow.cpp \
   E:/QT/QMediaPlayer/mainwindow.h \
-  E:/QT/QMediaPlayer/myplaintextedit.cpp \
-  E:/QT/QMediaPlayer/myplaintextedit.h \
+  E:/QT/QMediaPlayer/my_item.cpp \
+  E:/QT/QMediaPlayer/my_item.h \
+  E:/QT/QMediaPlayer/my_music.cpp \
+  E:/QT/QMediaPlayer/my_music.h \
+  E:/QT/QMediaPlayer/mynetwork.cpp \
+  E:/QT/QMediaPlayer/mynetwork.h \
   E:/QT/QMediaPlayer/res.qrc \
   E:/QT/QMediaPlayer/videowidget.cpp \
   E:/QT/QMediaPlayer/videowidget.h \

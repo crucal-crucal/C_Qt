@@ -4,7 +4,7 @@
 
 #include <QMouseEvent>
 #include <QWidget>
-
+#include <QSqlDatabase>
 
 
 QT_BEGIN_NAMESPACE

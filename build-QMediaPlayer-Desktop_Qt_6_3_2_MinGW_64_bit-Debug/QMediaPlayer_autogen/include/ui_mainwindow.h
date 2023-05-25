@@ -13,8 +13,10 @@
 #include <QtGui/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -42,8 +44,11 @@ public:
     QAction *action_clear;
     QAction *action_exit;
     QWidget *centralwidget;
-    QVBoxLayout *verticalLayout_2;
+    QGridLayout *gridLayout;
     QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout_3;
+    QLineEdit *lineEdit;
+    QPushButton *Btn_Search;
     QHBoxLayout *horizontalLayout;
     QListWidget *listWidget;
     videowidget *m_widget;
@@ -74,7 +79,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(604, 341);
+        MainWindow->resize(604, 372);
         MainWindow->setStyleSheet(QString::fromUtf8("QMainWindow{\n"
 "	border:3px solid red;\n"
 "	border-radius:10px;\n"
@@ -110,10 +115,25 @@ public:
         action_exit->setObjectName(QString::fromUtf8("action_exit"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        verticalLayout_2 = new QVBoxLayout(centralwidget);
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        gridLayout = new QGridLayout(centralwidget);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        lineEdit = new QLineEdit(centralwidget);
+        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
+
+        horizontalLayout_3->addWidget(lineEdit);
+
+        Btn_Search = new QPushButton(centralwidget);
+        Btn_Search->setObjectName(QString::fromUtf8("Btn_Search"));
+
+        horizontalLayout_3->addWidget(Btn_Search);
+
+
+        verticalLayout->addLayout(horizontalLayout_3);
+
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         listWidget = new QListWidget(centralwidget);
@@ -228,7 +248,7 @@ public:
         verticalLayout->addLayout(horizontalLayout_4);
 
 
-        verticalLayout_2->addLayout(verticalLayout);
+        gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(MainWindow);
@@ -236,7 +256,7 @@ public:
         MainWindow->setStatusBar(statusbar);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 604, 22));
+        menuBar->setGeometry(QRect(0, 0, 604, 21));
         menuvideo = new QMenu(menuBar);
         menuvideo->setObjectName(QString::fromUtf8("menuvideo"));
         menu = new QMenu(menuBar);
@@ -280,6 +300,7 @@ public:
         action_remove->setText(QCoreApplication::translate("MainWindow", "\347\247\273\345\207\272", nullptr));
         action_clear->setText(QCoreApplication::translate("MainWindow", "\346\270\205\347\251\272", nullptr));
         action_exit->setText(QCoreApplication::translate("MainWindow", "\351\200\200\345\207\272", nullptr));
+        Btn_Search->setText(QCoreApplication::translate("MainWindow", "Search", nullptr));
         lab_pixmap->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         tbtn_play->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213", nullptr));
         tbtn_pause->setText(QCoreApplication::translate("MainWindow", "\346\232\202\345\201\234", nullptr));
