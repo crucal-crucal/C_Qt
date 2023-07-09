@@ -33,7 +33,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actThread_Run_triggered()
 {
-    mythread->start();
+//    mythread->start();
+    QThreadPool::globalInstance()->start(mythread);
     ui->actThread_Run->setEnabled(false);
     ui->actDice_Run->setEnabled(true);
     ui->actThread_Quit->setEnabled(true);

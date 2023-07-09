@@ -3,6 +3,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QThreadPool>
 #include "mythread.h"
 
 
