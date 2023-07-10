@@ -1,0 +1,12 @@
+debug/QMyServer.o
+debug/QMyThread.o
+debug/QMyThreadPool.o
+debug/main.o
+debug/mainwindow.o
+debug/QMyDataDecompression.o
+debug/MyTcpServer.o
+debug/moc_QMyServer.o
+debug/moc_QMyThread.o
+debug/moc_mainwindow.o
+debug/moc_QMyDataDecompression.o
+debug/moc_MyTcpServer.o

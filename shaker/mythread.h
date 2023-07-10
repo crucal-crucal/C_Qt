@@ -5,9 +5,10 @@
 
 #include <QObject>
 #include <QThread>
+#include <QRunnable>
 #include <QRandomGenerator>
 
-class MyThread : public QThread
+class MyThread : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
@@ -21,8 +22,8 @@ public:
 signals:
     void newValue(int m_seq, int m_diceValue);
 
-    // QThread interface
-protected:
+public:
+    // QRunnable interface
     void run();
 
 public:

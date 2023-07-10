@@ -2,9 +2,9 @@
 #include "mythread.h"
 
 MyThread::MyThread(QThread *parent)
-    : QThread{parent}
+    : QObject{parent}, QRunnable{}
 {
-
+    this->setAutoDelete(true);//
 }
 
 void MyThread::diceBegin()
@@ -37,9 +37,9 @@ void MyThread::run()
             m_seq++;
             emit newValue(m_seq, m_diceValue);  //发射信号
         }
-        msleep(200);    //线程休眠200ms
+        QThread::msleep(200);    //线程休眠200ms
     }
 
     //  在  m_stop==true时结束线程任务
-    quit();     //相当于exit(0), 退出线程的事件循环
+//    QThread::quit();     //相当于exit(0), 退出线程的事件循环
 }
