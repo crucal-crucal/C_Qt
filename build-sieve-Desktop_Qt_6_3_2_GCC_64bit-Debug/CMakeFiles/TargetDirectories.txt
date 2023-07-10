@@ -1,0 +1,9 @@
+/home/crucal/workspace/myqt/qt6/build-sieve-Desktop_Qt_6_3_2_GCC_64bit-Debug/CMakeFiles/sieve.dir
+/home/crucal/workspace/myqt/qt6/build-sieve-Desktop_Qt_6_3_2_GCC_64bit-Debug/CMakeFiles/edit_cache.dir
+/home/crucal/workspace/myqt/qt6/build-sieve-Desktop_Qt_6_3_2_GCC_64bit-Debug/CMakeFiles/rebuild_cache.dir
+/home/crucal/workspace/myqt/qt6/build-sieve-Desktop_Qt_6_3_2_GCC_64bit-Debug/CMakeFiles/list_install_components.dir
+/home/crucal/workspace/myqt/qt6/build-sieve-Desktop_Qt_6_3_2_GCC_64bit-Debug/CMakeFiles/install.dir
+/home/crucal/workspace/myqt/qt6/build-sieve-Desktop_Qt_6_3_2_GCC_64bit-Debug/CMakeFiles/install/local.dir
+/home/crucal/workspace/myqt/qt6/build-sieve-Desktop_Qt_6_3_2_GCC_64bit-Debug/CMakeFiles/install/strip.dir
+/home/crucal/workspace/myqt/qt6/build-sieve-Desktop_Qt_6_3_2_GCC_64bit-Debug/CMakeFiles/sieve_autogen_timestamp_deps.dir
+/home/crucal/workspace/myqt/qt6/build-sieve-Desktop_Qt_6_3_2_GCC_64bit-Debug/CMakeFiles/sieve_autogen.dir

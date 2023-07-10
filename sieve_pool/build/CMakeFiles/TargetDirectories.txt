@@ -1,0 +1,4 @@
+/home/crucal/workspace/myqt/qt6/sieve_pool/build/CMakeFiles/sieve_pool.dir
+/home/crucal/workspace/myqt/qt6/sieve_pool/build/CMakeFiles/edit_cache.dir
+/home/crucal/workspace/myqt/qt6/sieve_pool/build/CMakeFiles/rebuild_cache.dir
+/home/crucal/workspace/myqt/qt6/sieve_pool/build/CMakeFiles/sieve_pool_autogen.dir
