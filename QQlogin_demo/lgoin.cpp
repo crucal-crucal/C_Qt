@@ -27,6 +27,12 @@ Lgoin::Lgoin(QWidget *parent)
 
     //设置头像为圆形
     ui->Lab_portrait->setMask(QRegion(ui->Lab_portrait->rect(), QRegion::RegionType::Ellipse));
+
+    mydig = new My_Dialog();
+
+    my_res = new My_register();
+
+    findp = new My_findpasswd();
 }
 
 Lgoin::~Lgoin()
@@ -51,24 +57,22 @@ void Lgoin::on_Btn_close_clicked()
 void Lgoin::on_Btn_login_clicked()
 {
     this->hide();
-    mydig = new My_Dialog(this);
     mydig->show();
-    mydig->exec();
+//    mydig->exec();
 }
 
-
-
+// 二维码按钮
 void Lgoin::on_Btn_Qrcode_clicked()
 {
     //this->hide();
     m_label->show();
 }
 
-
+// 注册按钮
 void Lgoin::on_Btn_Register_clicked()
 {
-    this->hide();
-    my_res = new My_register(this);
+//    this->hide();
+
     my_res->show();
     my_res->exec();
 }
@@ -76,8 +80,7 @@ void Lgoin::on_Btn_Register_clicked()
 
 void Lgoin::on_Btn_findpasswd_clicked()
 {
-    this->hide();
-    findp = new My_findpasswd(this);
+//    this->hide();
     findp->show();
     findp->exec();
 }
