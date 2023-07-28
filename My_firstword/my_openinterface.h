@@ -15,6 +15,12 @@ public:
     explicit My_openInterface(QWidget *parent = nullptr);
     ~My_openInterface();
 
+    void newinterFace();
+    void oldinterFace();
+
+signals:
+    void Yes();
+    void No();
 private:
     Ui::My_openInterface *ui;
 };

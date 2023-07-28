@@ -15,5 +15,6 @@
         <file>images/UNDRLN.BMP</file>
         <file>images/WORDUNDR.BMP</file>
         <file>images/Save_as1.jpg</file>
+        <file>mian.qml</file>
     </qresource>
 </RCC>

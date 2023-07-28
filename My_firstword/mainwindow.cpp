@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "my_openinterface.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -16,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     //addwidget直接添加在最后
 
     ui->toolBar->insertSeparator(ui->actionQuit);//分割线
-    connect(fontsize, QOverload<int>::of(&QSpinBox::valueChanged), [=](int x){
+    connect(fontsize, QOverload<int>::of(&QSpinBox::valueChanged), this, [ = ](int x) {
         QFont font(ui->plainTextEdit->font());//获取当前Edit的字体
         font.setPixelSize(x);//更改当前字体的size
         ui->plainTextEdit->setFont(font);//实现该字体
@@ -28,10 +30,10 @@ MainWindow::MainWindow(QWidget *parent)
     QFontComboBox *font_combox = new QFontComboBox();
     ui->toolBar->insertWidget(ui->actionQuit, font_combox);
     ui->toolBar->insertSeparator(ui->actionQuit);//分割线
-    connect(font_combox, &QFontComboBox::currentFontChanged, this, [=](const QFont &font){
+    connect(font_combox, &QFontComboBox::currentFontChanged, this, [ = ](const QFont & font) {
         //QFont font(ui->plainTextEdit->font());//获取当前Edit的字体
         //font.setFamily(s);//把字体改为s
-        QFont t=font;
+        QFont t = font;
         t.setPointSize(ui->plainTextEdit->font().pointSize());
         ui->plainTextEdit->setFont(t);//实现该字体
     });
@@ -50,7 +52,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionItalic_triggered(bool checked)
 {
-    QFont font=ui->plainTextEdit->font();
+    QFont font = ui->plainTextEdit->font();
     font.setItalic(checked);//斜体
     ui->plainTextEdit->setFont(font);
 }
@@ -58,7 +60,7 @@ void MainWindow::on_actionItalic_triggered(bool checked)
 
 void MainWindow::on_actionBold_triggered(bool checked)
 {
-    QFont font=ui->plainTextEdit->font();
+    QFont font = ui->plainTextEdit->font();
     font.setBold(checked);//粗体
     ui->plainTextEdit->setFont(font);
 }
@@ -66,7 +68,7 @@ void MainWindow::on_actionBold_triggered(bool checked)
 
 void MainWindow::on_actionUnderline_triggered(bool checked)
 {
-    QFont font=ui->plainTextEdit->font();
+    QFont font = ui->plainTextEdit->font();
     font.setUnderline(checked);//下划线
     ui->plainTextEdit->setFont(font);
 }
@@ -75,9 +77,9 @@ void MainWindow::on_actionUnderline_triggered(bool checked)
 void MainWindow::on_actionabout_triggered()
 {
     QMessageBox::about(this, tr("About Application"),
-             tr("The <b>Application</b> example demonstrates how to "
-                "write modern GUI applications using Qt, with a menu bar, "
-                "toolbars, and a status bar."));
+                       tr("The <b>Application</b> example demonstrates how to "
+                          "write modern GUI applications using Qt, with a menu bar, "
+                          "toolbars, and a status bar."));
 }
 
 
@@ -90,24 +92,19 @@ void MainWindow::on_actionaboutQt_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
     //tr("All Files(*)")
-    QString fileName = QFileDialog::getOpenFileName(this,"Open File","",tr("Text File(*.txt)"));//打开文件
+    QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", tr("Text File(*.txt)")); //打开文件
     //this->subtext = fileName;
 
-    if(!fileName.isEmpty())
-    {
+    if (!fileName.isEmpty()) {
         QFile file(fileName);
-        if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            QMessageBox::warning(this,"error","打开文本失败!");
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QMessageBox::warning(this, "error", "打开文本失败!");
             return;
-        }
-        else
-        {
-            if(!file.isReadable())
-                QMessageBox::warning(this,"error","当前文本不可读!");
-            else
-            {
-                QString s=tr("当前文件夹：")+fileName;
+        } else {
+            if (!file.isReadable()) {
+                QMessageBox::warning(this, "error", "当前文本不可读!");
+            } else {
+                QString s = tr("当前文件夹：") + fileName;
                 this->label->setText(s);//把文件路径放入label中
                 //ui->statusbar->show();
                 //label->show();
@@ -126,62 +123,46 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
-    if(flag_isNew)
-    {
-        if(ui->plainTextEdit->toPlainText()=="")
-        {
-            QMessageBox::warning(this,"error","content can not be none!",QMessageBox::Ok);
-        }
-        else
-        {
+    if (flag_isNew) {
+        if (ui->plainTextEdit->toPlainText() == "") {
+            QMessageBox::warning(this, "error", "content can not be none!", QMessageBox::Ok);
+        } else {
             QFileDialog fileDialog;
-            QString str = fileDialog.getSaveFileName(this,"Open File","","Text File(*.txt)");
-            if(str == "")
-            {
+            QString str = fileDialog.getSaveFileName(this, "Open File", "", "Text File(*.txt)");
+            if (str == "") {
                 return;
             }
             QFile filename(str);
-            if(!filename.open(QIODevice::WriteOnly | QIODevice::Text))
-            {
-                QMessageBox::warning(this,"error","Open File Error!");
+            if (!filename.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                QMessageBox::warning(this, "error", "Open File Error!");
                 return;
-            }
-            else
-            {
+            } else {
                 QTextStream textStream(&filename);
                 QString str = ui->plainTextEdit->toPlainText();
                 textStream << str;
-                Last_FileContent =str;
+                Last_FileContent = str;
             }
-            QMessageBox::information(this,"Ssve File","Save File Success",QMessageBox::Ok);
+            QMessageBox::information(this, "Ssve File", "Save File Success", QMessageBox::Ok);
             filename.close();
             flag_isNew = 0;
             Last_FileName = str;
         }
-    }
-    else
-    {
-        if(flag_isOpen)
-        {
+    } else {
+        if (flag_isOpen) {
             QFile file(Last_FileName);
-            if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-            {
-                QMessageBox::warning(this,"error","Open File Faile");
+            if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                QMessageBox::warning(this, "error", "Open File Faile");
                 return;
-            }
-            else
-            {
+            } else {
                 QTextStream textString(&file);
                 QString str = ui->plainTextEdit->toPlainText();
                 textString << str;
                 Last_FileContent = str;
-                QMessageBox::information(this,"Ssve File","Save File Success",QMessageBox::Ok);
+                QMessageBox::information(this, "Ssve File", "Save File Success", QMessageBox::Ok);
                 file.close();
             }
-        }
-        else
-        {
-            QMessageBox::warning(this,"Warning","Please new or open a file");
+        } else {
+            QMessageBox::warning(this, "Warning", "Please new or open a file");
             return;
         }
     }
@@ -192,23 +173,19 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionSave_as_triggered()
 {
     QFileDialog fileDialog;
-    QString fileName = fileDialog.getSaveFileName(this,"Open File","",tr("All Files(*)"));
-    if(fileName == "")
-    {
+    QString fileName = fileDialog.getSaveFileName(this, "Open File", "", tr("All Files(*)"));
+    if (fileName == "") {
         return;
     }
     QFile file(fileName);
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        QMessageBox::warning(this,"error","open file failure!");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "error", "open file failure!");
         return;
-    }
-    else
-    {
+    } else {
         QTextStream textStream(&file);
         QString str = ui->plainTextEdit->toPlainText();
         //textStream<<str;
-        QMessageBox::warning(this,"tip","Save File Success!");
+        QMessageBox::warning(this, "tip", "Save File Success!");
         Last_FileContent = str;
         Last_FileName = fileName;
         flag_isNew = 0;
@@ -220,10 +197,20 @@ void MainWindow::on_actionSave_as_triggered()
 
 void MainWindow::on_actionnew_triggered()
 {
-    ui->plainTextEdit->clear();
-    ui->plainTextEdit->setHidden(false);
-    flag_isNew = 1;
-    flag_isOpen = 1;
+    My_openInterface *interFace = new My_openInterface(this);
+    interFace->show();
+
+    connect(interFace, &My_openInterface::Yes, this, [=]() {
+        ui->plainTextEdit->clear();
+        ui->plainTextEdit->setHidden(false);
+        flag_isNew = 1;
+        flag_isOpen = 1;
+    });
+
+    connect(interFace, &My_openInterface::No, this, [=]() {
+        flag_isNew = 0;
+        flag_isOpen = 1;
+    });
 }
 
 

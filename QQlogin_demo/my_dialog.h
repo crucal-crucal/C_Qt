@@ -2,6 +2,10 @@
 #define MY_DIALOG_H
 
 #include <QDialog>
+#include <QToolButton>
+#include <QMessageBox>
+
+#include "QMyChat.h"
 
 namespace Ui {
 class My_Dialog;
@@ -15,14 +19,9 @@ public:
     explicit My_Dialog(QWidget *parent = nullptr);
     ~My_Dialog();
 
-private slots:
-    void on_Btn_close_clicked();
-
-    void on_Btn_min_clicked();
-
 private:
     Ui::My_Dialog *ui;
-    My_Dialog * mydig_1;
+    QVector<bool> isShow;
 };
 
 #endif // MY_DIALOG_H

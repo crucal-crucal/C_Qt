@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui quick
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,20 +28,3 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     images.qrc
-
-DISTFILES += \
-    images/103.bmp \
-    images/120.bmp \
-    images/20.ico \
-    images/430.bmp \
-    images/BLD.BMP \
-    images/DBLUNDR.BMP \
-    images/ITL.BMP \
-    images/Save_as.jpg \
-    images/UNDRLN.BMP \
-    images/WORDUNDR.BMP \
-    images/cut.bmp \
-    images/exit.bmp \
-    images/new2.bmp \
-    images/open3.bmp \
-    images/paste.bmp

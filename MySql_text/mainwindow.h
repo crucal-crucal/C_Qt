@@ -6,9 +6,10 @@
 #include <QSqlTableModel>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QDebug>
 
-const QString dbusername = "root";
-const QString dbpasswd = "540869cf";
+static const QString dbusername = "root";
+static const QString dbpasswd = "540869cf";
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -24,6 +25,8 @@ public:
     ~MainWindow();
     bool connectDB();
 
+    void deleteSqlData(); // 删除数据
+
 private slots:
     void on_btn_query_clicked();
 
@@ -34,6 +37,7 @@ private:
 
 private:
     QSqlTableModel *m_model;
+    QSqlDatabase db;
 };
 
 #endif // MAINWINDOW_H

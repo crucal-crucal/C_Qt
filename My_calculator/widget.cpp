@@ -1,8 +1,6 @@
 
 #include "widget.h"
-#include "./ui_widget.h"
-
-#include <QIcon>
+#include "ui_widget.h"
 
 void Widget::setBtnsize()
 {

@@ -1,0 +1,13 @@
+release/QMyServer.o
+release/QMyThread.o
+release/QMyThreadPool.o
+release/main.o
+release/mainwindow.o
+release/QMyDataDecompression.o
+release/MyTcpServer.o
+release/moc_QMyServer.o
+release/moc_QMyThread.o
+release/moc_QMyThreadPool.o
+release/moc_mainwindow.o
+release/moc_QMyDataDecompression.o
+release/moc_MyTcpServer.o
