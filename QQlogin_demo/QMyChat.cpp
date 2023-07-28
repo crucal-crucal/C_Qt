@@ -1,5 +1,8 @@
 #include "QMyChat.h"
+<<<<<<< HEAD
 
+=======
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
 #include "ui_QMyChat.h"
 
 QMyChat::QMyChat(QWidget *parent, QString name) :
@@ -31,12 +34,20 @@ QMyChat::QMyChat(QWidget *parent, QString name) :
     // 新用户进入
     sendMsg(UserEnter);
 
+<<<<<<< HEAD
     connect(ui->btn_exit, &QPushButton::clicked, this, [ = ]() {
+=======
+    connect(ui->btn_exit, &QPushButton::clicked, this, [=](){
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
         this->close();
     });
 
     // 设置字体
+<<<<<<< HEAD
     connect(ui->fontComboBox, &QFontComboBox::currentFontChanged, this, [&](const QFont & font) {
+=======
+    connect(ui->fontComboBox, &QFontComboBox::currentFontChanged, this, [&](const QFont& font){
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
         ui->textEdit->setCurrentFont(font);
         ui->textBrowser->setCurrentFont(font);
         ui->textEdit->setFocus();
@@ -44,7 +55,11 @@ QMyChat::QMyChat(QWidget *parent, QString name) :
     });
 
     // 设置字体大小
+<<<<<<< HEAD
     connect(ui->font_Size, &QComboBox::currentTextChanged, this, [ = ](const QString & text) {
+=======
+    connect(ui->font_Size, &QComboBox::currentTextChanged, this, [=](const QString& text){
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
         ui->textEdit->setFontPointSize(text.toDouble());
         ui->textBrowser->setFontPointSize(text.toDouble());
         ui->textEdit->setFocus();
@@ -52,7 +67,11 @@ QMyChat::QMyChat(QWidget *parent, QString name) :
     });
 
     // 加粗文本
+<<<<<<< HEAD
     connect(ui->tbtn_overbold, &QToolButton::clicked, this, [ = ](bool bl) {
+=======
+    connect(ui->tbtn_overbold, &QToolButton::clicked, this, [=](bool bl){
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
         if (bl) {
             ui->textEdit->setFontWeight(QFont::Bold);
             ui->textBrowser->setFontWeight(QFont::Bold);
@@ -68,7 +87,11 @@ QMyChat::QMyChat(QWidget *parent, QString name) :
     });
 
     // 字体倾斜
+<<<<<<< HEAD
     connect(ui->tbtn_tilt, &QToolButton::clicked, this, [ = ](bool bl) {
+=======
+    connect(ui->tbtn_tilt, &QToolButton::clicked, this, [=](bool bl){
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
         ui->textEdit->setFontItalic(bl);
         ui->textEdit->setFocus();
 
@@ -77,7 +100,11 @@ QMyChat::QMyChat(QWidget *parent, QString name) :
     });
 
     // 下划线
+<<<<<<< HEAD
     connect(ui->tbtn_underline, &QToolButton::clicked, this, [ = ](bool bl) {
+=======
+    connect(ui->tbtn_underline, &QToolButton::clicked, this, [=](bool bl){
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
         ui->textEdit->setFontUnderline(bl);
         ui->textEdit->setFocus();
 
@@ -87,7 +114,11 @@ QMyChat::QMyChat(QWidget *parent, QString name) :
 
 
     // 设置文本颜色
+<<<<<<< HEAD
     connect(ui->tbtn_color, &QToolButton::clicked, this, [ = ]() {
+=======
+    connect(ui->tbtn_color, &QToolButton::clicked, this, [=](){
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
         // 获取当前选择的颜色
         QColor curColor = QColorDialog::getColor(nullptr, this);
         ui->textEdit->setTextColor(curColor);
@@ -95,12 +126,20 @@ QMyChat::QMyChat(QWidget *parent, QString name) :
     });
 
     // 清空聊天记录
+<<<<<<< HEAD
     connect(ui->tbtn_clear, &QToolButton::clicked, this, [ = ]() {
+=======
+    connect(ui->tbtn_clear, &QToolButton::clicked, this, [=](){
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
         ui->textBrowser->clear();
     });
 
     // 保存聊天记录
+<<<<<<< HEAD
     connect(ui->tbtn_save, &QToolButton::clicked, this, [ = ]() {
+=======
+    connect(ui->tbtn_save, &QToolButton::clicked, this, [=](){
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
         if (ui->textBrowser->document()->isEmpty()) {
             QMessageBox::warning(this, "警告", "保存的文本不能为空");
         } else {
@@ -117,9 +156,12 @@ QMyChat::QMyChat(QWidget *parent, QString name) :
             }
         }
     });
+<<<<<<< HEAD
 
     // 发送图片
     connect(ui->tbtn_picTure, &QToolButton::clicked, this, &QMyChat::sendPicture);
+=======
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
 }
 
 // 广播信号
@@ -131,17 +173,24 @@ void QMyChat::sendMsg(QMyChat::Msgtype type)
     stream << type << this->getName(); //流入 类型和用户姓名
     switch (type) {
     case Msg:
+<<<<<<< HEAD
         if (this->ui->textEdit->toPlainText() == "") {
+=======
+        if (this->ui->textEdit->toPlainText() == ""){
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
             QMessageBox::information(this, "警告", "发送内容不能为空!");
             return;
         }
         stream << this->getMeg(); // 流入 普通聊天信息
         break;
+<<<<<<< HEAD
     case Picture:
         for (auto &c : this->getPicture()) {
             stream << c;
         }
         break;
+=======
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
     case UserEnter:
         break;
     case UserLeft:
@@ -167,6 +216,7 @@ QString QMyChat::getMeg()
     return msg;
 }
 
+<<<<<<< HEAD
 QVector<QString> QMyChat::getPicture()
 {
     QStringList files = QFileDialog::getOpenFileNames(this,
@@ -184,6 +234,8 @@ QVector<QString> QMyChat::getPicture()
     return picture;
 }
 
+=======
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
 // 用户进入处理
 void QMyChat::userEnter(QString username)
 {
@@ -230,6 +282,7 @@ void QMyChat::RecvMessage()
     QDataStream stream(&array, QIODevice::ReadOnly);
     int msgtype;
     stream >> msgtype; // 读取类型
+<<<<<<< HEAD
     QString name, msg, pixmap; // 用户名, 聊天信息, 图片
     QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 //    QTextDocument *doc = ui->textBrowser->document(); // 获取textBrowser的文档
@@ -238,12 +291,22 @@ void QMyChat::RecvMessage()
     switch (msgtype) {
     case Msg: {// 普通聊天
         stream >> name >> msg;
+=======
+    QString name, msg; // 用户名和聊天信息
+    QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+
+    switch (msgtype) {
+    case Msg: // 普通聊天
+        stream >> name >> msg;
+
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
         // 增加聊天记录
 //        ui->textBrowser->setTextColor();
         ui->textBrowser->setCurrentFont(QFont("Times New Roman", 12));
         ui->textBrowser->append("[" + name + "]" + time);
         ui->textBrowser->append(msg);
         break;
+<<<<<<< HEAD
     }
     case Picture: { // 图片
         stream >> name >> pixmap;
@@ -265,6 +328,15 @@ void QMyChat::RecvMessage()
         userLeft(name, time);
         break;
     }
+=======
+    case UserEnter:
+        stream >> name;
+        userEnter(name);
+        break;
+    case UserLeft:
+        stream >> name;
+        userLeft(name, time);
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
     default:
         break;
     }
@@ -276,11 +348,14 @@ void QMyChat::sendMessage()
     sendMsg(QMyChat::Msg);
 }
 
+<<<<<<< HEAD
 void QMyChat::sendPicture()
 {
     sendMsg(QMyChat::Picture);
 }
 
+=======
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
 QMyChat::~QMyChat()
 {
     delete ui;

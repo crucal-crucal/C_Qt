@@ -6,8 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
+<<<<<<< HEAD
     <width>759</width>
     <height>488</height>
+=======
+    <width>903</width>
+    <height>451</height>
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
    </rect>
   </property>
   <property name="windowTitle">
@@ -239,6 +244,7 @@
                      </widget>
                     </item>
                     <item>
+<<<<<<< HEAD
                      <widget class="QToolButton" name="tbtn_picTure">
                       <property name="toolTip">
                        <string/>
@@ -252,6 +258,8 @@
                      </widget>
                     </item>
                     <item>
+=======
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
                      <widget class="QToolButton" name="tbtn_save">
                       <property name="text">
                        <string>保存</string>

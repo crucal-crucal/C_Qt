@@ -10,7 +10,10 @@
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QFile>
+<<<<<<< HEAD
 #include <QTextCursor>
+=======
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
 
 namespace Ui {
 class QMyChat;
@@ -25,6 +28,7 @@ class QMyChat : public QDialog
     Q_OBJECT
 
 public:
+<<<<<<< HEAD
     // 分别代表普通信息，用户进入，用户离开
     enum Msgtype {
         Msg, UserEnter, UserLeft, Picture
@@ -41,6 +45,19 @@ public:
 
     void sendMessage(); // 发送信息按钮
     void sendPicture(); // 发送图片
+=======
+    enum Msgtype{
+        Msg, UserEnter, UserLeft
+    }; // 分别代表普通信息，用户进入，用户离开
+    explicit QMyChat(QWidget *parent = nullptr, QString name = "");
+    void sendMsg(Msgtype type); // 广播udp信息
+    QString getName(); //获取名字
+    QString getMeg(); //获取聊天信息
+    void userEnter(QString username); //处理用户进入
+    void userLeft(QString username, QString time); //处理用户离开
+    void RecvMessage(); // 接受udp信息
+    void sendMessage(); // 发送信息按钮
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
     ~QMyChat();
 
 signals:
@@ -52,7 +69,10 @@ private:
     QString uName; // 名字
     QUdpSocket *udpSocket; // udp套接字
     QString myName;
+<<<<<<< HEAD
     QVector<QString> picture; // 选择的图片
+=======
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
 
     // 重写关闭事件
     // QWidget interface
