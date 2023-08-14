@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
+<<<<<<< HEAD:My_calculator/CMakeLists.txt.user.2a07cd0
 <!-- Written by QtCreator 10.0.2, 2023-07-04T21:01:58. -->
+=======
+<!-- Written by QtCreator 10.0.2, 2023-07-09T20:59:21. -->
+>>>>>>> 47b8f66 (update):sieve/CMakeLists.txt.user
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -107,7 +111,11 @@
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
     <value type="int" key="EnableQmlDebugging">0</value>
+<<<<<<< HEAD:My_calculator/CMakeLists.txt.user.2a07cd0
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Debug</value>
+=======
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-Debug</value>
+>>>>>>> 47b8f66 (update):sieve/CMakeLists.txt.user
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -163,7 +171,11 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
+<<<<<<< HEAD:My_calculator/CMakeLists.txt.user.2a07cd0
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Release</value>
+=======
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-Release</value>
+>>>>>>> 47b8f66 (update):sieve/CMakeLists.txt.user
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -217,7 +229,11 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
+<<<<<<< HEAD:My_calculator/CMakeLists.txt.user.2a07cd0
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-RelWithDebInfo</value>
+=======
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-RelWithDebInfo</value>
+>>>>>>> 47b8f66 (update):sieve/CMakeLists.txt.user
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -272,7 +288,11 @@
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
     <value type="int" key="EnableQmlDebugging">0</value>
+<<<<<<< HEAD:My_calculator/CMakeLists.txt.user.2a07cd0
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Profile</value>
+=======
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-Profile</value>
+>>>>>>> 47b8f66 (update):sieve/CMakeLists.txt.user
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -326,7 +346,11 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
+<<<<<<< HEAD:My_calculator/CMakeLists.txt.user.2a07cd0
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-MinSizeRel</value>
+=======
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-MinSizeRel</value>
+>>>>>>> 47b8f66 (update):sieve/CMakeLists.txt.user
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -396,7 +420,11 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+<<<<<<< HEAD:My_calculator/CMakeLists.txt.user.2a07cd0
     <value type="QString" key="RunConfiguration.WorkingDirectory.default">E:/QT/MyQt/build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Debug</value>
+=======
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">E:/QT/MyQt/build-sieve-Desktop_Qt_6_3_2_MinGW_64_bit-Debug</value>
+>>>>>>> 47b8f66 (update):sieve/CMakeLists.txt.user
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

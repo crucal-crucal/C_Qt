@@ -1,12 +1,18 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 {
   "name": "John",
   "age": 30,
   "city": "New York"
+<<<<<<< HEAD
 =======
 {
   "name": "John",
   "age": 30,
   "city": "New York"
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <<<<<<<< HEAD:My_meeting/build-Clients-Desktop_Qt_6_2_4_MinGW_64_bit-Debug/debug/moc_QMyAudio.cpp
 /****************************************************************************
 ** Meta object code from reading C++ file 'QMyAudio.h'
@@ -141,6 +142,8 @@ void QMyAudio::sendAudio(QByteArray _t1)
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE
 ========
+=======
+>>>>>>> 47b8f66 (update)
 /****************************************************************************
 ** Meta object code from reading C++ file 'QMyThreadPool.h'
 **
@@ -283,4 +286,7 @@ void work1::exampleSignal(int _t1)
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE
+<<<<<<< HEAD
 >>>>>>>> cdd08f869638039635144f291da04c841be7fc1c:My_meeting/build-Clients-Desktop_Qt_6_3_2_MinGW_64_bit-Debug/debug/moc_QMyThreadPool.cpp
+=======
+>>>>>>> 47b8f66 (update)

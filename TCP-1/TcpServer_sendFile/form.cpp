@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 #include "form.h"
 #include "ui_form.h"
 
@@ -39,6 +42,7 @@ void Form::setStatus(bool bl)
                         "background-color:red;border-radius:5px;";
     ui->label->setStyleSheet(sheet);
 }
+<<<<<<< HEAD
 =======
 #include "form.h"
 #include "ui_form.h"
@@ -81,3 +85,5 @@ void Form::setStatus(bool bl)
     ui->label->setStyleSheet(sheet);
 }
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

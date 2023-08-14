@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 #ifndef QMYBUFFER_H
 #define QMYBUFFER_H
 //#define DEBUG
@@ -27,6 +30,7 @@ private:
 };
 
 #endif // QMYBUFFER_H
+<<<<<<< HEAD
 =======
 #ifndef QMYBUFFER_H
 #define QMYBUFFER_H
@@ -57,3 +61,5 @@ private:
 
 #endif // QMYBUFFER_H
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

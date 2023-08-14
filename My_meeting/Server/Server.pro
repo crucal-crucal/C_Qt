@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 QT       += core gui  multimedia network multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -35,6 +36,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 =======
+=======
+>>>>>>> 47b8f66 (update)
 QT       += core gui  multimedia network multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -72,4 +75,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     Server.pro.user
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

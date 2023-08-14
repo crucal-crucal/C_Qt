@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
@@ -80,6 +81,8 @@ void MainWindow::showVideo(QByteArray video, QByteArray audio) {
   this->showAudiotoUI(audio);
 }
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
@@ -170,4 +173,7 @@ void MainWindow::showVideo(QByteArray video, QByteArray audio)
     this->showAudiotoUI(audio);
 }
 
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

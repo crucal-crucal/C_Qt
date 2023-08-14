@@ -9,17 +9,26 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+<<<<<<<< HEAD:axis-tags/axis-tags.pro
     AxisTag.cpp \
+========
+    form.cpp \
+>>>>>>>> 47b8f66 (update):TCP-1/TcpServer_sendFile/TcpServer_sendFile.pro
     main.cpp \
     mainwindow.cpp \
     qcustomplot.cpp
 
 HEADERS += \
+<<<<<<<< HEAD:axis-tags/axis-tags.pro
     AxisTag.h \
+========
+    form.h \
+>>>>>>>> 47b8f66 (update):TCP-1/TcpServer_sendFile/TcpServer_sendFile.pro
     mainwindow.h \
     qcustomplot.h
 
 FORMS += \
+    form.ui \
     mainwindow.ui
 
 # Default rules for deployment.

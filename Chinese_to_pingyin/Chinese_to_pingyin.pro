@@ -9,15 +9,26 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+<<<<<<<< HEAD:Chinese_to_pingyin/Chinese_to_pingyin.pro
     ZH_TO_PY.cpp \
+========
+    form.cpp \
+>>>>>>>> 47b8f66 (update):TCP-1/TcpClient_sendFile/TcpClient_sendFile.pro
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+<<<<<<<< HEAD:Chinese_to_pingyin/Chinese_to_pingyin.pro
     ZH_TO_PY.h \
     mainwindow.h
+========
+    form.h \
+    mainwindow.h \
+    sendfile.h
+>>>>>>>> 47b8f66 (update):TCP-1/TcpClient_sendFile/TcpClient_sendFile.pro
 
 FORMS += \
+    form.ui \
     mainwindow.ui
 
 RESOURCES += \

@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
@@ -204,6 +207,7 @@ namespace Ui {
 QT_END_NAMESPACE
 
 #endif // UI_MAINWINDOW_H
+<<<<<<< HEAD
 =======
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
@@ -411,3 +415,5 @@ QT_END_NAMESPACE
 
 #endif // UI_MAINWINDOW_H
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

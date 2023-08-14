@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -162,6 +165,7 @@ void MainWindow::on_act_disconnect_triggered()
     m_t->deleteLater();
 }
 
+<<<<<<< HEAD
 =======
 
 #include "mainwindow.h"
@@ -327,3 +331,5 @@ void MainWindow::on_act_disconnect_triggered()
 }
 
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

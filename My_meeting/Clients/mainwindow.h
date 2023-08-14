@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -60,6 +61,8 @@ protected:
 
 #endif // MAINWINDOW_H
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -120,4 +123,7 @@ protected:
 };
 
 #endif // MAINWINDOW_H
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

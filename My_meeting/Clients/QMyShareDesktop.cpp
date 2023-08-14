@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #include "QMyShareDesktop.h"
 #include "QMyDataDecompression.h"
 
@@ -45,6 +46,8 @@ void QMyShareDesktop::GetDesktopPictrue() {
   emit finshed_LocalImportPictrue(map);
 }
 =======
+=======
+>>>>>>> 47b8f66 (update)
 #include "QMyDataDecompression.h"
 #include "QMyShareDesktop.h"
 
@@ -102,4 +105,7 @@ void QMyShareDesktop::GetDesktopPictrue()
 
 
 
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

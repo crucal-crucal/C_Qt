@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #include "QMyIODevice.h"
 
 QMyIODevice::QMyIODevice(QObject *parent) : QIODevice(parent) {
@@ -39,6 +40,8 @@ qint64 QMyIODevice::writeData(const char *data, qint64 maxSize) {
   return maxSize;
 }
 =======
+=======
+>>>>>>> 47b8f66 (update)
 #include "QMyIODevice.h"
 
 QMyIODevice::QMyIODevice(QObject *parent) : QIODevice(parent)
@@ -83,4 +86,7 @@ qint64 QMyIODevice::writeData(const char * data, qint64 maxSize)
     //qDebug()<< static_cast<qint16>(*data);
     return maxSize;
 }
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #include "QMyThreadPool.h"
 
@@ -73,6 +74,8 @@ void QMyThreadPool::run() { qDebug() << "finish run to Pool"; }
 //     cv.notify_one();//通知某个线程，有新任务
 // }
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "QMyThreadPool.h"
 
@@ -151,4 +154,7 @@ void QMyThreadPool::enqueue(Func &&func, Args &&... args)
 
 
 
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

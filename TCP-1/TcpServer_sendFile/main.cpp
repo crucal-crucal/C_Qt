@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "mainwindow.h"
 
@@ -12,6 +15,7 @@ int main(int argc, char *argv[])
     w.show();
     return a.exec();
 }
+<<<<<<< HEAD
 =======
 
 #include "mainwindow.h"
@@ -27,3 +31,5 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

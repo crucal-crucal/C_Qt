@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -120,6 +123,7 @@ void MainWindow::on_btn_Setlisten_clicked()
         QMessageBox::information(this, "监听端口", QString("监听%1端口成功!!").arg(port));
     //    qDebug()<<getLocalIP();
 }
+<<<<<<< HEAD
 =======
 
 #include "mainwindow.h"
@@ -243,3 +247,5 @@ void MainWindow::on_btn_Setlisten_clicked()
     //    qDebug()<<getLocalIP();
 }
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

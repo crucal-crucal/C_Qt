@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #ifndef QMYSHAREDESKTOP_H
 #define QMYSHAREDESKTOP_H
 
@@ -33,6 +34,8 @@ signals:
 
 #endif // QMYSHAREDESKTOP_H
 =======
+=======
+>>>>>>> 47b8f66 (update)
 #ifndef QMYSHAREDESKTOP_H
 #define QMYSHAREDESKTOP_H
 
@@ -68,4 +71,7 @@ signals:
 };
 
 #endif // QMYSHAREDESKTOP_H
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

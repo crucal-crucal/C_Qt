@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 
 #ifndef MYTCPSERVER_H
 #define MYTCPSERVER_H
@@ -25,6 +28,7 @@ private:
 };
 
 #endif // MYTCPSERVER_H
+<<<<<<< HEAD
 =======
 
 #ifndef MYTCPSERVER_H
@@ -53,3 +57,5 @@ private:
 
 #endif // MYTCPSERVER_H
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

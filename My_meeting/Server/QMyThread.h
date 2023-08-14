@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #ifndef QMYTHREAD_H
 #define QMYTHREAD_H
@@ -40,6 +41,8 @@ private:
 
 #endif // QMYTHREAD_H
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #ifndef QMYTHREAD_H
 #define QMYTHREAD_H
@@ -77,4 +80,7 @@ private:
 };
 
 #endif // QMYTHREAD_H
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

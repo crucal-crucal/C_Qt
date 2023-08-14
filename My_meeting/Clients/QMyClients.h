@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #ifndef QMYCLIENTS_H
 #define QMYCLIENTS_H
@@ -65,6 +66,8 @@ private:
  *
  * */
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #ifndef QMYCLIENTS_H
 #define QMYCLIENTS_H
@@ -134,4 +137,7 @@ private:
     tcpSocket->flush();
  *
  * */
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

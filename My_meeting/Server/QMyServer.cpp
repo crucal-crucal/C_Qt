@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #include "QMyServer.h"
 
@@ -30,6 +31,8 @@ void QMyServer::serverListen(unsigned short port) {
     QMessageBox::information(nullptr, "listen", "successful!");
 }
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "QMyServer.h"
 
@@ -70,4 +73,7 @@ void QMyServer::serverListen(unsigned short port)
 }
 
 
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

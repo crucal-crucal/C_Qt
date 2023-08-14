@@ -1,11 +1,19 @@
 <<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
+<<<<<<< HEAD
 <!-- Written by QtCreator 11.0.0, 2023-07-25T17:10:32. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
   <value type="QByteArray">{4c248d19-c7ce-4a27-88e3-20b2648fc641}</value>
+=======
+<!-- Written by QtCreator 10.0.2, 2023-07-04T21:01:58. -->
+<qtcreator>
+ <data>
+  <variable>EnvironmentId</variable>
+  <value type="QByteArray">{2a07cd0a-ce54-48a8-b1a3-1a8627c96272}</value>
+>>>>>>> 47b8f66 (update)
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -77,7 +85,10 @@
     <value type="bool" key="ClangTools.BuildBeforeAnalysis">true</value>
     <value type="QString" key="ClangTools.DiagnosticConfig">Builtin.DefaultTidyAndClazy</value>
     <value type="int" key="ClangTools.ParallelJobs">16</value>
+<<<<<<< HEAD
     <value type="bool" key="ClangTools.PreferConfigFile">false</value>
+=======
+>>>>>>> 47b8f66 (update)
     <valuelist type="QVariantList" key="ClangTools.SelectedDirs"/>
     <valuelist type="QVariantList" key="ClangTools.SelectedFiles"/>
     <valuelist type="QVariantList" key="ClangTools.SuppressedDiagnostics"/>
@@ -108,6 +119,10 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
+<<<<<<< HEAD
+=======
+    <value type="int" key="EnableQmlDebugging">0</value>
+>>>>>>> 47b8f66 (update)
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
@@ -328,6 +343,7 @@
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-MinSizeRel</value>
+<<<<<<< HEAD
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -1060,6 +1076,8 @@
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_CXX_FLAGS_INIT:STRING=%{Qt:QML_DEBUG_FLAG}</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">E:\QT\MyQt\build-My_calculator-Desktop_Qt_6_3_2_MinGW_64_bit-MinSizeRel</value>
+=======
+>>>>>>> 47b8f66 (update)
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>

@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "sendfile.h"
 
@@ -49,6 +52,7 @@ void SendFile::sendFile(QString path)
     }
 }
 
+<<<<<<< HEAD
 =======
 
 #include "sendfile.h"
@@ -101,3 +105,5 @@ void SendFile::sendFile(QString path)
 }
 
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

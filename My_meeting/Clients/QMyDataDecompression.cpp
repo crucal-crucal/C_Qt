@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #include "QMyDataDecompression.h"
 #include <QBuffer>
@@ -340,6 +341,8 @@ int QMyDataDecompression::changeQByteArrayToInt(QByteArray &byteArray) {
   return value;
 }
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "QMyDataDecompression.h"
 #include <QBuffer>
@@ -672,4 +675,7 @@ int QMyDataDecompression::changeQByteArrayToInt(QByteArray &byteArray)
 
 
 
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

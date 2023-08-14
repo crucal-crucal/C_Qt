@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #include "QMyCameraThread.h"
 
@@ -32,6 +33,8 @@ void QMyCameraThread::run() {
   exec();                                      // 进入事件处理循环
 }
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "QMyCameraThread.h"
 
@@ -63,4 +66,7 @@ void QMyCameraThread::run()
     connect(this, &QMyCameraThread::stopShareDesktop, shareDesktop, &QMyShareDesktop::stopShareDesktop); //关闭桌面共享
     exec();//进入事件处理循环
 }
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

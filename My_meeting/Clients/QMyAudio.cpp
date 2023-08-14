@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #include "QMyAudio.h"
 
 QMyAudio::QMyAudio(QObject *parent) : QObject{parent} {
@@ -60,6 +61,8 @@ void QMyAudio::stopMyAudio() {
   this->audioSource->stop(); // 暂停录音
 }
 =======
+=======
+>>>>>>> 47b8f66 (update)
 #include "QMyAudio.h"
 
 QMyAudio::QMyAudio(QObject *parent)
@@ -127,4 +130,7 @@ void QMyAudio::stopMyAudio()
 }
 
 
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

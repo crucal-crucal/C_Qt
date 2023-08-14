@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 /****************************************************************************
 ** Meta object code from reading C++ file 'sendfile.h'
 **
@@ -216,6 +219,7 @@ void SendFile::dealRead()
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE
+<<<<<<< HEAD
 =======
 /****************************************************************************
 ** Meta object code from reading C++ file 'sendfile.h'
@@ -435,3 +439,5 @@ void SendFile::dealRead()
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

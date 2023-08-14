@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #ifndef QMYCAMERATHREAD_H
 #define QMYCAMERATHREAD_H
@@ -37,6 +38,8 @@ signals:
 
 #endif // QMYCAMERATHREAD_H
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #ifndef QMYCAMERATHREAD_H
 #define QMYCAMERATHREAD_H
@@ -76,4 +79,7 @@ signals:
 };
 
 #endif // QMYCAMERATHREAD_H
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

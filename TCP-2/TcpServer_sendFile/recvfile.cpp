@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 #include "recvfile.h"
 #include <QDebug>
 #include <QStringList>
@@ -169,6 +172,7 @@ QString RecvFile::getFileName(QString filePath)
     return filePath;
 }
 
+<<<<<<< HEAD
 =======
 #include "recvfile.h"
 #include <QDebug>
@@ -341,3 +345,5 @@ QString RecvFile::getFileName(QString filePath)
 }
 
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

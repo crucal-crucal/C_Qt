@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 #include "sendfile.h"
 #include <QDebug>
 #include <QHostAddress>
@@ -99,6 +102,7 @@ void SendFile::sendFile(QString filePath)
     /*关闭文件*/
     m_file.close();
 }
+<<<<<<< HEAD
 =======
 #include "sendfile.h"
 #include <QDebug>
@@ -201,3 +205,5 @@ void SendFile::sendFile(QString filePath)
     m_file.close();
 }
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

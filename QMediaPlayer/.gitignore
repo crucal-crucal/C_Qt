@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
@@ -73,6 +76,7 @@ CMakeLists.txt.user*
 *.dll
 *.exe
 
+<<<<<<< HEAD
 =======
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
@@ -149,3 +153,5 @@ CMakeLists.txt.user*
 *.exe
 
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #ifndef QMYCAMERA_H
 #define QMYCAMERA_H
@@ -50,6 +51,8 @@ private:
 
 #endif // QMYCAMERA_H
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #ifndef QMYCAMERA_H
 #define QMYCAMERA_H
@@ -101,4 +104,7 @@ private:
 };
 
 #endif // QMYCAMERA_H
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 #include "QMyBuffer.h"
 
 QMyBuffer::QMyBuffer(QObject *parent)
@@ -33,6 +36,7 @@ qint64 QMyBuffer::writeData(const char *data, qint64 maxSize)
 
     return maxSize;
 }
+<<<<<<< HEAD
 =======
 #include "QMyBuffer.h"
 
@@ -69,3 +73,5 @@ qint64 QMyBuffer::writeData(const char *data, qint64 maxSize)
     return maxSize;
 }
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

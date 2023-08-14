@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #include "QMyClients.h"
 
@@ -138,6 +139,8 @@ void QMyClients::sendVideoToServer(QPixmap map) // 发送视频数据到服务�
 #endif
 }
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "QMyClients.h"
 
@@ -266,4 +269,7 @@ void QMyClients::sendVideoToServer(QPixmap map)//发送视频数据到服务器
 #endif
 }
 
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

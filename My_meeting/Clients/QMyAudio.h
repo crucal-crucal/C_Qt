@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 #ifndef QMYAUDIO_H
 #define QMYAUDIO_H
 
@@ -25,6 +26,8 @@ public:
 
 #endif // QMYAUDIO_H
 =======
+=======
+>>>>>>> 47b8f66 (update)
 #ifndef QMYAUDIO_H
 #define QMYAUDIO_H
 
@@ -51,4 +54,7 @@ public:
 };
 
 #endif // QMYAUDIO_H
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

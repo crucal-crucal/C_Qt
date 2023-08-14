@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #ifndef QMYDATADECOMPRESSION_H
 #define QMYDATADECOMPRESSION_H
@@ -156,6 +157,8 @@ header[1] = 0x03 -------> 携带视频数据                  | * | header[0] = 
  *
  **/
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #ifndef QMYDATADECOMPRESSION_H
 #define QMYDATADECOMPRESSION_H
@@ -298,4 +301,7 @@ signals:
 
 
 
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "recvfile.h"
 
@@ -171,6 +174,7 @@ void RecvFile::run()
     exec();
 }
 
+<<<<<<< HEAD
 =======
 
 #include "recvfile.h"
@@ -345,3 +349,5 @@ void RecvFile::run()
 }
 
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

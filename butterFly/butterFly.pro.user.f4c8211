@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
 <!-- Written by QtCreator 10.0.0, 2023-04-30T20:11:50. -->
@@ -316,6 +317,8 @@
 <<<<<<< HEAD
 =======
 ========
+=======
+>>>>>>> 47b8f66 (update)
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
 <!-- Written by QtCreator 10.0.0, 2023-04-30T20:11:50. -->
@@ -579,5 +582,8 @@
   <value type="int">22</value>
  </data>
 </qtcreator>
+<<<<<<< HEAD
 >>>>>>>> cdd08f869638039635144f291da04c841be7fc1c:butterFly/butterFly.pro.user.f4c8211
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

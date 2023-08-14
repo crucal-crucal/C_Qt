@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #include "QMyThread.h"
 
@@ -61,6 +62,8 @@ void QMyThread::dealread() {
 //    exec();//线程循环
 //}
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "QMyThread.h"
 
@@ -128,4 +131,7 @@ void QMyThread::dealread()
 //    exec();//线程循环
 //}
 
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

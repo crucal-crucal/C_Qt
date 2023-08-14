@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
 #ifndef SERVERTHEAD_H
 #define SERVERTHEAD_H
 
@@ -41,6 +44,7 @@ private:
 };
 
 #endif // SERVERTHEAD_H
+<<<<<<< HEAD
 =======
 #ifndef SERVERTHEAD_H
 #define SERVERTHEAD_H
@@ -85,3 +89,5 @@ private:
 
 #endif // SERVERTHEAD_H
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

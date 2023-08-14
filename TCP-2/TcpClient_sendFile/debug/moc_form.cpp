@@ -1,7 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<<< HEAD:TCP-1/TcpClient_sendFile/debug/moc_form.cpp
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)
 /****************************************************************************
 ** Meta object code from reading C++ file 'form.h'
 **
@@ -99,6 +102,7 @@ int Form::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 ========
@@ -201,3 +205,5 @@ QT_WARNING_POP
 QT_END_MOC_NAMESPACE
 >>>>>>>> cdd08f869638039635144f291da04c841be7fc1c:TCP-2/TcpClient_sendFile/debug/moc_form.cpp
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 #include "QMyCamera.h"
 
@@ -105,6 +106,8 @@ void QMyCamera::catchCamera() {
  *
  * */
 =======
+=======
+>>>>>>> 47b8f66 (update)
 
 #include "QMyCamera.h"
 
@@ -213,4 +216,7 @@ void QMyCamera::catchCamera()
     }
  *
  * */
+<<<<<<< HEAD
 >>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)

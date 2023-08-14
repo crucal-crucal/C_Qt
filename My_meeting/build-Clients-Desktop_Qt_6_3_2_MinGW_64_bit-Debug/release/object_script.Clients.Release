@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 release/QMyCamera.o
 release/QMyCameraThread.o
 release/QMyClients.o
@@ -17,3 +18,24 @@ release/moc_QMyThreadPool.o
 release/moc_mainwindow.o
 release/moc_QMyAudio.o
 release/moc_QMyIODevice.o
+=======
+release/QMyCamera.o
+release/QMyCameraThread.o
+release/QMyClients.o
+release/QMyDataDecompression.o
+release/QMyShareDesktop.o
+release/QMyThreadPool.o
+release/main.o
+release/mainwindow.o
+release/QMyAudio.o
+release/QMyIODevice.o
+release/moc_QMyCamera.o
+release/moc_QMyCameraThread.o
+release/moc_QMyClients.o
+release/moc_QMyDataDecompression.o
+release/moc_QMyShareDesktop.o
+release/moc_QMyThreadPool.o
+release/moc_mainwindow.o
+release/moc_QMyAudio.o
+release/moc_QMyIODevice.o
+>>>>>>> 47b8f66 (update)
