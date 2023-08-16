@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject ProjectType="Visual C++" Version="7.00" Name="Timer" ProjectGUID="{D308334C-D6B2-3C06-A4A4-E74AE18906B7}" Keyword="Qt4VSv1.0">
+	<Platforms>
+		<Platform Name="x64" />
+	</Platforms>
+	<Configurations>
+		<Configuration Name="Release|x64" OutputDirectory="release\" ATLMinimizesCRunTimeLibraryUsage="false" ConfigurationType="1" IntermediateDirectory="release\" UseOfMfc="0">
+			<Tool Name="VCCLCompilerTool" AdditionalIncludeDirectories=".,$(QTDIR)\include,$(QTDIR)\include\QtWidgets,$(QTDIR)\include\QtGui,$(QTDIR)\include\QtANGLE,$(QTDIR)\include\QtCore,release,.,$(QTDIR)\mkspecs\win32-msvc" AdditionalOptions="-w34100 -w34189 -w44996" AssemblerListingLocation="release\" DebugInformationFormat="0" ExceptionHandling="true" GeneratePreprocessedFile="0" ObjectFile="release\" Optimization="2" PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,WIN64,QT_NO_DEBUG,QT_WIDGETS_LIB,QT_GUI_LIB,QT_CORE_LIB,NDEBUG" ProgramDataBaseFileName="" RuntimeLibrary="2" SuppressStartupBanner="true" TreatWChar_tAsBuiltInType="true" WarningLevel="3" />
+			<Tool Name="VCLinkerTool" AdditionalDependencies="$(QTDIR)\lib\qtmain.lib shell32.lib $(QTDIR)\lib\Qt5Widgets.lib $(QTDIR)\lib\Qt5Gui.lib $(QTDIR)\lib\Qt5Core.lib" AdditionalLibraryDirectories="$(QTDIR)\lib,C:\utils\my_sql\my_sql\lib,C:\utils\postgresql\pgsql\lib,$(QTDIR)\lib" AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'&quot;" DataExecutionPrevention="true" GenerateDebugInformation="false" IgnoreImportLibrary="true" LinkIncremental="1" LinkTimeCodeGeneration="0" OutputFile="$(OutDir)\Timer.exe" ProgramDatabaseFile="" RandomizedBaseAddress="true" SubSystem="2" SuppressStartupBanner="true" />
+			<Tool Name="VCManifestTool" />
+			<Tool Name="VCMIDLTool" DefaultCharType="0" EnableErrorChecks="1" WarningLevel="0" />
+			<Tool Name="VCPostBuildEventTool" />
+			<Tool Name="VCPreBuildEventTool" />
+			<Tool Name="VCPreLinkEventTool" />
+			<Tool Name="VCResourceCompilerTool" PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,WIN64,QT_NO_DEBUG,QT_WIDGETS_LIB,QT_GUI_LIB,QT_CORE_LIB" />
+			<DeploymentTool RemoteDirectory="%CSIDL_PROGRAM_FILES%\Timer" RegisterOutput="0" AdditionalFiles="Qt5Widgets.dll|$(QTDIR)\bin|%CSIDL_PROGRAM_FILES%\Timer|0;Qt5Gui.dll|$(QTDIR)\bin|%CSIDL_PROGRAM_FILES%\Timer|0;Qt5Core.dll|$(QTDIR)\bin|%CSIDL_PROGRAM_FILES%\Timer|0;" />
+		</Configuration>
+		<Configuration Name="Debug|x64" OutputDirectory="debug\" ATLMinimizesCRunTimeLibraryUsage="false" ConfigurationType="1" IntermediateDirectory="debug\" UseOfMfc="0">
+			<Tool Name="VCCLCompilerTool" AdditionalIncludeDirectories=".,$(QTDIR)\include,$(QTDIR)\include\QtWidgets,$(QTDIR)\include\QtGui,$(QTDIR)\include\QtANGLE,$(QTDIR)\include\QtCore,debug,.,$(QTDIR)\mkspecs\win32-msvc" AdditionalOptions="-w34100 -w34189 -w44996" AssemblerListingLocation="debug\" DebugInformationFormat="3" ExceptionHandling="true" GeneratePreprocessedFile="0" ObjectFile="debug\" Optimization="4" PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,WIN64,QT_WIDGETS_LIB,QT_GUI_LIB,QT_CORE_LIB" ProgramDataBaseFileName="" RuntimeLibrary="3" SuppressStartupBanner="true" TreatWChar_tAsBuiltInType="true" WarningLevel="3" />
+			<Tool Name="VCLinkerTool" AdditionalDependencies="$(QTDIR)\lib\qtmaind.lib shell32.lib $(QTDIR)\lib\Qt5Widgetsd.lib $(QTDIR)\lib\Qt5Guid.lib $(QTDIR)\lib\Qt5Cored.lib" AdditionalLibraryDirectories="$(QTDIR)\lib,C:\utils\my_sql\my_sql\lib,C:\utils\postgresql\pgsql\lib,$(QTDIR)\lib" AdditionalOptions="&quot;/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'&quot;" DataExecutionPrevention="true" GenerateDebugInformation="true" IgnoreImportLibrary="true" LinkTimeCodeGeneration="0" OutputFile="$(OutDir)\Timer.exe" ProgramDatabaseFile="" RandomizedBaseAddress="true" SubSystem="2" SuppressStartupBanner="true" />
+			<Tool Name="VCManifestTool" />
+			<Tool Name="VCMIDLTool" DefaultCharType="0" EnableErrorChecks="1" WarningLevel="0" />
+			<Tool Name="VCPostBuildEventTool" />
+			<Tool Name="VCPreBuildEventTool" />
+			<Tool Name="VCPreLinkEventTool" />
+			<Tool Name="VCResourceCompilerTool" PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,WIN64,QT_WIDGETS_LIB,QT_GUI_LIB,QT_CORE_LIB,_DEBUG" />
+			<DeploymentTool RemoteDirectory="%CSIDL_PROGRAM_FILES%\Timer" RegisterOutput="0" AdditionalFiles="Qt5Widgetsd.dll|$(QTDIR)\bin|%CSIDL_PROGRAM_FILES%\Timer|0;Qt5Guid.dll|$(QTDIR)\bin|%CSIDL_PROGRAM_FILES%\Timer|0;qwindowsd.dll|$(QTDIR)\plugins\platforms|%CSIDL_PROGRAM_FILES%\Timer\platforms|0;Qt5Cored.dll|$(QTDIR)\bin|%CSIDL_PROGRAM_FILES%\Timer|0;" />
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter Name="Source Files" Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx" UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File RelativePath="main.cpp" />
+			<File RelativePath="widget.cpp" />
+		</Filter>
+		<Filter Name="Header Files" Filter="h;hpp;hxx;hm;inl;inc;xsd" UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File RelativePath="widget.h">
+				<FileConfiguration Name="Release|x64">
+					<Tool Name="VCCustomBuildTool" AdditionalDependencies="widget.h;release\moc_predefs.h;$(QTDIR)\bin\moc.exe" CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include release/moc_predefs.h -I$(QTDIR)/mkspecs/win32-msvc -I. -I$(QTDIR)/include -I$(QTDIR)/include/QtWidgets -I$(QTDIR)/include/QtGui -I$(QTDIR)/include/QtANGLE -I$(QTDIR)/include/QtCore -ID:\App\VS2015\VC\INCLUDE -ID:\App\VS2015\VC\ATLMFC\INCLUDE -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\include\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\winrt&quot; widget.h -o release\moc_widget.cpp" Description="MOC widget.h" Outputs="release\moc_widget.cpp" Path="$(QTDIR)\bin" />
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool Name="VCCustomBuildTool" AdditionalDependencies="widget.h;debug\moc_predefs.h;$(QTDIR)\bin\moc.exe" CommandLine="$(QTDIR)\bin\moc.exe  -DUNICODE -DWIN32 -DWIN64 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB --compiler-flavor=msvc --include debug/moc_predefs.h -I$(QTDIR)/mkspecs/win32-msvc -I. -I$(QTDIR)/include -I$(QTDIR)/include/QtWidgets -I$(QTDIR)/include/QtGui -I$(QTDIR)/include/QtANGLE -I$(QTDIR)/include/QtCore -ID:\App\VS2015\VC\INCLUDE -ID:\App\VS2015\VC\ATLMFC\INCLUDE -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\ucrt&quot; -I&quot;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.6\include\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\shared&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\um&quot; -I&quot;C:\Program Files (x86)\Windows Kits\10\include\10.0.22000.0\winrt&quot; widget.h -o debug\moc_widget.cpp" Description="MOC widget.h" Outputs="debug\moc_widget.cpp" Path="$(QTDIR)\bin" />
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter Name="Generated Files" Filter="cpp;c;cxx;moc;h;def;odl;idl;res;" UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
+			<File RelativePath="debug\moc_predefs.h.cbt">
+				<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" />
+				<FileConfiguration Name="Debug|x64">
+					<Tool Name="VCCustomBuildTool" AdditionalDependencies="$(QTDIR)\mkspecs\features\data\dummy.cpp" CommandLine="cl -Bx&quot;$(QTDIR)\bin\qmake.exe&quot; -nologo -Zc:wchar_t -Zi -MDd -W3 -w34100 -w34189 -w44996 -E -Za $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;debug\moc_predefs.h" Description="Generate moc_predefs.h" Outputs="debug\moc_predefs.h" Path="." />
+				</FileConfiguration>
+			</File>
+			<File RelativePath="release\moc_predefs.h.cbt">
+				<FileConfiguration Name="Release|x64">
+					<Tool Name="VCCustomBuildTool" AdditionalDependencies="$(QTDIR)\mkspecs\features\data\dummy.cpp" CommandLine="cl -Bx&quot;$(QTDIR)\bin\qmake.exe&quot; -nologo -Zc:wchar_t -O2 -MD -W3 -w34100 -w34189 -w44996 -E -Za $(QTDIR)\mkspecs\features\data\dummy.cpp 2&gt;NUL &gt;release\moc_predefs.h" Description="Generate moc_predefs.h" Outputs="release\moc_predefs.h" Path="." />
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" />
+			</File>
+			<File RelativePath="debug\moc_widget.cpp">
+				<FileConfiguration Name="Release|x64" ExcludedFromBuild="true" />
+			</File>
+			<File RelativePath="release\moc_widget.cpp">
+				<FileConfiguration Name="Debug|x64" ExcludedFromBuild="true" />
+			</File>
+			<File RelativePath="ui_widget.h" />
+		</Filter>
+		<Filter Name="Form Files" Filter="ui" UniqueIdentifier="{99349809-55BA-4b9d-BF79-8FDBB0286EB3}" ParseFiles="false">
+			<File RelativePath="widget.ui">
+				<FileConfiguration Name="Release|x64">
+					<Tool Name="VCCustomBuildTool" AdditionalDependencies="widget.ui;$(QTDIR)\bin\uic.exe" CommandLine="$(QTDIR)\bin\uic.exe widget.ui -o ui_widget.h" Description="UIC widget.ui" Outputs="ui_widget.h" Path="$(QTDIR)\bin" />
+				</FileConfiguration>
+				<FileConfiguration Name="Debug|x64">
+					<Tool Name="VCCustomBuildTool" AdditionalDependencies="widget.ui;$(QTDIR)\bin\uic.exe" CommandLine="$(QTDIR)\bin\uic.exe widget.ui -o ui_widget.h" Description="UIC widget.ui" Outputs="ui_widget.h" Path="$(QTDIR)\bin" />
+				</FileConfiguration>
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>
