@@ -1,0 +1,31 @@
+<?xml version ="1.0" encoding ="utf-8"?>
+<MSG>
+  <Data id ="1">
+    <title>
+      <xmlname>kingglore.xml</xmlname>
+      <owner>zy</owner>
+      <Number>123456</Number>
+      <Name>孙悟空</Name>
+      <email>孙悟空@qq.com</email>
+      <website>孙悟空.hello.cn</website>
+    </title>
+  </Data>
+  <Data id ="2">
+    <Number>7891011</Number>
+    <Name>貂蝉</Name>
+    <email>貂蝉@qq.com</email>
+    <website>貂蝉.hello.cn</website>
+  </Data>
+  <Data id ="3">
+    <Number>1112131415</Number>
+    <Name>小乔</Name>
+    <email>小乔@qq.com</email>
+    <website>小乔.hello.cn</website>
+  </Data>
+  <Data id ="4">
+    <Number>1617181920</Number>
+    <Name>屠夫</Name>
+    <email>屠夫@qq.com</email>
+    <website>屠夫.hello.cn</website>
+  </Data>    
+</MSG>
