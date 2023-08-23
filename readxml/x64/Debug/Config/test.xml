@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<library>
+    <book time="2013/6/13" id="1">
+        <title>C++ primer</title>
+        <author>Stanley Lippman</author>
+    </book>
+    <book time="1813/1/27" id="3">
+        <title>Author</title>
+        <author>Jane Austen</author>
+    </book>
+</library>
