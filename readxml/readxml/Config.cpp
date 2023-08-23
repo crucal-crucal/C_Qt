@@ -98,3 +98,75 @@ bool Config::modifyXml()
 	file.close();
 	return true;
 }
+
+void Config::addXml()
+{
+	QFile file;
+	file.setFileName(QApplication::applicationDirPath() + "/Config/test.xml");
+	if (!file.open(QFile::ReadOnly))
+		return;
+
+	//增加一个一级子节点以及元素
+	QDomDocument doc;
+	if (!doc.setContent(&file))
+	{
+		file.close();
+		return;
+	}
+	file.close();
+
+	QDomElement root = doc.documentElement();
+	QDomElement book = doc.createElement("book");
+	book.setAttribute("id", 3);
+	book.setAttribute("time", "1813/1/27");
+	QDomElement title = doc.createElement("title");
+	QDomText text;
+	text = doc.createTextNode("Pride and Prejudice");
+	title.appendChild(text);
+	book.appendChild(title);
+	QDomElement author = doc.createElement("author");
+	text = doc.createTextNode("Jane Austen");
+	author.appendChild(text);
+	book.appendChild(author);
+	root.appendChild(book);
+
+	if (!file.open(QFile::WriteOnly | QFile::Truncate)) //先读进来，再重写，如果不用truncate就是在后面追加内容，就无效了
+		return;
+	//输出到文件
+	QTextStream out_stream(&file);
+	doc.save(out_stream, 4); //缩进4格
+	file.close();
+}
+
+void Config::removeXml()
+{    
+	QFile file;
+	file.setFileName(QApplication::applicationDirPath() + "/Config/test.xml");
+	if (!file.open(QFile::ReadOnly))
+		return;
+
+	//删除一个一级子节点及其元素，外层节点删除内层节点于此相同
+	QDomDocument doc;
+	if (!doc.setContent(&file))
+	{
+		file.close();
+		return;
+	}
+	file.close();  //一定要记得关掉啊，不然无法完成操作
+
+	QDomElement root = doc.documentElement();
+	QDomNodeList list = doc.elementsByTagName("book"); //由标签名定位
+	for (int i = 0; i<list.count(); i++)
+	{
+		QDomElement e = list.at(i).toElement();
+		if (e.attribute("time") == "1813/1/27")  //以属性名定位，类似于hash的方式，warning：这里仅仅删除一个节点，其实可以加个break
+			root.removeChild(list.at(i));
+	}
+
+	if (!file.open(QFile::WriteOnly | QFile::Truncate))
+		return;
+	//输出到文件
+	QTextStream out_stream(&file);
+	doc.save(out_stream, 4); //缩进4格
+	file.close();
+}

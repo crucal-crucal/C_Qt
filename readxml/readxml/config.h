@@ -17,5 +17,7 @@ public:
 	Config();
 
 	QString readConfig(); // 读取Xml 文件
-	bool modifyXml();
+	bool modifyXml(); // 修改Xml 文件
+	void addXml(); // 增加Xml 文件
+	void removeXml(); // 删除xml 文件
 };

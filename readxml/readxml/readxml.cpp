@@ -12,7 +12,6 @@ readxml::readxml(QWidget *parent)
 	if (!err) {
 		QMessageBox::warning(NULL, "警告", "修改失败!");
 	}
-	else {
-		QMessageBox::information(NULL, "提示", "修改成功!");
-	}
+	config.addXml();
+	config.removeXml();
 }
