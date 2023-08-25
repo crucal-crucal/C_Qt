@@ -1,7 +1,5 @@
 #include "Manipulating_Xml.h"
 
-Manipulating_Xml::Manipulating_Xml() {}
-
 QString Manipulating_Xml::readXml(const QString filePath) {
 	QFile file(filePath);
 	QString nodename;

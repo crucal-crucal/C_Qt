@@ -17,7 +17,7 @@
 class Manipulating_Xml
 {
 public:
-	Manipulating_Xml();
+	explicit Manipulating_Xml() {};
 
 public:
 	/*************************************************
