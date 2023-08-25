@@ -7,11 +7,7 @@ readxml::readxml(QWidget *parent)
 	Manipulating_Xml config;
 	QString str = config.readXml();
 	ui.plainTextEdit->appendPlainText(str);
-
-	bool err = config.modifyXml();
-	if (!err) {
-		QMessageBox::warning(NULL, "警告", "修改失败!");
-	}
-	config.addXml();
-	config.removeXml();
+	qDebug() << (config.modifyXml() ? "修改成功" : "修改失败");
+	qDebug() << (config.addXml() ? "添加成功" : "添加失败");
+	qDebug() << (config.removeXml() ? "删除成功" : "删除失败");
 }

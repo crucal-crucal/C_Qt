@@ -98,20 +98,20 @@ bool Manipulating_Xml::modifyXml()
 	return true;
 }
 
-void Manipulating_Xml::addXml()
+bool Manipulating_Xml::addXml()
 {
 	QFile file;
 	QString filePath = QApplication::applicationDirPath() + "/Config/test.xml";
 	file.setFileName(filePath);
 	if (!file.open(QFile::ReadOnly))
-		return;
+		return false;
 
 	//增加一个一级子节点以及元素
 	QDomDocument doc;
 	if (!doc.setContent(&file))
 	{
 		file.close();
-		return;
+		return false;
 	}
 	file.close();
 
@@ -131,27 +131,28 @@ void Manipulating_Xml::addXml()
 	root.appendChild(book);
 
 	if (!file.open(QFile::WriteOnly | QFile::Truncate)) //先读进来，再重写，如果不用truncate就是在后面追加内容，就无效了
-		return;
+		return false;
 	//输出到文件
 	QTextStream out_stream(&file);
 	doc.save(out_stream, 4); //缩进4格
 	file.close();
+	return true;
 }
 
-void Manipulating_Xml::removeXml()
+bool Manipulating_Xml::removeXml()
 {    
 	QFile file;
 	QString filePath = QApplication::applicationDirPath() + "/Config/test.xml";
 	file.setFileName(filePath);
 	if (!file.open(QFile::ReadOnly))
-		return;
+		return false;
 
 	//删除一个一级子节点及其元素，外层节点删除内层节点于此相同
 	QDomDocument doc;
 	if (!doc.setContent(&file))
 	{
 		file.close();
-		return;
+		return false;
 	}
 	file.close();  //一定要记得关掉啊，不然无法完成操作
 
@@ -165,9 +166,10 @@ void Manipulating_Xml::removeXml()
 	}
 
 	if (!file.open(QFile::WriteOnly | QFile::Truncate))
-		return;
+		return false;
 	//输出到文件
 	QTextStream out_stream(&file);
 	doc.save(out_stream, 4); //缩进4格
 	file.close();
+	return true;
 }
