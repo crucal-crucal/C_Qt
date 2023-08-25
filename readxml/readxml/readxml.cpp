@@ -4,10 +4,12 @@ readxml::readxml(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-	Manipulating_Xml config;
-	QString str = config.readXml();
+	QString filePath = QApplication::applicationDirPath() + "/Config/testconfig.xml";
+	QString str = Manipulating_Xml::readXml(filePath);
 	ui.plainTextEdit->appendPlainText(str);
-	qDebug() << (config.modifyXml() ? "修改成功" : "修改失败");
-	qDebug() << (config.addXml() ? "添加成功" : "添加失败");
-	qDebug() << (config.removeXml() ? "删除成功" : "删除失败");
+
+	filePath = QApplication::applicationDirPath() + "/Config/test.xml";
+	qDebug() << (Manipulating_Xml::modifyXml(filePath) ? "修改成功" : "修改失败");
+	qDebug() << (Manipulating_Xml::addXml(filePath) ? "添加成功" : "添加失败");
+	qDebug() << (Manipulating_Xml::removeXml(filePath) ? "删除成功" : "删除失败");
 }

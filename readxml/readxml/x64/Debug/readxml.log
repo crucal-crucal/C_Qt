@@ -1,10 +1,18 @@
-﻿生成启动时间为 2023/8/25 9:48:36。
+﻿生成启动时间为 2023/8/25 10:05:26。
      1>项目“E:\QT\test\readxml\readxml\readxml.vcxproj”在节点 2 上(Build 个目标)。
      1>项目“E:\QT\test\readxml\readxml\readxml.vcxproj”(1)正在节点 2 上生成“E:\QT\test\readxml\readxml\readxml.vcxproj”(1:2) (Build 个目标)。
      1>ClCompile:
-         D:\App\VS2015\VC\bin\x86_amd64\CL.exe /c /Ix64\Debug\uic /Ix64\Debug\moc /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtXml /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtWidgets /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtGui /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtANGLE /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtXml /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtCore /I"D:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\mkspecs\win32-msvc" /Ix64\Debug\moc /Ix64\Debug\uic /Zi /nologo /W1 /WX- /MP /Od /D UNICODE /D WIN32 /D WIN64 /D QT_WIDGETS_LIB /D QT_GUI_LIB /D QT_XML_LIB /D QT_CORE_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt /utf-8 readxml.cpp
+         D:\App\VS2015\VC\bin\x86_amd64\CL.exe /c /Ix64\Debug\uic /Ix64\Debug\moc /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtXml /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtWidgets /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtGui /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtANGLE /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtXml /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtCore /I"D:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\mkspecs\win32-msvc" /Ix64\Debug\moc /Ix64\Debug\uic /Zi /nologo /W1 /WX- /MP /Od /D UNICODE /D WIN32 /D WIN64 /D QT_WIDGETS_LIB /D QT_GUI_LIB /D QT_XML_LIB /D QT_CORE_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt /utf-8 Manipulating_Xml.cpp main.cpp readxml.cpp
+     1>cl : 命令行 warning D9002: 忽略未知选项“/utf-8”
+     1>cl : 命令行 warning D9002: 忽略未知选项“/utf-8”
+     1>cl : 命令行 warning D9002: 忽略未知选项“/utf-8”
+         Manipulating_Xml.cpp
+         main.cpp
      1>cl : 命令行 warning D9002: 忽略未知选项“/utf-8”
          readxml.cpp
+         D:\App\VS2015\VC\bin\x86_amd64\CL.exe /c /Ix64\Debug\uic /Ix64\Debug\moc /IE:\QT\test\readxml\readxml\ /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtXml /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtWidgets /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtGui /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtANGLE /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtXml /ID:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\include\QtCore /I"D:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\mkspecs\win32-msvc" /Ix64\Debug\moc /Ix64\Debug\uic /Zi /nologo /W1 /WX- /MP /Od /D UNICODE /D WIN32 /D WIN64 /D QT_WIDGETS_LIB /D QT_GUI_LIB /D QT_XML_LIB /D QT_CORE_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt /utf-8 x64\Debug\moc\moc_readxml.cpp
+     1>cl : 命令行 warning D9002: 忽略未知选项“/utf-8”
+         moc_readxml.cpp
        Link:
          D:\App\VS2015\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"E:\QT\test\readxml\x64\Debug\readxml.exe" /NOLOGO /LIBPATH:D:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\lib /LIBPATH:C:\utils\my_sql\my_sql\lib /LIBPATH:C:\utils\postgresql\pgsql\lib D:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\lib\qtmaind.lib shell32.lib D:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\lib\Qt5Widgetsd.lib D:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\lib\Qt5Guid.lib D:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\lib\Qt5Xmld.lib D:\App\Qt5.9.0\5.9.0\5.9\msvc2015_64\lib\Qt5Cored.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"E:\QT\test\readxml\x64\Debug\readxml.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\QT\test\readxml\x64\Debug\readxml.lib" /MACHINE:X64 x64\Debug\Manipulating_Xml.obj
          x64\Debug\readxml.obj
@@ -17,4 +25,4 @@
 
 已成功生成。
 
-已用时间 00:00:00.78
+已用时间 00:00:01.79
