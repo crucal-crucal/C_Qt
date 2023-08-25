@@ -12,9 +12,7 @@ QString Manipulating_Xml::readXml() {
 	if (!file.exists()) {
 		qDebug() << "testconfig.xml 文件不存在";
 	}
-	else {
-		qDebug() << "testconfig.xml 文件存在";
-	}
+
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		qDebug() << "打开文件失败";
 	}
@@ -67,7 +65,8 @@ QString Manipulating_Xml::readXml() {
 bool Manipulating_Xml::modifyXml()
 {
 	QFile file;
-	file.setFileName(QApplication::applicationDirPath() + "/Config/test.xml");
+	QString filePath = QApplication::applicationDirPath() + "/Config/test.xml";
+	file.setFileName(filePath);
 	if (!file.open(QFile::ReadOnly))
 		return false;
 
@@ -102,7 +101,8 @@ bool Manipulating_Xml::modifyXml()
 void Manipulating_Xml::addXml()
 {
 	QFile file;
-	file.setFileName(QApplication::applicationDirPath() + "/Config/test.xml");
+	QString filePath = QApplication::applicationDirPath() + "/Config/test.xml";
+	file.setFileName(filePath);
 	if (!file.open(QFile::ReadOnly))
 		return;
 
@@ -141,7 +141,8 @@ void Manipulating_Xml::addXml()
 void Manipulating_Xml::removeXml()
 {    
 	QFile file;
-	file.setFileName(QApplication::applicationDirPath() + "/Config/test.xml");
+	QString filePath = QApplication::applicationDirPath() + "/Config/test.xml";
+	file.setFileName(filePath);
 	if (!file.open(QFile::ReadOnly))
 		return;
 
