@@ -2,7 +2,7 @@
 
 Manipulating_Xml::Manipulating_Xml() {}
 
-QString Manipulating_Xml::readXml(QString filePath) {
+QString Manipulating_Xml::readXml(const QString filePath) {
 	QFile file(filePath);
 	QString nodename;
 	QString Output;
@@ -60,7 +60,7 @@ QString Manipulating_Xml::readXml(QString filePath) {
 	return Output;
 }
 
-bool Manipulating_Xml::modifyXml(QString filePath)
+bool Manipulating_Xml::modifyXml(const QString filePath)
 {
 	QFile file(filePath);
 	if (!file.open(QFile::ReadOnly))
@@ -94,7 +94,7 @@ bool Manipulating_Xml::modifyXml(QString filePath)
 	return true;
 }
 
-bool Manipulating_Xml::addXml(QString filePath)
+bool Manipulating_Xml::addXml(const QString filePath)
 {
 	QFile file(filePath);
 	if (!file.open(QFile::ReadOnly))
@@ -133,7 +133,7 @@ bool Manipulating_Xml::addXml(QString filePath)
 	return true;
 }
 
-bool Manipulating_Xml::removeXml(QString filePath)
+bool Manipulating_Xml::removeXml(const QString filePath)
 {    
 	QFile file(filePath);
 	if (!file.open(QFile::ReadOnly))
