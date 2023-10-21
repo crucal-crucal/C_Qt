@@ -1,0 +1,17 @@
+{
+    "Age": 20,
+    "Comment": "yyds",
+    "Family": {
+        "Brother": [
+            "c",
+            "d",
+            "e",
+            "f"
+        ],
+        "Father": "a",
+        "Mother": "b"
+    },
+    "IsAlive": true,
+    "Name": "crucal",
+    "Sex": "man"
+}
