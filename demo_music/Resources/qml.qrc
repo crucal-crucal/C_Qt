@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>QmlFile/App.qml</file>
+        <file>QmlFile/DetailFavoritePageView.qml</file>
+        <file>QmlFile/DetailHistoryPageView.qml</file>
+        <file>QmlFile/DetailLocalPageView.qml</file>
+        <file>QmlFile/DetailRecommendPageView.qml</file>
+        <file>QmlFile/DetailSearchPageView.qml</file>
+        <file>QmlFile/LayoutBottomView.qml</file>
+        <file>QmlFile/LayoutHeaderView.qml</file>
+        <file>QmlFile/MusicBannerView.qml</file>
+        <file>QmlFile/MusicGridHotView.qml</file>
+        <file>QmlFile/MusicGridLatestView.qml</file>
+        <file>QmlFile/MusicIconButton.qml</file>
+        <file>QmlFile/MusicRoundImage.qml</file>
+        <file>QmlFile/MusicToolButton.qml</file>
+        <file>QmlFile/PageHomeView.qml</file>
+        <file>QmlFile/MusicListView.qml</file>
+        <file>QmlFile/DetailPlayListPageView.qml</file>
+    </qresource>
+</RCC>
