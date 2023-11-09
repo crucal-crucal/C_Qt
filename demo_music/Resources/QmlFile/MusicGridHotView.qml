@@ -27,7 +27,7 @@ Item {
                 }
                 clip: true
 
-                MusicRoundImage {
+                MusicBorderImage {
                     id: img
                     width: parent.width
                     height: parent.width
@@ -59,6 +59,12 @@ Item {
 
                     onExited: {
                         background.color = "#00000000"
+                    }
+
+                    onClicked: {
+                        var item = list[index]
+                        console.log(item.id, "1000")
+                        pageHomeView.showPlayList(item.id, "1000")
                     }
                 }
             }

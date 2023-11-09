@@ -39,5 +39,6 @@
         <file>images/stop.png</file>
         <file>images/video.png</file>
         <file>images/video-white.png</file>
+        <file>images/crucal.jpg</file>
     </qresource>
 </RCC>

@@ -82,7 +82,8 @@ ColumnLayout {
                                                             id: item.id,
                                                             name: item.name,
                                                             artist: item.artists[0].name,
-                                                            album: item.album.name
+                                                            album: item.album.name,
+                                                            cover: ""
                                                         }
                                                     })
         }

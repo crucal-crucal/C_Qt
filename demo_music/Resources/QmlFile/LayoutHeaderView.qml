@@ -25,10 +25,10 @@ ToolBar {
         }
         MusicToolButton {
             iconSource: "qrc:/images/about"
-            toolTip: "crucal"
+            toolTip: "CRUCAL"
 
             onClicked: {
-                Qt.openUrlExternally("https://gitee.com/")
+                Qt.openUrlExternally("https://gitee.com/crucal/Qt6_Qt5/tree/master/demo_music")
             }
         }
         MusicToolButton {

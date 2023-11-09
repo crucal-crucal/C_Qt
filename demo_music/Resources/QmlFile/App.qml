@@ -1,8 +1,12 @@
+// App.qml
+
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import MyUtils 1.0
+import QtMultimedia 5.9
+import Qt.labs.settings 1.1
 
 ApplicationWindow {
     id: window
@@ -21,7 +25,10 @@ ApplicationWindow {
         id: http
     }
 
-
+    Settings {
+        id: settings
+        fileName: "conf/settings.ini"
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -32,6 +39,11 @@ ApplicationWindow {
             id: layoutheaderView
         }
 
+        PageDetailView {
+            id: pageDetailView
+            visible: false
+        }
+
         PageHomeView {
             id: pageHomeView
         }
@@ -39,7 +51,21 @@ ApplicationWindow {
         LayoutBottomView {
             id: layoutBottomView
         }
+    }
 
+    MediaPlayer {
+        id: mediaPlayer
+
+        onPositionChanged: {
+            layoutBottomView.setSlider(0, duration, position)
+        }
+
+        onPlaybackStateChanged: {
+            layoutBottomView.playingState = playbackState === MediaPlayer.PlayingState ? 1 : 0
+            if (playbackState === MediaPlayer.StoppedState && layoutBottomView.playbackStateChangeCallbackEnable) {
+                layoutBottomView.playNext()
+            }
+        }
     }
 
 }

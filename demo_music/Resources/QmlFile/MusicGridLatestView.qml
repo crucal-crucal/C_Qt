@@ -26,7 +26,7 @@ Item {
                 }
                 clip: true
 
-                MusicRoundImage {
+                MusicBorderImage {
                     id: img
                     width: parent.width * 0.25
                     height: parent.width * 0.25

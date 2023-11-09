@@ -4,11 +4,17 @@
 
 #include "HttpUtils.h"
 
+// #define NDEBUG
+
 int main(int argc, char* argv[]) {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
+#ifdef NDEBUG
+    qDebug() << "QSslSocket=" << QSslSocket::sslLibraryBuildVersionString();
+    qDebug() << "OpenSSL支持情况:" << QSslSocket::supportsSsl();
+#endif
 
     qmlRegisterType<HttpUtils>("MyUtils", 1, 0, "HttpUtils");
 

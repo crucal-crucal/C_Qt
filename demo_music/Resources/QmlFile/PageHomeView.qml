@@ -33,7 +33,7 @@ RowLayout {
             Item {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 150
-                MusicRoundImage {
+                MusicBorderImage {
                     anchors.centerIn: parent
                     height: 100
                     width: 100
@@ -98,6 +98,7 @@ RowLayout {
                         color = "#AA00AAAA"
                     }
                     onClicked: {
+                        hidePlayList()
                         repeater.itemAt(menuViewDelegateItem.ListView.view.currentIndex).visible = false
                         menuViewDelegateItem.ListView.view.currentIndex = index
                         var loader = repeater.itemAt(index)
@@ -137,8 +138,8 @@ RowLayout {
         var loader = repeater.itemAt(5)
         loader.visible = true
         loader.source = qmlList[5].qml + ".qml"
-        loader.item.targetId = targetId
         loader.item.targetType = targetType
+        loader.item.targetId = targetId
 
     }
 

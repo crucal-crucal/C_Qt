@@ -8,9 +8,14 @@ ColumnLayout {
 
     property string targetId: ""
     property string targetType: "10" // album, playlist/detail
+    property string name: "-"
 
     onTargetIdChanged: {
-        var url = (targetType == "10" ? "album" : "playlist/detail") + "?id=" + (targetId.length < 1 ? "32311" : targetId)
+        if (targetType == "10") {
+            loadAlbum()
+        } else if (targetType == "1000") {
+            loadPlayList()
+        }
     }
 
     Rectangle {
@@ -22,7 +27,7 @@ ColumnLayout {
         Text {
             x: 10
             verticalAlignment: Text.AlignBottom
-            text: qsTr(targetType === "10" ? "专辑" : "歌单")
+            text: qsTr(targetType === "10" ? "专辑" : "歌单") + name
             font.family: window.mFONT_FAMILY
             font.pointSize: 25
         }
@@ -31,7 +36,7 @@ ColumnLayout {
     RowLayout {
         height: 200
         width: parent.width
-        MusicRoundImage {
+        MusicBorderImage {
             id: playListCover
             width: 180
             height: 180
@@ -59,5 +64,72 @@ ColumnLayout {
     MusicListView {
         id: playListView
     }
+
+
+
+    function loadAlbum() {
+
+        var url = "album?id=" + (targetId.length < 1 ? "32311" : targetId)
+        function onReply(reply) {
+            http.onReplySignal.disconnect(onReply)
+            // 将 string 转成 Json
+            var album = JSON.parse(reply).album
+            var songs = JSON.parse(reply).songs
+            playListCover.imgSrc = album.blurPicUrl
+            playListDesc.text = album.description
+            name = "-" + album.name
+            playListView.musicList = songs.map(item => {
+                                                   return {
+                                                       id: item.id,
+                                                       name: item.name,
+                                                       artist: item.ar[0].name,
+                                                       album: item.al.name,
+                                                       cover: item.al.picUrl
+                                                   }
+                                               })
+        }
+
+        http.onReplySignal.connect(onReply)
+        http.connect(url)
+    }
+
+    function loadPlayList() {
+
+        var url = "playlist/detail?id=" + (targetId.length < 1 ? "32311" : targetId)
+
+        function onSongDetailReply(reply) {
+            http.onReplySignal.disconnect(onSongDetailReply)
+            // 将 string 转成 Json
+            var songs = JSON.parse(reply).songs
+            playListView.musicList = songs.map(item => {
+                                                   return {
+                                                       id: item.id,
+                                                       name: item.name,
+                                                       artist: item.ar[0].name,
+                                                       album: item.al.name,
+                                                       cover: item.al.picUrl
+                                                   }
+                                               })
+        }
+
+        function onReply(reply) {
+            http.onReplySignal.disconnect(onReply)
+            // 将 string 转成 Json
+            var playlist = JSON.parse(reply).playlist
+            playListCover.imgSrc = playlist.coverImgUrl
+            playListDesc.text = playlist.description
+            name = "-" + playlist.name
+
+            // 将数组用字符串连接起来
+            var ids = playlist.trackIds.map(item => item.id).join(",")
+
+            http.onReplySignal.connect(onSongDetailReply)
+            http.connect("song/detail?ids=" + ids)
+        }
+
+        http.onReplySignal.connect(onReply)
+        http.connect(url)
+    }
+
 }
 

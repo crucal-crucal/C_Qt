@@ -73,6 +73,11 @@ Frame {
             }
 
             MouseArea {
+                onDoubleClicked: {
+                    // 播放音乐
+                    playMusic()
+                }
+
                 RowLayout {
                     width: parent.width
                     height: parent.height
@@ -126,6 +131,7 @@ Frame {
                                 toolTip: "播放"
                                 onClicked: {
                                     // 播放音乐
+                                    playMusic()
                                 }
                             }
                             MusicIconButton {
@@ -135,6 +141,7 @@ Frame {
                                 toolTip: "喜欢"
                                 onClicked: {
                                     // 喜欢
+                                    console.log("喜欢id...", musicList[index].id)
                                 }
                             }
                             MusicIconButton {
@@ -232,7 +239,7 @@ Frame {
 
     Item {
         id: pageItem
-        visible: musicList.length !== 0
+        visible: musicList.length !== 0 && all !== 0
         width: parent.width
         height: 40
         anchors.top: listView.bottom
@@ -270,5 +277,12 @@ Frame {
                 }
             }
         }
+    }
+
+    function playMusic() {
+        // 播放音乐
+        layoutBottomView.current = -1
+        layoutBottomView.playList = musicList
+        layoutBottomView.current = index
     }
 }

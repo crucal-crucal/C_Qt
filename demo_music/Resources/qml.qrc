@@ -17,5 +17,7 @@
         <file>QmlFile/PageHomeView.qml</file>
         <file>QmlFile/MusicListView.qml</file>
         <file>QmlFile/DetailPlayListPageView.qml</file>
+        <file>QmlFile/MusicBorderImage.qml</file>
+        <file>QmlFile/PageDetailView.qml</file>
     </qresource>
 </RCC>
