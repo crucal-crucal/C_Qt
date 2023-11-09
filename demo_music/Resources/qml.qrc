@@ -19,5 +19,7 @@
         <file>QmlFile/DetailPlayListPageView.qml</file>
         <file>QmlFile/MusicBorderImage.qml</file>
         <file>QmlFile/PageDetailView.qml</file>
+        <file>QmlFile/MusicLyricView.qml</file>
+        <file>QmlFile/MusicTextButton.qml</file>
     </qresource>
 </RCC>

@@ -56,8 +56,15 @@ ApplicationWindow {
     MediaPlayer {
         id: mediaPlayer
 
+        property var times: []
+
         onPositionChanged: {
             layoutBottomView.setSlider(0, duration, position)
+
+            if (times.length > 0) {
+                var count = times.filter(time => time < position).length
+                pageDetailView.current = (count === 0) ? 0 : count - 1
+            }
         }
 
         onPlaybackStateChanged: {

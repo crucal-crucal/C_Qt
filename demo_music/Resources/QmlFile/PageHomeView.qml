@@ -8,7 +8,7 @@ import QtQml 2.3
 RowLayout {
     spacing: 0
 
-    property int defaultidx: 0
+    property int defaultidx: 2
 
     property var qmlList: [
         {icon: "recommend-white", value: "推荐内容", qml: "DetailRecommendPageView", menu: true},

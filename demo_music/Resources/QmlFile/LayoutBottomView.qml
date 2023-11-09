@@ -236,20 +236,29 @@ Rectangle {
         settings.setValue("currentPlayMode", currentPlayMode)
     }
 
-    // 播放音乐索引
+    // 播放音乐
     function playMusic() {
-        if (current < 0) {
+        if (current < 0 || playList.length < 1) {
             return
         }
-
-        // 获取播放链接
-        getUrl()
+        if (playList[current].type === "1") {
+            // 播放本地音乐
+            playLocalMusic()
+        } else {
+            // 播放网络音乐
+            playWebMusic()
+        }
     }
 
-    function getUrl() {
-        if (playList.length < 1) {
-            return
-        }
+    function playLocalMusic() {
+        var currentItem = playList[current]
+        mediaPlayer.source = currentItem.url
+        mediaPlayer.play()
+        musicName = currentItem.name
+        musicArtist = currentItem.artist
+    }
+
+    function playWebMusic() {
         var id = playList[current].id
         console.log("播放id...", id)
         if (!id) {
@@ -293,9 +302,11 @@ Rectangle {
     }
 
     function getCover(id) {
-
         function onReply(reply) {
             http.onReplySignal.disconnect(onReply)
+            // 请求歌词
+            getLyric(id)
+
             var song = JSON.parse(reply).songs[0]
             var cover = song.al.picUrl
 
@@ -326,5 +337,43 @@ Rectangle {
         to_ss = to_ss.length < 2 ? "0" + to_ss : to_ss
 
         timeText.text = va_mm + ":" + va_ss + "/" + to_mm + ":" + to_ss
+    }
+
+    function getLyric(id) {
+
+        function onReply(reply) {
+            http.onReplySignal.disconnect(onReply)
+            var lyric = JSON.parse(reply).lrc.lyric
+            console.log(lyric)
+            if (lyric.length < 1) {
+                return
+            }
+            // 解析歌词
+            var lyrics = (lyric.replace(/\[.*\]/gi, "")).split("\n")
+
+            if (lyrics.length > 0) {
+                pageDetailView.lyrics= lyrics
+            }
+
+            var times = []
+            lyric.replace(/\[.*\]/gi, function(match, index) {
+                // match: [00:00.00]
+                if (match.length > 2) {
+                    var time = match.substr(1, match.length - 2)
+                    var arr = time.split(":")
+                    var timeValue = arr.length > 0 ? parseInt(arr[0]) * 60 * 1000 : 0
+                    arr = arr.length > 1 ? arr[1].split(".") : [0,0]
+                    timeValue += arr.length > 0 ? parseInt(arr[0]) * 1000 : 0
+                    timeValue += arr.length > 1 ? parseInt(arr[1]) * 10 : 0
+
+                    times.push(timeValue)
+                }
+            })
+
+            mediaPlayer.times = times
+        }
+
+        http.onReplySignal.connect(onReply)
+        http.connect("lyric/?id=" + id)
     }
 }

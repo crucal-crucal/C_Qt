@@ -9,6 +9,9 @@ Item {
     Layout.fillHeight: true
     Layout.fillWidth: true
 
+    property alias lyrics: lyricView.lyrics
+    property alias current: lyricView.current
+
     RowLayout {
         anchors.fill: parent
         Frame {
@@ -54,6 +57,11 @@ Item {
         Frame {
             Layout.preferredWidth: parent.width * 0.55
             Layout.fillHeight: true
+
+            MusicLyricView {
+                id: lyricView
+                anchors.fill: parent
+            }
         }
     }
 }
