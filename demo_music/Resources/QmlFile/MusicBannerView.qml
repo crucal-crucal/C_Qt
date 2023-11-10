@@ -123,7 +123,7 @@ Frame {
             width: 20
             height: 5
             radius: 5
-            color: index === bannerView.currentIndex ? "black" : "gray"
+            color: index === bannerView.currentIndex ? "white" : "#55ffffff"
 
             Behavior on color {
                 ColorAnimation {

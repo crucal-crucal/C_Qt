@@ -6,8 +6,11 @@ import QtQuick.Layouts 1.3
 import QtQuick.Window 2.3
 
 ToolBar {
+    // ToolBar 的 x，y
+    property point point: Qt.point(x, y)
+
     background: Rectangle {
-        color: "#00AAAA"
+        color: "#00000000"
     }
 
     width: parent.width
@@ -25,7 +28,7 @@ ToolBar {
         }
         MusicToolButton {
             iconSource: "qrc:/images/about"
-            toolTip: "CRUCAL"
+            toolTip: "crucal"
 
             onClicked: {
                 Qt.openUrlExternally("https://gitee.com/crucal/Qt6_Qt5/tree/master/demo_music")
@@ -64,6 +67,23 @@ ToolBar {
                 font.family: window.mFONT_FAMILY
                 font.pointSize: 15
                 color: "#ffffff"
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.LeftButton
+                cursorShape: Qt.PointingHandCursor
+                onPressed: {
+                    setPoint(mouseX, mouseY)
+                }
+
+                onMouseXChanged: {
+                    moveX(mouseX)
+                }
+
+                onMouseYChanged: {
+                    moveY(mouseY)
+                }
             }
         }
         MusicToolButton {
@@ -137,7 +157,7 @@ ToolBar {
             }
 
             Text {
-                text: qsTr("crucal")
+                text: qsTr("CRUCAL")
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: 18
@@ -173,5 +193,31 @@ ToolBar {
         window.height = height
 //                window.x = (Screen.desktopAvailableWidth - window.width) / 2
 //                window.y = (Screen.desktopAvailableHeight - window.height) / 2
+    }
+
+    function setPoint(mouseX = 0, mouseY = 0) {
+        point = Qt.point(mouseX, mouseY)
+    }
+
+    function moveX(mouseX = 0) {
+        var x = window.x + mouseX - point.x
+        if (x < -(window.width - 70)) {
+            x = -(window.width - 70)
+        }
+        if (x > Screen.desktopAvailableWidth - 70) {
+            x = Screen.desktopAvailableWidth - 70
+        }
+        window.x = x
+    }
+
+    function moveY(mouseY = 0) {
+        var y = window.y + mouseY - point.y
+        if (y < -(window.width - 70)) {
+            y = -(window.width - 70)
+        }
+        if (y > Screen.desktopAvailableHeight - 70) {
+            y = Screen.desktopAvailableHeight - 70
+        }
+        window.y = y
     }
 }

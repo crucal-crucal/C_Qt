@@ -11,6 +11,8 @@ Rectangle {
     property alias lyrics: list.model
     property alias current: list.currentIndex
 
+    color: "#00000000"
+
     id: lyricView
 
     Layout.preferredHeight: parent.height * 0.8
@@ -23,9 +25,9 @@ Rectangle {
         anchors.fill: parent
         model: ["暂无歌词", "crucal", "crucal"]
         delegate: listDelegate
-        highlight: Rectangle {
-            color: "#2073a7db"
-        }
+//        highlight: Rectangle {
+//            color: "#2073a7db"
+//        }
         highlightMoveDuration: 0
         highlightResizeDuration: 0
         currentIndex: 0
@@ -43,7 +45,7 @@ Rectangle {
             Text {
                 text: modelData
                 anchors.centerIn: parent
-                color: index === list.currentIndex ? "black" : "#505050"
+                color: index === list.currentIndex ? "#eeffffff" : "#aaffffff"
                 font {
                     family: window.mFONT_FAMILY
                     pointSize: 12
@@ -61,7 +63,7 @@ Rectangle {
 
             MouseArea {
                 anchors.fill: parent
-                onCanceled: list.currentIndex = index
+                onClicked: list.currentIndex = index
             }
         }
     }

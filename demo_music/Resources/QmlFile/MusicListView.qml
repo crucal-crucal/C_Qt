@@ -13,7 +13,11 @@ Frame {
     property int pageSize: 60
     property int current: 0
 
+    property bool deleteable: true
+    property bool favoriteable: true
+
     signal loadMore(int offset, int current)
+    signal deleteItem(int index)
 
     onMusicListChanged: {
         listViewModel.clear()
@@ -42,7 +46,7 @@ Frame {
         }
         header: listViewHeader
         highlight: Rectangle{
-            color: "#f0f0f0"
+            color: "#20f0f0f0"
         }
         highlightMoveDuration: 0
         highlightResizeDuration: 0
@@ -55,6 +59,7 @@ Frame {
             //            color: "#aaa"
             height: 45
             width: listView.width
+            color: "#00000000"
 
             Shape {
                 anchors.fill: parent
@@ -91,7 +96,7 @@ Frame {
                         Layout.preferredWidth: parent.width * 0.05
                         font.family: window.mFONT_FAMILY
                         font.pointSize: 13
-                        color: "black"
+                        color: "#eeffffff"
                         elide: Qt.ElideRight
                     }
                     Text {
@@ -99,7 +104,7 @@ Frame {
                         Layout.preferredWidth: parent.width * 0.4
                         font.family: window.mFONT_FAMILY
                         font.pointSize: 13
-                        color: "black"
+                        color: "#eeffffff"
                         elide: Qt.ElideRight
                     }
                     Text {
@@ -108,7 +113,7 @@ Frame {
                         Layout.preferredWidth: parent.width * 0.15
                         font.family: window.mFONT_FAMILY
                         font.pointSize: 13
-                        color: "black"
+                        color: "#eeffffff"
                         elide: Qt.ElideMiddle
                     }
                     Text {
@@ -117,7 +122,7 @@ Frame {
                         Layout.preferredWidth: parent.width * 0.15
                         font.family: window.mFONT_FAMILY
                         font.pointSize: 13
-                        color: "black"
+                        color: "#eeffffff"
                         elide: Qt.ElideMiddle
                     }
                     Item {
@@ -135,6 +140,7 @@ Frame {
                                 }
                             }
                             MusicIconButton {
+                                visible: favoriteable
                                 iconSource: "qrc:/images/favorite"
                                 iconHeight: 16
                                 iconWidth: 16
@@ -142,15 +148,25 @@ Frame {
                                 onClicked: {
                                     // 喜欢
                                     console.log("喜欢id...", musicList[index].id)
+                                    layoutBottomView.saveFavorite({
+                                                                      id: musicList[index].id,
+                                                                      name: musicList[index].name,
+                                                                      artist: musicList[index].artist,
+                                                                      url: musicList[index].url ? musicList[index].url : "",
+                                                                      album: musicList[index].album,
+                                                                      type: musicList[index].type ? musicList[index].type : "0"
+                                                                  })
                                 }
                             }
                             MusicIconButton {
+                                visible: deleteable
                                 iconSource: "qrc:/images/clear"
                                 iconHeight: 16
                                 iconWidth: 16
                                 toolTip: "删除"
                                 onClicked: {
                                     // 删除
+                                    deleteItem(index)
                                 }
                             }
                         }
@@ -161,7 +177,7 @@ Frame {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 onEntered: {
-                    color = "#f0f0f0"
+                    color = "#20f0f0f0"
                 }
 
                 onExited: {
@@ -178,7 +194,7 @@ Frame {
     Component {
         id: listViewHeader
         Rectangle {
-            color: "#00AAAA"
+            color: "#3000AAAA"
             height: 45
             width: listView.width
             RowLayout {
@@ -194,7 +210,7 @@ Frame {
                     Layout.preferredWidth: parent.width * 0.05
                     font.family: window.mFONT_FAMILY
                     font.pointSize: 13
-                    color: "white"
+                    color: "#eeffffff"
                     elide: Qt.ElideRight
                 }
                 Text {
@@ -203,7 +219,7 @@ Frame {
                     Layout.preferredWidth: parent.width * 0.4
                     font.family: window.mFONT_FAMILY
                     font.pointSize: 13
-                    color: "white"
+                    color: "#eeffffff"
                     elide: Qt.ElideRight
                 }
                 Text {
@@ -212,7 +228,7 @@ Frame {
                     Layout.preferredWidth: parent.width * 0.15
                     font.family: window.mFONT_FAMILY
                     font.pointSize: 13
-                    color: "white"
+                    color: "#eeffffff"
                     elide: Qt.ElideMiddle
                 }
                 Text {
@@ -221,7 +237,7 @@ Frame {
                     Layout.preferredWidth: parent.width * 0.15
                     font.family: window.mFONT_FAMILY
                     font.pointSize: 13
-                    color: "white"
+                    color: "#eeffffff"
                     elide: Qt.ElideMiddle
                 }
                 Text {
@@ -230,7 +246,7 @@ Frame {
                     Layout.preferredWidth: parent.width * 0.15
                     font.family: window.mFONT_FAMILY
                     font.pointSize: 13
-                    color: "white"
+                    color: "#eeffffff"
                     elide: Qt.ElideRight
                 }
             }
@@ -260,7 +276,7 @@ Frame {
                         text: modelData + 1
                         font.family: window.mFONT_FAMILY
                         font.pointSize: 14
-                        color: checked ? "#497563" : "black"
+                        color: checked ? "#497563" : "#eeffffff"
                     }
                     background: Rectangle {
                         implicitHeight: 30

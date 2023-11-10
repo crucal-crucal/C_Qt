@@ -47,6 +47,7 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     // 超出部分自动省略
                     elide: Qt.ElideMiddle
+                    color: "#eeffffff"
                 }
 
                 MouseArea {

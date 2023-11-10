@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.3
 
 Button {
 
-    property alias btnText: self.text
+    property alias btnText: name.text
 
     property alias isCanCheckable: self.checkable
     property alias isCanChecked: self.checked
@@ -16,10 +16,14 @@ Button {
 
     id: self
 
-    text: "Button"
-
-    font.family: window.mFONT_FAMILY
-    font.pointSize: 14
+    Text {
+        id: name
+        text: "Button"
+        color: self.down || (self.checkable && self.checked) ? "#ee000000" : "#eeffffff"
+        font.family: window.mFONT_FAMILY
+        font.pointSize: 14
+        anchors.centerIn: parent
+    }
 
     background: Rectangle {
         implicitHeight: self.height

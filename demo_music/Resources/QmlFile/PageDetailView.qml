@@ -18,6 +18,10 @@ Item {
             Layout.preferredWidth: parent.width * 0.45
             Layout.fillHeight: true
 
+            background: Rectangle {
+                color: "#00000000"
+            }
+
             Text {
                 id: name
                 text: layoutBottomView.musicName
@@ -28,6 +32,7 @@ Item {
                 }
                 font.family: window.mFONT_FAMILY
                 font.pointSize: 16
+                color: "#eeffffff"
             }
 
             Text {
@@ -41,6 +46,7 @@ Item {
                 }
                 font.family: window.mFONT_FAMILY
                 font.pointSize: 12
+                color: "#aaffffff"
             }
 
             MusicBorderImage {
@@ -57,6 +63,10 @@ Item {
         Frame {
             Layout.preferredWidth: parent.width * 0.55
             Layout.fillHeight: true
+
+            background: Rectangle {
+                color: "#0000AAAA"
+            }
 
             MusicLyricView {
                 id: lyricView

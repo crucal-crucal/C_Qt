@@ -30,7 +30,7 @@ Rectangle {
 
     Layout.fillWidth: true
     height: 60
-    color: "#00AAAA"
+    color: "#1500AAAA"
 
     RowLayout {
         anchors.fill: parent
@@ -116,7 +116,7 @@ Rectangle {
                     Rectangle {
                         width: slider.visualPosition * parent.width
                         height: parent.height
-                        color: "#73a7ab"
+                        color: "#8cecf3"
                         radius: 2
                     }
                 }
@@ -143,16 +143,17 @@ Rectangle {
                 cursorShape: Qt.PointingHandCursor
 
                 onPressed: {
-                    musicCover.scale = 0.9
+                    parent.scale = 0.9
+                    pageDetailView.visible = !pageDetailView.visible
+                    pageHomeView.visible = !pageHomeView.visible
+                    appBackground.showDefaultBackground = !appBackground.showDefaultBackground
                 }
 
                 onReleased: {
-                    musicCover.scale = 1.0
+                    parent.scale = 1.0
                 }
 
                 onClicked: {
-                    pageDetailView.visible = !pageDetailView.visible
-                    pageHomeView.visible = !pageHomeView.visible
                 }
             }
         }
@@ -163,6 +164,7 @@ Rectangle {
             iconWidth: 32
             iconHeight: 32
             toolTip: "喜欢"
+            onClicked: saveFavorite(playList[current])
         }
         MusicIconButton {
             id: playMode
@@ -189,6 +191,70 @@ Rectangle {
     onCurrentChanged: {
         playbackStateChangeCallbackEnable = false
         playMusic(current)
+    }
+
+    function saveHistory(index = 0) {
+        if (playList.length < index + 1) {
+            return
+        }
+
+        var item = playList[index]
+        if (!item || !item.id) {
+            console.log("saveHistory")
+            console.log("item || item.id is Empty...")
+            return
+        }
+        var history = historySettings.value("history", [])
+
+        var idx = history.findIndex(value => value.id === item.id)
+        if (idx >= 0) {
+            history.splice(idx, 1)
+        }
+        history.unshift({
+                            id: item.id + "",
+                            name: item.name + "",
+                            artist: item.artist + "",
+                            url: item.url ? item.url : "",
+                            type: item.type ? item.type : "",
+                            album: item.album ? item.album : "本地音乐"
+                        })
+
+        // 限制 500 条数据
+        if (history.length > 500) {
+            history.pop()
+        }
+
+        historySettings.setValue("history", history)
+    }
+
+    function saveFavorite(item = {}) {
+        if (!item || !item.id) {
+            console.log("saveFavorite")
+            console.log("item || item.id is Empty...")
+            return
+        }
+
+        var favorite = favoriteSettings.value("favorite", [])
+
+        var idx = favorite.findIndex(value => value.id === item.id)
+        if (idx >= 0) {
+            favorite.splice(idx, 1)
+        }
+        favorite.unshift({
+                            id: item.id + "",
+                            name: item.name + "",
+                            artist: item.artist + "",
+                            url: item.url ? item.url : "",
+                            type: item.type ? item.type : "",
+                            album: item.album ? item.album : "本地音乐"
+                        })
+
+        // 限制 500 条数据
+        if (favorite.length > 500) {
+            favorite.pop()
+        }
+
+        favoriteSettings.setValue("favorite", favorite)
     }
 
     function playPrevious() {
@@ -248,6 +314,7 @@ Rectangle {
             // 播放网络音乐
             playWebMusic()
         }
+        saveHistory(current)
     }
 
     function playLocalMusic() {
@@ -344,7 +411,7 @@ Rectangle {
         function onReply(reply) {
             http.onReplySignal.disconnect(onReply)
             var lyric = JSON.parse(reply).lrc.lyric
-            console.log(lyric)
+//            console.log("lyric", lyric)
             if (lyric.length < 1) {
                 return
             }

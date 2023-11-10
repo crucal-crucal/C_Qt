@@ -21,5 +21,6 @@
         <file>QmlFile/PageDetailView.qml</file>
         <file>QmlFile/MusicLyricView.qml</file>
         <file>QmlFile/MusicTextButton.qml</file>
+        <file>QmlFile/Background.qml</file>
     </qresource>
 </RCC>

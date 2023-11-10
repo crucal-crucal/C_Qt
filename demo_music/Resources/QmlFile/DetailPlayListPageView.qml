@@ -30,6 +30,7 @@ ColumnLayout {
             text: qsTr(targetType === "10" ? "专辑" : "歌单") + name
             font.family: window.mFONT_FAMILY
             font.pointSize: 25
+            color: "#eeffffff"
         }
     }
 
@@ -57,12 +58,14 @@ ColumnLayout {
                 maximumLineCount: 4
                 elide: Text.ElideRight
                 lineHeight: 1.5
+                color: "#eeffffff"
             }
         }
     }
 
     MusicListView {
         id: playListView
+        deleteable: false
     }
 
 

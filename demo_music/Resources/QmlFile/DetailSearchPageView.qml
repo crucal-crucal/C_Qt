@@ -21,6 +21,7 @@ ColumnLayout {
             text: qsTr("搜索音乐")
             font.family: window.mFONT_FAMILY
             font.pointSize: 25
+            color: "#eeffffff"
         }
     }
 
@@ -34,7 +35,7 @@ ColumnLayout {
             selectByMouse: true
             selectionColor: "#999999"
             placeholderText: qsTr("请输入搜索关键词")
-            color: "#000000"
+            color: "#eeffffff"
             background: Rectangle {
                 color: "#00000000"
                 opacity: 0.5
@@ -62,6 +63,7 @@ ColumnLayout {
         id: musicListView
         onLoadMore: doSearch(offset, current)
         Layout.topMargin: 10
+        deleteable: false
     }
 
     function doSearch(offset = 0, current = 0) {

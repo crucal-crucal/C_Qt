@@ -4,8 +4,15 @@ import QtQuick 2.15
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import Qt.labs.platform 1.1
+import Qt.labs.settings 1.1
+import QtQml 2.3
 
 ColumnLayout {
+
+    Settings {
+        id: historySettings
+        fileName: "conf/local.ini"
+    }
 
     Rectangle {
         Layout.fillWidth: true
@@ -19,6 +26,7 @@ ColumnLayout {
             text: qsTr("本地音乐")
             font.family: window.mFONT_FAMILY
             font.pointSize: 25
+            color: "#eeffffff"
         }
     }
 
@@ -31,7 +39,7 @@ ColumnLayout {
         MusicTextButton {
             btnText: "添加本地音乐"
             btnHeight: 50
-            btnWidth: 200
+            btnWidth: 180
             onClicked: {
                 fileDialog.open()
             }
@@ -41,7 +49,7 @@ ColumnLayout {
             btnHeight: 50
             btnWidth: 120
             onClicked: {
-
+                getLocal()
             }
         }
         MusicTextButton {
@@ -49,13 +57,39 @@ ColumnLayout {
             btnHeight: 50
             btnWidth: 120
             onClicked: {
-
+                saveLocal()
             }
         }
     }
 
     MusicListView {
         id: localListView
+        onDeleteItem: deleteLocal(index)
+    }
+
+    Component.onCompleted: {
+        getLocal()
+    }
+
+    function getLocal() {
+        var list = historySettings.value("local", [])
+        localListView.musicList = list
+        return list
+    }
+
+    function saveLocal(list = []) {
+        historySettings.setValue("local", list)
+        getLocal()
+    }
+
+    function deleteLocal(index) {
+        var list = historySettings.value("local", [])
+        if (list.length < index + 1) {
+            return
+        }
+
+        list.splice(index, 1)
+        saveLocal(list)
     }
 
     FileDialog {
@@ -67,7 +101,7 @@ ColumnLayout {
         rejectLabel: "取消"
 
         onAccepted: {
-            var list = []
+            var list = getLocal()
             for (var index in files) {
                 var path = files[index]
                 var arr = path.split("/")
@@ -84,14 +118,17 @@ ColumnLayout {
                     nameArr.shift()
                 }
                 name = nameArr.join("-")
-                list.push({
-                              id: path + "",
-                              name, artist,
-                              url: path + "",
-                              album: "本地音乐",
-                              type: "1" // 1 表示本地音乐，0表示网络
-                          })
-                localListView.musicList = list
+                if (list.filter(item => item.id === path).length < 1) {
+                    list.push({
+                                  id: path + "",
+                                  name, artist,
+                                  url: path + "",
+                                  album: "本地音乐",
+                                  type: "1" // 1 表示本地音乐，0表示网络
+                              })
+                }
+
+                saveLocal(list)
             }
         }
     }

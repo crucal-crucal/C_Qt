@@ -49,6 +49,7 @@ Item {
                     width: parent.width * 0.72
                     // 超出部分自动省略
                     elide: Qt.ElideMiddle
+                    color: "#eeffffff"
                 }
 
                 Text {
@@ -63,6 +64,7 @@ Item {
                     width: parent.width * 0.72
                     // 超出部分自动省略
                     elide: Qt.ElideRight
+                    color: "#eeffffff"
                 }
 
 

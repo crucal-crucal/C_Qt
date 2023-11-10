@@ -8,7 +8,7 @@ import QtQml 2.3
 RowLayout {
     spacing: 0
 
-    property int defaultidx: 2
+    property int defaultidx: 0
 
     property var qmlList: [
         {icon: "recommend-white", value: "推荐内容", qml: "DetailRecommendPageView", menu: true},
@@ -23,7 +23,7 @@ RowLayout {
         Layout.preferredWidth: 200
         Layout.fillHeight: true
         background: Rectangle {
-            color: "#AA00AAAA"
+            color: "#1000AAAA"
         }
         padding: 0
 
@@ -34,6 +34,7 @@ RowLayout {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 150
                 MusicBorderImage {
+                    imgSrc: "qrc:images/crucal"
                     anchors.centerIn: parent
                     height: 100
                     width: 100
@@ -51,7 +52,7 @@ RowLayout {
                 }
                 delegate: menuViewDelegate
                 highlight: Rectangle {
-                    color: "#aa73a7ab"
+                    color: "#3073a7ab"
                 }
 //                highlightMoveDuration: 0
 //                highlightResizeDuration: 0
@@ -65,7 +66,7 @@ RowLayout {
                 id: menuViewDelegateItem
                 height: 50
                 width: 200
-                color: "#AA00AAAA"
+                color: "#0000AAAA"
                 RowLayout {
                     anchors.fill: parent
                     anchors.centerIn: parent
@@ -84,7 +85,7 @@ RowLayout {
                         Layout.fillWidth: true
                         font.family: window.mFONT_FAMILY
                         font.pointSize: 12
-                        color: "#ffffff"
+                        color: "#eeffffff"
                     }
                 }
 
@@ -95,7 +96,7 @@ RowLayout {
                         color = "#aa73a7ab"
                     }
                     onExited: {
-                        color = "#AA00AAAA"
+                        color = "#00000000"
                     }
                     onClicked: {
                         hidePlayList()

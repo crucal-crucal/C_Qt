@@ -21,6 +21,12 @@ ApplicationWindow {
     visible: true
     title: qsTr("Demo Cloud Music Player")
 
+    flags: Qt.Window | Qt.FramelessWindowHint
+
+    background: Background {
+        id: appBackground
+    }
+
     HttpUtils {
         id: http
     }
@@ -29,6 +35,17 @@ ApplicationWindow {
         id: settings
         fileName: "conf/settings.ini"
     }
+
+    Settings {
+        id: historySettings
+        fileName: "conf/history.ini"
+    }
+
+    Settings {
+        id: favoriteSettings
+        fileName: "conf/favorite.ini"
+    }
+
 
     ColumnLayout {
         anchors.fill: parent
