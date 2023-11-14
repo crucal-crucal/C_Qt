@@ -73,11 +73,24 @@ Item {
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
                     onEntered: {
-                        background.color = "#50000000"
+                        background.color = "#50ffffff"
                     }
 
                     onExited: {
                         background.color = "#00000000"
+                    }
+
+                    onClicked: {
+                        layoutBottomView.current = -1
+                        layoutBottomView.playList = [{
+                                                         id: list[index].id,
+                                                         name: list[index].name,
+                                                         artist: list[index].artists[0].artist,
+                                                         album: list[index].album.name,
+                                                         cover: list[index].album.picUrl,
+                                                         type: "0"
+                                                     }]
+                        layoutBottomView.current = 0
                     }
                 }
             }

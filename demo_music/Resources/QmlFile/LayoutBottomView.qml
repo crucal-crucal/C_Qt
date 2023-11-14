@@ -37,6 +37,16 @@ Rectangle {
         Item {
             Layout.preferredWidth: parent.width / 10
             Layout.fillWidth: true
+            Layout.fillHeight: true
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.LeftButton
+                onPressed: {
+                    layoutheaderView.setPoint(mouseX, mouseY)
+                }
+                onMouseXChanged: layoutheaderView.moveX(mouseX)
+                onMouseYChanged: layoutheaderView.moveY(mouseY)
+            }
         }
         MusicIconButton {
             iconSource: "qrc:/images/previous"
@@ -49,18 +59,8 @@ Rectangle {
             iconSource: playingState === 0 ? "qrc:/images/stop" : "qrc:/images/pause"
             iconWidth: 32
             iconHeight: 32
-            toolTip: "暂停/播放"
-            onClicked: {
-                if (!mediaPlayer.source) {
-                    return
-                }
-
-                if (mediaPlayer.playbackState === MediaPlayer.PlayingState) {
-                    mediaPlayer.pause()
-                } else if (mediaPlayer.playbackState === MediaPlayer.PausedState) {
-                    mediaPlayer.play()
-                }
-            }
+            toolTip: playingState === 0 ? "播放" : "暂停"
+            onClicked: playOrPause()
         }
         MusicIconButton {
             iconSource: "qrc:/images/next"
@@ -70,6 +70,7 @@ Rectangle {
             onClicked: playNext("")
         }
         Item {
+            visible: !layoutheaderView.isSmallWindow
             Layout.preferredWidth: parent.width / 2
             Layout.fillHeight: true
             Layout.fillWidth: true
@@ -135,6 +136,7 @@ Rectangle {
         }
 
         MusicBorderImage {
+            visible: !layoutheaderView.isSmallWindow
             imgSrc: musicCover
             width: 50
             height: 45
@@ -178,6 +180,16 @@ Rectangle {
         Item {
             Layout.preferredWidth: parent.width / 10
             Layout.fillWidth: true
+            Layout.fillHeight: true
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.LeftButton
+                onPressed: {
+                    layoutheaderView.setPoint(mouseX, mouseY)
+                    onMouseXChanged: layoutheaderView.moveX(mouseX)
+                    onMouseYChanged: layoutheaderView.moveY(mouseY)
+                }
+            }
         }
     }
 
@@ -192,6 +204,7 @@ Rectangle {
         playbackStateChangeCallbackEnable = false
         playMusic(current)
     }
+
 
     function saveHistory(index = 0) {
         if (playList.length < index + 1) {
@@ -241,13 +254,13 @@ Rectangle {
             favorite.splice(idx, 1)
         }
         favorite.unshift({
-                            id: item.id + "",
-                            name: item.name + "",
-                            artist: item.artist + "",
-                            url: item.url ? item.url : "",
-                            type: item.type ? item.type : "",
-                            album: item.album ? item.album : "本地音乐"
-                        })
+                             id: item.id + "",
+                             name: item.name + "",
+                             artist: item.artist + "",
+                             url: item.url ? item.url : "",
+                             type: item.type ? item.type : "",
+                             album: item.album ? item.album : "本地音乐"
+                         })
 
         // 限制 500 条数据
         if (favorite.length > 500) {
@@ -272,6 +285,18 @@ Rectangle {
             current = current === random ? random + 1 : random
             break
         }
+        }
+    }
+
+    function playOrPause() {
+        if (!mediaPlayer.source) {
+            return
+        }
+
+        if (mediaPlayer.playbackState === MediaPlayer.PlayingState) {
+            mediaPlayer.pause()
+        } else if (mediaPlayer.playbackState === MediaPlayer.PausedState) {
+            mediaPlayer.play()
         }
     }
 
@@ -307,6 +332,7 @@ Rectangle {
         if (current < 0 || playList.length < 1) {
             return
         }
+        console.log("type..", playList[current].type)
         if (playList[current].type === "1") {
             // 播放本地音乐
             playLocalMusic()
@@ -314,13 +340,13 @@ Rectangle {
             // 播放网络音乐
             playWebMusic()
         }
-        saveHistory(current)
     }
 
     function playLocalMusic() {
         var currentItem = playList[current]
         mediaPlayer.source = currentItem.url
         mediaPlayer.play()
+        saveHistory(current)
         musicName = currentItem.name
         musicArtist = currentItem.artist
     }
@@ -333,35 +359,50 @@ Rectangle {
         }
         // 设置详情
         musicName = playList[current].name
-        musicArtist = playList[current].artist
+        if (playList[current] && playList[current].artist) {
+            musicArtist = playList[current].artist
+        }
+
 
         function onReply(reply) {
             http.onReplySignal.disconnect(onReply)
-            // 将 string 转成 Json
-            var data = JSON.parse(reply).data[0]
-            var url = data.url
-            var time = data.time
 
-            // 设置 Slider
-            setSlider(0, time, 0)
+            try {
+                if (reply.length < 1) {
+                    notification.openError("请求歌曲链接为空...")
+                    return
+                }
 
-            if (!url) {
-                return
+                // 将 string 转成 Json
+                var data = JSON.parse(reply).data[0]
+                var url = data.url
+                var time = data.time
+
+                // 设置 Slider
+                setSlider(0, time, 0)
+
+                if (!url) {
+                    return
+                }
+
+                // 请求 Cover
+                var cover = playList[current].cover
+                if (cover.length < 1) {
+                    getCover(id)
+                } else {
+                    musicCover = cover
+                    getLyric(id)
+                }
+
+                mediaPlayer.source = url
+                mediaPlayer.play()
+                saveHistory(current)
+                console.log("mediaPlayer...Play")
+
+                playbackStateChangeCallbackEnable = true
+            } catch(err) {
+                notification.openError("请求歌曲链接出错...")
             }
-
-            // 请求 Cover
-            var cover = playList[current].cover
-            if (cover.length < 1) {
-                getCover(id)
-            } else {
-                musicCover = cover
-            }
-
-            mediaPlayer.source = url
-            mediaPlayer.play()
-            console.log("mediaPlayer...Play")
-
-            playbackStateChangeCallbackEnable = true
         }
 
         http.onReplySignal.connect(onReply)
@@ -369,21 +410,31 @@ Rectangle {
     }
 
     function getCover(id) {
+        loading.open()
         function onReply(reply) {
+            loading.close()
             http.onReplySignal.disconnect(onReply)
             // 请求歌词
             getLyric(id)
 
-            var song = JSON.parse(reply).songs[0]
-            var cover = song.al.picUrl
+            try {
+                if (reply.length < 1) {
+                    notification.openError("请求歌曲图片为空...")
+                    return
+                }
 
-            musicCover = cover
-            if (musicName.length < 1)
-                musicName = song.name
-            if (musicArtist.length < 1)
-                musicArtist = song.ar[0].name
+                var song = JSON.parse(reply).songs[0]
+                var cover = song.al.picUrl
+
+                musicCover = cover
+                if (musicName.length < 1)
+                    musicName = song.name
+                if (musicArtist.length < 1)
+                    musicArtist = song.ar[0].name
+            } catch(err) {
+                notification.openError("请求歌曲图片出错...")
+            }
         }
-
         http.onReplySignal.connect(onReply)
         http.connect("song/detail?ids=" + id)
     }
@@ -407,40 +458,45 @@ Rectangle {
     }
 
     function getLyric(id) {
-
+        loading.open()
         function onReply(reply) {
+            loading.close()
             http.onReplySignal.disconnect(onReply)
             var lyric = JSON.parse(reply).lrc.lyric
-//            console.log("lyric", lyric)
-            if (lyric.length < 1) {
-                return
-            }
-            // 解析歌词
-            var lyrics = (lyric.replace(/\[.*\]/gi, "")).split("\n")
-
-            if (lyrics.length > 0) {
-                pageDetailView.lyrics= lyrics
-            }
-
-            var times = []
-            lyric.replace(/\[.*\]/gi, function(match, index) {
-                // match: [00:00.00]
-                if (match.length > 2) {
-                    var time = match.substr(1, match.length - 2)
-                    var arr = time.split(":")
-                    var timeValue = arr.length > 0 ? parseInt(arr[0]) * 60 * 1000 : 0
-                    arr = arr.length > 1 ? arr[1].split(".") : [0,0]
-                    timeValue += arr.length > 0 ? parseInt(arr[0]) * 1000 : 0
-                    timeValue += arr.length > 1 ? parseInt(arr[1]) * 10 : 0
-
-                    times.push(timeValue)
+            try {
+                if (reply.length < 1) {
+                    notification.openError("请求歌曲歌词为空...")
+                    return
                 }
-            })
+                // 解析歌词
+                var lyrics = (lyric.replace(/\[.*\]/gi, "")).split("\n")
 
-            mediaPlayer.times = times
+                if (lyrics.length > 0) {
+                    pageDetailView.lyrics= lyrics
+                }
+
+                var times = []
+                lyric.replace(/\[.*\]/gi, function(match, index) {
+                    // match: [00:00.00]
+                    if (match.length > 2) {
+                        var time = match.substr(1, match.length - 2)
+                        var arr = time.split(":")
+                        var timeValue = arr.length > 0 ? parseInt(arr[0]) * 60 * 1000 : 0
+                        arr = arr.length > 1 ? arr[1].split(".") : [0,0]
+                        timeValue += arr.length > 0 ? parseInt(arr[0]) * 1000 : 0
+                        timeValue += arr.length > 1 ? parseInt(arr[1]) * 10 : 0
+
+                        times.push(timeValue)
+                    }
+                })
+
+                mediaPlayer.times = times
+            } catch(err) {
+                notification.openError("请求歌曲歌词出错...")
+            }
+
+            http.onReplySignal.connect(onReply)
+            http.connect("lyric/?id=" + id)
         }
-
-        http.onReplySignal.connect(onReply)
-        http.connect("lyric/?id=" + id)
     }
 }

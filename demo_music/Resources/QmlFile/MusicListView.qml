@@ -64,7 +64,7 @@ Frame {
             Shape {
                 anchors.fill: parent
                 ShapePath {
-                    strokeColor: "#50000000"
+                    strokeColor: "#50ffffff"
                     strokeStyle: ShapePath.SolidLine
                     startX: 0
                     startY: listViewDelegateItem.height

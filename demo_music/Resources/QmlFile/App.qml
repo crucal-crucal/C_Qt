@@ -27,6 +27,10 @@ ApplicationWindow {
         id: appBackground
     }
 
+    AppSystemTrayIcon {
+
+    }
+
     HttpUtils {
         id: http
     }
@@ -46,6 +50,13 @@ ApplicationWindow {
         fileName: "conf/favorite.ini"
     }
 
+    MusicNotification {
+        id: notification
+    }
+
+    MusicLoading {
+        id: loading
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -54,6 +65,7 @@ ApplicationWindow {
 
         LayoutHeaderView {
             id: layoutheaderView
+            z: 1000
         }
 
         PageDetailView {

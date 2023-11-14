@@ -71,25 +71,34 @@ ColumnLayout {
 
 
     function loadAlbum() {
-
+        loading.open()
         var url = "album?id=" + (targetId.length < 1 ? "32311" : targetId)
         function onReply(reply) {
+            loading.close()
             http.onReplySignal.disconnect(onReply)
             // 将 string 转成 Json
-            var album = JSON.parse(reply).album
-            var songs = JSON.parse(reply).songs
-            playListCover.imgSrc = album.blurPicUrl
-            playListDesc.text = album.description
-            name = "-" + album.name
-            playListView.musicList = songs.map(item => {
-                                                   return {
-                                                       id: item.id,
-                                                       name: item.name,
-                                                       artist: item.ar[0].name,
-                                                       album: item.al.name,
-                                                       cover: item.al.picUrl
-                                                   }
-                                               })
+            try {
+                if (reply.length < 1) {
+                    notification.openError("获取专辑列表为空...")
+                }
+
+                var album = JSON.parse(reply).album
+                var songs = JSON.parse(reply).songs
+                playListCover.imgSrc = album.blurPicUrl
+                playListDesc.text = album.description
+                name = "-" + album.name
+                playListView.musicList = songs.map(item => {
+                                                       return {
+                                                           id: item.id,
+                                                           name: item.name,
+                                                           artist: item.ar[0].name,
+                                                           album: item.al.name,
+                                                           cover: item.al.picUrl
+                                                       }
+                                                   })
+            } catch(err) {
+                notification.openError("获取专辑列表出错...")
+            }
         }
 
         http.onReplySignal.connect(onReply)
@@ -97,37 +106,53 @@ ColumnLayout {
     }
 
     function loadPlayList() {
-
+        loading.open()
         var url = "playlist/detail?id=" + (targetId.length < 1 ? "32311" : targetId)
 
         function onSongDetailReply(reply) {
+            loading.close()
             http.onReplySignal.disconnect(onSongDetailReply)
-            // 将 string 转成 Json
-            var songs = JSON.parse(reply).songs
-            playListView.musicList = songs.map(item => {
-                                                   return {
-                                                       id: item.id,
-                                                       name: item.name,
-                                                       artist: item.ar[0].name,
-                                                       album: item.al.name,
-                                                       cover: item.al.picUrl
-                                                   }
-                                               })
+            try {
+                if (reply.length < 1) {
+                    notification.openError("获取歌单列表详情为空...")
+                }
+                // 将 string 转成 Json
+                var songs = JSON.parse(reply).songs
+                playListView.musicList = songs.map(item => {
+                                                       return {
+                                                           id: item.id,
+                                                           name: item.name,
+                                                           artist: item.ar[0].name,
+                                                           album: item.al.name,
+                                                           cover: item.al.picUrl
+                                                       }
+                                                   })
+            } catch(err) {
+                notification.openError("获取歌单列表详情出错...")
+            }
         }
 
         function onReply(reply) {
+            loading.close()
             http.onReplySignal.disconnect(onReply)
-            // 将 string 转成 Json
-            var playlist = JSON.parse(reply).playlist
-            playListCover.imgSrc = playlist.coverImgUrl
-            playListDesc.text = playlist.description
-            name = "-" + playlist.name
+            try {
+                if (reply.length < 1) {
+                    notification.openError("获取歌单列表为空...")
+                }
+                // 将 string 转成 Json
+                var playlist = JSON.parse(reply).playlist
+                playListCover.imgSrc = playlist.coverImgUrl
+                playListDesc.text = playlist.description
+                name = "-" + playlist.name
 
-            // 将数组用字符串连接起来
-            var ids = playlist.trackIds.map(item => item.id).join(",")
-
-            http.onReplySignal.connect(onSongDetailReply)
-            http.connect("song/detail?ids=" + ids)
+                // 将数组用字符串连接起来
+                var ids = playlist.trackIds.map(item => item.id).join(",")
+                http.onReplySignal.connect(onSongDetailReply)
+                http.connect("song/detail?ids=" + ids)
+                loading.open()
+            } catch(err) {
+                notification.openError("获取歌单列表出错...")
+            }
         }
 
         http.onReplySignal.connect(onReply)

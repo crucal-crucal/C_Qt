@@ -17,8 +17,10 @@ ToolButton {
 
     icon.source: iconSource
 
-    ToolTip.visible: hovered
-    ToolTip.text: toolTip
+    MusicToolTip {
+        visible: parent.hovered
+        text: toolTip
+    }
 
     width: 32
     height: 32

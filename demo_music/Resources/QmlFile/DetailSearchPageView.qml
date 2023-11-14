@@ -67,27 +67,37 @@ ColumnLayout {
     }
 
     function doSearch(offset = 0, current = 0) {
+        loading.open()
         var keywords = searchInput.text
         if (keywords.length < 1) {
             return
         }
 
         function onReply(reply) {
+            loading.close()
             http.onReplySignal.disconnect(onReply)
-            var result = JSON.parse(reply).result
-            // 将 string 转成 Json
-            var songsList = JSON.parse(reply).result.songs
-            musicListView.current = current
-            musicListView.all = result.songCount
-            musicListView.musicList = songsList.map(item => {
-                                                        return {
-                                                            id: item.id,
-                                                            name: item.name,
-                                                            artist: item.artists[0].name,
-                                                            album: item.album.name,
-                                                            cover: ""
-                                                        }
-                                                    })
+            try {
+                if (reply.length < 1) {
+                    notification.openError("请求搜索结果为空...")
+                    return
+                }
+                var result = JSON.parse(reply).result
+                // 将 string 转成 Json
+                var songsList = JSON.parse(reply).result.songs
+                musicListView.current = current
+                musicListView.all = result.songCount
+                musicListView.musicList = songsList.map(item => {
+                                                            return {
+                                                                id: item.id,
+                                                                name: item.name,
+                                                                artist: item.artists[0].name,
+                                                                album: item.album.name,
+                                                                cover: ""
+                                                            }
+                                                        })
+            } catch(err) {
+                notification.openError("请求搜索结果出错...")
+            }
         }
 
         http.onReplySignal.connect(onReply)

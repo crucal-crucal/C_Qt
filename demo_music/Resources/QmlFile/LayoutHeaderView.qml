@@ -8,6 +8,7 @@ import QtQuick.Window 2.3
 ToolBar {
     // ToolBar 的 x，y
     property point point: Qt.point(x, y)
+    property bool isSmallWindow: false
 
     background: Rectangle {
         color: "#00000000"
@@ -38,24 +39,26 @@ ToolBar {
             id: smallWindow
             iconSource: "qrc:/images/small-window"
             toolTip: "小窗播放"
+            visible: !isSmallWindow
 
             onClicked: {
+                isSmallWindow = true
                 setWindowSize(330, 650)
-
-                normalWindow.visible = true
-                smallWindow.visible = false
+                pageHomeView.visible = false
+                pageDetailView.visible = true
+                appBackground.showDefaultBackground = pageHomeView.visible
             }
         }
         MusicToolButton {
             id: normalWindow
             iconSource: "qrc:/images/exit-small-window"
             toolTip: "退出小窗播放"
-            visible: false
+            visible: isSmallWindow
 
             onClicked: {
                 setWindowSize()
-                normalWindow.visible = false
-                smallWindow.visible = true
+                isSmallWindow = false
+                appBackground.showDefaultBackground = pageHomeView.visible
             }
         }
         Item {
@@ -197,6 +200,7 @@ ToolBar {
 
     function setPoint(mouseX = 0, mouseY = 0) {
         point = Qt.point(mouseX, mouseY)
+        console.log(mouseX, mouseY)
     }
 
     function moveX(mouseX = 0) {
@@ -212,8 +216,8 @@ ToolBar {
 
     function moveY(mouseY = 0) {
         var y = window.y + mouseY - point.y
-        if (y < -(window.width - 70)) {
-            y = -(window.width - 70)
+        if (y <= 0) {
+            y = 0
         }
         if (y > Screen.desktopAvailableHeight - 70) {
             y = Screen.desktopAvailableHeight - 70

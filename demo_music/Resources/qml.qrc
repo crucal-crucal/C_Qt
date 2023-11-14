@@ -22,5 +22,9 @@
         <file>QmlFile/MusicLyricView.qml</file>
         <file>QmlFile/MusicTextButton.qml</file>
         <file>QmlFile/Background.qml</file>
+        <file>QmlFile/AppSystemTrayIcon.qml</file>
+        <file>QmlFile/MusicNotification.qml</file>
+        <file>QmlFile/MusicLoading.qml</file>
+        <file>QmlFile/MusicToolTip.qml</file>
     </qresource>
 </RCC>

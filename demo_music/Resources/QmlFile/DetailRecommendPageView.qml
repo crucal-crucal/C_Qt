@@ -92,10 +92,18 @@ ScrollView {
 
         function onReply(reply) {
             http.onReplySignal.disconnect(onReply)
-            // 将 string 转成 Json
-            var banners = JSON.parse(reply).banners
-            bannerView.bannerList = banners
-            getHotList()
+            try {
+                if (reply.length < 1) {
+                    notification.openError("请求轮播图为空...")
+                    return
+                }
+                // 将 string 转成 Json
+                var banners = JSON.parse(reply).banners
+                bannerView.bannerList = banners
+                getHotList()
+            } catch(err) {
+                notification.openError("请求轮播图出错...")
+            }
         }
 
         http.onReplySignal.connect(onReply)
@@ -104,13 +112,22 @@ ScrollView {
 
 
     function getHotList() {
-
+        loading.open()
         function onReply(reply) {
+            loading.close()
             http.onReplySignal.disconnect(onReply)
-            // 将 string 转成 Json
-            var playlists = JSON.parse(reply).playlists
-            hotView.list = playlists
-            getLatestList()
+            try {
+                if (reply.length < 1) {
+                    notification.openError("请求热门推荐为空...")
+                    return
+                }
+                // 将 string 转成 Json
+                var playlists = JSON.parse(reply).playlists
+                hotView.list = playlists
+                getLatestList()
+            } catch(err) {
+                notification.openError("请求热门推荐出错...")
+            }
         }
 
         http.onReplySignal.connect(onReply)
@@ -118,12 +135,21 @@ ScrollView {
     }
 
     function getLatestList() {
-
+        loading.open()
         function onReply(reply) {
+            loading.close()
             http.onReplySignal.disconnect(onReply)
-            // 将 string 转成 Json
-            var latestList = JSON.parse(reply).data
-            latestView.list = latestList.slice(0, 30)
+            try {
+                if (reply.length < 1) {
+                    notification.openError("请求最新歌曲为空...")
+                    return
+                }
+                // 将 string 转成 Json
+                var latestList = JSON.parse(reply).data
+                latestView.list = latestList.slice(0, 30)
+            } catch(err) {
+                notification.openError("请求最新歌曲出错...")
+            }
         }
 
         http.onReplySignal.connect(onReply)

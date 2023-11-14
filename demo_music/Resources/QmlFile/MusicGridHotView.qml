@@ -55,7 +55,7 @@ Item {
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
                     onEntered: {
-                        background.color = "#50000000"
+                        background.color = "#50ffffff"
                     }
 
                     onExited: {
