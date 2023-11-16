@@ -45,9 +45,11 @@ class MyTextEdit : public QWidget {
    * @return        void
    **********************************************/
   void onTextChanged();
+  void highlightCurrentLine();
 
  private:
   Ui::MyTextEdit *ui;
+  QFont mFont;
 };
 
 #endif  // MYTEXTEDIT_H

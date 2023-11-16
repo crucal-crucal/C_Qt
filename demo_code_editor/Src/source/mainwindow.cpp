@@ -1,6 +1,15 @@
 #include "Src/include/mainwindow.h"
 
+#ifdef NOUI
+#if NOUI == 1
+#include "Src/include/MyTextEditByCode.h"
+#else
+#include "Src/include/MyCodeEditor.h"
+#endif
+#else
 #include "Src/include/MyTextEdit.h"
+#endif
+
 #include "qaction.h"
 #include "ui_mainwindow.h"
 
@@ -112,8 +121,17 @@ void MainWindow::newFile() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  MyTextEdit *myTextEdit = new MyTextEdit(this);
-  ui->tabWidget->addTab(myTextEdit, "NewTab");
+
+#ifdef NOUI
+#if NOUI == 1
+  MyTextEditByCode *myEdit = new MyTextEditByCode(this);
+#else
+  MyCodeEditor *myEdit = new MyCodeEditor(this);
+#endif
+#else
+  MyTextEdit *myEdit = new MyTextEdit(this);
+#endif
+  ui->tabWidget->addTab(myEdit, "NewTab");
   //  currentFile.clear();
   //  ui->textEdit->clear();
 }

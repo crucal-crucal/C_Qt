@@ -1,6 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+/*
+ *      未定义表示使用 UI
+ *   1：自定义组件使用 QTextEdit
+ *   2：自定义组件使用 QPlainTextEdit
+ */
+#define NOUI 2
 // #define NDEBUG
 
 #include <QDebug>

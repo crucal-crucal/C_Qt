@@ -9,6 +9,7 @@ MyTextEdit::MyTextEdit(QWidget *parent)
   this->initConnect();
   this->initFont();
   this->initHighlighter();
+  this->highlightCurrentLine();
 }
 
 MyTextEdit::~MyTextEdit() { delete ui; }
@@ -17,27 +18,40 @@ void MyTextEdit::initConnect() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
+  // 文本修改
+  connect(ui->textEdit, &QTextEdit::textChanged, this,
+          &MyTextEdit::onTextChanged, Qt::UniqueConnection);
+
+  // 滚动条同步
   connect(ui->textEdit->horizontalScrollBar(), &QAbstractSlider::valueChanged,
           this, &MyTextEdit::textEditHScrollBarChanged, Qt::UniqueConnection);
   connect(ui->horizontalScrollBar, &QAbstractSlider::valueChanged, this,
           &MyTextEdit::textEditHScrollBarChanged, Qt::UniqueConnection);
-  connect(ui->textEdit, &QTextEdit::textChanged, this,
-          &MyTextEdit::onTextChanged, Qt::UniqueConnection);
-
   connect(ui->textEdit->verticalScrollBar(), &QAbstractSlider::valueChanged,
           this, &MyTextEdit::textEditHScrollBarChanged, Qt::UniqueConnection);
   connect(ui->textBrowser->verticalScrollBar(), &QAbstractSlider::valueChanged,
           this, &MyTextEdit::textBrowserVScrollBarChanged,
           Qt::UniqueConnection);
+
+  // 行高亮
+  connect(ui->textEdit, &QTextEdit::cursorPositionChanged, this,
+          &MyTextEdit::highlightCurrentLine, Qt::UniqueConnection);
 }
 
 void MyTextEdit::initFont() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  QFont font("Consolas", 14);
-  ui->textEdit->setFont(font);
-  ui->textBrowser->setFont(font);
+  mFont = QFont("Consolas", 14);
+  ui->textEdit->setFont(mFont);
+  QTextBlockFormat format;
+  format.setLineHeight(QFontMetrics(mFont).height() * 1.1,
+                       QTextBlockFormat::FixedHeight);
+  QTextCursor cursor = ui->textEdit->textCursor();
+  cursor.select(QTextCursor::Document);
+  cursor.mergeBlockFormat(format);
+
+  ui->textBrowser->setFont(mFont);
 }
 
 void MyTextEdit::initHighlighter() {
@@ -71,6 +85,12 @@ void MyTextEdit::textEditVScrollBarChanged(int value) {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
+  ui->textBrowser->verticalScrollBar()->setMaximum(
+      ui->textEdit->verticalScrollBar()->maximum());
+  ui->textBrowser->verticalScrollBar()->setMinimum(
+      ui->textEdit->verticalScrollBar()->minimum());
+  ui->textBrowser->verticalScrollBar()->setPageStep(
+      ui->textEdit->verticalScrollBar()->pageStep());
   ui->textBrowser->verticalScrollBar()->setValue(value);
 }
 
@@ -100,6 +120,32 @@ void MyTextEdit::onTextChanged() {
     }
   }
 
-  ui->textBrowser->setMaximumWidth(25 + QString::number(lineCount).size() * 5);
+  ui->textBrowser->setMaximumWidth(25 + QString::number(lineCount).size() * 7);
   ui->textBrowser->setText(line);
+  QTextBlockFormat format;
+  format.setLineHeight(QFontMetrics(mFont).height() * 1.1,
+                       QTextBlockFormat::FixedHeight);
+  format.setAlignment(Qt::AlignRight);
+
+  QTextCursor cursor = ui->textBrowser->textCursor();
+  cursor.select(QTextCursor::Document);
+  cursor.mergeBlockFormat(format);
+}
+
+void MyTextEdit::highlightCurrentLine() {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  QList<QTextEdit::ExtraSelection> extraSelections;
+
+  QTextEdit::ExtraSelection selection;
+  selection.format.setBackground(QColor(0, 100, 100, 20));
+  selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+  selection.cursor = ui->textEdit->textCursor();
+
+  //  selection.cursor.clearSelection();
+
+  extraSelections.append(selection);
+
+  ui->textEdit->setExtraSelections(extraSelections);
 }
