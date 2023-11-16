@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QPlainTextEdit>
+#include <QScrollBar>
 #include <QWidget>
 
 class LineNumberWidget;
@@ -23,6 +24,7 @@ class MyCodeEditor : public QPlainTextEdit {
    * @return        void
    **********************************************/
   void lineNumberWidgetPaintEvent(QPaintEvent *event);
+  void lineNumberWidgetMousePressEvent(QMouseEvent *event);
 
  signals:
 
@@ -81,6 +83,11 @@ class LineNumberWidget : public QWidget {
   void paintEvent(QPaintEvent *event) override {
     // 把绘制任务交给 MyCodeEditor
     codeEditor->lineNumberWidgetPaintEvent(event);
+  }
+
+  void mousePressEvent(QMouseEvent *event) override {
+    // 把鼠标点击时间交给 MyCodeEditor
+    codeEditor->lineNumberWidgetMousePressEvent(event);
   }
 
  private:

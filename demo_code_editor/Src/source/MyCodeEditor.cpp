@@ -38,9 +38,9 @@ void MyCodeEditor::lineNumberWidgetPaintEvent(QPaintEvent *event) {
 
   while (block.isValid() && top <= event->rect().bottom()) {
     // 绘制画笔颜色
-      painter.setPen(cursorTop == top ? Qt::black : Qt::gray);
+    painter.setPen(cursorTop == top ? Qt::black : Qt::gray);
     // 绘制文字
-    painter.drawText(0, top, this->getLineNumberWidgetWidth(), bottom - top,
+    painter.drawText(0, top, this->getLineNumberWidgetWidth() - 3, bottom - top,
                      Qt::AlignRight, QString::number(blockNumber + 1));
 
     // 拿到下一个 block
@@ -49,6 +49,17 @@ void MyCodeEditor::lineNumberWidgetPaintEvent(QPaintEvent *event) {
     bottom = top + this->blockBoundingRect(block).height();
     blockNumber++;
   }
+}
+
+void MyCodeEditor::lineNumberWidgetMousePressEvent(QMouseEvent *event) {
+#ifdef NDEBUG
+  qDebug() << __func__;
+  qDebug() << "y:\t" << event->y();
+#endif
+  QTextBlock block = this->document()->findBlockByLineNumber(
+      event->y() / this->fontMetrics().height() +
+      this->verticalScrollBar()->value());
+  this->setTextCursor(QTextCursor(block));
 }
 
 void MyCodeEditor::highlightCurrentLine() {
