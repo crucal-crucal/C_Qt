@@ -17,6 +17,16 @@
 #include <QMessageBox>
 #include <QSettings>
 
+#ifdef NOUI
+#if NOUI == 1
+#include "Src/include/MyTextEditByCode.h"
+#else
+#include "Src/include/MyCodeEditor.h"
+#endif
+#else
+#include "Src/include/MyTextEdit.h"
+#endif
+
 #if defined(QT_PRINTSUPPORT_LIB)
 #include <QtPrintSupport/qtprintsupportglobal.h>
 #if QT_CONFIG(printer)
@@ -42,6 +52,8 @@ class MainWindow : public QMainWindow {
 
   void init();
 
+  void saveSuccessAction(MyCodeEditor *codeEditor);
+
  private slots:
   /**********************************************
    * @projectName   %{CurrentProject:Name}
@@ -61,9 +73,6 @@ class MainWindow : public QMainWindow {
    * @param         void
    * @return        void
    **********************************************/
-  void bold(bool bold);
-  void italic(bool italic);
-  void underline(bool onderline);
   void font();
   /**********************************************
    * @projectName   %{CurrentProject:Name}
@@ -98,10 +107,32 @@ class MainWindow : public QMainWindow {
    **********************************************/
   void clearHistory();
 
+  MyCodeEditor *getCodeEditor();
+
+  void on_tabWidget_tabCloseRequested(int index);
+
  private:
   Ui::MainWindow *ui;
-  QString currentFile;
+  QString mfontFamily;
+  int mfontSize;
+  std::unique_ptr<QSettings> m_Settings;
+
+ private:
   // 初始化菜单
   void initMenu();
+  // 初始化字体
+  void initFont();
+  // 初始化动作
+  void initAction();
+  // 获取历史记录
+  QList<QString> getHistory();
+  // 保存打开历史记录
+  void saveHistory(QString path);
+  // 创建 Tab
+  void createTab(QString fileName);
+
+  // QWidget interface
+ protected:
+  void closeEvent(QCloseEvent *event);
 };
 #endif  // MAINWINDOW_H

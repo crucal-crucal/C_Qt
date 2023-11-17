@@ -12,6 +12,7 @@ class MyTextEditByCode : public QWidget {
   Q_OBJECT
  public:
   explicit MyTextEditByCode(QWidget *parent = nullptr);
+  ~MyTextEditByCode();
 
  signals:
 

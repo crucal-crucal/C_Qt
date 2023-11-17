@@ -14,16 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTextEdit" name="textEdit">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>120</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
@@ -34,10 +24,19 @@
      </rect>
     </property>
     <property name="tabShape">
-     <enum>QTabWidget::Triangular</enum>
+     <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
      <number>-1</number>
+    </property>
+    <property name="elideMode">
+     <enum>Qt::ElideMiddle</enum>
+    </property>
+    <property name="tabsClosable">
+     <bool>true</bool>
+    </property>
+    <property name="movable">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
@@ -78,9 +77,6 @@
     <addaction name="action_paste"/>
     <addaction name="action_cut"/>
     <addaction name="separator"/>
-    <addaction name="action_bold"/>
-    <addaction name="action_italic"/>
-    <addaction name="action_underline"/>
     <addaction name="separator"/>
     <addaction name="action_font"/>
    </widget>
@@ -135,9 +131,6 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="action_bold"/>
-   <addaction name="action_italic"/>
-   <addaction name="action_underline"/>
    <addaction name="action_font"/>
   </widget>
   <widget class="QToolBar" name="toolBar_4">
@@ -259,51 +252,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+C</string>
-   </property>
-  </action>
-  <action name="action_bold">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../../images.qrc">
-     <normaloff>:/images/bold.png</normaloff>:/images/bold.png</iconset>
-   </property>
-   <property name="text">
-    <string>加粗</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+B</string>
-   </property>
-  </action>
-  <action name="action_italic">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../../images.qrc">
-     <normaloff>:/images/italic.png</normaloff>:/images/italic.png</iconset>
-   </property>
-   <property name="text">
-    <string>斜体</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+I</string>
-   </property>
-  </action>
-  <action name="action_underline">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../../images.qrc">
-     <normaloff>:/images/underline.png</normaloff>:/images/underline.png</iconset>
-   </property>
-   <property name="text">
-    <string>下划线</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+U</string>
    </property>
   </action>
   <action name="action_font">

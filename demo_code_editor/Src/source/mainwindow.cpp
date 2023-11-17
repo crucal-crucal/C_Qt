@@ -1,24 +1,7 @@
 #include "Src/include/mainwindow.h"
 
-#ifdef NOUI
-#if NOUI == 1
-#include "Src/include/MyTextEditByCode.h"
-#else
-#include "Src/include/MyCodeEditor.h"
-#endif
-#else
-#include "Src/include/MyTextEdit.h"
-#endif
-
 #include "qaction.h"
 #include "ui_mainwindow.h"
-
-std::unique_ptr<QSettings> m_Settings;
-
-// 获取历史记录
-QList<QString> getHistory();
-// 保存打开历史记录
-void saveHistory(QString path);
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -26,15 +9,18 @@ MainWindow::MainWindow(QWidget *parent)
   this->init();
   m_Settings =
       std::make_unique<QSettings>("settings.ini", QSettings::IniFormat);
+
+  this->initMenu();
+  this->initFont();
+  this->initAction();
 #if !QT_CONFIG(printer)
   ui->action_print->setEnabled(false);
 #endif
-  this->initMenu();
 }
 
 MainWindow::~MainWindow() { delete ui; }
 
-QList<QString> getHistory() {
+QList<QString> MainWindow::getHistory() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
@@ -53,7 +39,7 @@ QList<QString> getHistory() {
   return list;
 }
 
-void saveHistory(QString path) {
+void MainWindow::saveHistory(QString path) {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
@@ -73,11 +59,51 @@ void saveHistory(QString path) {
   m_Settings.get()->endArray();
 }
 
+void MainWindow::createTab(QString fileName) {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  QFile file(fileName);
+  if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
+    QMessageBox::warning(this, "警告", "无法打开此文件:" + file.errorString());
+    return;
+  }
+  this->setWindowTitle(fileName);
+
+  QTextStream in(&file);
+  QString text = in.readAll();
+  MyCodeEditor *codeEditor =
+      new MyCodeEditor(this, QFont(mfontFamily, mfontSize));
+  codeEditor->setPlainText(text);
+  codeEditor->setFileName(fileName);
+
+  ui->tabWidget->addTab(codeEditor, fileName);
+  ui->tabWidget->setCurrentWidget(codeEditor);
+
+  file.close();
+
+  this->saveHistory(fileName);
+  this->initMenu();
+  this->initAction();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  if (ui->tabWidget->count() > 0) {
+    QMessageBox::StandardButton btn =
+        QMessageBox::question(this, "警告", "有未保存的文件，确定要退出吗",
+                              QMessageBox::Yes | QMessageBox::No);
+    btn == QMessageBox::Yes ? event->accept() : event->ignore();
+  }
+}
+
 void MainWindow::init() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  this->setWindowTitle("Demo_Notepad");
+  this->setWindowTitle("CodeEditor");
   this->setWindowIcon(QIcon(":/images/pencil.png"));
   this->setCentralWidget(ui->tabWidget);
 
@@ -85,8 +111,6 @@ void MainWindow::init() {
     connect(ui->action_about, &QAction::triggered, this, &MainWindow::about,
             Qt::UniqueConnection);
     connect(ui->action_print, &QAction::triggered, this, &MainWindow::print,
-            Qt::UniqueConnection);
-    connect(ui->action_bold, &QAction::triggered, this, &MainWindow::bold,
             Qt::UniqueConnection);
     connect(ui->action_copy, &QAction::triggered, this, &MainWindow::copy,
             Qt::UniqueConnection);
@@ -96,8 +120,6 @@ void MainWindow::init() {
             Qt::UniqueConnection);
     connect(ui->action_font, &QAction::triggered, this, &MainWindow::font,
             Qt::UniqueConnection);
-    connect(ui->action_italic, &QAction::triggered, this, &MainWindow::italic,
-            Qt::UniqueConnection);
     connect(ui->action_new, &QAction::triggered, this, &MainWindow::newFile,
             Qt::UniqueConnection);
     connect(ui->action_open, &QAction::triggered, this, &MainWindow::openFile,
@@ -106,8 +128,6 @@ void MainWindow::init() {
             Qt::UniqueConnection);
     connect(ui->action_undo, &QAction::triggered, this, &MainWindow::undo,
             Qt::UniqueConnection);
-    connect(ui->action_underline, &QAction::triggered, this,
-            &MainWindow::underline, Qt::UniqueConnection);
     connect(ui->action_save_as, &QAction::triggered, this,
             &MainWindow::saveAsFile, Qt::UniqueConnection);
     connect(ui->action_redo, &QAction::triggered, this, &MainWindow::redo,
@@ -115,6 +135,19 @@ void MainWindow::init() {
     connect(ui->action_save, &QAction::triggered, this, &MainWindow::saveFile,
             Qt::UniqueConnection);
   }
+}
+
+void MainWindow::saveSuccessAction(MyCodeEditor *codeEditor) {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  QString fileName = codeEditor->getFileName();
+  // 保存历史
+  this->saveHistory(fileName);
+  // 设置 tab 标题
+  ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), fileName);
+  // 初始化菜单
+  this->initMenu();
 }
 
 void MainWindow::newFile() {
@@ -126,36 +159,20 @@ void MainWindow::newFile() {
 #if NOUI == 1
   MyTextEditByCode *myEdit = new MyTextEditByCode(this);
 #else
-  MyCodeEditor *myEdit = new MyCodeEditor(this);
+  MyCodeEditor *myEdit = new MyCodeEditor(this, QFont(mfontFamily, mfontSize));
 #endif
 #else
   MyTextEdit *myEdit = new MyTextEdit(this);
 #endif
   ui->tabWidget->addTab(myEdit, "NewTab");
-  //  currentFile.clear();
-  //  ui->textEdit->clear();
+  this->initAction();
 }
 
 void MainWindow::openFile() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  QString fileName = QFileDialog::getOpenFileName(this, "打开文件");
-  QFile file(fileName);
-  if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
-    QMessageBox::warning(this, "警告", "无法打开此文件:" + file.errorString());
-    return;
-  }
-  currentFile = fileName;
-  setWindowTitle(currentFile);
-
-  QTextStream in(&file);
-  QString text = in.readAll();
-  ui->textEdit->setText(text);
-  file.close();
-
-  saveHistory(currentFile);
-  this->initMenu();
+  this->createTab(QFileDialog::getOpenFileName(this, "打开文件"));
 }
 
 void MainWindow::openRecentFile() {
@@ -163,114 +180,55 @@ void MainWindow::openRecentFile() {
   qDebug() << __func__;
 #endif
   // 获取发送者
-  QAction *action = static_cast<QAction *>(sender());
-  QString fileName = action->text();
-  QFile file(fileName);
-  if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
-    QMessageBox::warning(this, "警告", "无法打开此文件:" + file.errorString());
-    return;
-  }
-  currentFile = fileName;
-  setWindowTitle(currentFile);
-
-  QTextStream in(&file);
-  QString text = in.readAll();
-  ui->textEdit->setText(text);
-  file.close();
-
-  saveHistory(currentFile);
-  this->initMenu();
+  QAction *action = static_cast<QAction *>(this->sender());
+  this->createTab(action->text());
 }
 
 void MainWindow::saveFile() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  QString fileName;
-  if (currentFile.isEmpty()) {
-    fileName = QFileDialog::getSaveFileName(this, "保存文件");
-    currentFile = fileName;
-  } else {
-    fileName = currentFile;
+  // 把保存交给 CodeEditor
+  auto codeEditor = this->getCodeEditor();
+  if (codeEditor != nullptr) {
+    if (codeEditor->saveFile()) {
+      this->saveSuccessAction(codeEditor);
+    }
   }
-
-  QFile file(fileName);
-  if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
-    QMessageBox::warning(this, "警告", "无法保存文件:" + file.errorString());
-    return;
-  }
-  setWindowTitle(fileName);
-
-  QTextStream out(&file);
-  QString text = ui->textEdit->toHtml();
-  out << text;
-
-  file.close();
-  saveHistory(currentFile);
-  this->initMenu();
 }
 
 void MainWindow::saveAsFile() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  QString fileName;
-  fileName = QFileDialog::getSaveFileName(this, "另存文件");
-
-  QFile file(fileName);
-  if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
-    QMessageBox::warning(this, "警告", "无法保存文件:" + file.errorString());
-    return;
+  // 把保存交给 CodeEditor
+  auto codeEditor = this->getCodeEditor();
+  if (codeEditor != nullptr) {
+    if (codeEditor->saveAsFile()) {
+      this->saveSuccessAction(codeEditor);
+    }
   }
-  currentFile = fileName;
-  setWindowTitle(fileName);
-
-  QTextStream out(&file);
-  QString text = ui->textEdit->toHtml();
-  out << text;
-
-  file.close();
-  saveHistory(currentFile);
-  this->initMenu();
 }
 
 void MainWindow::print() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-
+  // 把打印交给 codeEditor
+  auto codeEditor = this->getCodeEditor();
+  if (codeEditor) {
 #if defined(QT_PRINTSUPPORT_LIB) && QT_CONFIG(printer)
-  QPrinter printDev;
+    QPrinter printDev;
 #if QT_CONFIG(printdialog)
-  QPrintDialog dialog(&printDev, this);
-  // 如果用户在打印对话框中点击了 Cancel
-  if (dialog.exec() == QDialog::Rejected) {
-    return;
+    QPrintDialog dialog(&printDev, this);
+    // 如果用户在打印对话框中点击了 Cancel
+    if (dialog.exec() == QDialog::Rejected) {
+      return;
+    }
+#endif
+    codeEditor->print(&printDev);
+#endif
   }
-#endif
-  ui->textEdit->print(&printDev);
-#endif
-}
-
-void MainWindow::bold(bool bold) {
-#ifdef NDEBUG
-  qDebug() << __func__;
-#endif
-  ui->textEdit->setFontWeight(bold ? QFont::Bold : QFont::Normal);
-}
-
-void MainWindow::italic(bool italic) {
-#ifdef NDEBUG
-  qDebug() << __func__;
-#endif
-  ui->textEdit->setFontItalic(italic);
-}
-
-void MainWindow::underline(bool onderline) {
-#ifdef NDEBUG
-  qDebug() << __func__;
-#endif
-  ui->textEdit->setFontUnderline(onderline);
 }
 
 void MainWindow::font() {
@@ -278,9 +236,17 @@ void MainWindow::font() {
   qDebug() << __func__;
 #endif
   bool fontSelected;
-  QFont font = QFontDialog::getFont(&fontSelected, this);
+  QFont font =
+      QFontDialog::getFont(&fontSelected, QFont(mfontFamily, mfontSize), this);
   if (fontSelected) {
-    ui->textEdit->setFont(font);
+    auto codeEditor = this->getCodeEditor();
+    if (codeEditor) {
+      codeEditor->setAllFont(font);
+    }
+    m_Settings.get()->beginWriteArray("font");
+    m_Settings.get()->setValue("font_family", font.family());
+    m_Settings.get()->setValue("font_size", font.pointSize());
+    m_Settings.get()->endArray();
   }
 }
 
@@ -288,35 +254,50 @@ void MainWindow::copy() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  ui->textEdit->copy();
+  auto codeEditor = this->getCodeEditor();
+  if (codeEditor) {
+    codeEditor->copy();
+  }
 }
 
 void MainWindow::paste() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  ui->textEdit->paste();
+  auto codeEditor = this->getCodeEditor();
+  if (codeEditor) {
+    codeEditor->paste();
+  }
 }
 
 void MainWindow::cut() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  ui->textEdit->cut();
+  auto codeEditor = this->getCodeEditor();
+  if (codeEditor) {
+    codeEditor->cut();
+  }
 }
 
 void MainWindow::undo() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  ui->textEdit->undo();
+  auto codeEditor = this->getCodeEditor();
+  if (codeEditor) {
+    codeEditor->undo();
+  }
 }
 
 void MainWindow::redo() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  ui->textEdit->redo();
+  auto codeEditor = this->getCodeEditor();
+  if (codeEditor) {
+    codeEditor->redo();
+  }
 }
 
 void MainWindow::exit() {
@@ -342,6 +323,18 @@ void MainWindow::clearHistory() {
   this->initMenu();
 }
 
+MyCodeEditor *MainWindow::getCodeEditor() {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  MyCodeEditor *codeEditor =
+      static_cast<MyCodeEditor *>(ui->tabWidget->currentWidget());
+  if (codeEditor) {
+    return codeEditor;
+  }
+  return nullptr;
+}
+
 void MainWindow::initMenu() {
 #ifdef NDEBUG
   qDebug() << __func__;
@@ -363,4 +356,49 @@ void MainWindow::initMenu() {
     recent->addAction("清除历史记录", this, &MainWindow::clearHistory,
                       QKeySequence("Ctrl+Alt+Shift+C"));
   }
+}
+
+void MainWindow::initFont() {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  mfontFamily = m_Settings.get()->value("font_family", "Consolas").toString();
+  mfontSize = m_Settings.get()->value("font_size", 14).toInt();
+}
+
+void MainWindow::initAction() {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  bool t = ui->tabWidget->count() > 0;
+  ui->action_save->setEnabled(t);
+  ui->action_save_as->setEnabled(t);
+  ui->action_copy->setEnabled(t);
+  ui->action_cut->setEnabled(t);
+  ui->action_paste->setEnabled(t);
+  ui->action_undo->setEnabled(t);
+  ui->action_redo->setEnabled(t);
+}
+
+void MainWindow::on_tabWidget_tabCloseRequested(int index) {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  auto codeEditor = this->getCodeEditor();
+  if (!codeEditor->checkSaved()) {
+    QMessageBox::StandardButton btn = QMessageBox::question(
+        this, "警告", "您还没有保存文档...，是否保存",
+        QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+    if (btn == QMessageBox::Yes) {
+      if (codeEditor->saveFile()) {
+        this->saveSuccessAction(codeEditor);
+      }
+      return;
+    } else if (btn == QMessageBox::Cancel) {
+      return;
+    }
+  }
+  ui->tabWidget->removeTab(index);
+  delete codeEditor;
+  this->initAction();
 }

@@ -22,6 +22,7 @@ class MyHighlighter : public QSyntaxHighlighter {
    * @return        void
    **********************************************/
   void setFormats();
+  void setFont(QFont font);
 
  signals:
 

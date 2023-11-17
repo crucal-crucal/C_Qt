@@ -21,6 +21,14 @@ void MyHighlighter::setFormats() {
   this->addFunctionFormat();
 }
 
+void MyHighlighter::setFont(QFont font) {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  mFontFamily = font.family();
+  mFontSize = font.pointSize();
+}
+
 void MyHighlighter::highlightBlock(const QString &text) {
 #ifdef NDEBUG
   qDebug() << __func__;

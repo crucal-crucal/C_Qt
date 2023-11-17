@@ -1,14 +1,15 @@
 #include "Src/include/MyCodeEditor.h"
 
-#include "Src/include/MyHighlighter.h"
-
-MyCodeEditor::MyCodeEditor(QWidget *parent) : QPlainTextEdit{parent} {
+MyCodeEditor::MyCodeEditor(QWidget *parent, QFont font)
+    : QPlainTextEdit{parent} {
   lineNumberWidget = new LineNumberWidget(this);
-  this->initFont();
-  this->highlightCurrentLine();
   this->initConnection();
   this->initHighlighter();
+  this->setAllFont(font);
+  this->highlightCurrentLine();
   this->updateLineNumberWidgetWidth();
+
+  this->setLineWrapMode(QPlainTextEdit::NoWrap);
 }
 
 MyCodeEditor::~MyCodeEditor() { delete lineNumberWidget; }
@@ -62,6 +63,99 @@ void MyCodeEditor::lineNumberWidgetMousePressEvent(QMouseEvent *event) {
   this->setTextCursor(QTextCursor(block));
 }
 
+void MyCodeEditor::lineNumberWidgetwheelEventEvent(QWheelEvent *event) {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  if (event->angleDelta().y() == Qt::Horizontal) {
+    this->horizontalScrollBar()->setValue(this->horizontalScrollBar()->value() -
+                                          event->angleDelta().x());
+  } else {
+    this->verticalScrollBar()->setValue(this->verticalScrollBar()->value() -
+                                        event->angleDelta().y());
+  }
+
+  event->accept();
+}
+
+bool MyCodeEditor::saveFile() {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  QString fileName;
+  if (mFileName.isEmpty()) {
+    fileName = QFileDialog::getSaveFileName(this, "保存文件");
+    mFileName = fileName;
+  } else {
+    fileName = mFileName;
+  }
+
+  QFile file(fileName);
+  if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
+    QMessageBox::warning(this, "警告", "无法保存文件:" + file.errorString());
+    return false;
+  }
+
+  QTextStream out(&file);
+  out << this->toPlainText();
+  file.close();
+  isSaved = true;
+
+  return true;
+}
+
+bool MyCodeEditor::saveAsFile() {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  QString fileName = QFileDialog::getSaveFileName(this, "保存文件");
+  QFile file(fileName);
+  if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
+    QMessageBox::warning(this, "警告", "无法保存文件:" + file.errorString());
+    return false;
+  }
+  mFileName = fileName;
+
+  QTextStream out(&file);
+  out << this->toPlainText();
+  file.close();
+  isSaved = true;
+
+  return true;
+}
+
+void MyCodeEditor::setFileName(QString fileName) {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  mFileName = fileName;
+}
+
+QString MyCodeEditor::getFileName() {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  return mFileName;
+}
+
+void MyCodeEditor::setAllFont(QFont font) {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  this->setFont(font);
+  if (mHighlighter) {
+    mHighlighter->setFont(font);
+  }
+  this->updateLineNumberWidgetWidth();
+}
+
+bool MyCodeEditor::checkSaved() {
+#ifdef NDEBUG
+  qDebug() << __func__;
+#endif
+  return isSaved;
+}
+
 void MyCodeEditor::highlightCurrentLine() {
 #ifdef NDEBUG
   qDebug() << __func__;
@@ -98,11 +192,11 @@ void MyCodeEditor::updateLineNumberWidgetWidth() {
   this->setViewportMargins(this->getLineNumberWidgetWidth(), 0, 0, 0);
 }
 
-void MyCodeEditor::initFont() {
+void MyCodeEditor::updateSaveState() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  this->setFont(QFont("Consolas", 14));
+  isSaved = false;
 }
 
 void MyCodeEditor::initConnection() {
@@ -112,6 +206,9 @@ void MyCodeEditor::initConnection() {
   // cursor
   connect(this, &QPlainTextEdit::cursorPositionChanged, this,
           &MyCodeEditor::highlightCurrentLine, Qt::UniqueConnection);
+  // updateisSave
+  connect(this, &QPlainTextEdit::textChanged, this,
+          &MyCodeEditor::updateSaveState, Qt::UniqueConnection);
   // blockCount
   connect(this, &QPlainTextEdit::blockCountChanged, this,
           &MyCodeEditor::updateLineNumberWidgetWidth, Qt::UniqueConnection);
@@ -124,7 +221,7 @@ void MyCodeEditor::initHighlighter() {
 #ifdef NDEBUG
   qDebug() << __func__;
 #endif
-  new MyHighlighter(this->document());
+  mHighlighter = new MyHighlighter(this->document());
 }
 
 int MyCodeEditor::getLineNumberWidgetWidth() {

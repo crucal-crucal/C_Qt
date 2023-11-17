@@ -10,6 +10,12 @@ MyTextEditByCode::MyTextEditByCode(QWidget *parent) : QWidget{parent} {
   this->highlightCurrentLine();
 }
 
+MyTextEditByCode::~MyTextEditByCode() {
+  delete textEdit;
+  delete textBrowser;
+  delete scrollBar;
+}
+
 void MyTextEditByCode::initWidget() {
 #ifdef NDEBUG
   qDebug() << __func__;
