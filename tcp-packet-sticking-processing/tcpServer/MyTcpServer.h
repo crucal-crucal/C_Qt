@@ -3,18 +3,17 @@
 
 #include <QTcpServer>
 
-class MyTcpServer : public QTcpServer
-{
-    Q_OBJECT
-public:
-    explicit MyTcpServer(QObject *parent = nullptr);
+class MyTcpServer : public QTcpServer {
+  Q_OBJECT
+ public:
+  explicit MyTcpServer(QObject *parent = nullptr);
 
-signals:
-    void newClient(qintptr sockt);
+ signals:
+  void newClient(qintptr sockt);
 
-    // QTcpServer interface
-protected:
-    void incomingConnection(qintptr handle);
+  // QTcpServer interface
+ protected:
+  void incomingConnection(qintptr handle);
 };
 
-#endif // MYTCPSERVER_H
+#endif  // MYTCPSERVER_H

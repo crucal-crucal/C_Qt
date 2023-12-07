@@ -1,12 +1,5 @@
 #include "MyTcpServer.h"
 
-MyTcpServer::MyTcpServer(QObject *parent)
-    : QTcpServer{parent}
-{
+MyTcpServer::MyTcpServer(QObject *parent) : QTcpServer{parent} {}
 
-}
-
-void MyTcpServer::incomingConnection(qintptr handle)
-{
-    emit newClient(handle);
-}
+void MyTcpServer::incomingConnection(qintptr handle) { emit newClient(handle); }
