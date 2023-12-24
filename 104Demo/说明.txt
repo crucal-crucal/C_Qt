@@ -1,1 +1,3 @@
 本项目是仅是通过页面操作 XML 文件的Demo，具体需要根据XML文件格式更改即可。
+
+对于 MyTextEdit.* 和 CustomLineEdit.* 为什么不放在 Src 目录下的原因：QtCreator 构建 UI 文件对应的 .h 文件时，会找不到自定义的文件所在路径，所以将源文件移动到根目录更方便构建。
