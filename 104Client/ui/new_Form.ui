@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>new_Form</class>
+ <widget class="QDialog" name="new_Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>539</width>
+    <height>277</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Client</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QLabel" name="lab_client_id">
+             <property name="text">
+              <string>客户端ID</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_client_ip">
+             <property name="text">
+              <string>客户端IP</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_client_port">
+             <property name="text">
+              <string>客户端端口</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_client_protocol">
+             <property name="text">
+              <string>客户端协议</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_client_slaveID">
+             <property name="text">
+              <string>slaveID</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_client_gct">
+             <property name="text">
+              <string>总召间隔时长（单位：秒）</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_client_describe">
+             <property name="text">
+              <string>描述</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLineEdit" name="lineEdit_client_id"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_client_ip"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_client_port"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_client_protocol"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_client_slaveID"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_client_gct"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_client_describe"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Server</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="lab_server_id">
+             <property name="text">
+              <string>服务端ID</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_server_ip">
+             <property name="text">
+              <string>服务端IP</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_server_port">
+             <property name="text">
+              <string>服务端端口</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_server_dataType">
+             <property name="text">
+              <string>数据类型</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_server_publicAddr">
+             <property name="text">
+              <string>公共地址</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="lab_server_describe">
+             <property name="text">
+              <string>描述</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QLineEdit" name="lineEdit_server_id"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_server_ip"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_server_port"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_server_dataType"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_server_publicAddr"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_server_describe"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="btn_ok">
+       <property name="text">
+        <string>确定</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_cancel">
+       <property name="text">
+        <string>取消</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

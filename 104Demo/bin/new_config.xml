@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <serverList>
+        <server>
+            <id>1</id>
+            <ip>10.0.0.168</ip>
+            <port>2404</port>
+            <dataType>11</dataType>
+            <publicAddr>1</publicAddr>
+            <describe>测试服务器1</describe>
+            <telemetryList>
+                <telemetry>
+                    <addr>0</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>0</clientTelemetryAddr>
+                    <describe>风机1 有功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>1</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>0</clientTelemetryAddr>
+                    <describe>风机1 无功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>2</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>2</clientTelemetryAddr>
+                    <describe>风机1 风速</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>3</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>3</clientTelemetryAddr>
+                    <describe>风机2 有功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>4</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>4</clientTelemetryAddr>
+                    <describe>风机2 无功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>5</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>5</clientTelemetryAddr>
+                    <describe>风机2 风速</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>6</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>6</clientTelemetryAddr>
+                    <describe>风机3 有功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>7</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>7</clientTelemetryAddr>
+                    <describe>风机3 无功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>8</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>8</clientTelemetryAddr>
+                    <describe>风机3 风速</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>9</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>9</clientTelemetryAddr>
+                    <describe>风机4 有功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>10</addr>
+                    <coeff>1</coeff>
+                    <clientID>1</clientID>
+                    <clientTelemetryAddr>0</clientTelemetryAddr>
+                    <describe>风机4 有功</describe>
+                </telemetry>
+            </telemetryList>
+            <telesignaList>
+                <telesigna>
+                    <addr>0</addr>
+                    <clientID>1</clientID>
+                    <telesignaID>0</telesignaID>
+                    <describe>风机1 并网状态</describe>
+                </telesigna>
+            </telesignaList>
+        </server>
+        <server>
+            <id>2</id>
+            <ip>11</ip>
+            <port>0</port>
+            <dataType>11</dataType>
+            <publicAddr>1</publicAddr>
+            <describe>测试服务器1</describe>
+            <telemetryList>
+                <telemetry>
+                    <addr>0</addr>
+                    <coeff>0</coeff>
+                    <clientID>0</clientID>
+                    <clientTelemetryAddr>0</clientTelemetryAddr>
+                    <describe></describe>
+                </telemetry>
+            </telemetryList>
+            <telesignaList>
+                <telesigna>
+                    <addr>0</addr>
+                    <clientID>0</clientID>
+                    <telesignaID>0</telesignaID>
+                    <describe></describe>
+                </telesigna>
+            </telesignaList>
+        </server>
+    </serverList>
+    <clientList>
+        <client>
+            <id>1</id>
+            <protocol>0</protocol>
+            <ip>10.0.0.2</ip>
+            <port>502</port>
+            <serialDevice>COM1</serialDevice>
+            <baud>0</baud>
+            <parity>1</parity>
+            <dataBit>0</dataBit>
+            <stopBit>0</stopBit>
+            <slaveID>1</slaveID>
+            <generalCallTime>10</generalCallTime>
+            <describe>13#箱变</describe>
+            <telemetryList>
+                <telemetry>
+                    <addr>0</addr>
+                    <inputFlag>1</inputFlag>
+                    <dataType>5</dataType>
+                    <describe>风机1 有功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>1</addr>
+                    <inputFlag>1</inputFlag>
+                    <dataType>5</dataType>
+                    <describe>风机1 无功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>2</addr>
+                    <inputFlag>1</inputFlag>
+                    <dataType>5</dataType>
+                    <describe>风机1 风速</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>3</addr>
+                    <inputFlag>1</inputFlag>
+                    <dataType>5</dataType>
+                    <describe>风机2 有功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>4</addr>
+                    <inputFlag>1</inputFlag>
+                    <dataType>5</dataType>
+                    <describe>风机2 无功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>5</addr>
+                    <inputFlag>1</inputFlag>
+                    <dataType>5</dataType>
+                    <describe>风机2 风速</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>6</addr>
+                    <inputFlag>1</inputFlag>
+                    <dataType>5</dataType>
+                    <describe>风机3 有功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>7</addr>
+                    <inputFlag>1</inputFlag>
+                    <dataType>5</dataType>
+                    <describe>风机3 无功</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>8</addr>
+                    <inputFlag>1</inputFlag>
+                    <dataType>5</dataType>
+                    <describe>风机3 风速</describe>
+                </telemetry>
+                <telemetry>
+                    <addr>9</addr>
+                    <inputFlag>1</inputFlag>
+                    <dataType>5</dataType>
+                    <describe>风机4 有功</describe>
+                </telemetry>
+            </telemetryList>
+            <telesignaList>
+                <telesigna>
+                    <addr>0</addr>
+                    <inputFlag>0</inputFlag>
+                    <describe>风机1 并网状态</describe>
+                </telesigna>
+            </telesignaList>
+        </client>
+        <client>
+            <id>2</id>
+            <protocol>111</protocol>
+            <ip>111</ip>
+            <port>0</port>
+            <serialDevice></serialDevice>
+            <baud>0</baud>
+            <parity>53</parity>
+            <dataBit>0</dataBit>
+            <stopBit>0</stopBit>
+            <slaveID>0</slaveID>
+            <generalCallTime>0</generalCallTime>
+            <describe>0</describe>
+            <telemetryList>
+                <telemetry>
+                    <addr>0</addr>
+                    <inputFlag>0</inputFlag>
+                    <dataType>0</dataType>
+                    <describe>巴拉巴拉</describe>
+                </telemetry>
+            </telemetryList>
+            <telesignaList>
+                <telesigna>
+                    <addr>0</addr>
+                    <inputFlag>0</inputFlag>
+                    <describe>巴拉巴拉</describe>
+                </telesigna>
+            </telesignaList>
+        </client>
+    </clientList>
+</config>

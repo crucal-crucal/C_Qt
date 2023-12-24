@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <serverList>
+        <server>
+            <id>2</id><!-- id: 服务端ID -->
+            <ip>10.0.0.168</ip><!-- ip: 服务端IP -->
+            <port>2404</port><!-- port: 服务端端口 -->
+            <dataType>11</dataType><!-- dataType: 数据类型(5.short; 9.int; 11.float) -->
+            <publicAddr>1</publicAddr><!-- publicAddr: 公共地址 -->
+            <describe>测试服务器1</describe><!-- describe: 描述 -->
+            <telemetryList><!-- telemetryList: 遥测链表 -->
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>0</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>0</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测地址 -->
+                    <describe>风机1 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>1</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>0</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机1 无功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>2</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>2</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机1 风速</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>3</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>3</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机2 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>4</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>4</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机2 无功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>5</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>5</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机2 风速</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>6</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>6</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机3 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>7</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>7</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机3 无功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>8</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>8</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机3 风速</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>9</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>9</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机4 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>10</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>0</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机4 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+            </telemetryList>
+            <telesignaList><!-- telemetryList: 遥信链表 -->
+                <telesigna><!-- telesigna: 单一遥信信息 -->
+                    <addr>0</addr><!-- addr: 遥信地址 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelesignaAddr>0</clientTelesignaAddr><!-- clientTelesignaAddr: 对应客户端遥信ID -->
+                    <describe>风机1 并网状态</describe><!-- describe: 描述 -->
+                </telesigna>
+            </telesignaList>
+        </server>
+        <server>
+            <id>1</id><!-- id: 服务端ID -->
+            <ip>10.0.0.168</ip><!-- ip: 服务端IP -->
+            <port>2404</port><!-- port: 服务端端口 -->
+            <dataType>11</dataType><!-- dataType: 数据类型(5.short; 9.int; 11.float) -->
+            <publicAddr>1</publicAddr><!-- publicAddr: 公共地址 -->
+            <describe>测试服务器1</describe><!-- describe: 描述 -->
+            <telemetryList><!-- telemetryList: 遥测链表 -->
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>0</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>0</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测地址 -->
+                    <describe>风机1 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>1</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>0</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机1 无功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>2</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>2</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机1 风速</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>3</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>3</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机2 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>4</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>4</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机2 无功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>5</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>5</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机2 风速</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>6</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>6</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机3 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>7</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>7</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机3 无功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry>
+                    <addr>8</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>8</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机3 风速</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>9</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>9</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机4 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>10</addr><!-- addr: 遥测地址 -->
+                    <coeff>1</coeff><!-- coeff: 系数 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelemetryAddr>0</clientTelemetryAddr><!-- clientTelemetryAddr: 对应客户端遥测ID -->
+                    <describe>风机4 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+            </telemetryList>
+            <telesignaList><!-- telemetryList: 遥信链表 -->
+                <telesigna><!-- telesigna: 单一遥信信息 -->
+                    <addr>0</addr><!-- addr: 遥信地址 -->
+                    <clientID>1</clientID><!-- clientID: 对应客户端ID -->
+                    <clientTelesignaAddr>0</clientTelesignaAddr><!-- clientTelesignaAddr: 对应客户端遥信ID -->
+                    <describe>风机1 并网状态</describe><!-- describe: 描述 -->
+                </telesigna>
+            </telesignaList>
+        </server>
+    </serverList>
+    <clientList>
+        <client>
+            <id>1</id><!-- id: 客户端ID -->
+            <ip>10.0.0.2</ip><!-- ip: 客户端IP -->
+            <port>502</port><!-- port: 客户端端口 -->
+            <protocol>1</protocol><!-- protocol: 客户端协议 -->
+            <slaveID>1</slaveID><!-- slaveID: ? -->
+            <generalCallTime>10</generalCallTime><!-- generalCallTime: 总召间隔时长（单位：秒） -->
+            <describe>11#箱变</describe><!-- describe: 描述 -->
+            <telemetryList><!-- telemetryList: 遥测链表 -->
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>0</addr><!-- addr: 遥测地址 -->
+                    <inputFlag>1</inputFlag><!-- inputFlag: ? -->
+                    <dataType>5</dataType><!-- dataType: 数据类型 -->
+                    <describe>风机1 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>1</addr><!-- addr: 遥测地址 -->
+                    <inputFlag>1</inputFlag><!-- inputFlag: ? -->
+                    <dataType>5</dataType><!-- dataType: 数据类型 -->
+                    <describe>风机1 无功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>2</addr><!-- addr: 遥测地址 -->
+                    <inputFlag>1</inputFlag><!-- inputFlag: ? -->
+                    <dataType>5</dataType><!-- dataType: 数据类型 -->
+                    <describe>风机1 风速</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>3</addr><!-- addr: 遥测地址 -->
+                    <inputFlag>1</inputFlag><!-- inputFlag: ? -->
+                    <dataType>5</dataType><!-- dataType: 数据类型 -->
+                    <describe>风机2 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>4</addr><!-- addr: 遥测地址 -->
+                    <inputFlag>1</inputFlag><!-- inputFlag: ? -->
+                    <dataType>5</dataType><!-- dataType: 数据类型 -->
+                    <describe>风机2 无功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>5</addr><!-- addr: 遥测地址 -->
+                    <inputFlag>1</inputFlag><!-- inputFlag: ? -->
+                    <dataType>5</dataType><!-- dataType: 数据类型 -->
+                    <describe>风机2 风速</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>6</addr><!-- addr: 遥测地址 -->
+                    <inputFlag>1</inputFlag><!-- inputFlag: ? -->
+                    <dataType>5</dataType><!-- dataType: 数据类型 -->
+                    <describe>风机3 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>7</addr><!-- addr: 遥测地址 -->
+                    <inputFlag>1</inputFlag><!-- inputFlag: ? -->
+                    <dataType>5</dataType><!-- dataType: 数据类型 -->
+                    <describe>风机3 无功</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>8</addr><!-- addr: 遥测地址 -->
+                    <inputFlag>1</inputFlag><!-- inputFlag: ? -->
+                    <dataType>5</dataType><!-- dataType: 数据类型 -->
+                    <describe>风机3 风速</describe><!-- describe: 描述 -->
+                </telemetry>
+                <telemetry><!-- telemetry: 单一遥测信息 -->
+                    <addr>9</addr><!-- addr: 遥测地址 -->
+                    <inputFlag>1</inputFlag><!-- inputFlag: ? -->
+                    <dataType>5</dataType><!-- dataType: 数据类型 -->
+                    <describe>风机4 有功</describe><!-- describe: 描述 -->
+                </telemetry>
+            </telemetryList>
+            <telesignaList><!-- telemetryList: 遥信链表 -->
+                <telesigna><!-- remoteSign: 遥信链表 -->
+                    <addr>0</addr><!-- addr: 遥信地址 -->
+                    <inputFlag>0</inputFlag><!-- inputFlag: ? -->
+                    <describe>风机1 并网状态</describe><!-- describe: 描述 -->
+                </telesigna>
+            </telesignaList>
+        </client>
+    </clientList>
+</config>

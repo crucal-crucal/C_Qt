@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/xml.jpg</file>
+        <file>bin/new_config.xml</file>
+        <file>bin/old_config.xml</file>
+    </qresource>
+</RCC>
