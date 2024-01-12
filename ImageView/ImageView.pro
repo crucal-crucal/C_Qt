@@ -9,19 +9,16 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    ZH_TO_PY.cpp \
+    GraphicsPixmap.cpp \
     main.cpp \
-    mainwindow.cpp
+    widget.cpp
 
 HEADERS += \
-    ZH_TO_PY.h \
-    mainwindow.h
+    GraphicsPixmap.h \
+    widget.h
 
 FORMS += \
-    mainwindow.ui
-
-RESOURCES += \
-    main.qrc
+    widget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
