@@ -1,4 +1,4 @@
-set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/framelesswidget)
+#set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/framelesswidget)
 set(TARGET_NAME framelesswidget)
 
 if (WIN32)
@@ -10,6 +10,7 @@ aux_source_directory(. SRC_LIST)
 add_library(${TARGET_NAME} SHARED ${SRC_LIST})
 target_link_libraries(${TARGET_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
 
+target_compile_definitions(${TARGET_NAME} PRIVATE FRAMELESSWIDGET_LIB)
 #install(TARGETS ${TARGET_NAME}
 #        RUNTIME DESTINATION bin/framelesswidget
 #)

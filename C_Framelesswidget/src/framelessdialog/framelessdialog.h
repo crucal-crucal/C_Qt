@@ -55,12 +55,12 @@ class FRAMELESSDIALOG_EXPORT FramelessDialog : public QDialog {
 
   public Q_SLOTS:
 	//设置边距+可拖动+可拉伸
-	void setPadding(int padding);
-	void setMoveEnable(bool moveEnable);
-	void setResizeEnable(bool resizeEnable);
+	void setPadding(int _padding);
+	void setMoveEnable(bool _moveEnable);
+	void setResizeEnable(bool _resizeEnable);
 
 	//设置标题栏控件
-	void setTitleBar(QWidget* titleBar);
+	void setTitleBar(QWidget* _titleBar);
 
   Q_SIGNALS:
 	void titleDblClick();

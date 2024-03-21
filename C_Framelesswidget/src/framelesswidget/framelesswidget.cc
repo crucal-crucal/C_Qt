@@ -355,24 +355,24 @@ bool FramelessWidget::winEvent(MSG *message, long *result)
 #endif
 #endif
 
-void FramelessWidget::setPadding(int padding)
+void FramelessWidget::setPadding(int _padding)
 {
-    this->padding = padding;
+    this->padding = _padding;
 }
 
-void FramelessWidget::setMoveEnable(bool moveEnable)
+void FramelessWidget::setMoveEnable(bool _moveEnable)
 {
-    this->moveEnable = moveEnable;
+    this->moveEnable = _moveEnable;
 }
 
-void FramelessWidget::setResizeEnable(bool resizeEnable)
+void FramelessWidget::setResizeEnable(bool _resizeEnable)
 {
-    this->resizeEnable = resizeEnable;
+    this->resizeEnable = _resizeEnable;
 }
 
-void FramelessWidget::setTitleBar(QWidget *titleBar)
+void FramelessWidget::setTitleBar(QWidget *_titleBar)
 {
-    this->titleBar = titleBar;
+    this->titleBar = _titleBar;
     this->titleBar->installEventFilter(this);
 }
 

@@ -8,12 +8,18 @@ framelessdialog_p::framelessdialog_p(QWidget* parent) : FramelessDialog(parent) 
 	createCtrl();
 	layout();
 	initConnection();
+	initStyle();
+	resize(600, 300);
 }
 
 void framelessdialog_p::createCtrl() {
 	m_pLbTitle = new QLabel(this);
-	m_pLbTitle->setText(tr("FramelessDialog"));
-	this->setWindowTitle(m_pLbTitle->text());
+	m_pLbTitle->setFixedHeight(50);
+
+	m_pLbTitleText = new QLabel(this);
+	m_pLbTitleText->setText(tr("FramelessDialog"));
+	this->setWindowTitle(m_pLbTitleText->text());
+	this->setTitleBar(m_pLbTitle);
 
 	m_pBtnMin = new QPushButton(this);
 	m_pBtnMin->setText(tr("Min"));
@@ -33,15 +39,17 @@ void framelessdialog_p::createCtrl() {
 void framelessdialog_p::layout() {
 	m_pHBoxLayTitle->setMargin(0);
 	m_pHBoxLayTitle->setSpacing(10);
-	m_pHBoxLayTitle->addWidget(m_pLbTitle);
+	m_pHBoxLayTitle->addWidget(m_pLbTitleText);
 	m_pHBoxLayTitle->addStretch();
 	m_pHBoxLayTitle->addWidget(m_pBtnMin);
 	m_pHBoxLayTitle->addWidget(m_pBtnMax);
 	m_pHBoxLayTitle->addWidget(m_pBtnClose);
 
+	m_pLbTitle->setLayout(m_pHBoxLayTitle);
+
 	m_pVBoxLayCenter->setMargin(0);
 	m_pVBoxLayCenter->setSpacing(0);
-	m_pVBoxLayCenter->addLayout(m_pHBoxLayTitle);
+	m_pVBoxLayCenter->addWidget(m_pLbTitle);
 	m_pVBoxLayCenter->addWidget(m_pCenterWidget);
 }
 
@@ -74,4 +82,9 @@ void framelessdialog_p::on_btnMax_clicked() {
 
 void framelessdialog_p::on_btnClose_clicked() {
 	this->close();
+}
+
+void framelessdialog_p::initStyle() {
+	m_pCenterWidget->setStyleSheet("background-color: black;");
+	m_pLbTitle->setStyleSheet("background-color: grey; color: white;");
 }

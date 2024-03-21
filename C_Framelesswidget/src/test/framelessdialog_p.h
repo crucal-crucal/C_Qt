@@ -24,9 +24,12 @@ class framelessdialog_p : public FramelessDialog {
 	void createCtrl();
 	void layout();
 	void initConnection();
+	void initStyle();
 
   private:
 	QLabel* m_pLbTitle{nullptr};
+
+	QLabel* m_pLbTitleText{nullptr};
 	QPushButton* m_pBtnMin{nullptr};
 	QPushButton* m_pBtnMax{nullptr};
 	QPushButton* m_pBtnClose{nullptr};

@@ -28,7 +28,7 @@ FramelessDialog::FramelessDialog(QWidget *parent) : QDialog(parent)
 
     isMin = false;
     flags = this->windowFlags();
-    titleBar = 0;
+    titleBar = nullptr;
 
     //设置背景透明 官方在5.3以后才彻底修复 WA_TranslucentBackground+FramelessWindowHint 并存不绘制的bug
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
@@ -355,24 +355,24 @@ bool FramelessDialog::winEvent(MSG *message, long *result)
 #endif
 #endif
 
-void FramelessDialog::setPadding(int padding)
+void FramelessDialog::setPadding(int _padding)
 {
-    this->padding = padding;
+    this->padding = _padding;
 }
 
-void FramelessDialog::setMoveEnable(bool moveEnable)
+void FramelessDialog::setMoveEnable(bool _moveEnable)
 {
-    this->moveEnable = moveEnable;
+    this->moveEnable = _moveEnable;
 }
 
-void FramelessDialog::setResizeEnable(bool resizeEnable)
+void FramelessDialog::setResizeEnable(bool _resizeEnable)
 {
-    this->resizeEnable = resizeEnable;
+    this->resizeEnable = _resizeEnable;
 }
 
-void FramelessDialog::setTitleBar(QWidget *titleBar)
+void FramelessDialog::setTitleBar(QWidget *_titleBar)
 {
-    this->titleBar = titleBar;
+    this->titleBar = _titleBar;
     this->titleBar->installEventFilter(this);
 }
 

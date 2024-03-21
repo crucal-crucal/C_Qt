@@ -1,4 +1,4 @@
-set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/framelessdialog)
+#set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/framelessdialog)
 set(TARGET_NAME framelessdialog)
 
 if (WIN32)
