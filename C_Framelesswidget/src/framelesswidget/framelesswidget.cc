@@ -28,7 +28,7 @@ FramelessWidget::FramelessWidget(QWidget *parent) : QWidget(parent)
 
     isMin = false;
     flags = this->windowFlags();
-    titleBar = 0;
+    titleBar = nullptr;
 
     //设置背景透明 官方在5.3以后才彻底修复 WA_TranslucentBackground+FramelessWindowHint 并存不绘制的bug
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
