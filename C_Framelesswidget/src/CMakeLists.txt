@@ -4,7 +4,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_STANDARD 17)
 
 # 从环境变量中获取 Qt 路径，查找 qmake
-if (WIN32)
+if (WIN32 OR UNIX)
     set(QT_DIR $ENV{QTDIR})
     message(STATUS "QT_DIR=$ENV{QT_DIR}")
     find_program(QMAKE_EXECUTABLENAMES qmake HINTS $ENV{QT_DIR} PATH_SUFFIXES bin)
