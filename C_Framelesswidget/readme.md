@@ -1,6 +1,7 @@
 在Linux版本中使用需要先 export QTDIR=/path/to/qt
 
 上述/path/to/qt为Qt实际安装路径，目前测试过Ubuntu 22.04.3 LTS版本。
+
 ![img.png](img.png)
 
 example:
