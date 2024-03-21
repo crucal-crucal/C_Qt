@@ -23,7 +23,11 @@ endif ()
 
 include_directories(${QT_DIR}/include)
 
-find_package(Qt5
+if (UNIX)
+    set(CMAKE_PREFIX_PATH ${QT_DIR})
+endif ()
+
+find_package(${Qt}
         COMPONENTS
         Core
         Gui
