@@ -14,9 +14,15 @@ set(test_SOURCES
 )
 
 add_executable(${TARGET_NAME}
+        WIN32
         main.cpp
         ${test_SOURCES}
 )
 
 target_link_libraries(${TARGET_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
 target_link_libraries(${TARGET_NAME} framelessdialog framelessmainwindow framelesswidget)
+
+install(TARGETS ${TARGET_NAME}
+        RUNTIME DESTINATION bin
+)
+

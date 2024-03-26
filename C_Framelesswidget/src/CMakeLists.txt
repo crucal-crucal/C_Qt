@@ -8,6 +8,7 @@ if (WIN32 OR UNIX)
     set(QT_DIR $ENV{QTDIR})
     message(STATUS "QT_DIR=$ENV{QT_DIR}")
     find_program(QMAKE_EXECUTABLENAMES qmake HINTS $ENV{QT_DIR} PATH_SUFFIXES bin)
+    set(CMAKE_PREFIX_PATH ${QT_DIR})
 endif ()
 
 # 查询 Qt 版本 并存储再 QT_VERSION 中
@@ -22,10 +23,6 @@ else ()
 endif ()
 
 include_directories(${QT_DIR}/include)
-
-if (UNIX)
-    set(CMAKE_PREFIX_PATH ${QT_DIR})
-endif ()
 
 find_package(${Qt}
         COMPONENTS

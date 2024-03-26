@@ -1,4 +1,4 @@
-#set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/framelessdialog)
+#set(LIBRARY_OUTPUT_PATH ${OUT_PUT_ROOT_PATH}/application)
 set(TARGET_NAME framelessdialog)
 
 if (WIN32)
@@ -12,12 +12,12 @@ target_link_libraries(${TARGET_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
 
 target_compile_definitions(${TARGET_NAME} PRIVATE FRAMELESSDIALOG_LIB)
 
-#install(TARGETS ${TARGET_NAME}
-#        RUNTIME DESTINATION bin/framelessdialog
-#)
-#
-#install(TARGETS ${TARGET_NAME}
-#        ARCHIVE  DESTINATION lib/framelessdialog OPTIONAL
-#)
-#
-#install(FILES $<TARGET_PDB_FILE:${TARGET_NAME}> DESTINATION pdb/framelessdialog OPTIONAL)
+install(TARGETS ${TARGET_NAME}
+        RUNTIME DESTINATION bin
+)
+
+install(TARGETS ${TARGET_NAME}
+        ARCHIVE  DESTINATION lib OPTIONAL
+)
+
+install(FILES $<TARGET_PDB_FILE:${TARGET_NAME}> DESTINATION pdb OPTIONAL)
