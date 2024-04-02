@@ -13,7 +13,7 @@ endfunc
 "colorscheme desert 
 "colorscheme desert 
 "colorscheme elflord
-colorscheme ron
+colorscheme molokai
 
 
 
