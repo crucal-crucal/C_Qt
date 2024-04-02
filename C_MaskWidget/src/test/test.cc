@@ -64,11 +64,15 @@ void test::btn1_clicked() {
 }
 
 void test::btn2_clicked() {
+	// 模糊背景
+	auto *blurEffect = new QGraphicsBlurEffect(this);
+	blurEffect->setBlurRadius(5); // 设置模糊半径，可以根据需要调整
+	this->setGraphicsEffect(blurEffect);
 	// 遮罩
 	QScopedPointer<QWidget> shadow(new QWidget(this));
 	shadow->setFixedSize(this->size());
 	QPalette pal(shadow->palette());
-	pal.setColor(QPalette::Window, QColor(0, 0, 0, 90));
+	pal.setColor(QPalette::Window, QColor(0, 0, 0, 64));
 	// 设置阴影层自动填充背景，以使颜色生效
 	shadow->setAutoFillBackground(true);
 	shadow->setPalette(pal);
@@ -81,4 +85,5 @@ void test::btn2_clicked() {
 	d2->exec();
 
 	shadow->deleteLater();
+	this->setGraphicsEffect(nullptr);
 }

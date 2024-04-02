@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTimer>
+#include <QGraphicsBlurEffect>
 
 #include "MaskWidget/MaskWidget.h"
 
