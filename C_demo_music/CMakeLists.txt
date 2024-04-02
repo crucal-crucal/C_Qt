@@ -9,6 +9,25 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if (WIN32 OR UNIX)
+    set(QT_DIR $ENV{QTDIR})
+    message(STATUS "QT_DIR=$ENV{QT_DIR}")
+    find_program(QMAKE_EXECUTABLENAMES qmake HINTS $ENV{QT_DIR} PATH_SUFFIXES bin)
+    set(CMAKE_PREFIX_PATH ${QT_DIR})
+endif ()
+
+execute_process(COMMAND ${QMAKE_EXECUTABLENAMES} -query QT_VERSION OUTPUT_VARIABLE QT_VERSION)
+if (QT_VERSION)
+    message(STATUS "Qt version: " ${QT_VERSION})
+    string(REPLACE "." ";" QT_VERSION_LIST ${QT_VERSION})
+    list(GET QT_VERSION_LIST 0 QT_VERSION_MAJOR)
+    set(Qt "Qt${QT_VERSION_MAJOR}")
+else ()
+    message(FATAL_ERROR "Qt version not found. Please check if the QTDIR environment variable is set correctly.")
+endif ()
+
+include_directories(${QT_DIR}/include)
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick)
 
@@ -17,7 +36,7 @@ include_directories(headers)
 set(PROJECT_SOURCES
     Resources/qml.qrc
     Resources/images.qrc
-    Headers/HttpUtils.h
+    Src/HttpUtils.h
     Src/HttpUtils.cpp
     Src/App.cpp
 )
