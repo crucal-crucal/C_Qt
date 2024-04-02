@@ -20,7 +20,13 @@ add_executable(${TARGET_NAME}
 )
 
 target_link_libraries(${TARGET_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
-target_link_libraries(${TARGET_NAME} framelessdialog framelessmainwindow framelesswidget)
+target_link_libraries(${TARGET_NAME}
+        framelessdialog
+        framelessmainwindow
+        framelesswidget
+        framelessMessageBox_1
+        framelessMessageBox_2
+)
 
 install(TARGETS ${TARGET_NAME}
         RUNTIME DESTINATION bin
