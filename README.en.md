@@ -1,5 +1,3 @@
-# Qt6
-
-#### Description
-It contains several Qt6 mini-projects and Qt5 mini-projects, including CMake builds, QMake builds, and VS builds
-
+#### Introduction
+Common configurations of vim and tmux on Linux stored by A_conf
+C_* CMake & qmake build project
