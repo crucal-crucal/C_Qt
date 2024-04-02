@@ -70,9 +70,7 @@ bool MaskWidget::eventFilter(QObject* watched, QEvent* event) {
 }
 
 void MaskWidget::setMainWidget(QWidget* _mainWidget) {
-	if (this->mainWidget != _mainWidget) {
-		this->mainWidget = _mainWidget;
-	}
+	mainWidget = _mainWidget;
 }
 
 void MaskWidget::setDialogNames(const QStringList& _dialogNames) {

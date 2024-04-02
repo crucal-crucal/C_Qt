@@ -21,14 +21,17 @@ class test : public QMainWindow {
 	void initConnection();
 
   private slots:
-	void btn_clicked();
+	void btn1_clicked();
+	void btn2_clicked();
 	void initForm();
 
   private:
 	QWidget* m_pCenterWidget{nullptr};
-	QPushButton* m_pBtn{nullptr};
+	QPushButton* m_pBtn1{nullptr};
+	QPushButton* m_pBtn2{nullptr};
 
 	QHBoxLayout* m_pBtnHLayout{nullptr};
 	QVBoxLayout* m_pCenterVLayout{nullptr};
-	QDialog* d{nullptr};
+	QDialog* d1{nullptr};
+	QDialog* d2{nullptr};
 };
