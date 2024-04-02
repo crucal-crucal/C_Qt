@@ -1,0 +1,454 @@
+/*背景颜色*/
+QWidget#titleWidget
+{
+    background-color:rgb(236,65,65);
+}
+QWidget#centralWidget
+{
+     background-color:rgb(255,255,255);
+}
+
+/*标题LOGO文件*/
+QLabel#logoLabel
+{
+        image:url(images/title/wyy.png);
+}
+/*关闭按钮*/
+QPushButton#closeButton
+{
+        image:url(images/title/关闭.png);
+}
+QPushButton::hover#closeButton
+{
+        image:url(images/title/关闭.png);
+}
+QPushButton::pressed#closeButton
+{
+        image:url(images/title/关闭.png);
+}
+
+/*最大化按钮*/
+QPushButton#maximizedButton
+{
+        image:url(images/title/最大化.png);
+}
+QPushButton::hover#maximizedButton
+{
+        image:url(images/title/最大化.png);
+}
+QPushButton::pressed#maximizedButton
+{
+        image:url(images/title/最大化.png);
+}
+/*最小化按钮*/
+QPushButton#minimizedButton
+{
+        image:url(images/title/最小化.png);
+}
+QPushButton::hover#minimizedButton
+{
+        image:url(images/title/最小化.png);
+}
+QPushButton::pressed#minimizedButton
+{
+        image:url(images/title/最小化.png);
+}
+/*迷你按钮*/
+QPushButton#miniButton
+{
+        image:url(images/title/mini.png);
+}
+QPushButton::hover#miniButton
+{
+        image:url(images/title/mini.png);
+}
+QPushButton::pressed#miniButton
+{
+        image:url(images/title/mini.png);
+}
+
+/*后退按钮*/
+QPushButton#leftButton
+{
+    image:url(images/title/后退.png);
+    background-color: rgb(217,59,59);
+    border-radius:10px;
+}
+QPushButton::hover#leftButton
+{
+        image:url(images/title/后退.png);
+
+}
+QPushButton::pressed#leftButton
+{
+        image:url(images/title/后退.png);
+
+}
+/*前进按钮*/
+QPushButton#rightButton
+{
+    image:url(images/title/前进.png);
+    background-color: rgb(217,59,59);
+    border-radius:10px;
+
+}
+
+QPushButton::hover#rightButton
+{
+        image:url(images/title/前进.png);
+}
+QPushButton::pressed#rightButton
+{
+        image:url(images/title/前进.png);
+}
+
+
+
+/*搜索按钮*/
+QPushButton#searchButton
+{
+    image:url(images/title/搜索.png)
+}
+
+/*搜索框*/
+QLineEdit#searchEdit
+{
+    background:rgb(255,62,62);
+    border-radius:10px;
+    padding:0px,0px,0px,0px;
+    font-size:14;
+    font-family:"微软雅黑";
+    color:rgb(255,255,255);
+}
+
+
+/*searchwindow中QListWidget的滚动条样式，不知道为什么使用setstylesheet()不生效，放在这里就可以*/
+QScrollBar:vertical{width:8px;background:transparent;}
+QScrollBar::handle:vertical{background:rgb(224,224,224); width:5px; border-radius:3px;}
+QScrollBar::up-arrow:vertical{border:none;}
+QScrollBar::sub-line:vertical{background:transparent;}
+QScrollBar::add-line:vertical{background:transparent;}
+
+QLineEdit::pressed#searchEdit
+{
+    font-family:"微软雅黑";
+    font-size:14;
+    color:rgb(255,255,255);
+}
+
+
+/*话筒按钮*/
+QPushButton#microphoneButton
+{
+    background-color:rgb(217,59,59);
+    border-radius:10px;
+    image:url(images/title/话筒.png);
+}
+
+/*个人中心按钮*/
+QPushButton#iconButton
+{
+        image:url(images/17a6200817b7648304d495fca73e9460.jpeg);
+        border-radius:15px;
+}
+
+/*个人中心按钮*/
+QPushButton#personButton
+{
+    image:url(images/title/person.png);
+    color:rgb(217,217,217);
+    font-family:"微软雅黑";
+}
+QPushButton::hover#personButton
+{
+        image:url(images/title/person.png);
+}
+QPushButton::pressed#personButton
+{
+        image:url(images/title/person.png);
+}
+
+
+/*personalcenterwindow的qss样式表*/
+
+
+
+QPushButton#vipButton
+{
+        image:url(images/title/vip.png);
+}
+
+/*皮肤主题按钮*/
+QPushButton#skinButton
+{
+        image:url(images/title/皮肤.png);
+}
+
+/*设置主题按钮*/
+QPushButton#settingsButton
+{
+        image:url(images/title/设置.png);
+}
+
+/*皮肤主题按钮*/
+QPushButton#messageButton
+{
+        image:url(images/title/邮件.png);
+}
+
+/*消息提示框*/
+QLabel#messageCountLabel
+{
+        color: rgb(255, 0, 0);
+        background-color: rgb(255, 255, 255);
+        border-radius: 7px;
+}
+
+/*分割条*/
+QLabel#separatorLabel
+{
+        color: rgb(255,255,255);
+}
+
+
+/*音乐播放条*/
+QSlider::add-page:Horizontal#musicProgressSlider
+{
+        background-color: rgb(205,205,205);height:4px;
+}
+QSlider::sub-page:Horizontal#musicProgressSlider
+{
+        background-color: rgb(255,78,78);height:4px;
+}
+QSlider::handle:Horizontal#musicProgressSlider
+{
+        width:14px;image: url(images/tail/音乐进度点.png);margin:-4 px -4px;
+}
+QSlider::groove:Horizontal#musicProgressSlider
+{
+        background:rgb(0, 255, 0);height:4px;
+}
+
+/*左下角歌曲图标*/
+QPushButton#musicIconButton
+{
+    image:url(images/17a6200817b7648304d495fca73e9460.jpeg);
+}
+
+/*我喜欢按钮*/
+QPushButton#likeButton
+{
+    image:url(images/tail/心.png);
+
+}
+
+/*列表循环按钮*/
+QPushButton#loopStateButton
+{
+    image:url(images/tail/列表循环.png);
+}
+
+/*上一曲*/
+QPushButton#lastMusicButton
+{
+    image:url(images/tail/上一曲1.png);
+}
+
+/*下一曲*/
+QPushButton#nextMusicButton
+{
+    image:url(images/tail/下一曲1.png);
+
+}
+
+/*播放按钮*/
+QPushButton#playAndStopButton
+{
+    image:url(images/tail/播放.png);
+}
+
+QPushButton:checked#playAndStopButton
+{
+    image:url(images/tail/暂停.png);
+}
+
+/*桌面歌词*/
+QPushButton#lyricButton
+{
+    image:url(images/tail/词.png);
+}
+
+/*音质*/
+QPushButton#qualityButton
+{
+     image:url(images/tail/标准.png);
+}
+
+/*音效*/
+QPushButton#soundEffectButton
+{
+     image:url(images/tail/音效.png);
+}
+
+/*音量*/
+QPushButton#volumeButton
+{
+     image:url(images/tail/音量.png);
+}
+
+/*k歌按钮*/
+QPushButton#karaokeButton
+{
+     image:url(images/tail/k歌.png);
+}
+
+/*播放列表*/
+QPushButton#playlistButton
+{
+     image:url(images/tail/播放列表.png);
+}
+
+/*已播放时长和歌曲总时长*/
+QLabel#playedTimeLabel,#durationTimeLabel
+{
+    color:rgb(175, 175, 175);
+}
+
+/*歌曲名*/
+QLabel#musicNameLabel
+{
+    color:rgb(197,197,197);
+}
+
+/*首页左侧的列表组件*/
+QScrollArea#scrollArea
+{
+    background-color:rgb(255,255,255);
+    border:0px;
+    border-right:1px solid rgb(205,205,205);
+}
+
+QWidget#scrollAreaWidgetContents
+{
+    background-color:rgb(255,255,255);
+}
+
+QListWidget#listT1,#listT2,#listT3
+{
+    padding-top:5px;
+    border:0px;
+    color:rgb(55,55,55);
+    background-color:rgb(255,255,255);
+    padding-left:15px;
+}
+
+QListWidget::Item#listT1,::Item#listT2,::Item#listT3
+{
+    height:36;
+    border:0px solid rgb(255,255,255);
+    padding-top:1px;
+}
+
+QListWidget::Item:hover#listT1,::Item:hover#listT2,::Item:hover#listT3
+{
+    background-color:rgb(246,246,247);
+}
+
+QListWidget::Item:selected#listT1,::Item:selected#listT2,::Item:selected#listT3
+{
+    font-size:16px;
+    font-weight: bold;
+    color:rgb(55,55,55);
+    border:0px;
+    background-color:rgb(246,246,247);
+}
+
+QLabel#myMusicLabel,#createSonglistLabel
+{
+    padding-left:15px;
+    background-color:rgb(255,255,255);
+    color:rgb(159,159,159);
+}
+
+QPushButton#addButton
+{
+    image:url(images/homeList/加.png);
+    background-color:rgb(255,255,255);
+}
+
+QPushButton:hover#addButton
+{
+    background-color:rgb(246,246,247);
+}
+
+
+/*如果不去轮廓线,item被选中的有问题*/
+*
+{
+    outline:0px;
+}
+
+
+
+/*首页右侧TabWidget*/
+QTabWidget::pane
+{
+    top:10px;
+    border:0px;
+}
+
+QTabBar::tab
+{
+    background-color:rgb(255,255,255);
+    border-bottom:3px solid rgb(255,255,255);
+    font-family:"微软雅黑";
+    font-size:16px;
+    padding-left:5px;
+    padding-right:5px;
+    width:85px;
+    height:30px;
+}
+
+QTabBar::tab:hover
+{
+    border-bottom:3px solid rgb(236,65,65);
+    color:rgb(55,55,55);
+    font-size:20px;
+    font-weight:bold;
+}
+
+
+QTabBar::tab:selected
+{
+    border-bottom:3px solid rgb(236,65,65);
+    color:rgb(55,55,55);
+    font-size:20px;
+    font-weight:bold;
+}
+
+
+
+QPushButton#recommendSongBtn1
+{
+    image:url(images/homeTab/recommend/recommedSongList/歌单1.png);
+}
+
+QPushButton#recommendSongBtn2
+{
+    image:url(images/homeTab/recommend/recommedSongList/歌单2.png);
+}
+
+QPushButton#recommendSongBtn3
+{
+    image:url(images/homeTab/recommend/recommedSongList/歌单3.png);
+}
+
+QPushButton#recommendSongBtn4
+{
+    image:url(images/homeTab/recommend/recommedSongList/歌单4.png);
+}
+
+QPushButton#recommendSongBtn5
+{
+    image:url(images/homeTab/recommend/recommedSongList/歌单5.png);
+}

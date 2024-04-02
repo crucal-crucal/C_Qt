@@ -1,0 +1,35 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 47b8f66 (update)
+<RCC>
+    <qresource prefix="/images">
+        <file>images/051.JPG</file>
+        <file>images/072.JPG</file>
+        <file>images/075.JPG</file>
+        <file>images/132.bmp</file>
+        <file>images/212.bmp</file>
+        <file>images/620.bmp</file>
+        <file>images/624.bmp</file>
+        <file>images/826.bmp</file>
+        <file>images/828.bmp</file>
+    </qresource>
+</RCC>
+<<<<<<< HEAD
+=======
+<RCC>
+    <qresource prefix="/images">
+        <file>images/051.JPG</file>
+        <file>images/072.JPG</file>
+        <file>images/075.JPG</file>
+        <file>images/132.bmp</file>
+        <file>images/212.bmp</file>
+        <file>images/620.bmp</file>
+        <file>images/624.bmp</file>
+        <file>images/826.bmp</file>
+        <file>images/828.bmp</file>
+    </qresource>
+</RCC>
+>>>>>>> cdd08f869638039635144f291da04c841be7fc1c
+=======
+>>>>>>> 47b8f66 (update)
