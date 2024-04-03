@@ -1,0 +1,1 @@
+MSVC构建，Qt6，QTabWidget使用

@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->pushButton->setEnabled(false);
 
-    connect(ui->tabWidget, QTabWidget::tabCloseRequested, this, [&](int idx) {
+    connect(ui->tabWidget, &QTabWidget::tabCloseRequested, this, [&](int idx) {
         QWidget *wg = ui->tabWidget->widget(idx);
         QString name = ui->tabWidget->tabText(idx);
         m_widget.emplaceBack(wg), m_name.emplaceBack(name);
