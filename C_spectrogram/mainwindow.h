@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QRandomGenerator>
-#include "../../qcustomplot/qcustomplot.h"
+#include "qcustomplot/qcustomplot.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
