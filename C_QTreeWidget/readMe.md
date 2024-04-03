@@ -1,0 +1,1 @@
+MinGW构建，需要Qt6，QTreeWidget使用
