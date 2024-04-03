@@ -1,0 +1,1 @@
+MSVC构建，QListWidget使用
