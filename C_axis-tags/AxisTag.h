@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QPen>
 #include <QBrush>
-#include "../../qcustomplot/qcustomplot.h"
+#include "qcustomplot//qcustomplot.h"
 
 class AxisTag : public QObject
 {

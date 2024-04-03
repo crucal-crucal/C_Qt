@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "qcustomplot.h"
+#include "qcustomplot//qcustomplot.h"
 #include "AxisTag.h"
 
 QT_BEGIN_NAMESPACE

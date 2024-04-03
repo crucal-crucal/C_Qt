@@ -12,12 +12,12 @@ SOURCES += \
     AxisTag.cpp \
     main.cpp \
     mainwindow.cpp \
-    qcustomplot.cpp
+    qcustomplot\qcustomplot.cpp
 
 HEADERS += \
     AxisTag.h \
     mainwindow.h \
-    qcustomplot.h
+    qcustomplot\qcustomplot.h
 
 FORMS += \
     mainwindow.ui
