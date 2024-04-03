@@ -1,6 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include <iostream>
+#include <QDebug>
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
