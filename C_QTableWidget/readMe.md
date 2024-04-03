@@ -1,0 +1,1 @@
+MinGW构建，QTableWidget使用, Qt6
