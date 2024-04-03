@@ -6,7 +6,7 @@ source ~/.bashrc
 
 上述/path/to/qt为Qt实际安装路径，目前测试过Ubuntu 22.04.3 LTS版本。
 
-![img.png](img.png)
+![img.png](image/img.png)
 
 example:
 先执行
@@ -16,4 +16,4 @@ source ~/.bashrc
 
 再 export 查看路径
 
-![img_1.png](img_1.png)
+![img_1.png](image/img_1.png)

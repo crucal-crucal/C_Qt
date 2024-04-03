@@ -216,7 +216,7 @@ void CUVBaseDialog::paintEvent(QPaintEvent* event) {
 				rtItem.setLeft(rtIcon.right() + 23);
 			}
 			QString strTitle = m_strTitle;
-			if (fontMetrics.width(m_strTitle) > rtItem.width()) {
+			if (fontMetrics.horizontalAdvance(m_strTitle) > rtItem.width()) {
 				strTitle = fontMetrics.elidedText(m_strTitle, Qt::ElideRight, rtItem.width());
 			}
 			painter.drawText(rtItem, strTitle, QTextOption(Qt::AlignLeft | Qt::AlignVCenter));
@@ -225,6 +225,7 @@ void CUVBaseDialog::paintEvent(QPaintEvent* event) {
 }
 
 bool CUVBaseDialog::nativeEvent(const QByteArray& eventType, void* message, long* result) {
+#ifdef Q_OS_WIN
 	if (!m_bResizeable) {
 		return false;
 	}
@@ -298,6 +299,7 @@ bool CUVBaseDialog::nativeEvent(const QByteArray& eventType, void* message, long
 		default: break;
 	}
 
+#endif
 	return false;
 }
 

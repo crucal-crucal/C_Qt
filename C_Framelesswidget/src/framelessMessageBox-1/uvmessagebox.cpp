@@ -13,7 +13,7 @@ CUVMessageBox::CUVMessageBox(QMessageBox::Icon icon, const QString& title, const
 	QFont curFont = font();
 	curFont.setPixelSize(16);
 	QFontMetrics fontMetrics(curFont);
-	int nMinWidth = fontMetrics.width(title);
+	int nMinWidth = fontMetrics.horizontalAdvance(title);
 	connect(m_pMessageBox, &QMessageBox::buttonClicked, this, &CUVMessageBox::onMsgBoxButtonClicked);
 }
 
@@ -121,7 +121,7 @@ CUVCountdownMessageBox::CUVCountdownMessageBox(QMessageBox::Icon icon, const QSt
 	QFont curFont = font();
 	curFont.setPixelSize(16);
 	QFontMetrics fontMetrics(curFont);
-	int nMinWidth = fontMetrics.width(title);
+	int nMinWidth = fontMetrics.horizontalAdvance(title);
 	resize(nMinWidth + 100, 100);
 }
 

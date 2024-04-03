@@ -46,6 +46,7 @@ set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strf
 set laststatus=1    " 启动显示状态行(1),总是显示状态行(2)  
 set foldenable      " 允许折叠  
 set foldmethod=manual   " 手动折叠  
+set iskeyword+=#
 "set background=dark "背景使用黑色 
 set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限  
 " 显示中文帮助
@@ -63,7 +64,7 @@ endif
 """""新文件标题
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "新建.c,.h,.sh,.java文件，自动插入文件头 
-autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java exec ":call SetTitle()" 
+autocmd BufNewFile *.cc *.cxx *.cpp,*.[ch],*.sh,*.java exec ":call SetTitle()" 
 ""定义函数SetTitle，自动插入文件头 
 func SetTitle() 
 	"如果文件类型为.sh文件 
@@ -85,7 +86,7 @@ func SetTitle()
 		call append(line(".")+4, " ************************************************************************/") 
 		call append(line(".")+5, "")
 	endif
-	if &filetype == 'cpp'
+	if &filetype == 'cpp' || &filetype == 'cxx' || &filetype == 'cc'
 		call append(line(".")+6, "#include<iostream>")
 		call append(line(".")+7, "using namespace std;")
 		call append(line(".")+8, "")

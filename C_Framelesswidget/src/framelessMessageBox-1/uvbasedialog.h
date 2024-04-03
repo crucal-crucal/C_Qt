@@ -2,9 +2,11 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDesktopServices>
+#ifdef Q_OS_WIN
 #include <Windowsx.h>
 #include <Windows.h>
 #include <WinUser.h>
+#endif
 #include <QStyleOption>
 #include <QPainter>
 #include <QPushButton>
