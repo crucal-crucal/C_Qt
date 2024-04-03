@@ -2,6 +2,7 @@
 #include "ui_widget.h"
 
 #include <QtEndian>
+#include <QDebug>
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)

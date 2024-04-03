@@ -1,0 +1,1 @@
+MSVC 构建，压缩图片为 QByteArray 数据
