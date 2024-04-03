@@ -1,0 +1,1 @@
+CMake + vs2022构建，Qt操作MySql demo
