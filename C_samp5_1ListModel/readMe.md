@@ -1,0 +1,1 @@
+MinGW构建，Qt6，ListModel
