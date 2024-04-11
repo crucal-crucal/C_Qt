@@ -4,7 +4,7 @@
 #include "logger/Logger.h"
 
 CMergeDir::CMergeDir(QStringList _filePaths, QString _outputFilePath, QString dirname, QObject* parent)
-	: QRunnable(), QObject(parent), m_sourcefilePaths(std::move(_filePaths)), m_dirname(std::move(dirname)),
+	: QRunnable(), QThread(parent), m_sourcefilePaths(std::move(_filePaths)), m_dirname(std::move(dirname)),
 	  m_outputFilePath(std::move(_outputFilePath)) {}
 
 CMergeDir::~CMergeDir() = default;

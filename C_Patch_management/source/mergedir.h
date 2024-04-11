@@ -10,7 +10,7 @@
 #include <QStack>
 #include <QWaitCondition>
 
-class CMergeDir : public QObject, public QRunnable {
+class CMergeDir : public QThread, public QRunnable {
   Q_OBJECT
 
   public:
@@ -31,4 +31,6 @@ class CMergeDir : public QObject, public QRunnable {
 
 	QMutex m_mutexProcess{};
 	qint64 currentFile{0};
+
+	bool m_stopRequested{false};
 };

@@ -107,6 +107,7 @@ class CPatch : public FramelessMainWindow {
 	QComboBox* m_pCbStartTime{nullptr};
 	QComboBox* m_pCbEndTime{nullptr};
 	QPushButton* m_pBtnGenerate{nullptr};
+	QLabel* m_pLbThreadNum{nullptr};
 	QComboBox* m_pCbThreadNum{nullptr};
 	QLabel* m_pLbTime{nullptr};
 	QLabel* m_pLbCopy{nullptr};
@@ -150,7 +151,11 @@ class CPatch : public FramelessMainWindow {
 	QString m_dirname{};
 	QString m_outDirName{};
 	QTimer* m_pFlickerTimer{nullptr};
+	int m_GenerateTime{0};
+	QTimer* m_pGenerateTime{nullptr};
 
 	qint64 m_localProcess{0};
 	qint64 m_totalProcess{0};
+
+	bool m_bIsGenerate{false};
 };

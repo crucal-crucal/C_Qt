@@ -87,7 +87,7 @@ void CPatch::onBtnGenerateClicked() {
 		}
 	}
 
-	QString outDirName = "output" + QDateTime::currentDateTime().toString("yyyy-MM-dd");
+	QString outDirName = "output" + QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm");
 	m_outDirName = outDirName;
 	m_output = qApp->applicationDirPath() + QDir::separator() + outDirName;
 
@@ -97,7 +97,7 @@ void CPatch::onBtnGenerateClicked() {
 	m_localProcess = filesToMerge.size();
 //	groupFilesBySecondDirectory(filePaths, m_dirname);
 
-	QThreadPool::globalInstance()->setMaxThreadCount(3);
+	QThreadPool::globalInstance()->setMaxThreadCount(m_pCbThreadNum->currentText().toInt());
 
 	int numThreads = QThreadPool::globalInstance()->maxThreadCount();
 	int numFiles = filesToMerge.size();
@@ -114,15 +114,31 @@ void CPatch::onBtnGenerateClicked() {
 		worker->setAutoDelete(true);
 	}
 
-	m_pLbCopy->setText(tr("Copying..."));
-	for (auto& worker : workers) {
-		QThreadPool::globalInstance()->start(worker);
+	if (!m_bIsGenerate) {
+		m_pBtnGenerate->setText(tr("Generate"));
+		m_pLbCopy->setText(tr("Copying..."));
+		m_pGenerateTime->start();
+		for (auto& worker : workers) {
+			QThreadPool::globalInstance()->start(worker);
+		}
+
+		QString msg = tr("Merge directories from ") + begin + tr(" To ") + end + tr(" for ") + outDirName;
+		Logger::instance().logInfo(msg);
+
+		updatePage(begin, end, outDirName);
+	} else {
+		m_pBtnGenerate->setText(tr("Cancel"));
+		m_pLbCopy->setText(tr("Cancel..."));
+		m_pGenerateTime->stop();
+		for (auto& worker : workers) {
+			worker->exit();
+			bool result = QThreadPool::globalInstance()->tryTake(worker);
+			QString msg = tr("try to stop thread ") + (result ? tr("success") : tr("fail"));
+			Logger::instance().logInfo(msg);
+			delete worker;
+		}
 	}
-
-	QString msg = tr("Merge directories from ") + begin + tr(" To ") + end + tr(" for ") + outDirName;
-	Logger::instance().logInfo(msg);
-
-	updatePage(begin, end, outDirName);
+	m_bIsGenerate = !m_bIsGenerate;
 }
 
 void CPatch::onBtnChoosePathCliecked() {
@@ -183,6 +199,9 @@ void CPatch::updateProcess(qint64 value) {
 	m_pPbschedule->setValue(static_cast<int>(m_totalProcess / m_localProcess));
 	if (m_pPbschedule->value() == 100) {
 		m_pLbCopy->setText("");
+		m_pGenerateTime->stop();
+		m_GenerateTime = 0;
+		m_pBtnGenerate->setText(tr("Generate"));
 	}
 }
 
@@ -295,16 +314,19 @@ void CPatch::createCtrl() {
 	m_pTePreviewTxt = new QTextEdit(m_pReadWidget);
 
 	m_pLbGeneratePath = new QLabel(tr("GENERATE_PATH"), m_pReadWidget);
-	m_pLbGeneratePath->setFixedWidth(150);
 	m_pCbStartTime = new QComboBox(m_pReadWidget);
+	m_pCbStartTime->setMinimumWidth(150);
 	m_pCbEndTime = new QComboBox(m_pReadWidget);
+	m_pCbEndTime->setMinimumWidth(150);
 	m_pBtnGenerate = new QPushButton(tr("GENERATE"), m_pReadWidget);
 	m_pBtnGenerate->setFixedWidth(100);
-//	m_pCbThreadNum = new QComboBox(m_pReadWidget);
-//	m_pLbTime = new QLabel(tr("TIME"), m_pReadWidget);
+	m_pLbThreadNum = new QLabel(tr("Thread Num"), m_pReadWidget);
+	m_pCbThreadNum = new QComboBox(m_pReadWidget);
+	m_pCbThreadNum->setMinimumWidth(70);
+	m_pLbTime = new QLabel(tr("TIME: ") + QString::number(m_GenerateTime) + tr(" s"), m_pReadWidget);
+	m_pLbTime->setFixedWidth(100);
 	m_pLbCopy = new QLabel(m_pReadWidget);
 	m_pLbCopy->setFixedWidth(100);
-
 	m_pPbschedule = new QProgressBar(m_pReadWidget);
 
 	m_pLbPatchVersion = new QLabel(tr("PATCH_VERSION"), m_pRenewalWidget);
@@ -358,6 +380,9 @@ void CPatch::layOut() {
 	m_pReadThirdRowLayout->addWidget(m_pCbStartTime);
 	m_pReadThirdRowLayout->addWidget(m_pCbEndTime);
 	m_pReadThirdRowLayout->addWidget(m_pBtnGenerate);
+	m_pReadThirdRowLayout->addWidget(m_pLbThreadNum);
+	m_pReadThirdRowLayout->addWidget(m_pCbThreadNum);
+	m_pReadThirdRowLayout->addWidget(m_pLbTime);
 
 	m_pReadThirdRowLayout->addWidget(m_pLbCopy);
 
@@ -389,6 +414,8 @@ void CPatch::layOut() {
 void CPatch::init() {
 	m_pFlickerTimer = new QTimer(this);
 	m_pFlickerTimer->setInterval(100); // 设置定时器间隔为100毫秒
+	m_pGenerateTime = new QTimer(this);
+	m_pGenerateTime->setInterval(1000);
 
 	m_pLePatchVersion->setReadOnly(true);
 	m_pTePreviewTxt->setReadOnly(true);
@@ -400,6 +427,9 @@ void CPatch::init() {
 	m_pCbStartTime->setMaxVisibleItems(10);
 	m_pCbEndTime->setStyleSheet(sheet);
 	m_pCbEndTime->setMaxVisibleItems(10);
+	for (int i = 1; i <= 5; i++) {
+		m_pCbThreadNum->addItem(QString::number(i));
+	}
 }
 
 void CPatch::initConnect() {
@@ -421,6 +451,10 @@ void CPatch::initConnect() {
 			m_pBtnPatchOutPath->setStyleSheet("");
 			m_pFlickerTimer->stop();
 		}
+	});
+	connect(m_pGenerateTime, &QTimer::timeout, this, [&]() {
+		m_GenerateTime++;
+		m_pLbTime->setText(tr("Time: ") + QString::number(m_GenerateTime) + tr(" s"));
 	});
 }
 

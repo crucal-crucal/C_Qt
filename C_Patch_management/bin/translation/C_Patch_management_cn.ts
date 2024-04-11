@@ -9,11 +9,6 @@
         <translation type="unfinished">无法创建目录</translation>
     </message>
     <message>
-        <location filename="../../source/mergedir.cpp" line="41"/>
-        <source>Unable to create directory </source>
-        <translation type="unfinished">无法创建目录</translation>
-    </message>
-    <message>
         <location filename="../../source/mergedir.cpp" line="48"/>
         <source>Unable to copy file </source>
         <translation type="unfinished">无法复制文件</translation>
@@ -58,6 +53,12 @@
         <translation type="unfinished">在指定目录中找不到.txt文件。</translation>
     </message>
     <message>
+        <location filename="../../source/patch.cc" line="118"/>
+        <location filename="../../source/patch.cc" line="205"/>
+        <source>Generate</source>
+        <translation type="unfinished">生成</translation>
+    </message>
+    <message>
         <location filename="../../source/patch.cpp" line="117"/>
         <source>Copying...</source>
         <translation type="unfinished">复制...</translation>
@@ -77,6 +78,31 @@
         <location filename="../../source/patch.cpp" line="122"/>
         <source> for </source>
         <translation type="unfinished"> 成为 </translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="131"/>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="132"/>
+        <source>Cancel...</source>
+        <translation type="unfinished">取消...</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="137"/>
+        <source>try to stop thread </source>
+        <translation type="unfinished">尝试停止线程</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="137"/>
+        <source>success</source>
+        <translation type="unfinished">成功</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="137"/>
+        <source>fail</source>
+        <translation type="unfinished">失败</translation>
     </message>
     <message>
         <location filename="../../source/patch.cpp" line="129"/>
@@ -112,6 +138,24 @@
         <location filename="../../source/patch.cpp" line="159"/>
         <source>The source directory does not exist</source>
         <translation type="unfinished">源目录不存在</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="164"/>
+        <location filename="../../source/patch.cc" line="173"/>
+        <source>Change language</source>
+        <translation type="unfinished">修改语言</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="164"/>
+        <location filename="../../source/patch.cc" line="173"/>
+        <source>Modify the language needs to restart the program, whether to modify</source>
+        <translation type="unfinished">修改语言需要重启程序，是否修改</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="168"/>
+        <location filename="../../source/patch.cc" line="177"/>
+        <source>Cancel language change</source>
+        <translation type="unfinished">取消语言修改</translation>
     </message>
     <message>
         <location filename="../../source/patch.cpp" line="258"/>
@@ -175,6 +219,22 @@
         <translation type="unfinished">生成</translation>
     </message>
     <message>
+        <location filename="../../source/patch.cc" line="324"/>
+        <source>Thread Num</source>
+        <translation type="unfinished">线程数</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="328"/>
+        <source>TIME: </source>
+        <translation type="unfinished">时间: </translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="328"/>
+        <location filename="../../source/patch.cc" line="459"/>
+        <source> s</source>
+        <translation type="unfinished"> 秒</translation>
+    </message>
+    <message>
         <location filename="../../source/patch.cpp" line="304"/>
         <source>PATCH_OUT_PATH</source>
         <translation type="unfinished">选择路径</translation>
@@ -188,6 +248,62 @@
         <location filename="../../source/patch.cpp" line="309"/>
         <source>BTN_VERSION_PATH</source>
         <translation type="unfinished">确定</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="459"/>
+        <source>Time: </source>
+        <translation type="unfinished">时间: </translation>
+    </message>
+</context>
+<context>
+    <name>CUVBaseDialog</name>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvbasedialog.cpp" line="379"/>
+        <source>CUVBaseDialog_HELP</source>
+        <translation type="unfinished">帮助</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvbasedialog.cpp" line="383"/>
+        <source>CUVBaseDialog_MIN</source>
+        <translation type="unfinished">最小化</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvbasedialog.cpp" line="387"/>
+        <source>CUVBaseDialog_MAX</source>
+        <translation type="unfinished">最大化</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvbasedialog.cpp" line="391"/>
+        <source>CUVBaseDialog_CLOSE</source>
+        <translation type="unfinished">关闭</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvbasedialog.cpp" line="119"/>
+        <source>IDS_OK</source>
+        <translation type="unfinished">确定</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvbasedialog.cpp" line="122"/>
+        <source>IDS_CANCEL</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvbasedialog.cpp" line="125"/>
+        <source>IDS_APPLY</source>
+        <translation type="unfinished">应用</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvmessagebox.h" line="51"/>
+        <source>IDS_MSG_TIP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvmessagebox.h" line="57"/>
+        <source>IDS_WARN_TITLE</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
