@@ -19,7 +19,7 @@ class FRAMELESSFILEDIALOG_EXPORT CUVFileBase : public CUVBaseDialog {
 						 const QString& caption = QString(),
 						 const QString& directory = QString(),
 						 const QString& filter = QString());
-	virtual ~CUVFileBase();
+	~CUVFileBase() override;
   public:
 	void setLabelText(QFileDialog::DialogLabel label, const QString& strText);
 	void setFilter(QDir::Filters filters = QDir::AllEntries | QDir::NoDotAndDotDot);
