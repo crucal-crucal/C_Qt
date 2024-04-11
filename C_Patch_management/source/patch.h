@@ -18,7 +18,6 @@
 #include <QTextEdit>
 #include <QComboBox>
 #include <QProgressBar>
-#include <QTransLator>
 #include <QLineEdit>
 #include <QMenuBar>
 #include <QTimer>
@@ -37,7 +36,6 @@
 #include "framelessMessageBox-1/uvmessagebox.h"
 #include "mergedir.h"
 #include "logger/Logger.h"
-#include "processfile.h"
 
 
 class CPatch : public FramelessMainWindow {
