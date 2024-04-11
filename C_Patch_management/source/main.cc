@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <filesystem>
 
 #include "patch.h"
 #include "C_global.h"
@@ -13,7 +14,8 @@
 #endif
 
 QTranslator* g_translator{nullptr};
-std::string configName = "config.ini";
+std::string configDir = "config";
+std::string configName = configDir + "/config.ini";
 
 bool loadResources(const QString& strPath);
 bool unloadResources(const QString& strPath);
@@ -123,6 +125,15 @@ void unLoadTranslations() {
 }
 
 void initializeConfigFile() {
+	// 检查config文件夹是否存在，如果不存在则创建
+	if (!std::filesystem::exists(configDir)) {
+		if (!std::filesystem::create_directory(configDir)) {
+			std::cerr << "Error: Unable to create directory " << configDir << std::endl;
+			return;
+		}
+		std::cout << "Directory " << configDir << " created." << std::endl;
+	}
+
 	std::ifstream configFile(configName);
 	if (!configFile) {
 		// 配置文件不存在
