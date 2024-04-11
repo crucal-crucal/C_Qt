@@ -34,6 +34,7 @@
 #include "C_global.h"
 #include "framelessmainwindow/framelessmainwindow.h"
 #include "framelessMessageBox-1/uvmessagebox.h"
+#include "framelessMessageBox-1/uvfiledialog.h"
 #include "mergedir.h"
 #include "logger/Logger.h"
 
@@ -138,13 +139,11 @@ class CPatch : public FramelessMainWindow {
 
   private:
 	QPoint m_PressTitlePoint;
-	QRect m_rtTitle;
-	bool m_bPressTitle{false};
 
   private:
 	// 时间，完整路径
 	std::map<QString, QString> m_localMap{};
-	CMergeDir* m_pMergeDir{nullptr};
+//	CMergeDir* m_pMergeDir{nullptr};
 	QString m_output{};
 	QString m_dirname{};
 	QString m_outDirName{};

@@ -45,6 +45,7 @@ class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
   public:
 	explicit CUVBaseDialog(QWidget* parent = nullptr);
 	~CUVBaseDialog() override;
+
   public:
 	void setTitle(QString strTitle);
 	[[nodiscard]] QRect getTilteRect() const;
@@ -62,6 +63,7 @@ class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
 	void setContent(QWidget* pContentWidget);
 	void setContent(QLayout* pLayout);
 	QPushButton* button(QDialogButtonBox::StandardButton emBtn);
+
   protected:
 	void paintEvent(QPaintEvent* event) override;
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
@@ -70,21 +72,26 @@ class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
 	void mouseMoveEvent(QMouseEvent* event) override;
 	void keyPressEvent(QKeyEvent* event) override;
 	void resizeEvent(QResizeEvent* event) override;
+
   protected slots:
 	virtual void apply();
 	virtual void closeDialog();
+
   protected:
 	void addTitleButton(QAbstractButton* pButton, TitleButtonRole emButtonRole);
 	QPushButton* addTitleButton(TitleButtonRole emButtonRole);
 	QPushButton* insertTitleButton(int nIndex, TitleButtonRole emButtonRole);
 	void insertTitleButton(QAbstractButton* pButton, int nIndex, TitleButtonRole emButtonRole);
+
   private slots:
 	void switchSize();
+
   private:
 	QDialogButtonBox* m_pDialogBtnBox{nullptr};
 	QVBoxLayout* m_plyVTotal{nullptr};
 	QHBoxLayout* m_plyHTitle{nullptr};
 	QHBoxLayout* m_plyHContent{nullptr};
+
   private:
 	QString m_strTitle;
 	QString m_strIconPath;

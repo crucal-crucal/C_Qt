@@ -7,7 +7,6 @@
 CUVBaseDialog::CUVBaseDialog(QWidget* parent) : QDialog(parent) {
 	setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinMaxButtonsHint | Qt::Dialog);
 	setAttribute(Qt::WA_TranslucentBackground);
-	setObjectName("CUVBaseDialog");
 	m_pDialogBtnBox = new QDialogButtonBox(this);
 	connect(m_pDialogBtnBox, &QDialogButtonBox::accepted, this, &CUVBaseDialog::accept);
 	connect(m_pDialogBtnBox, &QDialogButtonBox::rejected, this, &CUVBaseDialog::reject);

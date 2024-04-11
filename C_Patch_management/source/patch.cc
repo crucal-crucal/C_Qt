@@ -12,7 +12,7 @@ CPatch::CPatch(QWidget* parent) : FramelessMainWindow(parent) {
 CPatch::~CPatch() = default;
 
 void CPatch::onBtnOpenClicked() {
-	QString dirPath = QFileDialog::getExistingDirectory(this, tr("CHOOSE_DIR"), QDir::currentPath());
+	QString dirPath = CUVFileDialog::getExistingDirectory(this, tr("Open Directory"), QDir::currentPath());
 	if (dirPath.isEmpty()) {
 		Logger::instance().logWarning(tr("User deselect ditectory"));
 		return;
@@ -142,7 +142,7 @@ void CPatch::onBtnGenerateClicked() {
 }
 
 void CPatch::onBtnChoosePathCliecked() {
-	QString dirPath = QFileDialog::getExistingDirectory(this, tr("CHOOSE_PATH"), QDir::currentPath());
+	QString dirPath = CUVFileDialog::getExistingDirectory(this, tr("CHOOSE_PATH"), QDir::currentPath());
 	if (dirPath.isEmpty()) {
 		Logger::instance().logWarning(tr("User deselect ditectory"));
 		return;
@@ -157,8 +157,8 @@ void CPatch::onBtnDoneClicked() {
 		return;
 	}
 	if (QDir(m_output).exists()) {
-		QString newDirectoryName = QFileDialog::getSaveFileName(this, tr("INPUT_NAME"),
-																dirPath + QDir::separator() + m_outDirName, tr("DIR_NAME"));
+		QString newDirectoryName = CUVFileDialog::getSaveFileName(this, tr("INPUT_NAME"),
+																  dirPath + QDir::separator() + m_outDirName, tr("DIR_NAME"));
 		if (!newDirectoryName.isEmpty()) {
 			try {
 				if (QDir().rename(m_output, newDirectoryName)) {
@@ -284,13 +284,13 @@ void CPatch::createCtrl() {
 	m_pTitleBar = new QWidget(m_pCentralWidget);
 	this->setTitleBar(m_pTitleBar);
 
-	m_pBtnMin = new QPushButton(tr("MIN"), m_pTitleBar);
+	m_pBtnMin = new QPushButton(m_pTitleBar);
 	m_pBtnMin->setObjectName("Dialog_Btn_Min");
-	m_pBtnMin->setFixedWidth(BtnFixedWidth);
+	m_pBtnMin->setToolTip(tr("Min"));
 
-	m_pBtnClose = new QPushButton(tr("CLOSE"), m_pTitleBar);
+	m_pBtnClose = new QPushButton(m_pTitleBar);
 	m_pBtnClose->setObjectName("Dialog_Btn_Close");
-	m_pBtnClose->setFixedWidth(BtnFixedWidth);
+	m_pBtnClose->setToolTip(tr("Close"));
 
 	m_pMenuBar = new QMenuBar(m_pTitleBar);
 	m_pMenuBar->setObjectName("Main_MenuBar");

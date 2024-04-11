@@ -1,0 +1,27 @@
+QDialog#CUVFileBase {
+    background-color: white;
+}
+QPushButton#CUVBaseDialog_Dialog_Btn_Close,
+QPushButton#Dialog_Btn_Close,
+QPushButton#Dialog_Btn_Min {
+    border: none;
+    background: transparent;
+}
+QPushButton#CUVBaseDialog_Dialog_Btn_Close:hover,
+QPushButton#Dialog_Btn_Close:hover {
+    border-image: url(:/icon/close_hover.png);
+}
+QPushButton#CUVBaseDialog_Dialog_Btn_Close,
+QPushButton#Dialog_Btn_Close {
+    border-image: url(:/icon/close_normal.png);
+    width: 30px;
+    height: 30px;
+}
+QPushButton#Dialog_Btn_Min:hover {
+    border-image: url(:/icon/min_hover.png);
+}
+QPushButton#Dialog_Btn_Min{
+    border-image: url(:/icon/min_normal.png);
+    width: 30px;
+    height: 30px;
+}

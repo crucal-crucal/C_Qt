@@ -1,4 +1,8 @@
 <RCC>
     <qresource prefix="/">
+        <file>./icon/close_hover.png</file>
+        <file>./icon/close_normal.png</file>
+        <file>./icon/min_hover.png</file>
+        <file>./icon/min_normal.png</file>
     </qresource>
 </RCC>
