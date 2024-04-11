@@ -59,9 +59,9 @@ class FRAMELESSFILEDIALOG_EXPORT CUVFileBase : public CUVBaseDialog {
 						QFileDialog::Options options = QFileDialog::Options(),
 						const QStringList& supportedSchemes = QStringList());
 
-	QString getExistingDirectory(QFileDialog::Options options = QFileDialog::ShowDirsOnly);
+	QString getExistingDirectory(QFileDialog::Option option = QFileDialog::ShowDirsOnly);
 
-	QString getExistingDirectoryUrl(const QUrl& dir = QUrl(), QFileDialog::Options options = QFileDialog::ShowDirsOnly);
+	QString getExistingDirectoryUrl(const QUrl& dir = QUrl(), QFileDialog::Option option = QFileDialog::ShowDirsOnly);
 
 	QStringList getOpenFileNames(QString* selectedFilter = nullptr,
 								 QFileDialog::Options options = QFileDialog::Options());
@@ -122,12 +122,12 @@ class FRAMELESSFILEDIALOG_EXPORT CUVFileDialog : CUVBaseDialog {
 	static QString getExistingDirectory(QWidget* parent = nullptr,
 										const QString& caption = QString(),
 										const QString& dir = QString(),
-										QFileDialog::Options options = QFileDialog::ShowDirsOnly);
+										QFileDialog::Option options = QFileDialog::ShowDirsOnly);
 
 	static QUrl getExistingDirectoryUrl(QWidget* parent = nullptr,
 										const QString& caption = QString(),
 										const QUrl& dir = QUrl(),
-										QFileDialog::Options options = QFileDialog::ShowDirsOnly,
+										QFileDialog::Option option = QFileDialog::ShowDirsOnly,
 										const QStringList& supportedSchemes = QStringList());
 
 	static QStringList getOpenFileNames(QWidget* parent = nullptr,

@@ -170,17 +170,16 @@ QUrl CUVFileBase::getSaveFileUrl(const QUrl& dir, QString* selectedFilter,
 	return {};
 }
 
-QString CUVFileBase::getExistingDirectory(QFileDialog::Options options) {
-	m_pFileDialog->setOptions(options);
-	m_pFileDialog->setFileMode(QFileDialog::DirectoryOnly);
+QString CUVFileBase::getExistingDirectory(QFileDialog::Option option) {
+	m_pFileDialog->setOption(option, true);
 	if (this->exec()) {
 		return this->selectedFiles().first();
 	}
 	return {};
 }
 
-QString CUVFileBase::getExistingDirectoryUrl(const QUrl& dir, QFileDialog::Options options) {
-	m_pFileDialog->setOptions(options);
+QString CUVFileBase::getExistingDirectoryUrl(const QUrl& dir, QFileDialog::Option option) {
+	m_pFileDialog->setOption(option, true);
 	this->setDirectoryUrl(dir);
 	if (this->exec()) {
 		return this->selectedFiles().first();
@@ -296,17 +295,17 @@ QUrl CUVFileDialog::getSaveFileUrl(QWidget* parent, const QString& caption,
 
 QString CUVFileDialog::getExistingDirectory(QWidget* parent, const QString& caption,
 											const QString& dir,
-											QFileDialog::Options options) {
+											QFileDialog::Option option) {
 	CUVFileBase file_base(tr("C_Patch_management"), parent, caption, dir);
-	return file_base.getExistingDirectory(options);
+	return file_base.getExistingDirectory(option);
 }
 
 QUrl CUVFileDialog::getExistingDirectoryUrl(QWidget* parent, const QString& caption,
 											const QUrl& dir,
-											QFileDialog::Options options,
+											QFileDialog::Option option,
 											const QStringList& supportedSchemes) {
 	CUVFileBase file_base(tr("C_Patch_management"), parent, caption);
-	return file_base.getExistingDirectoryUrl(dir, options);
+	return file_base.getExistingDirectoryUrl(dir, option);
 }
 
 QStringList CUVFileDialog::getOpenFileNames(QWidget* parent, const QString& caption,
