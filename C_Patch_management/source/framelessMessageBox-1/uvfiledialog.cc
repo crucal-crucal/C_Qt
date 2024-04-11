@@ -178,8 +178,9 @@ QString CUVFileBase::getExistingDirectory(QFileDialog::Option option) {
 	return {};
 }
 
-QString CUVFileBase::getExistingDirectoryUrl(const QUrl& dir, QFileDialog::Option option) {
+QString CUVFileBase::getExistingDirectoryUrl(const QUrl& dir, QFileDialog::Option option, const QStringList& supportedSchemes) {
 	m_pFileDialog->setOption(option, true);
+	m_pFileDialog->setSupportedSchemes(supportedSchemes);
 	this->setDirectoryUrl(dir);
 	if (this->exec()) {
 		return this->selectedFiles().first();
@@ -305,7 +306,7 @@ QUrl CUVFileDialog::getExistingDirectoryUrl(QWidget* parent, const QString& capt
 											QFileDialog::Option option,
 											const QStringList& supportedSchemes) {
 	CUVFileBase file_base(tr("C_Patch_management"), parent, caption);
-	return file_base.getExistingDirectoryUrl(dir, option);
+	return file_base.getExistingDirectoryUrl(dir, option, supportedSchemes);
 }
 
 QStringList CUVFileDialog::getOpenFileNames(QWidget* parent, const QString& caption,

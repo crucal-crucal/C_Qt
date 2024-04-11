@@ -61,7 +61,8 @@ class FRAMELESSFILEDIALOG_EXPORT CUVFileBase : public CUVBaseDialog {
 
 	QString getExistingDirectory(QFileDialog::Option option = QFileDialog::ShowDirsOnly);
 
-	QString getExistingDirectoryUrl(const QUrl& dir = QUrl(), QFileDialog::Option option = QFileDialog::ShowDirsOnly);
+	QString getExistingDirectoryUrl(const QUrl& dir = QUrl(), QFileDialog::Option option = QFileDialog::ShowDirsOnly,
+									const QStringList& supportedSchemes = QStringList());
 
 	QStringList getOpenFileNames(QString* selectedFilter = nullptr,
 								 QFileDialog::Options options = QFileDialog::Options());
