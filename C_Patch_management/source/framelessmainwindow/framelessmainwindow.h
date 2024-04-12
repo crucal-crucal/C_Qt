@@ -2,6 +2,9 @@
 
 #include <QMainWindow>
 
+/*
+ * @brief 无边框MainWindow，支持拖拽，拉伸，移动以及自定义标题栏
+ */
 #ifdef FRAMELESSMAINWINDOW_LIB
 #define FRAMELESSMAINWINDOW_EXPORT Q_DECL_EXPORT
 #else
@@ -11,25 +14,25 @@
 class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
   Q_OBJECT
   public:
-	explicit FramelessMainWindow(QWidget* parent = 0);
+	explicit FramelessMainWindow(QWidget* parent = nullptr);
+	~FramelessMainWindow() override;
 
   protected:
-	//窗体显示的时候触发
 	void showEvent(QShowEvent* event) override;
 
-	//事件过滤器识别拖动拉伸等
+	// 事件过滤器识别拖动拉伸等
 	void doWindowStateChange(QEvent* event);
-	void doResizeEvent(QEvent* event);
+	static void doResizeEvent(QEvent* event);
 	bool eventFilter(QObject* watched, QEvent* event) override;
 
-	//拦截系统事件用于修复系统休眠后唤醒程序的bug
+	// 拦截系统事件用于修复系统休眠后唤醒程序的bug
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 	bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result);
 #else
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 #endif
 
-	//Qt4的写法
+	// Qt4的写法
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #ifdef Q_OS_WIN
 	bool winEvent(MSG *message, long *result);
@@ -37,36 +40,36 @@ class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
 #endif
 
   private:
-	//边距+可移动+可拉伸
-	int padding;
-	bool moveEnable;
-	bool resizeEnable;
+	// 边距+可移动+可拉伸
+	int padding{};
+	bool moveEnable{};
+	bool resizeEnable{};
 
-	//标题栏控件
-	QWidget* titleBar;
+	// 标题栏控件
+	QWidget* titleBar{nullptr};
 
-	//鼠标是否按下+按下坐标+按下时窗体区域
-	bool mousePressed;
-	QPoint mousePoint;
-	QRect mouseRect;
+	// 鼠标是否按下、按下坐标、按下时窗体区域
+	bool mousePressed{};
+	QPoint mousePoint{};
+	QRect mouseRect{};
 
-	//鼠标是否按下某个区域+按下区域的大小
-	//依次为 左侧+右侧+上侧+下侧+左上侧+右上侧+左下侧+右下侧
-	QList<bool> pressedArea;
-	QList<QRect> pressedRect;
+	// 鼠标是否按下某个区域、按下区域的大小
+	// 依次为 左、右、上、下、左上、右上、左下、右下
+	QList<bool> pressedArea{};
+	QList<QRect> pressedRect{};
 
-	//记录是否最小化
-	bool isMin;
-	//存储窗体默认的属性
-	Qt::WindowFlags flags;
+	// 记录是否最小化
+	bool isMin{};
+	// 存储窗体默认的属性
+	Qt::WindowFlags flags{};
 
   public Q_SLOTS:
-	//设置边距+可拖动+可拉伸
-	void setPadding(int _padding);
-	void setMoveEnable(bool _moveEnable);
-	void setResizeEnable(bool _resizeEnable);
+	// 设置边距+可拖动+可拉伸
+	[[maybe_unused]] [[maybe_unused]] void setPadding(int _padding);
+	[[maybe_unused]] [[maybe_unused]] void setMoveEnable(bool _moveEnable);
+	[[maybe_unused]] [[maybe_unused]] void setResizeEnable(bool _resizeEnable);
 
-	//设置标题栏控件
+	// 设置标题栏控件
 	void setTitleBar(QWidget* _titleBar);
 
   Q_SIGNALS:

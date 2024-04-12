@@ -494,27 +494,30 @@ void CPatch::getFileCountInDirectory(const QStringList& directoryPaths, QStringL
 	}
 }
 
-int CPatch::countFilesRecursively(const QString& directoryPath) {
-	QDir directory(directoryPath);
+[[maybe_unused]] int CPatch::countFilesRecursively(const QString& directoryPath) {
+	QStack<QString> directoriesToProcess;
+	directoriesToProcess.push(directoryPath);
+	int totalCount = 0;
 
-	// 获取当前目录下的所有文件
-	QStringList files = directory.entryList(QDir::Files);
+	while (!directoriesToProcess.isEmpty()) {
+		QString currentDirPath = directoriesToProcess.pop();
+		QDir currentDir(currentDirPath);
 
-	// 获取当前目录下的所有子目录
-	QStringList subDirs = directory.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+		QStringList files = currentDir.entryList(QDir::Files);
+		QStringList subDirs = currentDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
-	int totalCount = files.size();
+		totalCount += files.size();
 
-	// 递归处理子目录
-	for (const QString& subDir : subDirs) {
-		QString subDirPath = directory.filePath(subDir);
-		totalCount += countFilesRecursively(subDirPath);
+		for (const QString& subDir : subDirs) {
+			QString subDirPath = currentDir.filePath(subDir);
+			directoriesToProcess.push(subDirPath);
+		}
 	}
 
 	return totalCount;
 }
 
-void CPatch::groupFilesBySecondDirectory(QStringList& filesToMerge, const QString& flag) {
+[[maybe_unused]] void CPatch::groupFilesBySecondDirectory(QStringList& filesToMerge, const QString& flag) {
 	QMap<QString, QStringList> groupedFiles;
 	for (const auto& filePath : filesToMerge) {
 		QString curflag = "/" + QString(flag) + "/";

@@ -1,7 +1,5 @@
 #include "uvbasedialog.h"
 
-#include <utility>
-
 #define NATIVE_DETECT_WIDTH 10
 
 CUVBaseDialog::CUVBaseDialog(QWidget* parent) : QDialog(parent) {
@@ -39,15 +37,15 @@ void CUVBaseDialog::setTitle(QString strTitle) {
 	m_strTitle = std::move(strTitle);
 }
 
-QRect CUVBaseDialog::getTilteRect() const {
+[[maybe_unused]] QRect CUVBaseDialog::getTilteRect() const {
 	return m_rtTitle;
 }
 
-QList<QAbstractButton*> CUVBaseDialog::getTitleButton() const {
+[[maybe_unused]] QList<QAbstractButton*> CUVBaseDialog::getTitleButton() const {
 	return m_hashTitleButtons.values();
 }
 
-void CUVBaseDialog::setIcon(const QString& strPath, bool bScale, QSize scaleSize) {
+[[maybe_unused]] void CUVBaseDialog::setIcon(const QString& strPath, bool bScale, QSize scaleSize) {
 	m_strIconPath = strPath;
 	m_bIconScaled = bScale;
 	m_icon.load(strPath);
@@ -56,30 +54,30 @@ void CUVBaseDialog::setIcon(const QString& strPath, bool bScale, QSize scaleSize
 	}
 }
 
-void CUVBaseDialog::setResizeable(bool bResizeable) {
+[[maybe_unused]] void CUVBaseDialog::setResizeable(bool bResizeable) {
 	m_bResizeable = bResizeable;
 }
 
-void CUVBaseDialog::setEscEnable(bool bEnable) {
+[[maybe_unused]] void CUVBaseDialog::setEscEnable(bool bEnable) {
 	m_bEscEnable = bEnable;
 }
 
-void CUVBaseDialog::setMoveEnable(bool bEnable) {
+[[maybe_unused]] void CUVBaseDialog::setMoveEnable(bool bEnable) {
 	m_bMoveEnable = bEnable;
 }
 
-void CUVBaseDialog::setTitleVisible(bool bVisible) {
+[[maybe_unused]] void CUVBaseDialog::setTitleVisible(bool bVisible) {
 	m_bTitleVisible = bVisible;
 	for (auto i : m_hashTitleButtons) {
 		i->setVisible(m_bTitleVisible);
 	}
 }
 
-void CUVBaseDialog::setEnterEnable(bool bEnable) {
+[[maybe_unused]] void CUVBaseDialog::setEnterEnable(bool bEnable) {
 	m_bEnterEnable = bEnable;
 }
 
-void CUVBaseDialog::setShadowVisible(bool bVisible) {
+[[maybe_unused]] void CUVBaseDialog::setShadowVisible(bool bVisible) {
 	m_bShadowVisible = bVisible;
 	if (!m_bShadowVisible) {
 		setAttribute(Qt::WA_TranslucentBackground, false);
@@ -109,7 +107,7 @@ void CUVBaseDialog::setTitleBtnRole(TitleButtonRoles emTitleButtonRoles) {
 	}
 }
 
-void CUVBaseDialog::setDialogBtnRole(QDialogButtonBox::StandardButtons emBtns) {
+[[maybe_unused]] void CUVBaseDialog::setDialogBtnRole(QDialogButtonBox::StandardButtons emBtns) {
 	if (QDialogButtonBox::NoButton == emBtns) {
 		m_pDialogBtnBox->hide();
 	} else {
@@ -137,7 +135,7 @@ void CUVBaseDialog::setContent(QWidget* pContentWidget) {
 	}
 }
 
-void CUVBaseDialog::setContent(QLayout* pLayout) {
+[[maybe_unused]] void CUVBaseDialog::setContent(QLayout* pLayout) {
 	if (pLayout) {
 		if (!m_plyHContent->isEmpty()) {
 			m_plyHContent->removeItem(m_plyHContent->itemAt(0));
@@ -146,7 +144,7 @@ void CUVBaseDialog::setContent(QLayout* pLayout) {
 	}
 }
 
-QPushButton* CUVBaseDialog::button(QDialogButtonBox::StandardButton emBtn) {
+[[maybe_unused]] QPushButton* CUVBaseDialog::button(QDialogButtonBox::StandardButton emBtn) {
 	return m_pDialogBtnBox->button(emBtn);
 }
 
@@ -164,7 +162,7 @@ void CUVBaseDialog::paintEvent(QPaintEvent* event) {
 
 		painter.setPen(Qt::NoPen);
 
-		painter.fillRect(m_rtTitle, QColor("#464545"));
+		painter.fillRect(m_rtTitle, QColor(70, 69, 69));
 
 		if (m_bShadowVisible) {
 			painter.setBrush(Qt::NoBrush);
@@ -270,10 +268,10 @@ bool CUVBaseDialog::nativeEvent(const QByteArray& eventType, void* message, long
 
 				QMargins frames;
 				QMargins margins(0, 0, 0, 0);
-				frames.setLeft(abs(frame.left) / dpr + 0.5);
-				frames.setTop(abs(frame.bottom) / dpr + 0.5);
-				frames.setRight(abs(frame.right) / dpr + 0.5);
-				frames.setBottom(abs(frame.bottom) / dpr + 0.5);
+				frames.setLeft(lround(abs(frame.left) / dpr + 0.5));
+				frames.setTop(lround(abs(frame.bottom) / dpr + 0.5));
+				frames.setRight(lround(abs(frame.right) / dpr + 0.5));
+				frames.setBottom(lround(abs(frame.bottom) / dpr + 0.5));
 
 				setContentsMargins(frames.left() + margins.left(), \
                 frames.top() + margins.top(), \
@@ -329,6 +327,7 @@ void CUVBaseDialog::keyPressEvent(QKeyEvent* event) {
 		return;
 	} else if (!m_bEnterEnable && (Qt::Key_Return == event->key() || Qt::Key_Enter == event->key())) {
 		auto key = Qt::Key(event->key());
+		Q_UNUSED(key)
 		return;
 	} else {
 		QDialog::keyPressEvent(event);
@@ -360,7 +359,7 @@ void CUVBaseDialog::closeDialog() {
 	reject();
 }
 
-void CUVBaseDialog::addTitleButton(QAbstractButton* pButton, TitleButtonRole emButtonRole) {
+[[maybe_unused]] void CUVBaseDialog::addTitleButton(QAbstractButton* pButton, TitleButtonRole emButtonRole) {
 	insertTitleButton(pButton, m_plyHTitle->count(), emButtonRole);
 }
 

@@ -9,8 +9,6 @@
 #pragma comment (lib, "user32.lib")
 #endif
 
-#define TIMEMS qPrintable(QTime::currentTime().toString("HH:mm:ss zzz"))
-
 FramelessMainWindow::FramelessMainWindow(QWidget* parent) : QMainWindow(parent) {
 	padding = 8;
 	moveEnable = true;
@@ -28,7 +26,6 @@ FramelessMainWindow::FramelessMainWindow(QWidget* parent) : QMainWindow(parent) 
 	isMin = false;
 	flags = this->windowFlags();
 	titleBar = nullptr;
-
 	// 设置背景透明 官方在5.3以后才彻底修复 WA_TranslucentBackground+FramelessWindowHint 并存不绘制的bug
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 3, 0))
 //	this->setAttribute(Qt::WA_TranslucentBackground);
@@ -37,15 +34,16 @@ FramelessMainWindow::FramelessMainWindow(QWidget* parent) : QMainWindow(parent) 
 	this->setWindowFlags(flags | Qt::FramelessWindowHint);
 	// 安装事件过滤器识别拖动
 	this->installEventFilter(this);
-
 	// 设置属性产生win窗体效果,移动到边缘半屏或者最大化等
 	// 设置以后会产生标题栏,需要在下面拦截消息WM_NCCALCSIZE重新去掉
 #ifdef Q_OS_WIN
 	HWND hwnd = (HWND)this->winId();
-	DWORD style = ::GetWindowLong(hwnd, GWL_STYLE);
+	auto style = ::GetWindowLong(hwnd, GWL_STYLE);
 	::SetWindowLong(hwnd, GWL_STYLE, style | WS_MAXIMIZEBOX | WS_THICKFRAME | WS_CAPTION);
 #endif
 }
+
+FramelessMainWindow::~FramelessMainWindow() = default;
 
 void FramelessMainWindow::showEvent(QShowEvent* event) {
 	// 解决有时候窗体重新显示的时候假死不刷新的bug
@@ -54,18 +52,11 @@ void FramelessMainWindow::showEvent(QShowEvent* event) {
 }
 
 void FramelessMainWindow::doWindowStateChange(QEvent* event) {
+	Q_UNUSED(event)
 	// 非最大化才能移动和拖动大小
-	if (windowState() == Qt::WindowNoState) {
-		moveEnable = true;
-		resizeEnable = true;
-	} else {
-		moveEnable = false;
-		resizeEnable = false;
-	}
-
+	moveEnable = resizeEnable = windowState() == Qt::WindowNoState;
 	// 发出最大化最小化等改变事件,以便界面上更改对应的信息比如右上角图标和文字
 	Q_EMIT windowStateChange(!moveEnable);
-
 	// 解决mac系统上无边框最小化失效的bug
 #ifdef Q_OS_MACOS
 	if (windowState() & Qt::WindowMinimized) {
@@ -84,7 +75,9 @@ void FramelessMainWindow::doWindowStateChange(QEvent* event) {
 void FramelessMainWindow::doResizeEvent(QEvent* event) {
 	// 非win系统的无边框拉伸,win系统上已经采用了nativeEvent来处理拉伸
 	// 为何不统一用计算的方式因为在win上用这个方式往左拉伸会发抖妹的
-#ifndef Q_OS_WIN
+#ifdef Q_OS_WIN
+	Q_UNUSED(event)
+#else
 	int type = event->type();
 	if (type == QEvent::Resize) {
 		//重新计算八个描点的区域,描点区域的作用还有就是计算鼠标坐标是否在某一个区域内
@@ -264,77 +257,79 @@ bool FramelessMainWindow::nativeEvent(const QByteArray& eventType, void* message
 	if (eventType == "windows_generic_MSG") {
 #ifdef Q_OS_WIN
 		MSG* msg = static_cast<MSG*>(message);
-		// qDebug() << TIMEMS << "nativeEvent" << msg->wParam << msg->message;
-
-		// 不同的消息类型和参数进行不同的处理
-		if (msg->message == WM_NCCALCSIZE) {
-			*result = 0;
-			return true;
-		} else if (msg->message == WM_SYSKEYDOWN) {
-			// 屏蔽alt键按下
-		} else if (msg->message == WM_SYSKEYUP) {
-			// 屏蔽alt键松开
-		} else if (msg->message == WM_NCHITTEST) {
-			// 计算鼠标对应的屏幕坐标
-			// 这里最开始用的 LOWORD HIWORD 在多屏幕的时候会有问题
-			// 官方说明在这里 https://docs.microsoft.com/zh-cn/windows/win32/inputdev/wm-nchittest
-			long x = GET_X_LPARAM(msg->lParam);
-			long y = GET_Y_LPARAM(msg->lParam);
-			QPoint pos = mapFromGlobal(QPoint(x, y));
-
-			// 判断当前鼠标位置在哪个区域
-			bool left = pos.x() < padding;
-			bool right = pos.x() > width() - padding;
-			bool top = pos.y() < padding;
-			bool bottom = pos.y() > height() - padding;
-
-			// 鼠标移动到四个角,这个消息是当鼠标移动或者有鼠标键按下时候发出的
-			*result = 0;
-			if (resizeEnable) {
-				if (left && top) {
-					*result = HTTOPLEFT;
-				} else if (left && bottom) {
-					*result = HTBOTTOMLEFT;
-				} else if (right && top) {
-					*result = HTTOPRIGHT;
-				} else if (right && bottom) {
-					*result = HTBOTTOMRIGHT;
-				} else if (left) {
-					*result = HTLEFT;
-				} else if (right) {
-					*result = HTRIGHT;
-				} else if (top) {
-					*result = HTTOP;
-				} else if (bottom) {
-					*result = HTBOTTOM;
-				}
-			}
-
-			// 先处理掉拉伸
-			if (0 != *result) {
+		switch (msg->message) {
+			case WM_NCCALCSIZE: {
+				*result = 0;
 				return true;
 			}
+			case WM_SYSKEYDOWN | WM_SYSKEYUP: break;
+			case WM_NCHITTEST: {
+				// 计算鼠标对应的屏幕坐标
+				// 这里最开始用的 LOWORD HIWORD 在多屏幕的时候会有问题
+				// 官方说明在这里 https://docs.microsoft.com/zh-cn/windows/win32/inputdev/wm-nchittest
+				long x = GET_X_LPARAM(msg->lParam);
+				long y = GET_Y_LPARAM(msg->lParam);
+				QPoint pos = mapFromGlobal(QPoint(x, y));
 
-			// 识别标题栏拖动产生半屏全屏效果
-			if (titleBar && titleBar->rect().contains(pos)) {
-				QWidget* child = titleBar->childAt(pos);
-				if (!child) {
-					*result = HTCAPTION;
+				// 判断当前鼠标位置在哪个区域
+				bool left = pos.x() < padding;
+				bool right = pos.x() > width() - padding;
+				bool top = pos.y() < padding;
+				bool bottom = pos.y() > height() - padding;
+
+				// 鼠标移动到四个角,这个消息是当鼠标移动或者有鼠标键按下时候发出的
+				*result = 0;
+				if (resizeEnable) {
+					if (left && top) {
+						*result = HTTOPLEFT;
+					} else if (left && bottom) {
+						*result = HTBOTTOMLEFT;
+					} else if (right && top) {
+						*result = HTTOPRIGHT;
+					} else if (right && bottom) {
+						*result = HTBOTTOMRIGHT;
+					} else if (left) {
+						*result = HTLEFT;
+					} else if (right) {
+						*result = HTRIGHT;
+					} else if (top) {
+						*result = HTTOP;
+					} else if (bottom) {
+						*result = HTBOTTOM;
+					}
+				}
+
+				// 先处理掉拉伸
+				if (0 != *result) {
 					return true;
 				}
+
+				// 识别标题栏拖动产生半屏全屏效果
+				if (titleBar && titleBar->rect().contains(pos)) {
+					QWidget* child = titleBar->childAt(pos);
+					if (!child) {
+						*result = HTCAPTION;
+						return true;
+					}
+				}
+				break;
 			}
-		} else if (msg->wParam == PBT_APMSUSPEND && msg->message == WM_POWERBROADCAST) {
-			// 系统休眠的时候自动最小化可以规避程序可能出现的问题
-			this->showMinimized();
-		} else if (msg->wParam == PBT_APMRESUMEAUTOMATIC) {
-			// 休眠唤醒后自动打开
-			this->showNormal();
+			case PBT_APMSUSPEND:
+			case WM_POWERBROADCAST: {
+				// 系统休眠的时候自动最小化可以规避程序可能出现的问题
+				this->showMinimized();
+				break;
+			}
+			case PBT_APMRESUMEAUTOMATIC: {
+				// 休眠唤醒后自动打开
+				this->showNormal();
+			}
+			default: break;
 		}
 #endif
-	} else if (eventType == "NSEvent") {
+	} else if (eventType == "xcb_generic_event_t" || eventType == "NSEvent") {
 #ifdef Q_OS_MACOS
 #endif
-	} else if (eventType == "xcb_generic_event_t") {
 #ifdef Q_OS_LINUX
 #endif
 	}
@@ -350,15 +345,15 @@ bool FramelessMainWindow::winEvent(MSG *message, long *result)
 #endif
 #endif
 
-void FramelessMainWindow::setPadding(int _padding) {
+[[maybe_unused]] void FramelessMainWindow::setPadding(int _padding) {
 	this->padding = _padding;
 }
 
-void FramelessMainWindow::setMoveEnable(bool _moveEnable) {
+[[maybe_unused]] void FramelessMainWindow::setMoveEnable(bool _moveEnable) {
 	this->moveEnable = _moveEnable;
 }
 
-void FramelessMainWindow::setResizeEnable(bool _resizeEnable) {
+[[maybe_unused]] void FramelessMainWindow::setResizeEnable(bool _resizeEnable) {
 	this->resizeEnable = _resizeEnable;
 }
 

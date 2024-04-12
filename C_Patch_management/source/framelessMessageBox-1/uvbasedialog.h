@@ -14,7 +14,12 @@
 #include <QVBoxLayout>
 #include <QMouseEvent>
 #include <QApplication>
+#include <utility>
+#include <cmath>
 
+/*
+ * @brief ÎÞ±ß¿ò´øÒõÓ°Dialog
+ */
 #define TITLE_HEIGHT            30
 #define BORDER_SHADOW_WIDTH        6
 
@@ -28,6 +33,7 @@ class QVBoxLayout;
 class QHBoxLayout;
 class QPushButton;
 class QPainter;
+
 class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
   Q_OBJECT
 	Q_DISABLE_COPY(CUVBaseDialog)
@@ -37,7 +43,7 @@ class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
 		CloseRole = 0x000001,
 		MaxRole = 0x000002,
 		MinRole = 0x000004,
-		SettingRole = 0x000008,
+		SettingRole [[maybe_unused]] = 0x000008,
 		HelpRole = 0x000010,
 	};
 	Q_DECLARE_FLAGS(TitleButtonRoles, TitleButtonRole)
@@ -48,21 +54,21 @@ class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
 
   public:
 	void setTitle(QString strTitle);
-	[[nodiscard]] QRect getTilteRect() const;
-	[[nodiscard]] QList<QAbstractButton*> getTitleButton() const;
-	void setIcon(const QString& strPath, bool bScale, QSize scaleSize = QSize());
-	void setResizeable(bool bResizeable);
-	void setEscEnable(bool bEnable);
-	void setMoveEnable(bool bEnable);
-	void setTitleVisible(bool bVisible);
-	void setEnterEnable(bool bEnable);
-	void setShadowVisible(bool bVisible);
+	[[maybe_unused]] [[nodiscard]] QRect getTilteRect() const;
+	[[maybe_unused]] [[nodiscard]] QList<QAbstractButton*> getTitleButton() const;
+	[[maybe_unused]] void setIcon(const QString& strPath, bool bScale, QSize scaleSize = QSize());
+	[[maybe_unused]] void setResizeable(bool bResizeable);
+	[[maybe_unused]] void setEscEnable(bool bEnable);
+	[[maybe_unused]] void setMoveEnable(bool bEnable);
+	[[maybe_unused]] void setTitleVisible(bool bVisible);
+	[[maybe_unused]] void setEnterEnable(bool bEnable);
+	[[maybe_unused]] void setShadowVisible(bool bVisible);
 
 	void setTitleBtnRole(TitleButtonRoles emTitleButtonRoles);
-	void setDialogBtnRole(QDialogButtonBox::StandardButtons emBtns = (QDialogButtonBox::Ok | QDialogButtonBox::Cancel));
+	[[maybe_unused]] void setDialogBtnRole(QDialogButtonBox::StandardButtons emBtns = (QDialogButtonBox::Ok | QDialogButtonBox::Cancel));
 	void setContent(QWidget* pContentWidget);
-	void setContent(QLayout* pLayout);
-	QPushButton* button(QDialogButtonBox::StandardButton emBtn);
+	[[maybe_unused]] void setContent(QLayout* pLayout);
+	[[maybe_unused]] QPushButton* button(QDialogButtonBox::StandardButton emBtn);
 
   protected:
 	void paintEvent(QPaintEvent* event) override;
@@ -78,7 +84,7 @@ class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
 	virtual void closeDialog();
 
   protected:
-	void addTitleButton(QAbstractButton* pButton, TitleButtonRole emButtonRole);
+	[[maybe_unused]] void addTitleButton(QAbstractButton* pButton, TitleButtonRole emButtonRole);
 	QPushButton* addTitleButton(TitleButtonRole emButtonRole);
 	QPushButton* insertTitleButton(int nIndex, TitleButtonRole emButtonRole);
 	void insertTitleButton(QAbstractButton* pButton, int nIndex, TitleButtonRole emButtonRole);

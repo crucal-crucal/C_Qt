@@ -18,12 +18,12 @@ CUVFileBase::~CUVFileBase() {
 }
 
 // 设置文件对话框中的指定标签的文本内容
-void CUVFileBase::setLabelText(QFileDialog::DialogLabel label, const QString& strText) {
+[[maybe_unused]] void CUVFileBase::setLabelText(QFileDialog::DialogLabel label, const QString& strText) {
 	m_pFileDialog->setLabelText(label, strText);
 }
 
 // 设置文件对话框过滤器，限制显示的文件类型
-void CUVFileBase::setFilter(QDir::Filters filters) {
+[[maybe_unused]] void CUVFileBase::setFilter(QDir::Filters filters) {
 	m_pFileDialog->setFilter(filters);
 }
 
@@ -37,28 +37,28 @@ void CUVFileBase::setAcceptMode(QFileDialog::AcceptMode mode) {
 	m_pFileDialog->setAcceptMode(mode);
 }
 
-QFileDialog::AcceptMode CUVFileBase::acceptMode() const {
+[[maybe_unused]] QFileDialog::AcceptMode CUVFileBase::acceptMode() const {
 	return m_pFileDialog->acceptMode();
 }
 
 // 设置默认文件后缀
-void CUVFileBase::setDefaultSuffix(const QString& suffix) {
+[[maybe_unused]] void CUVFileBase::setDefaultSuffix(const QString& suffix) {
 	m_pFileDialog->setDefaultSuffix(suffix);
 }
 
-QString CUVFileBase::defaultSuffix() const {
+[[maybe_unused]] QString CUVFileBase::defaultSuffix() const {
 	return m_pFileDialog->defaultSuffix();
 }
 
-void CUVFileBase::setDirectory(const QString& directory) {
+[[maybe_unused]] void CUVFileBase::setDirectory(const QString& directory) {
 	m_pFileDialog->setDirectory(directory);
 }
 
-inline void CUVFileBase::setDirectory(const QDir& directory) {
+[[maybe_unused]] inline void CUVFileBase::setDirectory(const QDir& directory) {
 	m_pFileDialog->setDirectory(directory);
 }
 
-QDir CUVFileBase::directory() const {
+[[maybe_unused]] QDir CUVFileBase::directory() const {
 	return m_pFileDialog->directory();
 }
 
@@ -66,16 +66,16 @@ void CUVFileBase::setDirectoryUrl(const QUrl& directory) {
 	m_pFileDialog->setDirectoryUrl(directory);
 }
 
-void CUVFileBase::setViewMode(QFileDialog::ViewMode mode) {
+[[maybe_unused]] void CUVFileBase::setViewMode(QFileDialog::ViewMode mode) {
 	m_pFileDialog->setViewMode(mode);
 }
 
-QUrl CUVFileBase::directoryUrl() const {
+[[maybe_unused]] QUrl CUVFileBase::directoryUrl() const {
 	return m_pFileDialog->directoryUrl();
 }
 
 // 指定选中默认文件
-void CUVFileBase::selectFile(const QString& filename) {
+[[maybe_unused]] void CUVFileBase::selectFile(const QString& filename) {
 	m_pFileDialog->selectFile(filename);
 }
 
@@ -170,16 +170,23 @@ QUrl CUVFileBase::getSaveFileUrl(const QUrl& dir, QString* selectedFilter,
 	return {};
 }
 
-QString CUVFileBase::getExistingDirectory(QFileDialog::Option option) {
-	m_pFileDialog->setOption(option, true);
+QString CUVFileBase::getExistingDirectory(QFileDialog::Options options) {
+	/*
+	 * @note
+	 * 设置目录模式必须在前，因为默认设置 QFileDialog::ShowDirsOnly 为 Options时，默认同时显示文件和目录
+	 * 仅显示目录仅在目录模式下有效
+	 */
+	this->setFileMode(QFileDialog::Directory);
+	m_pFileDialog->setOptions(options);
 	if (this->exec()) {
 		return this->selectedFiles().first();
 	}
 	return {};
 }
 
-QString CUVFileBase::getExistingDirectoryUrl(const QUrl& dir, QFileDialog::Option option, const QStringList& supportedSchemes) {
-	m_pFileDialog->setOption(option, true);
+QString CUVFileBase::getExistingDirectoryUrl(const QUrl& dir, QFileDialog::Options options, const QStringList& supportedSchemes) {
+	this->setFileMode(QFileDialog::Directory);
+	m_pFileDialog->setOptions(options);
 	m_pFileDialog->setSupportedSchemes(supportedSchemes);
 	this->setDirectoryUrl(dir);
 	if (this->exec()) {
@@ -222,7 +229,7 @@ QList<QUrl> CUVFileBase::getOpenFileUrls(const QUrl& dir, QString* selectedFilte
 
 void CUVFileBase::getOpenFileContent(const QString& nameFilter,
 									 const std::function<void(const QString&, const QByteArray&)>& fileContentsReady) {
-	m_pFileDialog->setFileMode(QFileDialog::ExistingFile);
+	this->setFileMode(QFileDialog::ExistingFile);
 	m_pFileDialog->setNameFilter(nameFilter);
 
 	connect(m_pFileDialog, &QFileDialog::fileSelected, [=](const QString& filePath) {
@@ -240,39 +247,40 @@ void CUVFileBase::getOpenFileContent(const QString& nameFilter,
 }
 
 void CUVFileBase::saveFileContent(const QByteArray& fileContent, const QString& fileNameHint) {
-	QFile file(fileNameHint);
-	if (file.open(QIODevice::WriteOnly)) {
-		qint64 bytesWritten = file.write(fileContent);
-		if (bytesWritten == -1) {
-			qDebug() << "Faild to write file: " << file.errorString();
+	m_pFileDialog->setWindowTitle(tr("Save File"));
+	this->setAcceptMode(QFileDialog::AcceptSave);
+	m_pFileDialog->selectFile(fileNameHint);
+	if (this->exec() == QDialog::Accepted) {
+		QString fileName = m_pFileDialog->selectedFiles().first();
+		QFile file(fileName);
+		if (file.open(QIODevice::WriteOnly)) {
+			file.write(fileContent);
+			file.close();
 		} else {
-			qDebug() << "Content successfully written to file: " << fileNameHint;
+			qDebug() << "file can't open:\t" << file.errorString();
 		}
-	} else {
-		qDebug() << "Failed to open file for writing: " << file.errorString();
 	}
-	file.close();
 }
 
 // CUVFileDialog
-CUVFileDialog::CUVFileDialog(QWidget* parent) : CUVBaseDialog(parent) {
+[[maybe_unused]] CUVFileDialog::CUVFileDialog(QWidget* parent) : CUVBaseDialog(parent) {
 }
 
 CUVFileDialog::~CUVFileDialog() = default;
 
-QString CUVFileDialog::getOpenFileName(QWidget* parent, const QString& caption,
-									   const QString& dir, const QString& filter,
-									   QString* selectedFilter,
-									   QFileDialog::Options options) {
+[[maybe_unused]] QString CUVFileDialog::getOpenFileName(QWidget* parent, const QString& caption,
+														const QString& dir, const QString& filter,
+														QString* selectedFilter,
+														QFileDialog::Options options) {
 	CUVFileBase file_base(tr("C_Patch_management"), parent, caption, dir, filter);
 	return file_base.getOpenFileName(selectedFilter, options);
 }
 
-QUrl CUVFileDialog::getOpenFileUrl(QWidget* parent, const QString& caption,
-								   const QUrl& dir, const QString& filter,
-								   QString* selectedFilter,
-								   QFileDialog::Options options,
-								   const QStringList& supportedSchemes) {
+[[maybe_unused]] QUrl CUVFileDialog::getOpenFileUrl(QWidget* parent, const QString& caption,
+													const QUrl& dir, const QString& filter,
+													QString* selectedFilter,
+													QFileDialog::Options options,
+													const QStringList& supportedSchemes) {
 	CUVFileBase file_base(tr("C_Patch_management"), parent, caption, "", filter);
 	return file_base.getOpenFileUrl(dir, selectedFilter, options, supportedSchemes);
 }
@@ -285,55 +293,55 @@ QString CUVFileDialog::getSaveFileName(QWidget* parent, const QString& caption,
 	return file_base.getSaveFileName(selectedFilter, options);
 }
 
-QUrl CUVFileDialog::getSaveFileUrl(QWidget* parent, const QString& caption,
-								   const QUrl& dir, const QString& filter,
-								   QString* selectedFilter,
-								   QFileDialog::Options options,
-								   const QStringList& supportedSchemes) {
+[[maybe_unused]] QUrl CUVFileDialog::getSaveFileUrl(QWidget* parent, const QString& caption,
+													const QUrl& dir, const QString& filter,
+													QString* selectedFilter,
+													QFileDialog::Options options,
+													const QStringList& supportedSchemes) {
 	CUVFileBase file_base(tr("C_Patch_management"), parent, caption, "", filter);
 	return file_base.getSaveFileUrl(dir, selectedFilter, options, supportedSchemes);
 }
 
 QString CUVFileDialog::getExistingDirectory(QWidget* parent, const QString& caption,
 											const QString& dir,
-											QFileDialog::Option option) {
-	CUVFileBase file_base(tr("C_Patch_management"), parent, caption, dir);
-	return file_base.getExistingDirectory(option);
-}
-
-QUrl CUVFileDialog::getExistingDirectoryUrl(QWidget* parent, const QString& caption,
-											const QUrl& dir,
-											QFileDialog::Option option,
-											const QStringList& supportedSchemes) {
-	CUVFileBase file_base(tr("C_Patch_management"), parent, caption);
-	return file_base.getExistingDirectoryUrl(dir, option, supportedSchemes);
-}
-
-QStringList CUVFileDialog::getOpenFileNames(QWidget* parent, const QString& caption,
-											const QString& dir, const QString& filter,
-											QString* selectedFilter,
 											QFileDialog::Options options) {
+	CUVFileBase file_base(tr("C_Patch_management"), parent, caption, dir);
+	return file_base.getExistingDirectory(options);
+}
+
+[[maybe_unused]] QUrl CUVFileDialog::getExistingDirectoryUrl(QWidget* parent, const QString& caption,
+															 const QUrl& dir,
+															 QFileDialog::Options options,
+															 const QStringList& supportedSchemes) {
+	CUVFileBase file_base(tr("C_Patch_management"), parent, caption);
+	return file_base.getExistingDirectoryUrl(dir, options, supportedSchemes);
+}
+
+[[maybe_unused]] QStringList CUVFileDialog::getOpenFileNames(QWidget* parent, const QString& caption,
+															 const QString& dir, const QString& filter,
+															 QString* selectedFilter,
+															 QFileDialog::Options options) {
 	CUVFileBase file_base(tr("C_Patch_management"), parent, caption, dir, filter);
 	return file_base.getOpenFileNames(selectedFilter, options);
 }
 
-QList<QUrl> CUVFileDialog::getOpenFileUrls(QWidget* parent, const QString& caption,
-										   const QUrl& dir, const QString& filter,
-										   QString* selectedFilter,
-										   QFileDialog::Options options,
-										   const QStringList& supportedSchemes) {
+[[maybe_unused]] QList<QUrl> CUVFileDialog::getOpenFileUrls(QWidget* parent, const QString& caption,
+															const QUrl& dir, const QString& filter,
+															QString* selectedFilter,
+															QFileDialog::Options options,
+															const QStringList& supportedSchemes) {
 	CUVFileBase file_base(tr("C_Patch_management"), parent, caption, "", filter);
 	return file_base.getOpenFileUrls(dir, selectedFilter, options, supportedSchemes);
 }
 
-void CUVFileDialog::getOpenFileContent(const QString& nameFilter,
-									   const std::function<void(const QString&, const QByteArray&)>& fileContentsReady) {
+[[maybe_unused]] void CUVFileDialog::getOpenFileContent(const QString& nameFilter,
+														const std::function<void(const QString&, const QByteArray&)>& fileContentsReady) {
 	CUVFileBase file_base(tr("C_Patch_management"));
 	return file_base.getOpenFileContent(nameFilter, fileContentsReady);
 }
 
-void CUVFileDialog::saveFileContent(const QByteArray& fileContent,
-									const QString& fileNameHint) {
+[[maybe_unused]] void CUVFileDialog::saveFileContent(const QByteArray& fileContent,
+													 const QString& fileNameHint) {
 	CUVFileBase file_base(tr("C_Patch_management"));
 	return file_base.saveFileContent(fileContent, fileNameHint);
 }

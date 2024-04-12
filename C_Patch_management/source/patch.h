@@ -69,8 +69,8 @@ class CPatch : public FramelessMainWindow {
 	static QDateTime GetDateTimeFromString(const QString& str);
 	void updatePage(QString& begin, QString& end, const QString& outputDir);
 	static void getFileCountInDirectory(const QStringList& directoryPaths, QStringList& filesToMerge);
-	int countFilesRecursively(const QString& directoryPath);
-	static void groupFilesBySecondDirectory(QStringList& filesToMerge, const QString& flag);
+	[[maybe_unused]] static int countFilesRecursively(const QString& directoryPath);
+	[[maybe_unused]] static void groupFilesBySecondDirectory(QStringList& filesToMerge, const QString& flag);
 
   private:
 	void createCtrl();

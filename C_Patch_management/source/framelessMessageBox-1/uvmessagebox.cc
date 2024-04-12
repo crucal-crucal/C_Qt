@@ -13,67 +13,71 @@ CUVMessageBox::CUVMessageBox(QMessageBox::Icon icon, const QString& title, const
 	QFont curFont = font();
 	curFont.setPixelSize(16);
 	QFontMetrics fontMetrics(curFont);
-	int nMinWidth = fontMetrics.horizontalAdvance(title);
+	int nMinWidth [[maybe_unused]] = fontMetrics.horizontalAdvance(title);
 	connect(m_pMessageBox, &QMessageBox::buttonClicked, this, &CUVMessageBox::onMsgBoxButtonClicked);
 }
 
 CUVMessageBox::~CUVMessageBox() = default;
 
-void CUVMessageBox::setDefaultButton(QPushButton* button) {
+[[maybe_unused]] void CUVMessageBox::setDefaultButton(QPushButton* button) {
 	m_pMessageBox->setDefaultButton(button);
 }
 
-void CUVMessageBox::setDefaultButton(QMessageBox::StandardButton button) {
+[[maybe_unused]] void CUVMessageBox::setDefaultButton(QMessageBox::StandardButton button) {
 	m_pMessageBox->setDefaultButton(button);
 }
 
-void CUVMessageBox::addButton(QAbstractButton* button, QMessageBox::ButtonRole role) {
+[[maybe_unused]] void CUVMessageBox::addButton(QAbstractButton* button, QMessageBox::ButtonRole role) {
 	m_pMessageBox->addButton(button, role);
 }
 
-QPushButton* CUVMessageBox::addButton(const QString& text, QMessageBox::ButtonRole role) {
+[[maybe_unused]] QPushButton* CUVMessageBox::addButton(const QString& text, QMessageBox::ButtonRole role) {
 	return m_pMessageBox->addButton(text, role);
 }
 
-QPushButton* CUVMessageBox::addButton(QMessageBox::StandardButton button) {
+[[maybe_unused]] QPushButton* CUVMessageBox::addButton(QMessageBox::StandardButton button) {
 	return m_pMessageBox->addButton(button);
 }
 
-void CUVMessageBox::removeButton(QAbstractButton* button) {
+[[maybe_unused]] void CUVMessageBox::removeButton(QAbstractButton* button) {
 	m_pMessageBox->removeButton(button);
 }
 
-QMessageBox::ButtonRole CUVMessageBox::information(QWidget* parent, const QString& title, const QString& text,
-												   QMessageBox::StandardButtons buttons, QMessageBox::StandardButton defaultButton) {
+[[maybe_unused]] QMessageBox::ButtonRole CUVMessageBox::information(QWidget* parent, const QString& title, const QString& text,
+																	QMessageBox::StandardButtons buttons, QMessageBox::StandardButton defaultButton) {
+	Q_UNUSED(defaultButton)
 	CUVMessageBox messageBox(QMessageBox::Information, title, text, buttons, parent);
 	return QMessageBox::ButtonRole(messageBox.exec());
 }
 
 QMessageBox::ButtonRole CUVMessageBox::question(QWidget* parent, const QString& title, const QString& text,
 												QMessageBox::StandardButtons buttons, QMessageBox::StandardButton defaultButton) {
+	Q_UNUSED(defaultButton)
 	CUVMessageBox messageBox(QMessageBox::Question, title, text, buttons, parent);
 	return QMessageBox::ButtonRole(messageBox.exec());
 }
 
-QMessageBox::ButtonRole CUVMessageBox::warning(QWidget* parent, const QString& title, const QString& text,
-											   QMessageBox::StandardButtons buttons, QMessageBox::StandardButton defaultButton) {
+[[maybe_unused]] QMessageBox::ButtonRole CUVMessageBox::warning(QWidget* parent, const QString& title, const QString& text,
+																QMessageBox::StandardButtons buttons, QMessageBox::StandardButton defaultButton) {
+	Q_UNUSED(defaultButton)
 	CUVMessageBox messageBox(QMessageBox::Warning, title, text, buttons, parent);
 	return QMessageBox::ButtonRole(messageBox.exec());
 }
 
-QMessageBox::ButtonRole CUVMessageBox::critical(QWidget* parent, const QString& title, const QString& text,
-												QMessageBox::StandardButtons buttons, QMessageBox::StandardButton defaultButton) {
+[[maybe_unused]] QMessageBox::ButtonRole CUVMessageBox::critical(QWidget* parent, const QString& title, const QString& text,
+																 QMessageBox::StandardButtons buttons, QMessageBox::StandardButton defaultButton) {
+	Q_UNUSED(defaultButton)
 	CUVMessageBox messageBox(QMessageBox::Critical, title, text, buttons, parent);
 	return QMessageBox::ButtonRole(messageBox.exec());
 }
 
-void CUVMessageBox::about(QWidget* parent, const QString& title, const QString& text) {
+[[maybe_unused]] void CUVMessageBox::about(QWidget* parent, const QString& title, const QString& text) {
 	CUVMessageBox messageBox(QMessageBox::NoIcon, title, text, QMessageBox::NoButton, parent);
 	messageBox.exec();
 }
 
 int CUVMessageBox::exec() {
-	int nRet = CUVBaseDialog::exec();
+	int nRet [[maybe_unused]] = CUVBaseDialog::exec();
 	int button = m_pMessageBox->standardButton(m_pMessageBox->clickedButton());
 	if (QMessageBox::NoButton == button) {
 		button = m_pMessageBox->buttonRole(m_pMessageBox->clickedButton());
@@ -94,6 +98,7 @@ void CUVMessageBox::closeDialog() {
 }
 
 void CUVMessageBox::onMsgBoxButtonClicked(QAbstractButton* button) {
+	Q_UNUSED(button)
 	close();
 }
 
@@ -113,7 +118,7 @@ QMessageBox::ButtonRole CUVMessageBox::standardConvertToRole(QMessageBox::Standa
 }
 
 //CLXTimeOutMessageBox
-CUVCountdownMessageBox::CUVCountdownMessageBox(QMessageBox::Icon icon, const QString& title, const QString& text, QWidget* parent)
+[[maybe_unused]] CUVCountdownMessageBox::CUVCountdownMessageBox(QMessageBox::Icon icon, const QString& title, const QString& text, QWidget* parent)
 	: CUVMessageBox(icon, title, text, QMessageBox::Yes | QMessageBox::No, parent, Qt::Widget | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint) {
 	setModal(true);
 	setWindowModality(Qt::WindowModal);
@@ -127,7 +132,7 @@ CUVCountdownMessageBox::CUVCountdownMessageBox(QMessageBox::Icon icon, const QSt
 
 CUVCountdownMessageBox::~CUVCountdownMessageBox() = default;
 
-int CUVCountdownMessageBox::exec(int nSecond) {
+[[maybe_unused]] int CUVCountdownMessageBox::exec(int nSecond) {
 	nCountdown = nSecond;
 	m_pMessageBox->button(QMessageBox::Yes)->setText(QString("%1(%2)").arg(m_pMessageBox->button(QMessageBox::Yes)->text()).
 		arg(nCountdown));
