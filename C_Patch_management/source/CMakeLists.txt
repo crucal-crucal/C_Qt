@@ -1,4 +1,4 @@
-﻿set(TARGET_NAME test)
+﻿set(TARGET_NAME application)
 
 include_directories(..)
 
@@ -6,7 +6,7 @@ FILE(GLOB source "./*.cc")
 FIlE(GLOB header "./*.h")
 
 add_executable(${TARGET_NAME}
-        ${header}
+		${header}
         ${source}
 )
 
