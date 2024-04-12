@@ -75,9 +75,7 @@ void FramelessMainWindow::doWindowStateChange(QEvent* event) {
 void FramelessMainWindow::doResizeEvent(QEvent* event) {
 	// 非win系统的无边框拉伸,win系统上已经采用了nativeEvent来处理拉伸
 	// 为何不统一用计算的方式因为在win上用这个方式往左拉伸会发抖妹的
-#ifdef Q_OS_WIN
-	Q_UNUSED(event)
-#else
+#ifndef Q_OS_WIN
 	int type = event->type();
 	if (type == QEvent::Resize) {
 		//重新计算八个描点的区域,描点区域的作用还有就是计算鼠标坐标是否在某一个区域内
