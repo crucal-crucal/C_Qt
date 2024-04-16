@@ -22,7 +22,7 @@ class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
 
 	// 事件过滤器识别拖动拉伸等
 	void doWindowStateChange(QEvent* event);
-    void doResizeEvent(QEvent* event);
+	void doResizeEvent(QEvent* event);
 	bool eventFilter(QObject* watched, QEvent* event) override;
 
 	// 拦截系统事件用于修复系统休眠后唤醒程序的bug
