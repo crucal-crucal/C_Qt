@@ -65,9 +65,9 @@ class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
 
   public Q_SLOTS:
 	// 设置边距+可拖动+可拉伸
-	[[maybe_unused]] [[maybe_unused]] void setPadding(int _padding);
-	[[maybe_unused]] [[maybe_unused]] void setMoveEnable(bool _moveEnable);
-	[[maybe_unused]] [[maybe_unused]] void setResizeEnable(bool _resizeEnable);
+	[[maybe_unused]] void setPadding(int _padding);
+	[[maybe_unused]] void setMoveEnable(bool _moveEnable);
+	[[maybe_unused]] void setResizeEnable(bool _resizeEnable);
 
 	// 设置标题栏控件
 	void setTitleBar(QWidget* _titleBar);

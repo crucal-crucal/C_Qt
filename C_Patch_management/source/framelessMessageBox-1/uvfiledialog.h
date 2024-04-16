@@ -88,7 +88,7 @@ class FRAMELESSFILEDIALOG_EXPORT CUVFileBase : public CUVBaseDialog {
 class FRAMELESSFILEDIALOG_EXPORT CUVFileDialog : CUVBaseDialog {
   Q_OBJECT
   public:
-	[[maybe_unused]] [[maybe_unused]] explicit CUVFileDialog(QWidget* parent = nullptr);
+	[[maybe_unused]] explicit CUVFileDialog(QWidget* parent = nullptr);
 	~CUVFileDialog() override;
 
 	[[maybe_unused]] static QString getOpenFileName(QWidget* parent = nullptr,
