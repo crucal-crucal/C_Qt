@@ -6,7 +6,7 @@ FILE(GLOB source "./*.cc")
 FIlE(GLOB header "./*.h")
 
 add_executable(${TARGET_NAME}
-		${header}
+        ${header}
         ${source}
 )
 
@@ -18,7 +18,7 @@ target_link_libraries(${TARGET_NAME}
 )
 
 add_subdirectory(framelessmainwindow)
-add_subdirectory(framelessMessageBox-1)
+add_subdirectory(framelessMessageBox)
 add_subdirectory(logger)
 
 install(TARGETS ${TARGET_NAME}

@@ -33,8 +33,8 @@
 
 #include "C_global.h"
 #include "framelessmainwindow/framelessmainwindow.h"
-#include "framelessMessageBox-1/uvmessagebox.h"
-#include "framelessMessageBox-1/uvfiledialog.h"
+#include "framelessMessageBox/uvmessagebox.h"
+#include "framelessMessageBox/uvfiledialog.h"
 #include "mergedir.h"
 #include "logger/Logger.h"
 

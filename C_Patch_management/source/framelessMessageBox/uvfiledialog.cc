@@ -239,7 +239,6 @@ void CUVFileBase::getOpenFileContent(const QString& nameFilter,
 			file.close();
 			fileContentsReady(filePath, content);
 		} else {
-			qDebug() << "Failed to open file: " << file.errorString();
 			fileContentsReady(filePath, QByteArray()); // Pass an empty QByteArray to indicate failure
 		}
 	});
@@ -256,8 +255,6 @@ void CUVFileBase::saveFileContent(const QByteArray& fileContent, const QString& 
 		if (file.open(QIODevice::WriteOnly)) {
 			file.write(fileContent);
 			file.close();
-		} else {
-			qDebug() << "file can't open:\t" << file.errorString();
 		}
 	}
 }

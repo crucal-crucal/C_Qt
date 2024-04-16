@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDesktopServices>

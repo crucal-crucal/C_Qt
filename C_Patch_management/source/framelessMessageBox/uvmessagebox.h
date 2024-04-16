@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QDialog>
 #include <QObject>
 #include <QMessageBox>
@@ -9,6 +10,7 @@
 #include <QFontMetrics>
 #include <QMouseEvent>
 #include <QFont>
+
 #include "uvbasedialog.h"
 
 #ifdef FRAMELESSMESSAGEBOX_LIB

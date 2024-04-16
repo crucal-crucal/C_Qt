@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QSettings>
 #include <QDebug>
+
 #include "uvbasedialog.h"
 
 #ifdef FRAMELESSFILEDIALOG_LIB
@@ -85,7 +86,7 @@ class FRAMELESSFILEDIALOG_EXPORT CUVFileBase : public CUVBaseDialog {
 	QString m_strRegisterName{""};
 };
 
-class FRAMELESSFILEDIALOG_EXPORT CUVFileDialog : CUVBaseDialog {
+class FRAMELESSFILEDIALOG_EXPORT CUVFileDialog : public CUVBaseDialog {
   Q_OBJECT
   public:
 	[[maybe_unused]] explicit CUVFileDialog(QWidget* parent = nullptr);

@@ -6,22 +6,25 @@
 #include <fstream>
 #include <string>
 #include <filesystem>
-
-#include "patch.h"
-#include "C_global.h"
 #ifdef Q_OS_LINUX
 #include <QTextCodec>
 #endif
 
-QTranslator* g_translator{nullptr};
-std::string configDir = "config";
-std::string configName = configDir + "/config.ini";
+#include "patch.h"
+#include "C_global.h"
 
+QTranslator* g_translator{nullptr};
+/*
+ * @note: 加载、卸载资源文件，加载样式表，加载、卸载翻译文件
+ */
 bool loadResources(const QString& strPath);
 bool unloadResources(const QString& strPath);
 bool loadStyle(QApplication& app, const QString& filePath);
 bool loadTranslations(QApplication& app, const QString& filePath);
 void unLoadTranslations();
+/*
+ * @note: 配置文件操作
+ */
 void initializeConfigFile();
 WINDOWLANAGUAGE readLanguageFormConfig();
 void changeLanguageInConfig(WINDOWLANAGUAGE newLanguage);
@@ -30,7 +33,7 @@ int main(int argc, char* argv[]) {
 	QApplication app(argc, argv);
 
 	QApplication::setFont(QFont("Microsoft Yahei", 9));
-	//设置中文编码
+	// 设置中文编码
 #ifdef Q_OS_LINUX
 	QTextCodec *codec = QTextCodec::codecForName("utf-8");
 	QTextCodec::setCodecForLocale(codec);
@@ -47,12 +50,12 @@ int main(int argc, char* argv[]) {
 	QString strtrans_en = appParPath + "/translation/C_Patch_management_en.qm";
 	initializeConfigFile();
 	// 加载样式表
-	qInfo(loadStyle(app, strStyle) ? "Load Style Success!" : "Load Style Failed!");
+	Logger::instance().logInfo(loadStyle(app, strStyle) ? "Load Style Success!" : "Load Style Failed!");
 	// 加载rcc
-	qInfo(loadResources(strRes) ? "Load Resource Success!" : "Load Resource Failed!");
+	Logger::instance().logInfo(loadResources(strRes) ? "Load Resource Success!" : "Load Resource Failed!");
 	// 加载中文翻译
 	QString str = (readLanguageFormConfig() == WINDOWLANAGUAGE::Chinese) ? strtrans_cn : strtrans_en;
-	qInfo(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!");
+	Logger::instance().logInfo(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!");
 
 	CPatch w;
 	QObject::connect(&w, &CPatch::LanguageChanged, [&](WINDOWLANAGUAGE language) {
@@ -83,8 +86,8 @@ bool unloadResources(const QString& strPath) {
 		qDebug() << "unregister resource success";
 		return true;
 	}
-	qDebug() << "resource filePath:\t" << strPath;
-	qDebug() << "unregister resource failed";
+	Logger::instance().logError("resource filePath:\t" + strPath);
+	Logger::instance().logError("unregister resource failed");
 	return false;
 }
 
@@ -97,7 +100,7 @@ bool loadStyle(QApplication& app, const QString& filePath) {
 		file.close();
 		return true;
 	}
-	qDebug() << file.errorString();
+	Logger::instance().logError(file.errorString());
 	return false;
 }
 
@@ -128,7 +131,7 @@ void initializeConfigFile() {
 	// 检查config文件夹是否存在，如果不存在则创建
 	if (!std::filesystem::exists(configDir)) {
 		if (!std::filesystem::create_directory(configDir)) {
-			std::cerr << "Error: Unable to create directory " << configDir << std::endl;
+			Logger::instance().logError("Error: Unable to create directory " + QString::fromStdString(configDir));
 			return;
 		}
 		std::cout << "Directory " << configDir << " created." << std::endl;
@@ -142,12 +145,10 @@ void initializeConfigFile() {
 			outputFile << "Language: Chinese";
 			outputFile.close();
 			std::cout << "Config file created and initialized with default language." << std::endl;
+		} else {
+			Logger::instance().logError("Error: Unable to create config file.");
 		}
-		else {
-			std::cerr << "Error: Unable to create config file." << std::endl;
-		}
-	}
-	else {
+	} else {
 		std::cout << "Config file already exists." << std::endl;
 	}
 }
@@ -160,8 +161,7 @@ WINDOWLANAGUAGE readLanguageFormConfig() {
 			if (line.find("Language:") != std::string::npos) {
 				if (line.find("English") != std::string::npos) {
 					return WINDOWLANAGUAGE::English;
-				}
-				else if (line.find("Chinese") != std::string::npos) {
+				} else if (line.find("Chinese") != std::string::npos) {
 					return WINDOWLANAGUAGE::Chinese;
 				}
 			}
@@ -175,14 +175,12 @@ void changeLanguageInConfig(WINDOWLANAGUAGE newLanguage) {
 	if (configFile) {
 		if (newLanguage == WINDOWLANAGUAGE::English) {
 			configFile << "Language: English";
-		}
-		else {
+		} else {
 			configFile << "Language: Chinese";
 		}
 		std::cout << "Language changed to " << (newLanguage == WINDOWLANAGUAGE::English ? "English" : "Chinese") << std::endl;
-	}
-	else {
-		std::cerr << "Error: Unable to open config file for writing." << std::endl;
+	} else {
+		Logger::instance().logError("Error: Unable to open config file for writing.");
 	}
 	qApp->exit(RETCODE_RESTART);
 }
