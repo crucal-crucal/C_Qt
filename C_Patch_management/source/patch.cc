@@ -177,7 +177,7 @@ void CPatch::onBtnDoneClicked() {
 }
 
 void CPatch::onActChineseClicked() {
-	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"), tr("Modify the language needs to restart the program, whether to modify"));
+	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"), tr("reboot applicaion to take effect"));
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		emit LanguageChanged(WINDOWLANAGUAGE::Chinese);
 	} else {
@@ -186,7 +186,7 @@ void CPatch::onActChineseClicked() {
 }
 
 void CPatch::onActEnglishClicked() {
-	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"), tr("Modify the language needs to restart the program, whether to modify"));
+	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"), tr("reboot applicaion to take effect"));
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		emit LanguageChanged(WINDOWLANAGUAGE::English);
 	} else {

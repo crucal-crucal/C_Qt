@@ -151,10 +151,10 @@
         <translation type="unfinished">修改语言</translation>
     </message>
     <message>
-        <location filename="../../source/patch.cc" line="164"/>
-        <location filename="../../source/patch.cc" line="173"/>
-        <source>Modify the language needs to restart the program, whether to modify</source>
-        <translation type="unfinished">修改语言需要重启程序，是否修改</translation>
+        <location filename="../../source/patch.cc" line="180"/>
+        <location filename="../../source/patch.cc" line="189"/>
+        <source>reboot applicaion to take effect</source>
+        <translation type="unfinished">重启程序生效</translation>
     </message>
     <message>
         <location filename="../../source/patch.cc" line="168"/>
@@ -310,6 +310,11 @@
         <source>IDS_TYPE</source>
         <translation type="unfinished">类型</translation>
     </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="249"/>
+        <source>Save File</source>
+        <translation type="unfinished">保存文件</translation>
+    </message>
 </context>
 <context>
     <name>CUVFileDialog</name>
@@ -354,6 +359,26 @@
         <location filename="../../source/framelessMessageBox-1/uvmessagebox.h" line="57"/>
         <source>IDS_WARN_TITLE</source>
         <translation type="unfinished">标题</translation>
+    </message>
+</context>
+<context>
+    <name>UVMessageBox::CUVMessageBox</name>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvmessagebox.cc" line="50"/>
+        <location filename="../../source/framelessMessageBox/uvmessagebox.cc" line="67"/>
+        <location filename="../../source/framelessMessageBox/uvmessagebox.cc" line="75"/>
+        <source>OK</source>
+        <translation type="unfinished">确定</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvmessagebox.cc" line="58"/>
+        <source>Yes</source>
+        <translation type="unfinished">是</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvmessagebox.cc" line="59"/>
+        <source>No</source>
+        <translation type="unfinished">否</translation>
     </message>
 </context>
 </TS>
