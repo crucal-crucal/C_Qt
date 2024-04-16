@@ -17,7 +17,6 @@ void CMergeDir::run() {
 		return;
 	}
 
-	QMutexLocker locker_file(&m_mutexFile);
 	for (auto& filePath : m_sourcefilePaths) {
 		// 截取包含“Patch”的位置后的目录路径
 		int patchIndex = filePath.indexOf("/" + m_dirname);
@@ -33,9 +32,10 @@ void CMergeDir::run() {
 			QString relativePath = filePath.mid(patchIndex + subindex + QString("/" + m_dirname).length() + 2);
 			// 构建目标文件路径
 			QString destFilePath = output.filePath(relativePath);
+
+			QMutexLocker locker(&m_mutex);
 			// 确保目标文件所在的目录已存在
 			QDir destDir(QFileInfo(destFilePath).absolutePath());
-
 			if (!destDir.exists()) {
 				if (!destDir.mkpath(".")) {
 					QString msg = tr("Unable to create directory ") + destDir.path();

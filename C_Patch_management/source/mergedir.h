@@ -24,7 +24,7 @@ class CMergeDir : public QThread, public QRunnable {
 	void run() override;
 
   private:
-	QMutex m_mutexFile{};
+	QMutex m_mutex{};
 	QStringList m_sourcefilePaths;
 	QString m_outputFilePath{};
 	QString m_dirname{};
