@@ -14,7 +14,7 @@ CPatch::~CPatch() = default;
 void CPatch::onBtnOpenClicked() {
 	QString dirPath = CUVFileDialog::getExistingDirectory(this, tr("Open Directory"), QDir::currentPath());
 	if (dirPath.isEmpty()) {
-		Logger::instance().logWarning(tr("User deselect ditectory"));
+		Logger::instance().logInfo(tr("User deselect ditectory"));
 		return;
 	}
 	QDir dir(dirPath);
@@ -73,9 +73,15 @@ void CPatch::onBtnRefreshClicked() {
 }
 
 void CPatch::onBtnGenerateClicked() {
+	m_pPbschedule->reset();
+	m_totalProcess = 0;
 	QStringList filePaths{};
 	QString begin = m_pCbStartTime->currentText();
 	QString end = m_pCbEndTime->currentText();
+	if (m_pLePatchPath->text().isEmpty()) {
+		UVMessageBox::CUVMessageBox::warning(this, tr("Waring"), tr("please open a directory"));
+		return;
+	}
 
 	auto beginIndex = m_localMap.find(begin);
 	auto endIndex = m_localMap.find(end);
@@ -87,38 +93,35 @@ void CPatch::onBtnGenerateClicked() {
 		}
 	}
 
-	QString outDirName = "output" + QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm");
+	QString outDirName = "output" + QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss");
 	m_outDirName = outDirName;
 	m_output = qApp->applicationDirPath() + QDir::separator() + outDirName;
 
 	std::reverse(filePaths.begin(), filePaths.end());
 	QStringList filesToMerge{};
-	getFileCountInDirectory(filePaths, filesToMerge);
+	getFilesInDirectory(filePaths, filesToMerge);
 	m_localProcess = filesToMerge.size();
-//	groupFilesBySecondDirectory(filePaths, m_dirname);
 
-	QThreadPool::globalInstance()->setMaxThreadCount(m_pCbThreadNum->currentText().toInt());
+	auto mp = splitFileList(m_dirname, filesToMerge);
+	int threadNum = qMin(static_cast<int>(mp.size()), m_pCbThreadNum->currentText().toInt());
+	QThreadPool::globalInstance()->setMaxThreadCount(threadNum);
 
-	int numThreads = QThreadPool::globalInstance()->maxThreadCount();
-	int numFiles = filesToMerge.size();
-	int filesPerThread = numFiles / numThreads;
+	std::vector<QStringList> threadFiles{};
+	threadFiles.resize(threadNum);
+	splitFileListByThread(mp, threadFiles);
 
-	std::vector<CMergeDir*> workers;
-	for (int i = 0; i < numThreads; ++i) {
-		int startIdx = i * filesPerThread;
-		int endIdx = (i == numThreads - 1) ? numFiles : (startIdx + filesPerThread);
-		QStringList subFilePaths = filesToMerge.mid(startIdx, endIdx - startIdx);
-		auto* worker = new CMergeDir(subFilePaths, m_output, m_dirname);
+	std::vector<CMergeDir*> m_workers;
+	for (auto& filesPerThread : threadFiles) {
+		auto* worker = new CMergeDir(filesPerThread, m_output, m_dirname);
 		connect(worker, &CMergeDir::progressUpdated, this, &CPatch::updateProcess, Qt::QueuedConnection);
-		workers.emplace_back(worker);
-		worker->setAutoDelete(true);
+		m_workers.emplace_back(worker);
 	}
 
-	if (!m_bIsGenerate) {
+	if (m_pBtnGenerate->isChecked()) {
 		m_pBtnGenerate->setText(tr("Generate"));
 		m_pLbCopy->setText(tr("Copying..."));
 		m_pGenerateTime->start();
-		for (auto& worker : workers) {
+		for (auto& worker : m_workers) {
 			QThreadPool::globalInstance()->start(worker);
 		}
 
@@ -130,7 +133,7 @@ void CPatch::onBtnGenerateClicked() {
 		m_pBtnGenerate->setText(tr("Cancel"));
 		m_pLbCopy->setText(tr("Cancel..."));
 		m_pGenerateTime->stop();
-		for (auto& worker : workers) {
+		for (auto& worker : m_workers) {
 			worker->exit();
 			bool result = QThreadPool::globalInstance()->tryTake(worker);
 			QString msg = tr("try to stop thread ") + (result ? tr("success") : tr("fail"));
@@ -138,7 +141,6 @@ void CPatch::onBtnGenerateClicked() {
 			delete worker;
 		}
 	}
-	m_bIsGenerate = !m_bIsGenerate;
 }
 
 void CPatch::onBtnChoosePathCliecked() {
@@ -196,7 +198,8 @@ void CPatch::onActEnglishClicked() {
 
 void CPatch::updateProcess(qint64 value) {
 	m_totalProcess += value;
-	m_pPbschedule->setValue(static_cast<int>(m_totalProcess / m_localProcess));
+	m_pPbschedule->setValue(static_cast<int>(m_totalProcess / m_localProcess) * 100);
+
 	if (m_pPbschedule->value() == 100) {
 		m_pLbCopy->setText("");
 		m_pGenerateTime->stop();
@@ -266,6 +269,7 @@ QDateTime CPatch::GetDateTimeFromString(const QString& str) {
 }
 
 void CPatch::updatePage(QString& begin, QString& end, const QString& outputDir) {
+	m_pBtnGenerate->setChecked(false);
 	m_pLwOutPatchList->clear();
 	auto beginIndex = m_localMap.find(begin);
 	auto endIndex = m_localMap.find(end);
@@ -320,6 +324,7 @@ void CPatch::createCtrl() {
 	m_pCbEndTime->setMinimumWidth(150);
 	m_pBtnGenerate = new QPushButton(tr("GENERATE"), m_pReadWidget);
 	m_pBtnGenerate->setFixedWidth(100);
+	m_pBtnGenerate->setCheckable(true);
 	m_pLbThreadNum = new QLabel(tr("Thread Num"), m_pReadWidget);
 	m_pCbThreadNum = new QComboBox(m_pReadWidget);
 	m_pCbThreadNum->setMinimumWidth(70);
@@ -422,7 +427,7 @@ void CPatch::init() {
 	m_pLePatchPath->setReadOnly(true);
 	m_pLePatchOutPath->setReadOnly(true);
 
-	QString sheet = "QComboBox{combobox-popup:0;}";
+	QString sheet = "QComboBox{ combobox-popup:0; }";
 	m_pCbStartTime->setStyleSheet(sheet);
 	m_pCbStartTime->setMaxVisibleItems(10);
 	m_pCbEndTime->setStyleSheet(sheet);
@@ -430,6 +435,10 @@ void CPatch::init() {
 	for (int i = 1; i <= 5; i++) {
 		m_pCbThreadNum->addItem(QString::number(i));
 	}
+
+//	m_pPbschedule->setRange(0, 100);
+//	m_pPbschedule->setMinimum(0);
+//	m_pPbschedule->setMaximum(100);
 }
 
 void CPatch::initConnect() {
@@ -458,7 +467,7 @@ void CPatch::initConnect() {
 	});
 }
 
-void CPatch::getFileCountInDirectory(const QStringList& directoryPaths, QStringList& filesToMerge) {
+void CPatch::getFilesInDirectory(const QStringList& directoryPaths, QStringList& filesToMerge) {
 	QSet<QString> m_set_path_files{};
 	for (const auto& directoryPath : directoryPaths) {
 		// 存储所有文件的完整路径
@@ -494,53 +503,67 @@ void CPatch::getFileCountInDirectory(const QStringList& directoryPaths, QStringL
 	}
 }
 
-[[maybe_unused]] int CPatch::countFilesRecursively(const QString& directoryPath) {
-	QStack<QString> directoriesToProcess;
-	directoriesToProcess.push(directoryPath);
-	int totalCount = 0;
-
-	while (!directoriesToProcess.isEmpty()) {
-		QString currentDirPath = directoriesToProcess.pop();
-		QDir currentDir(currentDirPath);
-
-		QStringList files = currentDir.entryList(QDir::Files);
-		QStringList subDirs = currentDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-
-		totalCount += files.size();
-
-		for (const QString& subDir : subDirs) {
-			QString subDirPath = currentDir.filePath(subDir);
-			directoriesToProcess.push(subDirPath);
-		}
-	}
-
-	return totalCount;
-}
-
-[[maybe_unused]] void CPatch::groupFilesBySecondDirectory(QStringList& filesToMerge, const QString& flag) {
-	QMap<QString, QStringList> groupedFiles;
-	for (const auto& filePath : filesToMerge) {
-		QString curflag = "/" + QString(flag) + "/";
-		// 找到第二个目录的位置
-		int flagindex = filePath.indexOf(curflag);
+std::map<QString, QStringList> CPatch::splitFileList(const QString& flag, const QStringList& filesToMerge) {
+#ifdef Q_OS_WIN
+	QString separator = "/";
+#elif Q_OS_UNIX
+	QString separator = QDir::separator();
+#endif
+	std::map<QString, QStringList> mp{};
+	QStringList files{}; // 存储抛开目录过后的文件
+	QString index = "file"; // 最后一次创建的Key
+	for (auto& file : filesToMerge) {
+		QString fileName{};
+		int flagindex = file.lastIndexOf(flag);
 		if (flagindex != -1) {
-			// 找到第二个目录的结束位置
-			int secondDirStartIndex = filePath.indexOf('/', flagindex + curflag.length());
-			if (secondDirStartIndex != -1) {
-				// 提取第二个目录名
-				QString secondDirName = filePath.mid(flagindex + curflag.length(), secondDirStartIndex - flagindex - curflag.length());
-				// 将路径添加到相应的组中
-				groupedFiles[secondDirName].append(filePath);
+			QString str = file.mid(flagindex + flag.length() + 1);
+			int firstSlashIndex = str.indexOf(separator);
+			if (firstSlashIndex != -1) {
+				int secondSlashIndex = str.indexOf(separator, firstSlashIndex + 1);
+				if (secondSlashIndex != -1) {
+					fileName = str.mid(firstSlashIndex + 1, secondSlashIndex - firstSlashIndex - 1);
+				} else {
+					files.append(file);
+				}
 			}
 		}
-	}
-
-	filesToMerge.clear();
-
-	for (auto it = groupedFiles.begin(); it != groupedFiles.end(); ++it) {
-		const QStringList& filePaths = it.value();
-		for (const QString& filePath : filePaths) {
-			filesToMerge.append(filePath);
+		if (!fileName.isEmpty()) {
+			index = fileName;
+			mp[fileName].append(file);
 		}
 	}
+	for (auto& file : files) {
+		mp[index].append(file);
+	}
+	return mp;
+}
+
+bool CPatch::splitFileListByThread(const std::map<QString, QStringList>& mp, std::vector<QStringList>& threadFiles) {
+	bool bRet = false;
+	// 如果mp为空或者threadFiles的大小为0，则返回false
+	if (mp.empty() || threadFiles.empty()) {
+		return bRet;
+	}
+
+	// 计算每个线程应该分配的QStringList数量
+	int numThreads = static_cast<int>(threadFiles.size());
+	int avgListPerThread = static_cast<int>(std::ceil(static_cast<double>(mp.size()) / numThreads)); // 向上取整
+	int remainingLists = static_cast<int>(mp.size()) % numThreads; // 余下的QStringList
+
+	auto iter = mp.begin();
+	for (size_t i = 0; i < numThreads; ++i) {
+		// 将QStringList平均分配给每个线程
+		for (int j = 0; j < avgListPerThread && iter != mp.end(); ++j) {
+			threadFiles[i].append(iter->second);
+			++iter;
+		}
+		// 将余下的QStringList放入最后一个线程中
+		if (i == numThreads - 1 && remainingLists > 0 && iter != mp.end()) {
+			threadFiles[i].append(iter->second);
+			++iter;
+			--remainingLists;
+		}
+	}
+	bRet = true;
+	return bRet;
 }

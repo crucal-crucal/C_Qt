@@ -30,5 +30,4 @@ class CMergeDir : public QThread, public QRunnable {
 	QString m_dirname{};
 
 	QMutex m_mutexProcess{};
-	qint64 currentFile{0};
 };

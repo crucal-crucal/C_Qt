@@ -5,7 +5,9 @@
 
 CMergeDir::CMergeDir(QStringList _filePaths, QString _outputFilePath, QString dirname, QObject* parent)
 	: QRunnable(), QThread(parent), m_sourcefilePaths(std::move(_filePaths)), m_dirname(std::move(dirname)),
-	  m_outputFilePath(std::move(_outputFilePath)) {}
+	  m_outputFilePath(std::move(_outputFilePath)) {
+	this->setAutoDelete(true);
+}
 
 CMergeDir::~CMergeDir() = default;
 
@@ -17,8 +19,9 @@ void CMergeDir::run() {
 		return;
 	}
 
+	qint64 currentFile{0};
 	for (auto& filePath : m_sourcefilePaths) {
-		// 截取包含“Patch”的位置后的目录路径
+		// 截取包含 m_dirname 的位置后的目录路径
 		int patchIndex = filePath.indexOf("/" + m_dirname);
 		if (patchIndex != -1) {
 			// 获取子目录的长度

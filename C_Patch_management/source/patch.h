@@ -30,6 +30,7 @@
 #include <QSet>
 #include <QDirIterator>
 #include <QProcess>
+#include <set>
 
 #include "C_global.h"
 #include "framelessmainwindow/framelessmainwindow.h"
@@ -68,9 +69,16 @@ class CPatch : public FramelessMainWindow {
 	void updateCombox();
 	static QDateTime GetDateTimeFromString(const QString& str);
 	void updatePage(QString& begin, QString& end, const QString& outputDir);
-	static void getFileCountInDirectory(const QStringList& directoryPaths, QStringList& filesToMerge);
-	[[maybe_unused]] static int countFilesRecursively(const QString& directoryPath);
-	[[maybe_unused]] static void groupFilesBySecondDirectory(QStringList& filesToMerge, const QString& flag);
+	static void getFilesInDirectory(const QStringList& directoryPaths, QStringList& filesToMerge);
+	/*
+	 * @note: 分割文件，使得所有文件按照文件夹分类装在 map 的Value中，map以文件夹名为Key，如果分割时仅剩文件，则在最后插入map
+	 * @param: flag 文件夹名，filesToMerge 筛选出需要 Copy 的文件
+	 */
+	static std::map<QString, QStringList> splitFileList(const QString& flag, const QStringList& filesToMerge);
+	/*
+	 * @note: 通过用户选择的线程分割文件
+	 */
+	static bool splitFileListByThread(const std::map<QString, QStringList>& mp, std::vector<QStringList>& threadFiles);
 
   private:
 	void createCtrl();
@@ -153,6 +161,4 @@ class CPatch : public FramelessMainWindow {
 
 	qint64 m_localProcess{0};
 	qint64 m_totalProcess{0};
-
-	bool m_bIsGenerate{false};
 };

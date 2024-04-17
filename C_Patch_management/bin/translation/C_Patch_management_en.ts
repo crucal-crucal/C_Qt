@@ -58,6 +58,16 @@
         <translation type="unfinished">No .txt files found in the specified directory.</translation>
     </message>
     <message>
+        <location filename="../../source/patch.cc" line="82"/>
+        <source>Waring</source>
+        <translation type="unfinished">Waring</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="82"/>
+        <source>please open a directory</source>
+        <translation type="unfinished">Please Open a directory</translation>
+    </message>
+    <message>
         <location filename="../../source/patch.cc" line="118"/>
         <location filename="../../source/patch.cc" line="205"/>
         <source>Generate</source>

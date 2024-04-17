@@ -53,6 +53,16 @@
         <translation type="unfinished">在指定目录中找不到.txt文件。</translation>
     </message>
     <message>
+        <location filename="../../source/patch.cc" line="82"/>
+        <source>Waring</source>
+        <translation type="unfinished">警告</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="82"/>
+        <source>please open a directory</source>
+        <translation type="unfinished">请打开一个目录</translation>
+    </message>
+    <message>
         <location filename="../../source/patch.cc" line="118"/>
         <location filename="../../source/patch.cc" line="205"/>
         <source>Generate</source>
