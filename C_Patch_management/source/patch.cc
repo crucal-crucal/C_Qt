@@ -506,7 +506,7 @@ void CPatch::getFilesInDirectory(const QStringList& directoryPaths, QStringList&
 std::map<QString, QStringList> CPatch::splitFileList(const QString& flag, const QStringList& filesToMerge) {
 #ifdef Q_OS_WIN
 	QString separator = "/";
-#elif Q_OS_UNIX
+#else
 	QString separator = QDir::separator();
 #endif
 	std::map<QString, QStringList> mp{};
