@@ -25,3 +25,61 @@ QPushButton#Dialog_Btn_Min{
     width: 30px;
     height: 30px;
 }
+QMenuBar {
+    background-color: transparent;
+}
+/*
+enum class WINDOWPROGRESSBARSTYLE {
+	NORMAL,			// Qt默认样式
+	BLOCK,				// 块状显示
+    BORDER_RED, 		// 红色边框
+    BORDER_RADIUS,		// 圆形边框
+	GRADATION			// 渐变色
+};
+*/
+/*块状显示*/
+QProgressBar[customProgressBar="1"] {
+    text-align: center;
+    background-color: #DDDDDD;
+    border: 0px solid #DDDDDD;
+    border-radius: 5px;
+}
+QProgressBar[customProgressBar="1"]::chunk {
+    background-color: #05B8CC;
+    border-radius: 5px;
+    width: 8px;
+    margin: 0.5px;
+}
+/*红色边框*/
+QProgressBar[customProgressBar="2"] {
+    text-align: center;
+    background-color: #DDDDDD;
+    border: 1px solid  #ff0000;
+}
+QProgressBar[customProgressBar="2"]::chunk {
+    background-color: #05B8CC;
+}
+/*圆形边框*/
+QProgressBar[customProgressBar="3"] {
+   text-align: center;
+   background-color: #DDDDDD;
+   border: 0px solid #DDDDDD;
+   border-radius: 5px;
+}
+QProgressBar[customProgressBar="3"]::chunk {
+    background-color: #05B8CC;
+    border-radius: 5px
+}
+/*渐变色*/
+QProgressBar[customProgressBar="4"] {
+    height: 22px;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+    border-radius: 11px;
+    background: #1D5573;
+}
+QProgressBar[customProgressBar="4"]::chunk {
+    border-radius: 11px;
+    background: qlineargradient(spread: pad, x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #99ffff, stop: 1 #9900ff);
+}

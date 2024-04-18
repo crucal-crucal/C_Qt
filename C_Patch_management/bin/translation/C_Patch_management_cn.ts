@@ -161,16 +161,25 @@
         <translation type="unfinished">修改语言</translation>
     </message>
     <message>
+        <location filename="../../source/patch.cc" line="168"/>
+        <location filename="../../source/patch.cc" line="177"/>
+        <source>Cancel language change</source>
+        <translation type="unfinished">取消语言修改</translation>
+    </message>
+    <message>
         <location filename="../../source/patch.cc" line="180"/>
         <location filename="../../source/patch.cc" line="189"/>
         <source>reboot applicaion to take effect</source>
         <translation type="unfinished">重启程序生效</translation>
     </message>
     <message>
-        <location filename="../../source/patch.cc" line="168"/>
-        <location filename="../../source/patch.cc" line="177"/>
-        <source>Cancel language change</source>
-        <translation type="unfinished">取消语言修改</translation>
+        <location filename="../../source/patch.cc" line="201"/>
+        <location filename="../../source/patch.cc" line="209"/>
+        <location filename="../../source/patch.cc" line="217"/>
+        <location filename="../../source/patch.cc" line="225"/>
+        <location filename="../../source/patch.cc" line="233"/>
+        <source>Change Progressbar Style</source>
+        <translation type="unfinished">修改进度条样式</translation>
     </message>
     <message>
         <location filename="../../source/patch.cc" line="289"/>
@@ -183,8 +192,13 @@
         <translation type="unfinished">关闭</translation>
     </message>
     <message>
-        <location filename="../../source/patch.cc" line="269"/>
-        <source>LANGUAGE</source>
+        <location filename="../../source/patch.cc" line="343"/>
+        <source>Preference</source>
+        <translation type="unfinished">首选项</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="345"/>
+        <source>Language</source>
         <translation type="unfinished">语言</translation>
     </message>
     <message>
@@ -196,6 +210,36 @@
         <location filename="../../source/patch.cc" line="271"/>
         <source>ENGLISH</source>
         <translation type="unfinished">英文</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="351"/>
+        <source>ProgressBar Style</source>
+        <translation type="unfinished">进度条样式</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="352"/>
+        <source>Normal</source>
+        <translation type="unfinished">默认</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="353"/>
+        <source>Block</source>
+        <translation type="unfinished">块状显示</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="354"/>
+        <source>Border_Red</source>
+        <translation type="unfinished">红色边框</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="355"/>
+        <source>Border Radius</source>
+        <translation type="unfinished">原型边框</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="356"/>
+        <source>Gradation</source>
+        <translation type="unfinished">渐变色</translation>
     </message>
     <message>
         <location filename="../../source/patch.cc" line="276"/>

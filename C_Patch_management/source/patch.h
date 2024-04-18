@@ -44,11 +44,13 @@ class CPatch : public FramelessMainWindow {
   Q_OBJECT
   public:
 
-	explicit CPatch(QWidget* parent = Q_NULLPTR);
+	explicit CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage = WINDOWLANAGUAGE::Chinese,
+					WINDOWPROGRESSBARSTYLE ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK,
+					QWidget* parent = nullptr);
 	~CPatch() override;
 
   signals:
-	void LanguageChanged(WINDOWLANAGUAGE);
+	void ConfChanged(WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE);
 
   private slots:
 	void onBtnOpenClicked();
@@ -60,6 +62,11 @@ class CPatch : public FramelessMainWindow {
 	void onBtnDoneClicked();
 	void onActChineseClicked();
 	void onActEnglishClicked();
+	void onActProgressbar_normalClicked();
+	void onActProgressbar_borderClicked();
+	void onActProgressbar_border_radiusClicked();
+	void onActProgressbar_blockClicked();
+	void onActProgressbar_gradationClicked();
 	void updateProcess(qint64 value);
 
   private:
@@ -94,8 +101,16 @@ class CPatch : public FramelessMainWindow {
 	QPushButton* m_pBtnMin{nullptr};
 
 	QMenuBar* m_pMenuBar{nullptr};
+	QMenu* m_menuPreference{nullptr};
+	QMenu* m_menuLanguage{nullptr};
 	QAction* m_pActChinese{nullptr};
 	QAction* m_pActEnglish{nullptr};
+	QMenu* m_menuProgressbar{nullptr};
+	QAction* m_pActProgressbar_normal{nullptr};
+	QAction* m_pActProgressbar_border{nullptr};
+	QAction* m_pActProgressbar_border_radius{nullptr};
+	QAction* m_pActProgressbar_block{nullptr};
+	QAction* m_pActProgressbar_gradation{nullptr};
 
 	QTabWidget* m_pTabWidget{nullptr};
 
@@ -161,4 +176,7 @@ class CPatch : public FramelessMainWindow {
 
 	qint64 m_localProcess{0};
 	qint64 m_totalProcess{0};
+	int m_LabelWidth{};
+	WINDOWLANAGUAGE m_language{};
+	WINDOWPROGRESSBARSTYLE m_ProgressbarStyle{};
 };

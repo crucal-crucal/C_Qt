@@ -26,8 +26,8 @@ void unLoadTranslations();
  * @note: 配置文件操作
  */
 void initializeConfigFile();
-WINDOWLANAGUAGE readLanguageFormConfig();
-void changeLanguageInConfig(WINDOWLANAGUAGE newLanguage);
+std::tuple<WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE> readConf();
+void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle);
 
 int main(int argc, char* argv[]) {
 	QApplication app(argc, argv);
@@ -53,13 +53,17 @@ int main(int argc, char* argv[]) {
 	Logger::instance().logInfo(loadStyle(app, strStyle) ? "Load Style Success!" : "Load Style Failed!");
 	// 加载rcc
 	Logger::instance().logInfo(loadResources(strRes) ? "Load Resource Success!" : "Load Resource Failed!");
-	// 加载中文翻译
-	QString str = (readLanguageFormConfig() == WINDOWLANAGUAGE::Chinese) ? strtrans_cn : strtrans_en;
+	// 加载翻译 & 加载Label大小
+	auto [language, progressBarStyle] = readConf();
+	windowLanguage = language;
+	progressbarstyle = progressBarStyle;
+	QString str = (windowLanguage == WINDOWLANAGUAGE::Chinese) ? strtrans_cn : strtrans_en;
 	Logger::instance().logInfo(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!");
 
-	CPatch w;
-	QObject::connect(&w, &CPatch::LanguageChanged, [&](WINDOWLANAGUAGE language) {
-		changeLanguageInConfig(language);
+	int LabelWidth = windowLanguage == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH;
+	CPatch w(LabelWidth, windowLanguage, progressbarstyle);
+	QObject::connect(&w, &CPatch::ConfChanged, [&](WINDOWLANAGUAGE lang, WINDOWPROGRESSBARSTYLE prostyle) {
+		changeConf(lang, prostyle);
 	});
 	QObject::connect(&w, &CPatch::destroyed, [&]() {
 		unloadResources(strRes);
@@ -128,6 +132,8 @@ void unLoadTranslations() {
 }
 
 void initializeConfigFile() {
+	int language = static_cast<int>(windowLanguage);
+	int progressBarStyle = static_cast<int>(progressbarstyle);
 	// 检查config文件夹是否存在，如果不存在则创建
 	if (!std::filesystem::exists(configDir)) {
 		if (!std::filesystem::create_directory(configDir)) {
@@ -142,7 +148,9 @@ void initializeConfigFile() {
 		// 配置文件不存在
 		std::ofstream outputFile(configName);
 		if (outputFile) {
-			outputFile << "Language: Chinese";
+			// 写入语言和进度条样式
+			outputFile << "Language: " << language << "\n";
+			outputFile << "ProgressbarStyle: " << progressBarStyle;
 			outputFile.close();
 			std::cout << "Config file created and initialized with default language." << std::endl;
 		} else {
@@ -153,34 +161,78 @@ void initializeConfigFile() {
 	}
 }
 
-WINDOWLANAGUAGE readLanguageFormConfig() {
+std::tuple<WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE> readConf() {
+	WINDOWLANAGUAGE language = WINDOWLANAGUAGE::Chinese; // 默认语言
+	WINDOWPROGRESSBARSTYLE progressBarStyle = WINDOWPROGRESSBARSTYLE::BLOCK; // 默认进度条样式
+
 	std::ifstream configFile(configName);
 	if (configFile) {
 		std::string line;
 		while (std::getline(configFile, line)) {
 			if (line.find("Language:") != std::string::npos) {
-				if (line.find("English") != std::string::npos) {
-					return WINDOWLANAGUAGE::English;
-				} else if (line.find("Chinese") != std::string::npos) {
-					return WINDOWLANAGUAGE::Chinese;
-				}
+				std::string languageValue = line.substr(line.find(':') + 1);
+				int languageint = std::stoi(languageValue);
+				language = static_cast<WINDOWLANAGUAGE>(languageint);
+			} else if (line.find("ProgressbarStyle:") != std::string::npos) {
+				// 读取进度条样式
+				std::string styleValue = line.substr(line.find(':') + 1);
+				int styleInt = std::stoi(styleValue);
+				progressBarStyle = static_cast<WINDOWPROGRESSBARSTYLE>(styleInt);
 			}
 		}
 	}
-	return WINDOWLANAGUAGE::Chinese; // 默认返回中文
+	return std::make_tuple(language, progressBarStyle);
 }
 
-void changeLanguageInConfig(WINDOWLANAGUAGE newLanguage) {
-	std::ofstream configFile(configName, std::ios::trunc);
+void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle) {
+	int newLanguageInt = static_cast<int>(newLanguage);
+	int newProgressBarStyleInt = static_cast<int>(newprogressBarStyle);
+
+	// 读取整个文件内容到内存中
+	std::ifstream configFile(configName);
+	std::vector<std::string> lines;
 	if (configFile) {
-		if (newLanguage == WINDOWLANAGUAGE::English) {
-			configFile << "Language: English";
-		} else {
-			configFile << "Language: Chinese";
+		std::string line;
+		while (std::getline(configFile, line)) {
+			lines.push_back(line);
 		}
-		std::cout << "Language changed to " << (newLanguage == WINDOWLANAGUAGE::English ? "English" : "Chinese") << std::endl;
+		configFile.close();
 	} else {
-		Logger::instance().logError("Error: Unable to open config file for writing.");
+		Logger::instance().logError("Error: Unable to open config file for reading.");
+		return;
+	}
+
+	// 查找并修改 "Language:" 和 "ProgressbarStyle:" 这两行
+	bool languageFound = false;
+	bool styleFound = false;
+	for (std::string& line : lines) {
+		if (line.find("Language:") != std::string::npos) {
+			line = "Language: " + std::to_string(newLanguageInt); // 修改语言值
+			languageFound = true;
+		} else if (line.find("ProgressbarStyle:") != std::string::npos) {
+			line = "ProgressbarStyle: " + std::to_string(newProgressBarStyleInt); // 修改样式值
+			styleFound = true;
+		}
+		if (languageFound && styleFound) {
+			break; // 如果已经找到并修改了语言和样式行，则退出循环
+		}
+	}
+
+	// 如果找到了语言和样式行，则写回到文件中
+	if (languageFound && styleFound) {
+		std::ofstream outputFile(configName, std::ios::trunc);
+		if (outputFile) {
+			for (const std::string& line : lines) {
+				outputFile << line << std::endl;
+			}
+			outputFile.close();
+			std::cout << "Language changed to " << (newLanguage == WINDOWLANAGUAGE::English ? "English" : "Chinese") << std::endl;
+			std::cout << "Progressbar style changed" << std::endl;
+		} else {
+			Logger::instance().logError("Error: Unable to open config file for writing.");
+		}
+	} else {
+		Logger::instance().logError("Error: Language or style line not found in config file.");
 	}
 	qApp->exit(RETCODE_RESTART);
 }

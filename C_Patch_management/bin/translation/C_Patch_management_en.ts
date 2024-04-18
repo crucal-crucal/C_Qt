@@ -166,16 +166,25 @@
         <translation type="unfinished">Change language</translation>
     </message>
     <message>
+        <location filename="../../source/patch.cc" line="168"/>
+        <location filename="../../source/patch.cc" line="177"/>
+        <source>Cancel language change</source>
+        <translation type="unfinished">Cancel language change</translation>
+    </message>
+    <message>
         <location filename="../../source/patch.cc" line="180"/>
         <location filename="../../source/patch.cc" line="189"/>
         <source>reboot applicaion to take effect</source>
         <translation type="unfinished">reboot applicaion to take effect</translation>
     </message>
     <message>
-        <location filename="../../source/patch.cc" line="168"/>
-        <location filename="../../source/patch.cc" line="177"/>
-        <source>Cancel language change</source>
-        <translation type="unfinished">Cancel language change</translation>
+        <location filename="../../source/patch.cc" line="201"/>
+        <location filename="../../source/patch.cc" line="209"/>
+        <location filename="../../source/patch.cc" line="217"/>
+        <location filename="../../source/patch.cc" line="225"/>
+        <location filename="../../source/patch.cc" line="233"/>
+        <source>Change Progressbar Style</source>
+        <translation type="unfinished">Change Progressbar Style</translation>
     </message>
     <message>
         <location filename="../../source/patch.cc" line="289"/>
@@ -188,8 +197,13 @@
         <translation type="unfinished">Close</translation>
     </message>
     <message>
-        <location filename="../../source/patch.cc" line="269"/>
-        <source>LANGUAGE</source>
+        <location filename="../../source/patch.cc" line="343"/>
+        <source>Preference</source>
+        <translation type="unfinished">Preference</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="345"/>
+        <source>Language</source>
         <translation type="unfinished">Language</translation>
     </message>
     <message>
@@ -201,6 +215,36 @@
         <location filename="../../source/patch.cc" line="271"/>
         <source>ENGLISH</source>
         <translation type="unfinished">English</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="351"/>
+        <source>ProgressBar Style</source>
+        <translation type="unfinished">ProgressBar Style</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="352"/>
+        <source>Normal</source>
+        <translation type="unfinished">Normal</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="353"/>
+        <source>Block</source>
+        <translation type="unfinished">Block</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="354"/>
+        <source>Border_Red</source>
+        <translation type="unfinished">Border Red</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="355"/>
+        <source>Border Radius</source>
+        <translation type="unfinished">Border Radius</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="356"/>
+        <source>Gradation</source>
+        <translation type="unfinished">Gradation</translation>
     </message>
     <message>
         <location filename="../../source/patch.cc" line="276"/>
