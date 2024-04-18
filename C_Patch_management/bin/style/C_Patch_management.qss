@@ -30,11 +30,11 @@ QMenuBar {
 }
 /*
 enum class WINDOWPROGRESSBARSTYLE {
-	NORMAL,			// Qt默认样式
-	BLOCK,				// 块状显示
-    BORDER_RED, 		// 红色边框
-    BORDER_RADIUS,		// 圆形边框
-	GRADATION			// 渐变色
+	NORMAL,			    // Qt default style
+	BLOCK,				// Block display
+    BORDER_RED, 		// Red border
+    BORDER_RADIUS,		// Circular border
+	GRADATION			// Gradation
 };
 */
 /*块状显示*/

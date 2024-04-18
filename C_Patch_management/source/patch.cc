@@ -4,7 +4,6 @@
 CPatch::CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage, WINDOWPROGRESSBARSTYLE ProgressbarStyle, QWidget* parent)
 	: FramelessMainWindow(parent), m_LabelWidth(LabelWidth),
 	  m_language(Lanaguage), m_ProgressbarStyle(ProgressbarStyle) {
-	this->setAttribute(Qt::WA_DeleteOnClose);
 	createCtrl();
 	layOut();
 	init();

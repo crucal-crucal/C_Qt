@@ -4,7 +4,6 @@
  * @breif 重启代码
  */
 static const int RETCODE_RESTART = 773;
-
 /*
  * @breif 窗口语言
  * 存储于配置文件中
@@ -17,7 +16,7 @@ enum class WINDOWLANAGUAGE {
  * @breif 进度条样式
  */
 enum class WINDOWPROGRESSBARSTYLE {
-	NORMAL,			// Qt默认样式
+	NORMAL,				// Qt默认样式
 	BLOCK,				// 块状显示
     BORDER_RED, 		// 红色边框
     BORDER_RADIUS,		// 圆形边框
