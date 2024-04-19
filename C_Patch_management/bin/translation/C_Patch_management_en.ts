@@ -187,6 +187,11 @@
         <translation type="unfinished">Change Progressbar Style</translation>
     </message>
     <message>
+        <location filename="../../source/patch.cc" line="347"/>
+        <source>Change Style</source>
+        <translation type="unfinished">Check Theme</translation>
+    </message>
+    <message>
         <location filename="../../source/patch.cc" line="289"/>
         <source>Min</source>
         <translation type="unfinished">Min</translation>

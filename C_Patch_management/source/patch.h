@@ -31,14 +31,14 @@
 #include <QDirIterator>
 #include <QProcess>
 #include <set>
+#include <QListView>
 
-#include "C_global.h"
+#include "cglobal.h"
 #include "framelessmainwindow/framelessmainwindow.h"
 #include "framelessMessageBox/uvmessagebox.h"
 #include "framelessMessageBox/uvfiledialog.h"
 #include "mergedir.h"
 #include "logger/Logger.h"
-
 
 class CPatch : public FramelessMainWindow {
   Q_OBJECT
@@ -46,11 +46,13 @@ class CPatch : public FramelessMainWindow {
 
 	explicit CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage = WINDOWLANAGUAGE::Chinese,
 					WINDOWPROGRESSBARSTYLE ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK,
+					WINDOWTHEMESTYLE ThemeStyle = WINDOWTHEMESTYLE::LIGHT,
 					QWidget* parent = nullptr);
 	~CPatch() override;
 
   signals:
-	void ConfChanged(WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE);
+	void ConfChanged(WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE);
+	void ThemeChanged(WINDOWTHEMESTYLE);
 
   private slots:
 	void onBtnOpenClicked();
@@ -60,6 +62,7 @@ class CPatch : public FramelessMainWindow {
 	void updateEndTimeOptions(int _index);
 	void onBtnChoosePathCliecked();
 	void onBtnDoneClicked();
+	void onBtnStyleClicked();
 	void onActChineseClicked();
 	void onActEnglishClicked();
 	void onActProgressbar_normalClicked();
@@ -87,6 +90,8 @@ class CPatch : public FramelessMainWindow {
 	 */
 	static bool splitFileListByThread(const std::map<QString, QStringList>& mp, std::vector<QStringList>& threadFiles);
 
+	void restart();
+
   private:
 	void createCtrl();
 	void layOut();
@@ -97,6 +102,7 @@ class CPatch : public FramelessMainWindow {
 	QWidget* m_pCentralWidget{nullptr};
 
 	QWidget* m_pTitleBar{nullptr};
+	QPushButton* m_pBtnStyle{nullptr};
 	QPushButton* m_pBtnClose{nullptr};
 	QPushButton* m_pBtnMin{nullptr};
 
@@ -179,4 +185,5 @@ class CPatch : public FramelessMainWindow {
 	int m_LabelWidth{};
 	WINDOWLANAGUAGE m_language{};
 	WINDOWPROGRESSBARSTYLE m_ProgressbarStyle{};
+	WINDOWTHEMESTYLE m_ThemeStyle{};
 };

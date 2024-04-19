@@ -182,6 +182,11 @@
         <translation type="unfinished">修改进度条样式</translation>
     </message>
     <message>
+        <location filename="../../source/patch.cc" line="347"/>
+        <source>Change Style</source>
+        <translation type="unfinished">切换主题</translation>
+    </message>
+    <message>
         <location filename="../../source/patch.cc" line="289"/>
         <source>Min</source>
         <translation type="unfinished">最小化</translation>

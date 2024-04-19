@@ -1,9 +1,10 @@
 ﻿#include "patch.h"
 #include <QApplication>
 
-CPatch::CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage, WINDOWPROGRESSBARSTYLE ProgressbarStyle, QWidget* parent)
+CPatch::CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage, WINDOWPROGRESSBARSTYLE ProgressbarStyle,
+			   WINDOWTHEMESTYLE ThemeStyle, QWidget* parent)
 	: FramelessMainWindow(parent), m_LabelWidth(LabelWidth),
-	  m_language(Lanaguage), m_ProgressbarStyle(ProgressbarStyle) {
+	  m_language(Lanaguage), m_ProgressbarStyle(ProgressbarStyle), m_ThemeStyle(ThemeStyle) {
 	createCtrl();
 	layOut();
 	init();
@@ -180,11 +181,17 @@ void CPatch::onBtnDoneClicked() {
 	}
 }
 
+void CPatch::onBtnStyleClicked() {
+	m_ThemeStyle = m_pBtnStyle->isChecked() ? WINDOWTHEMESTYLE::LIGHT : WINDOWTHEMESTYLE::DARK;
+	emit ThemeChanged(m_ThemeStyle);
+}
+
 void CPatch::onActChineseClicked() {
 	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"), tr("reboot applicaion to take effect"));
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_language = WINDOWLANAGUAGE::Chinese;
-		emit ConfChanged(m_language, m_ProgressbarStyle);
+		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		this->restart();
 	}
 }
 
@@ -192,7 +199,8 @@ void CPatch::onActEnglishClicked() {
 	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"), tr("reboot applicaion to take effect"));
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_language = WINDOWLANAGUAGE::English;
-		emit ConfChanged(m_language, m_ProgressbarStyle);
+		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		this->restart();
 	}
 }
 
@@ -200,7 +208,8 @@ void CPatch::onActProgressbar_normalClicked() {
 	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"), tr("reboot applicaion to take effect"));
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::NORMAL;
-		emit ConfChanged(m_language, m_ProgressbarStyle);
+		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		this->restart();
 	}
 }
 
@@ -208,7 +217,8 @@ void CPatch::onActProgressbar_borderClicked() {
 	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"), tr("reboot applicaion to take effect"));
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RED;
-		emit ConfChanged(m_language, m_ProgressbarStyle);
+		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		this->restart();
 	}
 }
 
@@ -216,7 +226,8 @@ void CPatch::onActProgressbar_border_radiusClicked() {
 	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"), tr("reboot applicaion to take effect"));
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RADIUS;
-		emit ConfChanged(m_language, m_ProgressbarStyle);
+		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		this->restart();
 	}
 }
 
@@ -224,7 +235,8 @@ void CPatch::onActProgressbar_blockClicked() {
 	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"), tr("reboot applicaion to take effect"));
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK;
-		emit ConfChanged(m_language, m_ProgressbarStyle);
+		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		this->restart();
 	}
 }
 
@@ -232,7 +244,8 @@ void CPatch::onActProgressbar_gradationClicked() {
 	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"), tr("reboot applicaion to take effect"));
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::GRADATION;
-		emit ConfChanged(m_language, m_ProgressbarStyle);
+		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		this->restart();
 	}
 }
 
@@ -328,6 +341,11 @@ void CPatch::createCtrl() {
 	m_pTitleBar = new QWidget(m_pCentralWidget);
 	this->setTitleBar(m_pTitleBar);
 
+	m_pBtnStyle = new QPushButton(m_pTitleBar);
+	m_pBtnStyle->setCheckable(true);
+	m_pBtnStyle->setObjectName("CPatch_BtnStyle");
+	m_pBtnStyle->setToolTip(tr("Change Style"));
+
 	m_pBtnMin = new QPushButton(m_pTitleBar);
 	m_pBtnMin->setObjectName("Dialog_Btn_Min");
 	m_pBtnMin->setToolTip(tr("Min"));
@@ -360,6 +378,7 @@ void CPatch::createCtrl() {
 	m_pActProgressbar_gradation->setCheckable(true);
 
 	m_pTabWidget = new QTabWidget(m_pCentralWidget);
+	m_pTabWidget->tabBar()->setObjectName("CPatch_TabBar");
 	m_pReadWidget = new QWidget(m_pTabWidget);
 	m_pRenewalWidget = new QWidget(m_pTabWidget);
 	m_pTabWidget->addTab(m_pReadWidget, tr("READ"));
@@ -376,8 +395,10 @@ void CPatch::createCtrl() {
 	m_pLbGeneratePath = new QLabel(tr("GENERATE_PATH"), m_pReadWidget);
 	m_pLbGeneratePath->setFixedWidth(m_LabelWidth);
 	m_pCbStartTime = new QComboBox(m_pReadWidget);
+	m_pCbStartTime->setView(new QListView(m_pCbStartTime));
 	m_pCbStartTime->setMinimumWidth(150);
 	m_pCbEndTime = new QComboBox(m_pReadWidget);
+	m_pCbEndTime->setView(new QListView(m_pCbEndTime));
 	m_pCbEndTime->setMinimumWidth(150);
 	m_pBtnGenerate = new QPushButton(tr("GENERATE"), m_pReadWidget);
 	m_pBtnGenerate->setFixedWidth(100);
@@ -385,6 +406,7 @@ void CPatch::createCtrl() {
 	m_pLbThreadNum = new QLabel(tr("Thread Num"), m_pReadWidget);
 	m_pLbThreadNum->setFixedWidth(m_LabelWidth);
 	m_pCbThreadNum = new QComboBox(m_pReadWidget);
+	m_pCbThreadNum->setView(new QListView(m_pCbThreadNum));
 	m_pCbThreadNum->setMinimumWidth(70);
 	m_pLbTime = new QLabel(tr("TIME: ") + QString::number(m_GenerateTime) + tr(" s"), m_pReadWidget);
 	m_pLbTime->setFixedWidth(100);
@@ -422,7 +444,8 @@ void CPatch::createCtrl() {
 
 void CPatch::layOut() {
 	m_plyHTitle->addWidget(m_pMenuBar);
-	m_plyHTitle->addStretch(); // 添加一个可伸缩的空间
+	m_plyHTitle->addStretch();
+	m_plyHTitle->addWidget(m_pBtnStyle);
 	m_plyHTitle->addWidget(m_pBtnMin);
 	m_plyHTitle->addWidget(m_pBtnClose);
 	m_plyHTitle->setContentsMargins(0, 0, 0, 0);
@@ -504,6 +527,8 @@ void CPatch::init() {
 	m_pActProgressbar_border_radius->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BORDER_RADIUS);
 	m_pActProgressbar_gradation->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::GRADATION);
 
+	m_pBtnStyle->setChecked(m_ThemeStyle == WINDOWTHEMESTYLE::LIGHT);
+
 	int progressbarStyle = static_cast<int>(m_ProgressbarStyle);
 	m_pPbschedule->setProperty("customProgressBar", progressbarStyle);
 }
@@ -511,6 +536,7 @@ void CPatch::init() {
 void CPatch::initConnect() {
 	connect(m_pBtnClose, &QPushButton::clicked, this, &CPatch::close);
 	connect(m_pBtnMin, &QPushButton::clicked, this, &CPatch::showMinimized);
+	connect(m_pBtnStyle, &QPushButton::clicked, this, &CPatch::onBtnStyleClicked);
 	connect(m_pBtnOpen, &QPushButton::clicked, this, &CPatch::onBtnOpenClicked);
 	connect(m_pBtnRefresh, &QPushButton::clicked, this, &CPatch::onBtnRefreshClicked);
 	connect(m_pBtnGenerate, &QPushButton::clicked, this, &CPatch::onBtnGenerateClicked);
@@ -638,4 +664,8 @@ bool CPatch::splitFileListByThread(const std::map<QString, QStringList>& mp, std
 	}
 	bRet = true;
 	return bRet;
+}
+
+void CPatch::restart() {
+	qApp->exit(RETCODE_RESTART);
 }
