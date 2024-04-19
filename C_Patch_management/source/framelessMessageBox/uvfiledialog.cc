@@ -102,9 +102,9 @@ void CUVFileBase::init() {
 		pTreeView->setContextMenuPolicy(Qt::NoContextMenu);
 	}
 	if (auto* pHeaderView = m_pFileDialog->findChild<QHeaderView*>()) {
-		pHeaderView->setContextMenuPolicy(Qt::NoContextMenu);
 		auto* pHeaderModel = new QStandardItemModel(pHeaderView);
 		pHeaderView->setModel(pHeaderModel);
+		pHeaderView->setContextMenuPolicy(Qt::NoContextMenu);
 		QStringList headers;
 		headers << tr("Name") << tr("Size") << tr("Type") << tr("Date Modified");
 		pHeaderModel->setHorizontalHeaderLabels(headers);
