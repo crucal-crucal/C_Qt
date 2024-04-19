@@ -1,50 +1,39 @@
 /* 整体界面字体 */
-* {
-    font-family: 'SimHei', '黑体', 'Microsoft YaHei', sans-serif;
+* { 
+    font-family: 'SimHei', '黑体', 'Microsoft YaHei', sans-serif; 
 }
-
 QWidget {
     color: white;
     background-color: grey;
 }
-
 QDialog#CUVFileBase {
     color: white;
     background-color: grey;
 }
-
-QListWidget,
-QTextEdit,
-QLineEdit {
+QListWidget, QTextEdit, QLineEdit {
     color: white;
-    background-color: rgb(91, 91, 91);
+    background-color: rgb(91,91,91);
     border: none;
 }
-
 QLineEdit {
     height: 30px;
 }
-
 QPushButton#CPatch_BtnStyle {
     color: white;
     width: 30px;
     height: 30px;
     border-radius: 15px;
 }
-
 QPushButton#CPatch_BtnStyle:checked {
     border-image: url(:icon/light.png);
 }
-
-QPushButton#CPatch_BtnStyle: !checked {
+QPushButton#CPatch_BtnStyle:!checked {
     border-image: url(:icon/dark.png);
 }
-
 QPushButton#CPatch_BtnStyle:hover {
     color: white;
     background-color: white;
 }
-
 QPushButton#CUVBaseDialog_Dialog_Btn_Close,
 QPushButton#Dialog_Btn_Close,
 QPushButton#Dialog_Btn_Min {
@@ -52,13 +41,11 @@ QPushButton#Dialog_Btn_Min {
     border: none;
     background: transparent;
 }
-
 QPushButton#CUVBaseDialog_Dialog_Btn_Close:hover,
 QPushButton#Dialog_Btn_Close:hover {
     color: white;
     border-image: url(:/icon/close_hover.png);
 }
-
 QPushButton#CUVBaseDialog_Dialog_Btn_Close,
 QPushButton#Dialog_Btn_Close {
     color: white;
@@ -66,28 +53,23 @@ QPushButton#Dialog_Btn_Close {
     width: 30px;
     height: 30px;
 }
-
 QPushButton#Dialog_Btn_Min:hover {
     color: white;
     border-image: url(:/icon/min_hover.png);
 }
-
-QPushButton#Dialog_Btn_Min {
+QPushButton#Dialog_Btn_Min{
     color: white;
     border-image: url(:/icon/min_normal.png);
     width: 30px;
     height: 30px;
 }
-
 /*QTabWidget*/
-QTabWidget::pane {
+QTabWidget::pane{
     border: none;
 }
-
 QTabWidget::tab-bar {
     left: 5px;
 }
-
 QTabBar::tab {
     background: gray;
     /*border: 2px solid #C4C4C3;*/
@@ -97,38 +79,31 @@ QTabBar::tab {
     min-width: 60px;
     padding: 2px;
 }
-
 /* QTabBar::tab:selected{
     background:qlineargradient(spread: pad, x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #626262, stop: 1 #545454);
 } */
 QTabBar::tab:selected {
     color: white;
-    background: #626262;
+    background: #626262; 
     border-bottom-color: #626262;
 }
-
 QTabBar::tab:selected:top {
-    border-top-color: #626262;
+    border-top-color: #626262; 
 }
-
 QTabBar::tab:selected:left {
     border-left-color: #626262;
 }
-
 QTabBar::tab:selected:right {
     border-right-color: #626262;
 }
-
-QTabBar::tab: !selected {
-    margin-top: 5px;
+QTabBar::tab:!selected{
+    margin-top:5px;
 }
-
 /*QMenuBar*/
 QMenuBar {
     color: white;
     background-color: transparent;
 }
-
 /*QMenu*/
 QMenu {
     padding: 5px;
@@ -137,11 +112,9 @@ QMenu {
     border-radius: 10px;
     font-size: 14px;
 }
-
 QMenu::icon {
     padding: 0 0 0 10px;
 }
-
 QMenu::item {
     color: white;
     padding: 8px 25px 6px 10px;
@@ -149,24 +122,20 @@ QMenu::item {
     margin: 4px 1px;
     /* border-radius: 10px; */
 }
-
 QMenu::item:hover,
 QMenu::item:pressed,
 QMenu::item:selected {
-    background-color: rgb(56, 56, 56);
+    background-color: rgb(56,56,56);
 }
-
 /*QFileDialog*/
 QFileDialog {
-    border: 1px solid transparent;
+    border:1px solid transparent;
 }
-
-QFileDialog QAbstractItemView {
-    background: rgb(62, 62, 62);
+QFileDialog QAbstractItemView{
+    background: rgb(62,62,62);
     color: white;
     border: 1px solid black;
 }
-
 /* QFileDialog QTreeView{
     color: white;
     background-color: transparent;
@@ -196,55 +165,44 @@ QFileDialog QListView::item:hover {
 QHeaderView {
     border: 1px solid transparent;
 }
-
 QHeaderView::section {
     color: white;
-    background-color: rgb(91, 91, 91);
-    border: none;
+    background-color: rgb(91,91,91);
+    border: none; 
     padding: 4px;
 }
-
 QHeaderView::section:hover {
-    background-color: gray;
+    background-color: gray; 
 }
-
 QHeaderView::section:selected {
-    background-color: gray;
+    background-color: gray;  
     color: white;
 }
-
 /*QScrollBar*/
 QScrollBar:vertical {
     background: transparent;
     width: 10px;
 }
-
 QScrollBar:horizontal {
     background: transparent;
     height: 10px;
 }
-
 QScrollBar::handle {
-    background: rgba(200, 200, 200, 120);
+    background: rgba(200,200,200,120);
     border-radius: 4px;
-    min-height: 20;
+    min-height:20;
 }
-
 QScrollBar::handle:hover {
-    background: rgba(255, 255, 255, 150);
+    background:rgba(255,255,255,150);
 }
-
 QScrollBar::add-page,
 QScrollBar::sub-page {
-    background: rgba(0, 0, 0, 10%);
+    background: rgba(0,0,0,10%);
     border-radius: 4px;
 }
-
-QScrollBar::add-line,
-QScrollBar::sub-line {
+QScrollBar::add-line, QScrollBar::sub-line {
     background: transparent;
 }
-
 /* QScrollBar:vertical {
     background: rgb(85,85,85);
     width: 20px;
@@ -278,56 +236,48 @@ QScrollBar::sub-line:vertical {
     background: none;
 } */
 /*QComboBox*/
-QComboBox {
+QComboBox{
     height: 30px;
     color: white;
-    background-color: rgb(91, 91, 91);
+    background-color: rgb(91,91,91);
     padding: 1px 15px 1px 30px;
     font-size: 14px;
     border: none;
-}
-
+} 
 QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 30px;
     border: none;
 }
-
 QComboBox::down-arrow {
     image: url(:icon/combobox_down_arrow.png);
 }
-
 QComboBox::down-arrow:on {
     image: url(:icon/combobox_down_arrow_on.png);
 }
-
-QComboBox QAbstractItemView {
+QComboBox QAbstractItemView{
     font-size: 14px;
-    background-color: rgb(91, 91, 91);
+    background-color: rgb(91,91,91);
     /* border-radius: 0px 0px 5px 5px; */
-    outline: 0px;
+    outline: 0px; 
     border: none;
 }
-
-QComboBox QAbstractItemView::item {
+QComboBox QAbstractItemView::item{
     font-size: 14px;
-    height: 36px;
-    color: white;
+	height: 36px;
+	color: white;
     padding: 1px 15px 1px 27px;
-    background-color: rgb(91, 91, 91);
+	background-color: rgb(91,91,91);
 }
-
-QComboBox QAbstractItemView::item:hover {
+QComboBox QAbstractItemView::item:hover{ 
     background-color: gray;
     color: white;
 }
-
-QComboBox QAbstractItemView::item:selected {
+QComboBox QAbstractItemView::item:selected{
     background-color: gray;
     color: white;
 }
-
 /*
 enum class WINDOWPROGRESSBARSTYLE {
 	NORMAL,			    // Qt default style
@@ -339,20 +289,18 @@ enum class WINDOWPROGRESSBARSTYLE {
 */
 /*Qt Default style*/
 QProgressBar[customProgressBar="0"],
-QProgressBar[customProgressBar="0"]::chunk {
+QProgressBar[customProgressBar="0"]::chunk  {
     color: white;
-    background-color: rgb(91, 91, 91);
+    background-color: rgb(91,91,91);
 }
-
 /*Block display*/
 QProgressBar[customProgressBar="1"] {
     color: white;
     text-align: center;
-    background-color: rgb(91, 91, 91);
-    border: 0px solid rgb(91, 91, 91);
+    background-color: rgb(91,91,91);
+    border: 0px solid rgb(91,91,91);
     border-radius: 5px;
 }
-
 QProgressBar[customProgressBar="1"]::chunk {
     color: white;
     background-color: gray;
@@ -360,36 +308,31 @@ QProgressBar[customProgressBar="1"]::chunk {
     width: 8px;
     margin: 0.5px;
 }
-
 /*Red border*/
 QProgressBar[customProgressBar="2"] {
     color: white;
     text-align: center;
-    background-color: rgb(91, 91, 91);
-    border: 1px solid #ff0000;
+    background-color: rgb(91,91,91);
+    border: 1px solid  #ff0000;
 }
-
 QProgressBar[customProgressBar="2"]::chunk {
     color: white;
-    background-color: rgb(91, 91, 91);
-    border: 1px solid #ff0000;
+    background-color: rgb(91,91,91);
+    border: 1px solid  #ff0000;
 }
-
 /*Circular border*/
 QProgressBar[customProgressBar="3"] {
     color: white;
     text-align: center;
-    background-color: rgb(91, 91, 91);
-    border: 0px solid rgb(91, 91, 91);
+    background-color: rgb(91,91,91);
+    border: 0px solid rgb(91,91,91);
     border-radius: 5px;
 }
-
 QProgressBar[customProgressBar="3"]::chunk {
     color: white;
-    background-color: rgb(91, 91, 91);
+    background-color: rgb(91,91,91);
     border-radius: 5px
 }
-
 /*Gradation*/
 QProgressBar[customProgressBar="4"] {
     color: white;
@@ -397,9 +340,8 @@ QProgressBar[customProgressBar="4"] {
     text-align: center;
     font-size: 14px;
     border-radius: 11px;
-    background: rgb(91, 91, 91);
+    background: rgb(91,91,91);
 }
-
 QProgressBar[customProgressBar="4"]::chunk {
     color: white;
     border-radius: 11px;
