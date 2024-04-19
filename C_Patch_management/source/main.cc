@@ -187,9 +187,9 @@ void initializeConfigFile() {
 }
 
 std::tuple<WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE> readConf() {
-	auto language = WINDOWLANAGUAGE::Chinese; // 默认语言
-	auto progressBarStyle = WINDOWPROGRESSBARSTYLE::BLOCK; // 默认进度条样式
-	auto themeStyle = WINDOWTHEMESTYLE::LIGHT; // 默认主题样式
+	auto language = windowLanguage; // 默认语言
+	auto progressBarStyle = progressbarstyle; // 默认进度条样式
+	auto themeStyle = windowThemeStyle; // 默认主题样式
 
 	std::ifstream configFile(configName);
 	if (configFile) {
