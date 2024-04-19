@@ -375,6 +375,26 @@
         <translation type="unfinished">Type</translation>
     </message>
     <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <source>Name</source>
+        <translation type="unfinished">Name</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <source>Size</source>
+        <translation type="unfinished">Size</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <source>Type</source>
+        <translation type="unfinished">Type</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <source>Date Modified</source>
+        <translation type="unfinished">Date Modified</translation>
+    </message>
+    <message>
         <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="249"/>
         <source>Save File</source>
         <translation type="unfinished">Save File</translation>

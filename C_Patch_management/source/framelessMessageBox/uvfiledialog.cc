@@ -91,11 +91,39 @@ void CUVFileBase::init() {
 	m_pFileDialog->setLabelText(QFileDialog::LookIn, tr("IDS_DIRECTORY"));
 	m_pFileDialog->setLabelText(QFileDialog::FileName, tr("IDS_NAME"));
 	m_pFileDialog->setLabelText(QFileDialog::FileType, tr("IDS_TYPE"));
+	m_pFileDialog->setViewMode(QFileDialog::List);
+	// 去掉右下角的拖动
+	m_pFileDialog->setSizeGripEnabled(false);
+	// 设置关闭右键菜单
+	if (auto* pListView = m_pFileDialog->findChild<QListView*>("listView")) {
+		pListView->setContextMenuPolicy(Qt::NoContextMenu);
+	}
+	if (auto* pTreeView = m_pFileDialog->findChild<QTreeView*>("treeView")) {
+		pTreeView->setContextMenuPolicy(Qt::NoContextMenu);
+	}
+	if (auto* pHeaderView = m_pFileDialog->findChild<QHeaderView*>()) {
+		pHeaderView->setContextMenuPolicy(Qt::NoContextMenu);
+		auto* pHeaderModel = new QStandardItemModel(pHeaderView);
+		pHeaderView->setModel(pHeaderModel);
+		QStringList headers;
+		headers << tr("Name") << tr("Size") << tr("Type") << tr("Date Modified");
+		pHeaderModel->setHorizontalHeaderLabels(headers);
+	}
+	if (auto* pLineEdit = m_pFileDialog->findChild<QLineEdit*>("fileNameEdit")) {
+		pLineEdit->setContextMenuPolicy(Qt::NoContextMenu);
+	}
+	if (auto* fileTypeCombo = m_pFileDialog->findChild<QComboBox*>("fileTypeCombo")) {
+		fileTypeCombo->setView(new QListView());
+	}
+	if (auto* lookInCombo = m_pFileDialog->findChild<QComboBox*>("lookInCombo")) {
+		lookInCombo->setView(new QListView());
+	}
 
 	connect(m_pFileDialog, &QFileDialog::accepted, this, &CUVFileBase::accept);
 	connect(m_pFileDialog, &QFileDialog::rejected, this, &CUVFileBase::reject);
 	setContent(m_pFileDialog);
 
+	// 恢复之前的状态
 	QSettings fileDialogState("crucal", "C_Patch_management");
 	QByteArray byHistoryState = QByteArray::fromBase64(fileDialogState.value(QString("client/%1").arg(m_strRegisterName)).toByteArray());
 	m_pFileDialog->restoreState(byHistoryState);

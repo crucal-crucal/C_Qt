@@ -5,6 +5,13 @@
 #include <QSettings>
 #include <QDebug>
 #include <utility>
+#include <QListView>
+#include <QTreeView>
+#include <QHeaderView>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QScrollBar>
+#include <QStandardItemModel>
 
 #include "uvbasedialog.h"
 
@@ -126,12 +133,12 @@ class FRAMELESSFILEDIALOG_EXPORT CUVFileDialog : public CUVBaseDialog {
 	static QString getExistingDirectory(QWidget* parent = nullptr,
 										const QString& caption = QString(),
 										const QString& dir = QString(),
-										QFileDialog::Options options = QFileDialog::ShowDirsOnly);
+										QFileDialog::Options options = QFileDialog::ShowDirsOnly | QFileDialog::ReadOnly);
 
 	[[maybe_unused]] static QUrl getExistingDirectoryUrl(QWidget* parent = nullptr,
 														 const QString& caption = QString(),
 														 const QUrl& dir = QUrl(),
-														 QFileDialog::Options options = QFileDialog::ShowDirsOnly,
+														 QFileDialog::Options options = QFileDialog::ShowDirsOnly | QFileDialog::ReadOnly,
 														 const QStringList& supportedSchemes = QStringList());
 
 	[[maybe_unused]] static QStringList getOpenFileNames(QWidget* parent = nullptr,
@@ -154,4 +161,3 @@ class FRAMELESSFILEDIALOG_EXPORT CUVFileDialog : public CUVBaseDialog {
 
 	[[maybe_unused]] static void saveFileContent(const QByteArray& fileContent, const QString& fileNameHint = QString());
 };
-
