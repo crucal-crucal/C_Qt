@@ -1,6 +1,6 @@
 ﻿set(TARGET_NAME application)
 
-include_directories(..)
+include_directories(.)
 
 FILE(GLOB source "./*.cc")
 FIlE(GLOB header "./*.h")
