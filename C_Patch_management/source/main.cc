@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <filesystem>
+#include <QStyleHints>
 #ifdef Q_OS_LINUX
 #include <QTextCodec>
 #endif
@@ -32,6 +33,16 @@ void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressB
 int main(int argc, char* argv[]) {
 	QApplication app(argc, argv);
 
+#ifdef Q_OS_WIN
+	QSettings settings(R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)", QSettings::NativeFormat);
+	if (settings.value("AppsUseLightTheme") == 0) {
+		// 深色主题，如果第一次启动程序，默认使用系统颜色
+		windowThemeStyle = WINDOWTHEMESTYLE::DARK;
+	} else {
+		// 浅色主题
+		windowThemeStyle = WINDOWTHEMESTYLE::LIGHT;
+	}
+#endif
 	QApplication::setFont(QFont("Microsoft Yahei", 9));
 	// 设置中文编码
 #ifdef Q_OS_LINUX
