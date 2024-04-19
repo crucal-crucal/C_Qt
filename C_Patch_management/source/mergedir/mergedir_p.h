@@ -9,13 +9,22 @@
 #include <QMutex>
 #include <QStack>
 #include <QWaitCondition>
+#include <utility>
 
-class CMergeDir : public QThread, public QRunnable {
+#include "logger/Logger.h"
+
+#ifdef MERGEDIR_P_LIB
+#define MERGEDIR_P_EXPORT Q_DECL_EXPORT
+#else
+#define MERGEDIR_P_EXPORT Q_DECL_IMPORT
+#endif
+
+class MERGEDIR_P_EXPORT CMergeDir_p : public QThread, public QRunnable {
   Q_OBJECT
 
   public:
-	CMergeDir(QStringList _filePaths, QString _outputFilePath, QString dirname, QObject* parent = nullptr);
-	~CMergeDir() override;
+	CMergeDir_p(QStringList _filePaths, QString _outputFilePath, QString dirname, QObject* parent = nullptr);
+	~CMergeDir_p() override;
 
   signals:
 	void progressUpdated(qint64 value);

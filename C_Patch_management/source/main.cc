@@ -11,7 +11,7 @@
 #endif
 
 #include "patch.h"
-#include "cglobal.h"
+#include "global/cglobal.h"
 
 QTranslator* g_translator{nullptr};
 /*

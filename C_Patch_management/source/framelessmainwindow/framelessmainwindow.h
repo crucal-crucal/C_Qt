@@ -1,6 +1,15 @@
 ﻿#pragma once
 
 #include <QMainWindow>
+#include <QDateTime>
+#include <QEvent>
+#include <QDebug>
+
+#ifdef Q_OS_WIN
+#include "windows.h"
+#include "windowsx.h"
+#pragma comment (lib, "user32.lib")
+#endif
 
 /*
  * @brief 无边框MainWindow，支持拖拽，拉伸，移动以及自定义标题栏

@@ -1,5 +1,4 @@
 ﻿#include "patch.h"
-#include <QApplication>
 
 CPatch::CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage, WINDOWPROGRESSBARSTYLE ProgressbarStyle,
 			   WINDOWTHEMESTYLE ThemeStyle, QWidget* parent)
@@ -113,10 +112,10 @@ void CPatch::onBtnGenerateClicked() {
 	threadFiles.resize(threadNum);
 	splitFileListByThread(mp, threadFiles);
 
-	std::vector<CMergeDir*> m_workers;
+	std::vector<CMergeDir_p*> m_workers;
 	for (auto& filesPerThread : threadFiles) {
-		auto* worker = new CMergeDir(filesPerThread, m_output, m_dirname);
-		connect(worker, &CMergeDir::progressUpdated, this, &CPatch::updateProcess, Qt::QueuedConnection);
+		auto* worker = new CMergeDir_p(filesPerThread, m_output, m_dirname);
+		connect(worker, &CMergeDir_p::progressUpdated, this, &CPatch::updateProcess, Qt::QueuedConnection);
 		m_workers.emplace_back(worker);
 	}
 

@@ -15,11 +15,13 @@ target_link_libraries(${TARGET_NAME}
         logger
         framelessmainwindow
         framelessMessageBox_1
+        mergedir_p
 )
 
 add_subdirectory(framelessmainwindow)
 add_subdirectory(framelessMessageBox)
 add_subdirectory(logger)
+add_subdirectory(mergedir)
 
 install(TARGETS ${TARGET_NAME}
         RUNTIME DESTINATION bin

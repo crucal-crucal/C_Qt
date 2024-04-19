@@ -33,11 +33,11 @@
 #include <set>
 #include <QListView>
 
-#include "cglobal.h"
+#include "global/cglobal.h"
 #include "framelessmainwindow/framelessmainwindow.h"
 #include "framelessMessageBox/uvmessagebox.h"
 #include "framelessMessageBox/uvfiledialog.h"
-#include "mergedir.h"
+#include "source/mergedir/mergedir_p.h"
 #include "logger/Logger.h"
 
 class CPatch : public FramelessMainWindow {
@@ -90,7 +90,7 @@ class CPatch : public FramelessMainWindow {
 	 */
 	static bool splitFileListByThread(const std::map<QString, QStringList>& mp, std::vector<QStringList>& threadFiles);
 
-	void restart();
+	static void restart();
 
   private:
 	void createCtrl();
@@ -167,12 +167,9 @@ class CPatch : public FramelessMainWindow {
 	QHBoxLayout* m_pRenewalThirdRowLayout{nullptr};
 
   private:
-	QPoint m_PressTitlePoint;
-
-  private:
 	// 时间，完整路径
 	std::map<QString, QString> m_localMap{};
-//	CMergeDir* m_pMergeDir{nullptr};
+//	CMergeDir_p* m_pMergeDir{nullptr};
 	QString m_output{};
 	QString m_dirname{};
 	QString m_outDirName{};

@@ -1,17 +1,14 @@
-﻿#include "mergedir.h"
+﻿#include "mergedir_p.h"
 
-#include <utility>
-#include "logger/Logger.h"
-
-CMergeDir::CMergeDir(QStringList _filePaths, QString _outputFilePath, QString dirname, QObject* parent)
+CMergeDir_p::CMergeDir_p(QStringList _filePaths, QString _outputFilePath, QString dirname, QObject* parent)
 	: QRunnable(), QThread(parent), m_sourcefilePaths(std::move(_filePaths)), m_dirname(std::move(dirname)),
 	  m_outputFilePath(std::move(_outputFilePath)) {
 	this->setAutoDelete(true);
 }
 
-CMergeDir::~CMergeDir() = default;
+CMergeDir_p::~CMergeDir_p() = default;
 
-void CMergeDir::run() {
+void CMergeDir_p::run() {
 	QDir output(m_outputFilePath);
 	if (!output.exists() && !output.mkpath(".")) {
 		QString msg = tr("Unable to create directory ") + m_outputFilePath;

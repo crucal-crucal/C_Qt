@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
-    <name>CMergeDir</name>
+    <name>CMergeDir_p</name>
     <message>
         <location filename="../../source/mergedir.cc" line="15"/>
         <source>Unable to create directory </source>
