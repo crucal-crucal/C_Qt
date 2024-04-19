@@ -240,7 +240,6 @@ QComboBox{
     height: 30px;
     color: white;
     background-color: rgb(91,91,91);
-    padding: 1px 15px 1px 30px;
     font-size: 14px;
     border: none;
 } 
