@@ -37,7 +37,7 @@
 #include "framelessmainwindow/framelessmainwindow.h"
 #include "framelessMessageBox/uvmessagebox.h"
 #include "framelessMessageBox/uvfiledialog.h"
-#include "source/mergedir/mergedir_p.h"
+#include "mergedir/mergedir_p.h"
 #include "logger/Logger.h"
 
 class CPatch : public FramelessMainWindow {

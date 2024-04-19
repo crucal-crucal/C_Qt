@@ -1,4 +1,13 @@
 ﻿#include "framelessmainwindow.h"
+#include "qdatetime.h"
+#include "qevent.h"
+#include "qdebug.h"
+
+#ifdef Q_OS_WIN
+#include "windows.h"
+#include "windowsx.h"
+#pragma comment (lib, "user32.lib")
+#endif
 
 FramelessMainWindow::FramelessMainWindow(QWidget* parent) : QMainWindow(parent) {
 	padding = 8;
