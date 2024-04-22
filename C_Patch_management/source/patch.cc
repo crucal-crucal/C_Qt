@@ -191,6 +191,8 @@ void CPatch::onActChineseClicked() {
 		m_language = WINDOWLANAGUAGE::Chinese;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
+	} else {
+		recoveryStateWithAct();
 	}
 }
 
@@ -200,6 +202,8 @@ void CPatch::onActEnglishClicked() {
 		m_language = WINDOWLANAGUAGE::English;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
+	} else {
+		recoveryStateWithAct();
 	}
 }
 
@@ -209,6 +213,8 @@ void CPatch::onActProgressbar_normalClicked() {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::NORMAL;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
+	} else {
+		recoveryStateWithAct();
 	}
 }
 
@@ -218,6 +224,8 @@ void CPatch::onActProgressbar_borderClicked() {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RED;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
+	} else {
+		recoveryStateWithAct();
 	}
 }
 
@@ -227,6 +235,8 @@ void CPatch::onActProgressbar_border_radiusClicked() {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RADIUS;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
+	} else {
+		recoveryStateWithAct();
 	}
 }
 
@@ -236,6 +246,8 @@ void CPatch::onActProgressbar_blockClicked() {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
+	} else {
+		recoveryStateWithAct();
 	}
 }
 
@@ -245,6 +257,8 @@ void CPatch::onActProgressbar_gradationClicked() {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::GRADATION;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
+	} else {
+		recoveryStateWithAct();
 	}
 }
 
@@ -359,22 +373,30 @@ void CPatch::createCtrl() {
 	m_menuPreference = m_pMenuBar->addMenu(tr("Preference"));
 
 	m_menuLanguage = m_menuPreference->addMenu(tr("Language"));
-	m_pActChinese = m_menuLanguage->addAction(tr("CHINESE"));
-	m_pActEnglish = m_menuLanguage->addAction(tr("ENGLISH"));
+	m_pActGroupLanguage = new QActionGroup(m_menuLanguage);
+	m_pActChinese = m_pActGroupLanguage->addAction(tr("CHINESE"));
+	m_pActEnglish = m_pActGroupLanguage->addAction(tr("ENGLISH"));
 	m_pActChinese->setCheckable(true);
 	m_pActEnglish->setCheckable(true);
 
+	m_menuLanguage->addActions(m_pActGroupLanguage->actions());
+	m_pActGroupLanguage->setExclusive(true); // 设置互斥
+
 	m_menuProgressbar = m_menuPreference->addMenu(tr("ProgressBar Style"));
-	m_pActProgressbar_normal = m_menuProgressbar->addAction(tr("Normal"));
-	m_pActProgressbar_block = m_menuProgressbar->addAction(tr("Block"));
-	m_pActProgressbar_border = m_menuProgressbar->addAction(tr("Border_Red"));
-	m_pActProgressbar_border_radius = m_menuProgressbar->addAction(tr("Border Radius"));
-	m_pActProgressbar_gradation = m_menuProgressbar->addAction(tr("Gradation"));
+	m_pActGroupProgressbar = new QActionGroup(m_menuProgressbar);
+	m_pActProgressbar_normal = m_pActGroupProgressbar->addAction(tr("Normal"));
+	m_pActProgressbar_block = m_pActGroupProgressbar->addAction(tr("Block"));
+	m_pActProgressbar_border = m_pActGroupProgressbar->addAction(tr("Border_Red"));
+	m_pActProgressbar_border_radius = m_pActGroupProgressbar->addAction(tr("Border Radius"));
+	m_pActProgressbar_gradation = m_pActGroupProgressbar->addAction(tr("Gradation"));
 	m_pActProgressbar_normal->setCheckable(true);
 	m_pActProgressbar_block->setCheckable(true);
 	m_pActProgressbar_border->setCheckable(true);
 	m_pActProgressbar_border_radius->setCheckable(true);
 	m_pActProgressbar_gradation->setCheckable(true);
+
+	m_menuProgressbar->addActions(m_pActGroupProgressbar->actions());
+	m_pActGroupProgressbar->setExclusive(true); // 设置互斥
 
 	m_pTabWidget = new QTabWidget(m_pCentralWidget);
 	m_pTabWidget->tabBar()->setObjectName("CPatch_TabBar");
@@ -517,14 +539,7 @@ void CPatch::init() {
 		m_pCbThreadNum->addItem(QString::number(i));
 	}
 
-	m_pActChinese->setChecked(m_language == WINDOWLANAGUAGE::Chinese);
-	m_pActEnglish->setChecked(m_language == WINDOWLANAGUAGE::English);
-
-	m_pActProgressbar_normal->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::NORMAL);
-	m_pActProgressbar_block->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BLOCK);
-	m_pActProgressbar_border->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BORDER_RED);
-	m_pActProgressbar_border_radius->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BORDER_RADIUS);
-	m_pActProgressbar_gradation->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::GRADATION);
+	recoveryStateWithAct();
 
 	m_pBtnStyle->setChecked(m_ThemeStyle == WINDOWTHEMESTYLE::LIGHT);
 
@@ -667,4 +682,15 @@ bool CPatch::splitFileListByThread(const std::map<QString, QStringList>& mp, std
 
 void CPatch::restart() {
 	qApp->exit(RETCODE_RESTART);
+}
+
+void CPatch::recoveryStateWithAct() {
+	m_pActChinese->setChecked(m_language == WINDOWLANAGUAGE::Chinese);
+	m_pActEnglish->setChecked(m_language == WINDOWLANAGUAGE::English);
+
+	m_pActProgressbar_normal->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::NORMAL);
+	m_pActProgressbar_block->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BLOCK);
+	m_pActProgressbar_border->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BORDER_RED);
+	m_pActProgressbar_border_radius->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BORDER_RADIUS);
+	m_pActProgressbar_gradation->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::GRADATION);
 }

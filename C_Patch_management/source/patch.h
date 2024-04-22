@@ -91,6 +91,7 @@ class CPatch : public FramelessMainWindow {
 	static bool splitFileListByThread(const std::map<QString, QStringList>& mp, std::vector<QStringList>& threadFiles);
 
 	static void restart();
+	void recoveryStateWithAct();
 
   private:
 	void createCtrl();
@@ -109,9 +110,11 @@ class CPatch : public FramelessMainWindow {
 	QMenuBar* m_pMenuBar{nullptr};
 	QMenu* m_menuPreference{nullptr};
 	QMenu* m_menuLanguage{nullptr};
+	QActionGroup* m_pActGroupLanguage{nullptr};
 	QAction* m_pActChinese{nullptr};
 	QAction* m_pActEnglish{nullptr};
 	QMenu* m_menuProgressbar{nullptr};
+	QActionGroup* m_pActGroupProgressbar{nullptr};
 	QAction* m_pActProgressbar_normal{nullptr};
 	QAction* m_pActProgressbar_border{nullptr};
 	QAction* m_pActProgressbar_border_radius{nullptr};
