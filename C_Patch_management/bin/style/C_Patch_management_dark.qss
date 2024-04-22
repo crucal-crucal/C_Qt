@@ -104,6 +104,26 @@ QMenuBar {
     color: white;
     background-color: transparent;
 }
+QMenuBar::selected {
+    background-color: rgb(56,56,56);
+}
+QMenuBar::item {
+    color: white;
+    background-color: transparent;
+    padding: 10px 25px 10px 10px;
+    margin: 0px 1px;
+}
+QMenuBar::item:selected {
+    color: white;
+    background-color: rgb(56,56,56);
+}
+QMenuBar::item:pressed {
+    color: white;
+    background-color: rgb(56,56,56);
+}
+QMenuBar::item:selected:pressed {
+    color: white
+}
 /*QMenu*/
 QMenu {
     padding: 5px;
