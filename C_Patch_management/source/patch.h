@@ -89,8 +89,13 @@ class CPatch : public FramelessMainWindow {
 	 * @note: 通过用户选择的线程分割文件
 	 */
 	static bool splitFileListByThread(const std::map<QString, QStringList>& mp, std::vector<QStringList>& threadFiles);
-
+	/*
+	 * @note: 重启程序
+	 */
 	static void restart();
+	/*
+	 * @note: 恢复按钮状态
+	 */
 	void recoveryStateWithAct();
 
   private:

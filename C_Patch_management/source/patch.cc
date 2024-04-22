@@ -87,7 +87,6 @@ void CPatch::onBtnGenerateClicked() {
 
 	auto beginIndex = m_localMap.find(begin);
 	auto endIndex = m_localMap.find(end);
-
 	if (beginIndex != m_localMap.end() && endIndex != m_localMap.end()) {
 		for (auto& it = beginIndex; it != std::next(endIndex); ++it) {
 			QString str = m_pLePatchPath->text() + QDir::separator() + it->second;
