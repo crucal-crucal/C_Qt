@@ -35,6 +35,10 @@ enum class WINDOWTHEMESTYLE {
 static const std::string configDir = "config";
 static const std::string configName = configDir + "/config.ini";
 /*
+ * @breif 日志文件名称
+ */
+static const std::string logFileName = "user.log";
+/*
  * @breif Label大小
  */
 static const int ENGLISH_LABEL_WIDTH = 110;

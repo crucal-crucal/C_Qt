@@ -4,6 +4,7 @@ if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif ()
 
+include_directories(..)
 aux_source_directory(. SRC_LIST)
 
 add_library(${TARGET_NAME} SHARED ${SRC_LIST})

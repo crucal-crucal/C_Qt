@@ -29,26 +29,26 @@ void unLoadTranslations();
 void initializeConfigFile();
 std::tuple<WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE> readConf();
 void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle, WINDOWTHEMESTYLE newThemeStyle);
+/*
+ * @note: Linux 通过系统命令判断是否为深色主题
+ */
+#ifdef Q_OS_LINUX
+std::string exec(const char* cmd); // 执行系统命令并返回其输出
+bool isDarkTheme(); // 检查当前主题模式
+#endif
+/*
+ * @note: 第一次启动程序，默认使用系统颜色
+ */
+void checkWindowThemeStyle();
 
 int main(int argc, char* argv[]) {
-	QApplication app(argc, argv);
-
-#ifdef Q_OS_WIN
-	QSettings settings(R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)", QSettings::NativeFormat);
-	if (settings.value("AppsUseLightTheme") == 0) {
-		// 深色主题，如果第一次启动程序，默认使用系统颜色
-		windowThemeStyle = WINDOWTHEMESTYLE::DARK;
-	} else {
-		// 浅色主题
-		windowThemeStyle = WINDOWTHEMESTYLE::LIGHT;
-	}
-#endif
-	QApplication::setFont(QFont("Microsoft Yahei", 9));
-	// 设置中文编码
 #ifdef Q_OS_LINUX
-	QTextCodec *codec = QTextCodec::codecForName("utf-8");
+	QTextCodec* codec = QTextCodec::codecForName("utf-8");
 	QTextCodec::setCodecForLocale(codec);
 #endif
+	QApplication app(argc, argv);
+	checkWindowThemeStyle();
+	QApplication::setFont(QFont("Microsoft Yahei", 9));
 
 	QFileInfo appFile(QApplication::applicationFilePath());
 	// 将路径切换到上级目录
@@ -60,15 +60,16 @@ int main(int argc, char* argv[]) {
 	QString strRes = appParPath + "/resource/C_Patch_management.rcc";
 	QString strtrans_cn = appParPath + "/translation/C_Patch_management_cn.qm";
 	QString strtrans_en = appParPath + "/translation/C_Patch_management_en.qm";
+
 	initializeConfigFile();
-	// 加载rcc
-	Logger::instance().logInfo(loadResources(strRes) ? "Load Resource Success!" : "Load Resource Failed!");
 	auto [language, progressBarStyle, themeStyle] = readConf();
 	windowLanguage = language;
 	progressbarstyle = progressBarStyle;
 	windowThemeStyle = themeStyle;
-	QString str = (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark;
+	// 加载rcc
+	Logger::instance().logInfo(loadResources(strRes) ? "Load Resource Success!" : "Load Resource Failed!");
 	// 加载样式表
+	QString str = (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark;
 	Logger::instance().logInfo(loadStyle(app, str) ? "Load Style Success!" : "Load Style Failed!");
 	// 加载翻译 & 加载Label大小
 	str = (windowLanguage == WINDOWLANAGUAGE::Chinese) ? strtrans_cn : strtrans_en;
@@ -88,6 +89,7 @@ int main(int argc, char* argv[]) {
 		loadStyle(app, (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark);
 		changeConf(windowLanguage, progressbarstyle, windowThemeStyle);
 	});
+	// 释放资源
 	QObject::connect(&w, &CPatch::destroyed, [&]() {
 		unloadResources(strRes);
 		unLoadTranslations();
@@ -134,8 +136,7 @@ bool loadStyle(QApplication& app, const QString& filePath) {
 bool loadTranslations(QApplication& app, const QString& filePath) {
 	unLoadTranslations();
 	qDebug() << "Translation filePath:\t" << filePath;
-	if (!g_translator)
-		g_translator = new QTranslator(&app);
+	g_translator = new QTranslator(&app);
 	if (!g_translator->load(filePath)) {
 		return false;
 	}
@@ -177,7 +178,7 @@ void initializeConfigFile() {
 			outputFile << "ProgressbarStyle: " << progressBarStyle << "\n";
 			outputFile << "ThemeStyle: " << themeStyle;
 			outputFile.close();
-			std::cout << "Config file created and initialized with default language." << std::endl;
+			std::cout << "Config file created." << std::endl;
 		} else {
 			Logger::instance().logError("Error: Unable to create config file.");
 		}
@@ -272,4 +273,32 @@ void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressB
 	} else {
 		Logger::instance().logError("Error: Language or style line not found in config file.");
 	}
+}
+
+std::string exec(const char* cmd) {
+	std::array<char, 128> buffer{};
+	std::string result{};
+	std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+	if (!pipe) {
+		throw std::runtime_error("popen() failed!");
+	}
+	while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+		// 将buffer中的内容从尾部插入到result中
+		std::copy(buffer.begin(), buffer.end(), std::back_inserter(result));
+	}
+	return result;
+}
+
+bool isDarkTheme() {
+	std::string output = exec("gsettings get org.gnome.desktop.interface gtk-theme");
+	return output.find("dark") != std::string::npos;
+}
+
+void checkWindowThemeStyle() {
+#ifdef Q_OS_WIN
+	QSettings settings(R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)", QSettings::NativeFormat);
+	windowThemeStyle = settings.value("AppsUseLightTheme") ? WINDOWTHEMESTYLE::LIGHT : WINDOWTHEMESTYLE::DARK;
+#elif defined(Q_OS_LINUX)
+	windowThemeStyle = isDarkTheme() ? WINDOWTHEMESTYLE::DARK : WINDOWTHEMESTYLE::LIGHT;
+#endif
 }

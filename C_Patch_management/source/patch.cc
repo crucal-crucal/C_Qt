@@ -190,7 +190,7 @@ void CPatch::onActChineseClicked() {
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_language = WINDOWLANAGUAGE::Chinese;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
-		this->restart();
+		CPatch::restart();
 	}
 }
 
@@ -199,7 +199,7 @@ void CPatch::onActEnglishClicked() {
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_language = WINDOWLANAGUAGE::English;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
-		this->restart();
+		CPatch::restart();
 	}
 }
 
@@ -208,7 +208,7 @@ void CPatch::onActProgressbar_normalClicked() {
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::NORMAL;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
-		this->restart();
+		CPatch::restart();
 	}
 }
 
@@ -217,7 +217,7 @@ void CPatch::onActProgressbar_borderClicked() {
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RED;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
-		this->restart();
+		CPatch::restart();
 	}
 }
 
@@ -226,7 +226,7 @@ void CPatch::onActProgressbar_border_radiusClicked() {
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RADIUS;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
-		this->restart();
+		CPatch::restart();
 	}
 }
 
@@ -235,7 +235,7 @@ void CPatch::onActProgressbar_blockClicked() {
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
-		this->restart();
+		CPatch::restart();
 	}
 }
 
@@ -244,7 +244,7 @@ void CPatch::onActProgressbar_gradationClicked() {
 	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::GRADATION;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
-		this->restart();
+		CPatch::restart();
 	}
 }
 

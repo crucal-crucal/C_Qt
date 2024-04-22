@@ -9,6 +9,8 @@
 #include <QDir>
 #include <QMutex>
 
+#include "global/cglobal.h"
+
 #ifdef LOGGER_LIB
 #define LOGGER_EXPORT Q_DECL_EXPORT
 #else
