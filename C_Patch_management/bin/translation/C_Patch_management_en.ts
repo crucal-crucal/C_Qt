@@ -444,6 +444,31 @@
         <source>IDS_WARN_TITLE</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../source/main.cc" line="116"/>
+        <source>InfoMation</source>
+        <translation type="unfinished">InfoMation</translation>
+    </message>
+    <message>
+        <location filename="../../source/main.cc" line="116"/>
+        <source>The program already exists, do not start again!</source>
+        <translation type="unfinished">The program already exists, do not start again!</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="721"/>
+        <source>Minimize</source>
+        <translation type="unfinished">Minimize</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="722"/>
+        <source>Exit</source>
+        <translation type="unfinished">Exit</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="727"/>
+        <source>C_Patch_management</source>
+        <translation type="unfinished">C_Patch_management</translation>
+    </message>
 </context>
 <context>
     <name>UVMessageBox::CUVMessageBox</name>

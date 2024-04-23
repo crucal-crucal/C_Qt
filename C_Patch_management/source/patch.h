@@ -32,6 +32,7 @@
 #include <QProcess>
 #include <set>
 #include <QListView>
+#include <QSystemTrayIcon>
 
 #include "global/cglobal.h"
 #include "framelessmainwindow/framelessmainwindow.h"
@@ -49,6 +50,8 @@ class CPatch : public FramelessMainWindow {
 					WINDOWTHEMESTYLE ThemeStyle = WINDOWTHEMESTYLE::LIGHT,
 					QWidget* parent = nullptr);
 	~CPatch() override;
+
+	QSystemTrayIcon* getTrayIcon() { return m_ptrayIcon; }
 
   signals:
 	void ConfChanged(WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE);
@@ -71,6 +74,7 @@ class CPatch : public FramelessMainWindow {
 	void onActProgressbar_blockClicked();
 	void onActProgressbar_gradationClicked();
 	void updateProcess(qint64 value);
+	void onSystemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
 
   private:
 	// 获取文件编码格式
@@ -97,6 +101,10 @@ class CPatch : public FramelessMainWindow {
 	 * @note: 恢复按钮状态
 	 */
 	void recoveryStateWithAct();
+	/*
+ 	* @note: 设置系统托盘图标
+ 	*/
+	void setSystemTrayIcon();
 
   private:
 	void createCtrl();
@@ -191,4 +199,9 @@ class CPatch : public FramelessMainWindow {
 	WINDOWLANAGUAGE m_language{};
 	WINDOWPROGRESSBARSTYLE m_ProgressbarStyle{};
 	WINDOWTHEMESTYLE m_ThemeStyle{};
+
+	QSystemTrayIcon* m_ptrayIcon{nullptr};
+	std::unique_ptr<QMenu> m_ptrayMenu{nullptr};
+	QAction* m_pActMin{nullptr};
+	QAction* m_pActQuit{nullptr};
 };

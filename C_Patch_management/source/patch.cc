@@ -7,6 +7,7 @@ CPatch::CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage, WINDOWPROGRESSBARSTYLE
 	createCtrl();
 	layOut();
 	init();
+	setSystemTrayIcon();
 	initConnect();
 	resize(900, 600);
 }
@@ -270,6 +271,19 @@ void CPatch::updateProcess(qint64 value) {
 		m_pGenerateTime->stop();
 		m_GenerateTime = 0;
 		m_pBtnGenerate->setText(tr("Generate"));
+	}
+}
+
+void CPatch::onSystemTrayIconActivated(QSystemTrayIcon::ActivationReason reason) {
+	if (reason == QSystemTrayIcon::DoubleClick) { // 双击显示
+		this->isMinimized() ? this->showNormal() : this->showMinimized(); // 将主窗口显示出来
+		this->activateWindow(); // 激活主窗口，确保它位于顶部
+	} else if (reason == QSystemTrayIcon::Context) { // 右键菜单
+		// 调整显示始终在鼠标之上
+		auto pos = QCursor::pos();
+		int offsetY = m_ptrayMenu->sizeHint().height();
+		m_ptrayMenu->move(pos.x(), pos.y() - offsetY);
+		m_ptrayMenu->exec();
 	}
 }
 
@@ -549,6 +563,9 @@ void CPatch::init() {
 void CPatch::initConnect() {
 	connect(m_pBtnClose, &QPushButton::clicked, this, &CPatch::close);
 	connect(m_pBtnMin, &QPushButton::clicked, this, &CPatch::showMinimized);
+	connect(m_pActQuit, &QAction::triggered, this, &CPatch::close);
+	connect(m_pActMin, &QAction::triggered, this, &CPatch::showMinimized);
+	connect(m_ptrayIcon, &QSystemTrayIcon::activated, this, &CPatch::onSystemTrayIconActivated);
 	connect(m_pBtnStyle, &QPushButton::clicked, this, &CPatch::onBtnStyleClicked);
 	connect(m_pBtnOpen, &QPushButton::clicked, this, &CPatch::onBtnOpenClicked);
 	connect(m_pBtnRefresh, &QPushButton::clicked, this, &CPatch::onBtnRefreshClicked);
@@ -692,4 +709,24 @@ void CPatch::recoveryStateWithAct() {
 	m_pActProgressbar_border->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BORDER_RED);
 	m_pActProgressbar_border_radius->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BORDER_RADIUS);
 	m_pActProgressbar_gradation->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::GRADATION);
+}
+
+void CPatch::setSystemTrayIcon() {
+	if (m_ptrayIcon) {
+		return;
+	}
+
+	m_ptrayIcon = new QSystemTrayIcon(this);
+	m_ptrayMenu = std::make_unique<QMenu>();
+	m_pActMin = new QAction(QObject::tr("Minimize"), m_ptrayMenu.get());
+	m_pActQuit = new QAction(QObject::tr("Exit"), m_ptrayMenu.get());
+	m_ptrayMenu->addAction(m_pActMin);
+	m_ptrayMenu->addAction(m_pActQuit);
+	m_ptrayMenu->setWindowFlag(Qt::FramelessWindowHint);
+	m_ptrayMenu->setAttribute(Qt::WA_TranslucentBackground);
+	m_ptrayIcon->setToolTip(QObject::tr("C_Patch_management"));
+	m_ptrayIcon->setIcon(QIcon(":/icon/Patch.jpg"));
+
+	m_ptrayIcon->setContextMenu(m_ptrayMenu.get());
+	m_ptrayIcon->show();
 }

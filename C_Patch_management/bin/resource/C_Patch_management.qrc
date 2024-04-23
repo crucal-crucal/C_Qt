@@ -8,5 +8,6 @@
         <file>./icon/light.png</file>
         <file>./icon/combobox_down_arrow_on.png</file>
         <file>./icon/combobox_down_arrow.png</file>
+        <file>./icon/Patch.jpg</file>
     </qresource>
 </RCC>

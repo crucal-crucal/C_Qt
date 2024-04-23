@@ -439,6 +439,31 @@
         <source>IDS_WARN_TITLE</source>
         <translation type="unfinished">标题</translation>
     </message>
+    <message>
+        <location filename="../../source/main.cc" line="116"/>
+        <source>InfoMation</source>
+        <translation type="unfinished">提示</translation>
+    </message>
+    <message>
+        <location filename="../../source/main.cc" line="116"/>
+        <source>The program already exists, do not start again!</source>
+        <translation type="unfinished">程序已存在，请勿重复启动！</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="721"/>
+        <source>Minimize</source>
+        <translation type="unfinished">最小化</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="722"/>
+        <source>Exit</source>
+        <translation type="unfinished">退出</translation>
+    </message>
+    <message>
+        <location filename="../../source/patch.cc" line="727"/>
+        <source>C_Patch_management</source>
+        <translation type="unfinished">C_Patch_management</translation>
+    </message>
 </context>
 <context>
     <name>UVMessageBox::CUVMessageBox</name>

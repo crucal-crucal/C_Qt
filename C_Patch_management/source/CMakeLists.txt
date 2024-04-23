@@ -5,7 +5,7 @@ include_directories(.)
 FILE(GLOB source "./*.cc")
 FIlE(GLOB header "./*.h")
 
-add_executable(${TARGET_NAME}
+add_executable(${TARGET_NAME} WIN32 icon.rc
         ${header}
         ${source}
 )

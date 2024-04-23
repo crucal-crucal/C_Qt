@@ -7,8 +7,14 @@
 #include <string>
 #include <filesystem>
 #include <QStyleHints>
+#include <QCommandLineParser>
 #ifdef Q_OS_LINUX
 #include <QTextCodec>
+#include <QProcess>
+#include <QStringList>
+#elif defined Q_OS_WIN
+#include "windows.h"
+#include <TlHelp32.h>
 #endif
 
 #include "patch.h"
@@ -40,6 +46,10 @@ bool isDarkTheme(); // 检查当前主题模式
  * @note: 第一次启动程序，默认使用系统颜色
  */
 void checkWindowThemeStyle();
+/*
+ * @note: 程序唯一性检查
+ */
+inline bool checkProcessRunning(const QString& processName, QList<quint64>& listProcessId);
 
 int main(int argc, char* argv[]) {
 #ifdef Q_OS_LINUX
@@ -94,8 +104,20 @@ int main(int argc, char* argv[]) {
 		unloadResources(strRes);
 		unLoadTranslations();
 	});
-	w.show();
+	// 程序唯一性检查
+	QCommandLineParser parser;
+	parser.setApplicationDescription("application");
+	parser.addHelpOption();
+	parser.addVersionOption();
+	QList<quint64> listProcessId{};
+	int nPermitRunEngineThreshold = 1;
+	checkProcessRunning(qApp->applicationName() + ".exe", listProcessId);
+	if (listProcessId.size() > nPermitRunEngineThreshold) {
+		w.getTrayIcon()->showMessage(QObject::tr("InfoMation"), QObject::tr("The program already exists, do not start again!"), QSystemTrayIcon::Information, 1000);
+		return -1;
+	}
 
+	w.show();
 	int nRet = QApplication::exec();
 	if (nRet == RETCODE_RESTART) {
 		// 传入 qApp->applicationFilePath()，启动自己
@@ -275,6 +297,7 @@ void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressB
 	}
 }
 
+#ifdef Q_OS_LINUX
 std::string exec(const char* cmd) {
 	std::array<char, 128> buffer{};
 	std::string result{};
@@ -293,12 +316,87 @@ bool isDarkTheme() {
 	std::string output = exec("gsettings get org.gnome.desktop.interface gtk-theme");
 	return output.find("dark") != std::string::npos;
 }
+#endif
 
 void checkWindowThemeStyle() {
 #ifdef Q_OS_WIN
 	QSettings settings(R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)", QSettings::NativeFormat);
-	windowThemeStyle = settings.value("AppsUseLightTheme") ? WINDOWTHEMESTYLE::LIGHT : WINDOWTHEMESTYLE::DARK;
+	windowThemeStyle = settings.value("AppsUseLightTheme").toBool() ? WINDOWTHEMESTYLE::LIGHT : WINDOWTHEMESTYLE::DARK;
 #elif defined(Q_OS_LINUX)
 	windowThemeStyle = isDarkTheme() ? WINDOWTHEMESTYLE::DARK : WINDOWTHEMESTYLE::LIGHT;
 #endif
 }
+
+inline bool checkProcessRunning(const QString& processName, QList<quint64>& listProcessId) {
+#ifdef Q_OS_WIN
+	bool res = false;
+	HANDLE hToolHelp32Snapshot;
+	hToolHelp32Snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	PROCESSENTRY32W pe = {sizeof(PROCESSENTRY32W)};
+	BOOL isSuccess = Process32FirstW(hToolHelp32Snapshot, &pe);
+	while (isSuccess) {
+		int len = WideCharToMultiByte(CP_ACP, 0, pe.szExeFile,
+									  static_cast<int>(wcslen(pe.szExeFile)),
+									  nullptr, 0, nullptr, nullptr);
+		char* des = (char*)malloc(sizeof(char) * (len + 1));
+		WideCharToMultiByte(CP_ACP, 0, pe.szExeFile,
+							static_cast<int>(wcslen(pe.szExeFile)),
+							des, len, nullptr, nullptr);
+		des[len] = '\0';
+		if (!strcmp(des, processName.toStdString().c_str())) {
+			listProcessId.append(pe.th32ProcessID);
+			res = true;
+			//break;
+		}
+		free(des);
+		isSuccess = Process32NextW(hToolHelp32Snapshot, &pe);
+	}
+	CloseHandle(hToolHelp32Snapshot);
+	return res;
+#elif defined Q_OS_MAC
+	bool res(false);
+	QString strCommand = "ps -ef|grep " + processName + " |grep -v grep |awk '{print $2}'";
+
+	const char* strFind_ComName = convertQString2char(strCommand);
+	FILE* pPipe = popen(strFind_ComName, "r");
+	if (pPipe) {
+		std::string com;
+		char name[512] = { 0 };
+		while (fgets(name, sizeof(name), pPipe) != NULL) {
+			int nLen = strlen(name);
+			if (nLen > 0
+				&& name[nLen - 1] == '\n')
+				//&& name[0] == '/') {
+				name[nLen - 1] = '\0';
+				listProcessId.append(atoi(name));
+				res = true;
+				break;
+			}
+		}
+		pclose(pPipe);
+	}
+	return res;
+#elif defined Q_OS_LINUX
+	bool res{false};
+    // 构造命令行来查找进程
+    QString command = "ps -e | grep \"" + processName + "\" | grep -v grep | awk '{print $1}'";
+    // 执行命令并获取输出
+    QProcess process;
+    process.start(command);
+    process.waitForFinished();
+    QString output = process.readAllStandardOutput();
+    // 解析输出并将进程ID添加到列表中
+    QStringList lines = output.split("\n", Qt::SkipEmptyParts);
+    for (const QString& line : lines) {
+        bool ok;
+        qint64 pid = line.trimmed().toLongLong(&ok);
+        if (ok) {
+            listProcessId.append(static_cast<quint64>(pid));
+            res = true;
+        }
+    }
+
+    return res;
+#endif
+}
+

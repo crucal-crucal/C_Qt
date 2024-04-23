@@ -19,14 +19,14 @@ void Logger::logError(const QString& message) {
 
 Logger::Logger() {
 	QString appDirPath = QCoreApplication::applicationDirPath();
-	QDir logDir(appDirPath + QDir::separator() + "log");
-	if (!logDir.exists()) {
-		if (!logDir.mkpath(".")) {
+	QDir log_dir(appDirPath + QDir::separator() + QString::fromStdString(logDir));
+	if (!log_dir.exists()) {
+		if (!log_dir.mkpath(".")) {
 			qWarning() << "Failed to create log directory.";
 			return;
 		}
 	}
-	logFile.setFileName(logDir.filePath(QString::fromStdString(logFileName)));
+	logFile.setFileName(log_dir.filePath(QString::fromStdString(logFileName)));
 	if (logFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
 		logStream.setDevice(&logFile);
 	}
