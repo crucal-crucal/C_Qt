@@ -18,7 +18,15 @@ void Logger::logError(const QString& message) {
 }
 
 Logger::Logger() {
-	logFile.setFileName(qApp->applicationDirPath() + QDir::separator() + "user.log");
+	QString appDirPath = QCoreApplication::applicationDirPath();
+	QDir logDir(appDirPath + QDir::separator() + "log");
+	if (!logDir.exists()) {
+		if (!logDir.mkpath(".")) {
+			qWarning() << "Failed to create log directory.";
+			return;
+		}
+	}
+	logFile.setFileName(logDir.filePath(QString::fromStdString(logFileName)));
 	if (logFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
 		logStream.setDevice(&logFile);
 	}

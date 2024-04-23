@@ -89,8 +89,14 @@ class CPatch : public FramelessMainWindow {
 	 * @note: 通过用户选择的线程分割文件
 	 */
 	static bool splitFileListByThread(const std::map<QString, QStringList>& mp, std::vector<QStringList>& threadFiles);
-
+	/*
+	 * @note: 重启程序
+	 */
 	static void restart();
+	/*
+	 * @note: 恢复按钮状态
+	 */
+	void recoveryStateWithAct();
 
   private:
 	void createCtrl();
@@ -109,9 +115,11 @@ class CPatch : public FramelessMainWindow {
 	QMenuBar* m_pMenuBar{nullptr};
 	QMenu* m_menuPreference{nullptr};
 	QMenu* m_menuLanguage{nullptr};
+	QActionGroup* m_pActGroupLanguage{nullptr};
 	QAction* m_pActChinese{nullptr};
 	QAction* m_pActEnglish{nullptr};
 	QMenu* m_menuProgressbar{nullptr};
+	QActionGroup* m_pActGroupProgressbar{nullptr};
 	QAction* m_pActProgressbar_normal{nullptr};
 	QAction* m_pActProgressbar_border{nullptr};
 	QAction* m_pActProgressbar_border_radius{nullptr};

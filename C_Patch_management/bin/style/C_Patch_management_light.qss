@@ -101,6 +101,26 @@ QMenuBar {
     color: black;
     background-color: transparent;
 }
+QMenuBar::selected {
+    background-color: #F0F0F0;
+}
+QMenuBar::item {
+    color: black;
+    background-color: transparent;
+    padding: 10px 25px 10px 10px;
+    margin: 0px 1px;
+}
+QMenuBar::item:selected {
+    color: black;
+    background-color: #F0F0F0;
+}
+QMenuBar::item:pressed {
+    color: black;
+    background-color: #F0F0F0;
+}
+QMenuBar::item:selected:pressed {
+    color: black
+}
 /*QMenu*/
 QMenu {
     color: black;

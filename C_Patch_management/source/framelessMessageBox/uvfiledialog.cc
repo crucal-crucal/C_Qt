@@ -130,7 +130,7 @@ void CUVFileBase::init() {
 }
 
 QString CUVFileBase::getOpenFileName(QString* selectedFilter, QFileDialog::Options options) {
-	m_pFileDialog->setOptions(options);
+	m_pFileDialog->setOptions(options | m_pFileDialog->options());
 	if (selectedFilter) {
 		m_pFileDialog->selectNameFilter(*selectedFilter);
 	}
@@ -147,7 +147,7 @@ QString CUVFileBase::getOpenFileName(QString* selectedFilter, QFileDialog::Optio
 QUrl CUVFileBase::getOpenFileUrl(const QUrl& dir, QString* selectedFilter,
 								 QFileDialog::Options options, const QStringList& supportedSchemes) {
 	this->setDirectoryUrl(dir);
-	m_pFileDialog->setOptions(options);
+	m_pFileDialog->setOptions(options | m_pFileDialog->options());
 	m_pFileDialog->setSupportedSchemes(supportedSchemes);
 	if (selectedFilter) {
 		m_pFileDialog->selectNameFilter(*selectedFilter);
@@ -163,7 +163,7 @@ QUrl CUVFileBase::getOpenFileUrl(const QUrl& dir, QString* selectedFilter,
 
 QString CUVFileBase::getSaveFileName(QString* selectedFilter, QFileDialog::Options options) {
 	m_pFileDialog->setAcceptMode(QFileDialog::AcceptSave);
-	m_pFileDialog->setOptions(options);
+	m_pFileDialog->setOptions(options | m_pFileDialog->options());
 	if (selectedFilter) {
 		m_pFileDialog->selectNameFilter(*selectedFilter);
 	}
@@ -181,7 +181,7 @@ QUrl CUVFileBase::getSaveFileUrl(const QUrl& dir, QString* selectedFilter,
 								 QFileDialog::Options options, const QStringList& supportedSchemes) {
 	this->setDirectoryUrl(dir);
 	m_pFileDialog->setAcceptMode(QFileDialog::AcceptSave);
-	m_pFileDialog->setOptions(options);
+	m_pFileDialog->setOptions(options | m_pFileDialog->options());
 	m_pFileDialog->setSupportedSchemes(supportedSchemes);
 	if (selectedFilter) {
 		m_pFileDialog->selectNameFilter(*selectedFilter);
@@ -203,7 +203,7 @@ QString CUVFileBase::getExistingDirectory(QFileDialog::Options options) {
 	 * 仅显示目录仅在目录模式下有效
 	 */
 	this->setFileMode(QFileDialog::Directory);
-	m_pFileDialog->setOptions(options);
+	m_pFileDialog->setOptions(options | m_pFileDialog->options());
 	if (this->exec()) {
 		return this->selectedFiles().first();
 	}
@@ -212,7 +212,7 @@ QString CUVFileBase::getExistingDirectory(QFileDialog::Options options) {
 
 QString CUVFileBase::getExistingDirectoryUrl(const QUrl& dir, QFileDialog::Options options, const QStringList& supportedSchemes) {
 	this->setFileMode(QFileDialog::Directory);
-	m_pFileDialog->setOptions(options);
+	m_pFileDialog->setOptions(options | m_pFileDialog->options());
 	m_pFileDialog->setSupportedSchemes(supportedSchemes);
 	this->setDirectoryUrl(dir);
 	if (this->exec()) {
@@ -222,7 +222,7 @@ QString CUVFileBase::getExistingDirectoryUrl(const QUrl& dir, QFileDialog::Optio
 }
 
 QStringList CUVFileBase::getOpenFileNames(QString* selectedFilter, QFileDialog::Options options) {
-	m_pFileDialog->setOptions(options);
+	m_pFileDialog->setOptions(options | m_pFileDialog->options());
 	if (selectedFilter) {
 		m_pFileDialog->selectNameFilter(*selectedFilter);
 	}
@@ -239,7 +239,7 @@ QStringList CUVFileBase::getOpenFileNames(QString* selectedFilter, QFileDialog::
 QList<QUrl> CUVFileBase::getOpenFileUrls(const QUrl& dir, QString* selectedFilter,
 										 QFileDialog::Options options, const QStringList& supportedSchemes) {
 	this->setDirectoryUrl(dir);
-	m_pFileDialog->setOptions(options);
+	m_pFileDialog->setOptions(options | m_pFileDialog->options());
 	m_pFileDialog->setSupportedSchemes(supportedSchemes);
 	if (selectedFilter) {
 		m_pFileDialog->selectNameFilter(*selectedFilter);
