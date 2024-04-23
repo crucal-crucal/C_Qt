@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <QStyleHints>
 #include <QCommandLineParser>
+#include <QSharedMemory>
 #ifdef Q_OS_LINUX
 #include <QTextCodec>
 #include <QProcess>
@@ -21,6 +22,7 @@
 #include "global/cglobal.h"
 
 QTranslator* g_translator{nullptr};
+QSharedMemory g_sharedMemory{nullptr};
 /*
  * @note: 加载、卸载资源文件，加载样式表，加载、卸载翻译文件
  */
@@ -50,6 +52,7 @@ void checkWindowThemeStyle();
  * @note: 程序唯一性检查
  */
 inline bool checkProcessRunning(const QString& processName, QList<quint64>& listProcessId);
+inline bool checkSingleInstance(QSharedMemory& shared_memory);
 
 int main(int argc, char* argv[]) {
 #ifdef Q_OS_LINUX
@@ -104,18 +107,28 @@ int main(int argc, char* argv[]) {
 		unloadResources(strRes);
 		unLoadTranslations();
 	});
-	// 程序唯一性检查
-	QCommandLineParser parser;
-	parser.setApplicationDescription("application");
-	parser.addHelpOption();
-	parser.addVersionOption();
-	QList<quint64> listProcessId{};
-	int nPermitRunEngineThreshold = 1;
-	checkProcessRunning(qApp->applicationName() + ".exe", listProcessId);
-	if (listProcessId.size() > nPermitRunEngineThreshold) {
+
+	if (!checkSingleInstance(g_sharedMemory)) {
 		w.getTrayIcon()->showMessage(QObject::tr("InfoMation"), QObject::tr("The program already exists, do not start again!"), QSystemTrayIcon::Information, 1000);
+		qDebug() << QObject::tr("The program already exists, do not start again!");
 		return -1;
 	}
+	// 程序唯一性检查
+//	QCommandLineParser parser;
+//	parser.setApplicationDescription("application");
+//	parser.addHelpOption();
+//	parser.addVersionOption();
+//	QList<quint64> listProcessId{};
+//	int nPermitRunEngineThreshold = 1;
+//#ifdef Q_OS_WIN
+//	checkProcessRunning(qApp->applicationName() + ".exe", listProcessId);
+//#elif defined Q_OS_LINUX
+//	checkProcessRunning(qApp->applicationName(), listProcessId);
+//#endif
+//	if (listProcessId.size() > nPermitRunEngineThreshold) {
+//		w.getTrayIcon()->showMessage(QObject::tr("InfoMation"), QObject::tr("The program already exists, do not start again!"), QSystemTrayIcon::Information, 1000);
+//		return -1;
+//	}
 
 	w.show();
 	int nRet = QApplication::exec();
@@ -394,9 +407,21 @@ inline bool checkProcessRunning(const QString& processName, QList<quint64>& list
             listProcessId.append(static_cast<quint64>(pid));
             res = true;
         }
+		qDebug() << pid;
     }
 
     return res;
 #endif
+}
+
+inline bool checkSingleInstance(QSharedMemory& shared_memory) {
+	shared_memory.setKey(QString::fromStdString(AppID));
+	if (shared_memory.attach()) {
+		return false;
+	}
+	if (shared_memory.create(1)) {
+		return true;
+	}
+	return false;
 }
 

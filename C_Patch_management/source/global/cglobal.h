@@ -50,3 +50,7 @@ static const int CHINESE_LABEL_WIDTH = 60;
 static WINDOWLANAGUAGE windowLanguage = WINDOWLANAGUAGE::Chinese;
 static WINDOWPROGRESSBARSTYLE progressbarstyle = WINDOWPROGRESSBARSTYLE::BLOCK;
 static WINDOWTHEMESTYLE windowThemeStyle = WINDOWTHEMESTYLE::LIGHT;
+/*
+ * @breif AppID
+ */
+static const std::string AppID = "crucal_app_id";
