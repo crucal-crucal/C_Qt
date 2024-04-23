@@ -77,18 +77,18 @@ int main(int argc, char* argv[]) {
 	int LabelWidth = windowLanguage == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH;
 	CPatch w(LabelWidth, windowLanguage, progressbarstyle, windowThemeStyle);
 	// 修改配置文件
-	QObject::connect(&w, &CPatch::ConfChanged, [&](WINDOWLANAGUAGE lang, WINDOWPROGRESSBARSTYLE prostyle) {
+	QObject::connect(&w, &CPatch::ConfChanged, [=](WINDOWLANAGUAGE lang, WINDOWPROGRESSBARSTYLE prostyle) {
 		windowLanguage = lang;
 		progressbarstyle = prostyle;
 		changeConf(windowLanguage, progressbarstyle, windowThemeStyle);
 	});
 	// 修改主题
-	QObject::connect(&w, &CPatch::ThemeChanged, [&](WINDOWTHEMESTYLE windowthemestyle) {
+	QObject::connect(&w, &CPatch::ThemeChanged, [&app, strStyle_light, strStyle_dark](WINDOWTHEMESTYLE windowthemestyle) {
 		windowThemeStyle = windowthemestyle;
 		loadStyle(app, (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark);
 		changeConf(windowLanguage, progressbarstyle, windowThemeStyle);
 	});
-	QObject::connect(&w, &CPatch::destroyed, [&]() {
+	QObject::connect(&w, &CPatch::destroyed, [=]() {
 		unloadResources(strRes);
 		unLoadTranslations();
 	});
