@@ -9,13 +9,11 @@
 #include <QStyleHints>
 #include <QCommandLineParser>
 #include <QSharedMemory>
-#ifdef Q_OS_LINUX
-#include <QTextCodec>
 #include <QProcess>
 #include <QStringList>
-#elif defined Q_OS_WIN
-#include "windows.h"
-#include <TlHelp32.h>
+#include <QCommandLineParser>
+#ifdef Q_OS_LINUX
+#include <QTextCodec>
 #endif
 
 #include "patch.h"
@@ -51,8 +49,11 @@ void checkWindowThemeStyle();
 /*
  * @note: 程序唯一性检查
  */
-inline bool checkProcessRunning(const QString& processName, QList<quint64>& listProcessId);
 inline bool checkSingleInstance(QSharedMemory& shared_memory);
+/*
+ * @note: 创建命令行参数
+ */
+void createCommandLineParser(QApplication& app);
 
 int main(int argc, char* argv[]) {
 #ifdef Q_OS_LINUX
@@ -60,19 +61,19 @@ int main(int argc, char* argv[]) {
 	QTextCodec::setCodecForLocale(codec);
 #endif
 	QApplication app(argc, argv);
+	createCommandLineParser(app);
 	checkWindowThemeStyle();
-	QApplication::setFont(QFont("Microsoft Yahei", 9));
 
 	QFileInfo appFile(QApplication::applicationFilePath());
 	// 将路径切换到上级目录
 	QDir dir(appFile.absolutePath());
 	dir.cdUp();
 	QString appParPath = dir.absolutePath();
-	QString strStyle_light = appParPath + "/style/C_Patch_management_light.qss";
-	QString strStyle_dark = appParPath + "/style/C_Patch_management_dark.qss";
-	QString strRes = appParPath + "/resource/C_Patch_management.rcc";
-	QString strtrans_cn = appParPath + "/translation/C_Patch_management_cn.qm";
-	QString strtrans_en = appParPath + "/translation/C_Patch_management_en.qm";
+	QString strStyle_light = appParPath + QString::fromStdString(qssFilePathLight);
+	QString strStyle_dark = appParPath + QString::fromStdString(qssFilePathDark);
+	QString strRcc = appParPath + QString::fromStdString(rccFilePath);
+	QString strtrans_cn = appParPath + QString::fromStdString(translationFilePath_CN);
+	QString strtrans_en = appParPath + QString::fromStdString(translationFilePath_EN);
 
 	initializeConfigFile();
 	auto [language, progressBarStyle, themeStyle] = readConf();
@@ -80,7 +81,7 @@ int main(int argc, char* argv[]) {
 	progressbarstyle = progressBarStyle;
 	windowThemeStyle = themeStyle;
 	// 加载rcc
-	Logger::instance().logInfo(loadResources(strRes) ? "Load Resource Success!" : "Load Resource Failed!");
+	Logger::instance().logInfo(loadResources(strRcc) ? "Load Resource Success!" : "Load Resource Failed!");
 	// 加载样式表
 	QString str = (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark;
 	Logger::instance().logInfo(loadStyle(app, str) ? "Load Style Success!" : "Load Style Failed!");
@@ -104,32 +105,16 @@ int main(int argc, char* argv[]) {
 	});
 	// 释放资源
 	QObject::connect(&w, &CPatch::destroyed, [&]() {
-		unloadResources(strRes);
+		unloadResources(strRcc);
 		unLoadTranslations();
 		g_sharedMemory.detach();
 	});
-
+	// 程序唯一性检查
 	if (!checkSingleInstance(g_sharedMemory)) {
 		w.getTrayIcon()->showMessage(QObject::tr("InfoMation"), QObject::tr("The program already exists, do not start again!"), QSystemTrayIcon::Information, 1000);
 		qDebug() << QObject::tr("The program already exists, do not start again!");
 		return -1;
 	}
-	// 程序唯一性检查
-//	QCommandLineParser parser;
-//	parser.setApplicationDescription("application");
-//	parser.addHelpOption();
-//	parser.addVersionOption();
-//	QList<quint64> listProcessId{};
-//	int nPermitRunEngineThreshold = 1;
-//#ifdef Q_OS_WIN
-//	checkProcessRunning(qApp->applicationName() + ".exe", listProcessId);
-//#elif defined Q_OS_LINUX
-//	checkProcessRunning(qApp->applicationName(), listProcessId);
-//#endif
-//	if (listProcessId.size() > nPermitRunEngineThreshold) {
-//		w.getTrayIcon()->showMessage(QObject::tr("InfoMation"), QObject::tr("The program already exists, do not start again!"), QSystemTrayIcon::Information, 1000);
-//		return -1;
-//	}
 
 	w.show();
 	int nRet = QApplication::exec();
@@ -341,80 +326,6 @@ void checkWindowThemeStyle() {
 #endif
 }
 
-inline bool checkProcessRunning(const QString& processName, QList<quint64>& listProcessId) {
-#ifdef Q_OS_WIN
-	bool res = false;
-	HANDLE hToolHelp32Snapshot;
-	hToolHelp32Snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	PROCESSENTRY32W pe = {sizeof(PROCESSENTRY32W)};
-	BOOL isSuccess = Process32FirstW(hToolHelp32Snapshot, &pe);
-	while (isSuccess) {
-		int len = WideCharToMultiByte(CP_ACP, 0, pe.szExeFile,
-									  static_cast<int>(wcslen(pe.szExeFile)),
-									  nullptr, 0, nullptr, nullptr);
-		char* des = (char*)malloc(sizeof(char) * (len + 1));
-		WideCharToMultiByte(CP_ACP, 0, pe.szExeFile,
-							static_cast<int>(wcslen(pe.szExeFile)),
-							des, len, nullptr, nullptr);
-		des[len] = '\0';
-		if (!strcmp(des, processName.toStdString().c_str())) {
-			listProcessId.append(pe.th32ProcessID);
-			res = true;
-			//break;
-		}
-		free(des);
-		isSuccess = Process32NextW(hToolHelp32Snapshot, &pe);
-	}
-	CloseHandle(hToolHelp32Snapshot);
-	return res;
-#elif defined Q_OS_MAC
-	bool res(false);
-	QString strCommand = "ps -ef|grep " + processName + " |grep -v grep |awk '{print $2}'";
-
-	const char* strFind_ComName = convertQString2char(strCommand);
-	FILE* pPipe = popen(strFind_ComName, "r");
-	if (pPipe) {
-		std::string com;
-		char name[512] = { 0 };
-		while (fgets(name, sizeof(name), pPipe) != NULL) {
-			int nLen = strlen(name);
-			if (nLen > 0
-				&& name[nLen - 1] == '\n')
-				//&& name[0] == '/') {
-				name[nLen - 1] = '\0';
-				listProcessId.append(atoi(name));
-				res = true;
-				break;
-			}
-		}
-		pclose(pPipe);
-	}
-	return res;
-#elif defined Q_OS_LINUX
-	bool res{false};
-    // 构造命令行来查找进程
-    QString command = "ps -e | grep \"" + processName + "\" | grep -v grep | awk '{print $1}'";
-    // 执行命令并获取输出
-    QProcess process;
-    process.start(command);
-    process.waitForFinished();
-    QString output = process.readAllStandardOutput();
-    // 解析输出并将进程ID添加到列表中
-    QStringList lines = output.split("\n", Qt::SkipEmptyParts);
-    for (const QString& line : lines) {
-        bool ok;
-        qint64 pid = line.trimmed().toLongLong(&ok);
-        if (ok) {
-            listProcessId.append(static_cast<quint64>(pid));
-            res = true;
-        }
-		qDebug() << pid;
-    }
-
-    return res;
-#endif
-}
-
 inline bool checkSingleInstance(QSharedMemory& shared_memory) {
 	shared_memory.setKey(QString::fromStdString(AppID));
 	if (shared_memory.attach()) {
@@ -424,5 +335,27 @@ inline bool checkSingleInstance(QSharedMemory& shared_memory) {
 		return true;
 	}
 	return false;
+}
+
+void createCommandLineParser(QApplication& app) {
+	// 命令行参数
+	QCoreApplication::setApplicationName("C_Patch_management");
+	QCoreApplication::setApplicationVersion("1.0.0");
+	QCommandLineParser parser;
+	parser.setApplicationDescription("This is a command line parser example");
+	parser.addHelpOption();
+	parser.addVersionOption();
+	parser.addOption({{"f", "file"}, "Specify the file to open", "file"});
+	parser.addPositionalArgument("input", "Input file");
+	parser.process(app);
+	if (parser.isSet("file")) {
+		QString filename = parser.value("file");
+		qDebug() << "File option is set. Filename:" << filename;
+	}
+
+	QStringList positionalArgs = parser.positionalArguments();
+	if (!positionalArgs.isEmpty()) {
+		qDebug() << "Positional arguments:" << positionalArgs;
+	}
 }
 

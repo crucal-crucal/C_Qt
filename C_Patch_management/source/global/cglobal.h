@@ -54,3 +54,11 @@ static WINDOWTHEMESTYLE windowThemeStyle = WINDOWTHEMESTYLE::LIGHT;
  * @breif AppID
  */
 static const std::string AppID = "crucal_app_id";
+/*
+ * @breif 资源文件路径
+ */
+static const std::string qssFilePathLight = "/style/C_Patch_management_light.qss";
+static const std::string qssFilePathDark = "/style/C_Patch_management_dark.qss";
+static const std::string rccFilePath = "/resource/C_Patch_management.rcc";
+static const std::string translationFilePath_CN = "/translation/C_Patch_management_cn.qm";
+static const std::string translationFilePath_EN = "/translation/C_Patch_management_en.qm";
