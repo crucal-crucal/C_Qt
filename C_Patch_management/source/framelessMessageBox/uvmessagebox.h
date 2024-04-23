@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QDialog>
-#include <QFont>
 #include <QMessageBox>
 #include <QObject>
 
@@ -33,11 +32,11 @@ class FRAMELESSMESSAGEBOX_EXPORT CUVMessageBox : public CUVBaseDialog {
 
 public:
 	CUVMessageBox(QMessageBox::Icon icon,
-		const QString& title,
-		const QString& text,
-		QMessageBox::StandardButtons buttons = QMessageBox::NoButton,
-		QWidget* parent = Q_NULLPTR,
-		Qt::WindowFlags flags = Qt::Widget | Qt::FramelessWindowHint);
+	              const QString& title,
+	              const QString& text,
+	              QMessageBox::StandardButtons buttons = QMessageBox::NoButton,
+	              QWidget* parent = Q_NULLPTR,
+	              Qt::WindowFlags flags = Qt::Widget | Qt::FramelessWindowHint);
 	~CUVMessageBox() override;
 
 public:
@@ -50,25 +49,26 @@ public:
 	void removeButton(QAbstractButton* button) const;
 
 	static QMessageBox::ButtonRole information(QWidget* parent,
-		const QString& title = QObject::tr("IDS_MSG_TIP"),
-		const QString& text = "",
-		QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-		QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+	                                           const QString& title = QObject::tr("IDS_MSG_TIP"),
+	                                           const QString& text = "",
+	                                           QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+	                                           QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
 	static QMessageBox::ButtonRole question(QWidget* parent,
-		const QString& title,
-		const QString& text,
-		QMessageBox::StandardButtons buttons = QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No),
-		QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+	                                        const QString& title,
+	                                        const QString& text,
+	                                        QMessageBox::StandardButtons buttons = QMessageBox::StandardButtons(
+		                                        QMessageBox::Yes | QMessageBox::No),
+	                                        QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
 	static QMessageBox::ButtonRole warning(QWidget* parent,
-		const QString& title = QObject::tr("IDS_WARN_TITLE"),
-		const QString& text = "",
-		QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-		QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+	                                       const QString& title = QObject::tr("IDS_WARN_TITLE"),
+	                                       const QString& text = "",
+	                                       QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+	                                       QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
 	static QMessageBox::ButtonRole critical(QWidget* parent,
-		const QString& title,
-		const QString& text,
-		QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-		QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+	                                        const QString& title,
+	                                        const QString& text,
+	                                        QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+	                                        QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
 	static void about(QWidget* parent, const QString& title, const QString& text);
 
 	int exec() override;
@@ -82,7 +82,7 @@ private:
 	static QMessageBox::ButtonRole standardConvertToRole(QMessageBox::StandardButton button);
 
 protected:
-	QMessageBox* m_pMessageBox{nullptr};
+	QMessageBox* m_pMessageBox{ nullptr };
 	QMessageBox::StandardButtons buttons_;
 	Qt::WindowFlags flags_;
 };
@@ -92,7 +92,7 @@ class FRAMELESSMESSAGEBOX_EXPORT CUVCountdownMessageBox final : public CUVMessag
 
 public:
 	explicit CUVCountdownMessageBox(QMessageBox::Icon icon, const QString& title, const QString& text,
-		QWidget* parent = Q_NULLPTR);
+	                                QWidget* parent = Q_NULLPTR);
 	~CUVCountdownMessageBox() override;
 
 	int exec(int nSecond);
@@ -101,9 +101,7 @@ protected:
 	void timerEvent(QTimerEvent* event) override;
 
 private:
-	int nCountdown{0};
+	int nCountdown{ 0 };
 	static const QRegularExpression regex;
 };
-
-const QRegularExpression CUVCountdownMessageBox::regex("\\d+");
 }

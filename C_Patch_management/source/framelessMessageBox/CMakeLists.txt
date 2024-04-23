@@ -1,5 +1,5 @@
 #set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/application)
-set(TARGET_NAME framelessMessageBox_1)
+set(TARGET_NAME framelessMessageBox)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -17,7 +17,7 @@ install(TARGETS ${TARGET_NAME}
 )
 
 install(TARGETS ${TARGET_NAME}
-        ARCHIVE  DESTINATION lib OPTIONAL
+        ARCHIVE DESTINATION lib OPTIONAL
 )
 
 if (WIN32)

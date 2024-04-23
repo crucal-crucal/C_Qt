@@ -16,9 +16,10 @@
 
 #include "patch.h"
 #include "global/cglobal.h"
+#include "logger/logger.h"
 
-QTranslator* g_translator{nullptr};
-QSharedMemory g_sharedMemory{nullptr};
+QTranslator* g_translator{ nullptr };
+QSharedMemory g_sharedMemory{ nullptr };
 /*
  * @note: 加载、卸载资源文件，加载样式表，加载、卸载翻译文件
  */
@@ -32,13 +33,14 @@ void unLoadTranslations();
  */
 void initializeConfigFile();
 std::tuple<WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE> readConf();
-void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle, WINDOWTHEMESTYLE newThemeStyle);
+void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
+                WINDOWTHEMESTYLE newThemeStyle);
 /*
  * @note: Linux 通过系统命令判断是否为深色主题
  */
 #ifdef Q_OS_LINUX
 std::string exec(const char* cmd); // 执行系统命令并返回其输出
-bool isDarkTheme(); // 检查当前主题模式
+bool isDarkTheme();                // 检查当前主题模式
 #endif
 /*
  * @note: 第一次启动程序，默认使用系统颜色
@@ -109,7 +111,9 @@ int main(int argc, char* argv[]) {
 	});
 	// 程序唯一性检查
 	if (!checkSingleInstance(g_sharedMemory)) {
-		w.getTrayIcon()->showMessage(QObject::tr("InfoMation"), QObject::tr("The program already exists, do not start again!"), QSystemTrayIcon::Information, 1000);
+		w.getTrayIcon()->showMessage(QObject::tr("InfoMation"),
+		                             QObject::tr("The program already exists, do not start again!"),
+		                             QSystemTrayIcon::Information, 1000);
 		qDebug() << QObject::tr("The program already exists, do not start again!");
 		return -1;
 	}
@@ -233,7 +237,8 @@ std::tuple<WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE> readConf()
 	return std::make_tuple(language, progressBarStyle, themeStyle);
 }
 
-void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle, WINDOWTHEMESTYLE newThemeStyle) {
+void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
+                WINDOWTHEMESTYLE newThemeStyle) {
 	int newLanguageInt = static_cast<int>(newLanguage);
 	int newProgressBarStyleInt = static_cast<int>(newprogressBarStyle);
 	int newThemeStyleInt = static_cast<int>(newThemeStyle);
@@ -279,7 +284,8 @@ void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressB
 				outputFile << line << std::endl;
 			}
 			outputFile.close();
-			std::cout << "Language changed to " << (newLanguage == WINDOWLANAGUAGE::English ? "English" : "Chinese") << std::endl;
+			std::cout << "Language changed to " << (newLanguage == WINDOWLANAGUAGE::English ? "English" : "Chinese") <<
+				std::endl;
 			std::cout << "Progressbar style changed" << std::endl;
 			std::cout << "Theme style changed" << std::endl;
 		} else {
@@ -340,7 +346,7 @@ void createCommandLineParser(const QApplication& app) {
 	parser.addVersionOption();
 	const QString optionShort = "d";
 	const QString optionLong = "directory";
-	parser.addOption(QCommandLineOption({optionShort, optionLong}, "Specify the directory to open", "directory"));
+	parser.addOption(QCommandLineOption({ optionShort, optionLong }, "Specify the directory to open", "directory"));
 	parser.process(app);
 	if (parser.isSet(optionShort) || parser.isSet(optionLong)) {
 		QString directory;

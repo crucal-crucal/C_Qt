@@ -21,12 +21,10 @@ class CPatch final : public FramelessMainWindow {
 	Q_OBJECT
 
 public:
-	explicit CPatch(int LabelWidth,
-		WINDOWLANAGUAGE Lanaguage = WINDOWLANAGUAGE::Chinese,
-		WINDOWPROGRESSBARSTYLE ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK,
-		WINDOWTHEMESTYLE ThemeStyle = WINDOWTHEMESTYLE::LIGHT,
-		std::string dirPath = "",
-		QWidget* parent = nullptr);
+	explicit CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage = WINDOWLANAGUAGE::Chinese,
+	                WINDOWPROGRESSBARSTYLE ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK,
+	                WINDOWTHEMESTYLE ThemeStyle = WINDOWTHEMESTYLE::LIGHT,
+	                std::string dirPath = "", QWidget* parent = nullptr);
 	~CPatch() override;
 
 	[[nodiscard]] QSystemTrayIcon* getTrayIcon() const { return m_ptrayIcon; }
@@ -121,92 +119,92 @@ private:
 	void initConnect();
 
 private:
-	QWidget* m_pCentralWidget{nullptr};
+	QWidget* m_pCentralWidget{ nullptr };
 
-	QWidget* m_pTitleBar{nullptr};
-	QPushButton* m_pBtnStyle{nullptr};
-	QPushButton* m_pBtnClose{nullptr};
-	QPushButton* m_pBtnMin{nullptr};
+	QWidget* m_pTitleBar{ nullptr };
+	QPushButton* m_pBtnStyle{ nullptr };
+	QPushButton* m_pBtnClose{ nullptr };
+	QPushButton* m_pBtnMin{ nullptr };
 
-	QMenuBar* m_pMenuBar{nullptr};
-	QMenu* m_menuPreference{nullptr};
-	QMenu* m_menuLanguage{nullptr};
-	QActionGroup* m_pActGroupLanguage{nullptr};
-	QAction* m_pActChinese{nullptr};
-	QAction* m_pActEnglish{nullptr};
-	QMenu* m_menuProgressbar{nullptr};
-	QActionGroup* m_pActGroupProgressbar{nullptr};
-	QAction* m_pActProgressbar_normal{nullptr};
-	QAction* m_pActProgressbar_border{nullptr};
-	QAction* m_pActProgressbar_border_radius{nullptr};
-	QAction* m_pActProgressbar_block{nullptr};
-	QAction* m_pActProgressbar_gradation{nullptr};
+	QMenuBar* m_pMenuBar{ nullptr };
+	QMenu* m_menuPreference{ nullptr };
+	QMenu* m_menuLanguage{ nullptr };
+	QActionGroup* m_pActGroupLanguage{ nullptr };
+	QAction* m_pActChinese{ nullptr };
+	QAction* m_pActEnglish{ nullptr };
+	QMenu* m_menuProgressbar{ nullptr };
+	QActionGroup* m_pActGroupProgressbar{ nullptr };
+	QAction* m_pActProgressbar_normal{ nullptr };
+	QAction* m_pActProgressbar_border{ nullptr };
+	QAction* m_pActProgressbar_border_radius{ nullptr };
+	QAction* m_pActProgressbar_block{ nullptr };
+	QAction* m_pActProgressbar_gradation{ nullptr };
 
-	QTabWidget* m_pTabWidget{nullptr};
+	QTabWidget* m_pTabWidget{ nullptr };
 
-	QWidget* m_pReadWidget{nullptr};
-	QWidget* m_pRenewalWidget{nullptr};
+	QWidget* m_pReadWidget{ nullptr };
+	QWidget* m_pRenewalWidget{ nullptr };
 
-	QLabel* m_pLbPatchPath{nullptr};
-	QLineEdit* m_pLePatchPath{nullptr};
-	QPushButton* m_pBtnOpen{nullptr};
-	QPushButton* m_pBtnRefresh{nullptr};
+	QLabel* m_pLbPatchPath{ nullptr };
+	QLineEdit* m_pLePatchPath{ nullptr };
+	QPushButton* m_pBtnOpen{ nullptr };
+	QPushButton* m_pBtnRefresh{ nullptr };
 
-	QListWidget* m_pLwPatchList{nullptr};
-	QTextEdit* m_pTePreviewTxt{nullptr};
+	QListWidget* m_pLwPatchList{ nullptr };
+	QTextEdit* m_pTePreviewTxt{ nullptr };
 
-	QLabel* m_pLbGeneratePath{nullptr};
-	QComboBox* m_pCbStartTime{nullptr};
-	QComboBox* m_pCbEndTime{nullptr};
-	QPushButton* m_pBtnGenerate{nullptr};
-	QLabel* m_pLbThreadNum{nullptr};
-	QComboBox* m_pCbThreadNum{nullptr};
-	QLabel* m_pLbTime{nullptr};
-	QLabel* m_pLbCopy{nullptr};
+	QLabel* m_pLbGeneratePath{ nullptr };
+	QComboBox* m_pCbStartTime{ nullptr };
+	QComboBox* m_pCbEndTime{ nullptr };
+	QPushButton* m_pBtnGenerate{ nullptr };
+	QLabel* m_pLbThreadNum{ nullptr };
+	QComboBox* m_pCbThreadNum{ nullptr };
+	QLabel* m_pLbTime{ nullptr };
+	QLabel* m_pLbCopy{ nullptr };
 
-	QProgressBar* m_pPbschedule{nullptr};
+	QProgressBar* m_pPbschedule{ nullptr };
 
-	QLabel* m_pLbPatchVersion{nullptr};
-	QLineEdit* m_pLePatchVersion{nullptr};
+	QLabel* m_pLbPatchVersion{ nullptr };
+	QLineEdit* m_pLePatchVersion{ nullptr };
 
-	QLineEdit* m_pLePatchOutPath{nullptr};
-	QPushButton* m_pBtnPatchOutPath{nullptr};
+	QLineEdit* m_pLePatchOutPath{ nullptr };
+	QPushButton* m_pBtnPatchOutPath{ nullptr };
 
-	QListWidget* m_pLwOutPatchList{nullptr};
+	QListWidget* m_pLwOutPatchList{ nullptr };
 
-	QLabel* m_pLbVersionPath{nullptr};
-	QPushButton* m_pBtnVersionPatch{nullptr};
+	QLabel* m_pLbVersionPath{ nullptr };
+	QPushButton* m_pBtnVersionPatch{ nullptr };
 
-	QHBoxLayout* m_plyHTitle{nullptr};
-	QVBoxLayout* m_pCentralLayout{nullptr};
+	QHBoxLayout* m_plyHTitle{ nullptr };
+	QVBoxLayout* m_pCentralLayout{ nullptr };
 
-	QVBoxLayout* m_pReadWidgetLayout{nullptr};
-	QHBoxLayout* m_pReadFirstRowLayout{nullptr};
-	QHBoxLayout* m_pReadSecondRowLayout{nullptr};
-	QHBoxLayout* m_pReadThirdRowLayout{nullptr};
+	QVBoxLayout* m_pReadWidgetLayout{ nullptr };
+	QHBoxLayout* m_pReadFirstRowLayout{ nullptr };
+	QHBoxLayout* m_pReadSecondRowLayout{ nullptr };
+	QHBoxLayout* m_pReadThirdRowLayout{ nullptr };
 
-	QVBoxLayout* m_pRenewalWidgetLayout{nullptr};
-	QHBoxLayout* m_pRenewalFirstRowLayout{nullptr};
-	QHBoxLayout* m_pRenewalSecondRowLayout{nullptr};
-	QHBoxLayout* m_pRenewalThirdRowLayout{nullptr};
+	QVBoxLayout* m_pRenewalWidgetLayout{ nullptr };
+	QHBoxLayout* m_pRenewalFirstRowLayout{ nullptr };
+	QHBoxLayout* m_pRenewalSecondRowLayout{ nullptr };
+	QHBoxLayout* m_pRenewalThirdRowLayout{ nullptr };
 
 private:
-	std::map<QString, QString> m_localMap{};     // 时间，完整路径
-	QString m_output{};                          // 记录上一次输出路径
-	QString m_dirname{};                         // 记录合并的文件夹名
-	QString m_outDirName{};                      // 记录上一次输出路径的文件夹名
-	QTimer* m_pFlickerTimer{nullptr};            // 闪烁定时器
-	int m_GenerateTime{0};                       // 生成时间
-	QTimer* m_pGenerateTime{nullptr};            // 生成时间定时器
-	qint64 m_localProcess{0};                    // 当前进度
-	qint64 m_totalProcess{0};                    // 总进度
-	int m_LabelWidth{};                          // 标签宽度
-	WINDOWLANAGUAGE m_language{};                // 语言
-	WINDOWPROGRESSBARSTYLE m_ProgressbarStyle{}; // 进度条样式
-	WINDOWTHEMESTYLE m_ThemeStyle{};             // 主题
-	QSystemTrayIcon* m_ptrayIcon{nullptr};       // 系统托盘图标
-	std::unique_ptr<QMenu> m_ptrayMenu{nullptr}; // 系统托盘菜单
-	QAction* m_pActMin{nullptr};                 // 最小化按钮
-	QAction* m_pActQuit{nullptr};                // 退出按钮
-	std::string m_dirPath{};                     // 记录上一次打开的目录路径，方便使用命令行直接打开控制
+	std::map<QString, QString> m_localMap{};       // 时间，完整路径
+	QString m_output{};                            // 记录上一次输出路径
+	QString m_dirname{};                           // 记录合并的文件夹名
+	QString m_outDirName{};                        // 记录上一次输出路径的文件夹名
+	QTimer* m_pFlickerTimer{ nullptr };            // 闪烁定时器
+	int m_GenerateTime{ 0 };                       // 生成时间
+	QTimer* m_pGenerateTime{ nullptr };            // 生成时间定时器
+	qint64 m_localProcess{ 0 };                    // 当前进度
+	qint64 m_totalProcess{ 0 };                    // 总进度
+	int m_LabelWidth{};                            // 标签宽度
+	WINDOWLANAGUAGE m_language{};                  // 语言
+	WINDOWPROGRESSBARSTYLE m_ProgressbarStyle{};   // 进度条样式
+	WINDOWTHEMESTYLE m_ThemeStyle{};               // 主题
+	QSystemTrayIcon* m_ptrayIcon{ nullptr };       // 系统托盘图标
+	std::unique_ptr<QMenu> m_ptrayMenu{ nullptr }; // 系统托盘菜单
+	QAction* m_pActMin{ nullptr };                 // 最小化按钮
+	QAction* m_pActQuit{ nullptr };                // 退出按钮
+	std::string m_dirPath{};                       // 记录上一次打开的目录路径，方便使用命令行直接打开控制
 };

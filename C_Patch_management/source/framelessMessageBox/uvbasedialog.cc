@@ -125,9 +125,9 @@ void CUVBaseDialog::setTitleBtnRole(const TitleButtonRoles emTitleButtonRoles) {
 		if (emBtns & QDialogButtonBox::Apply) {
 			m_pDialogBtnBox->button(QDialogButtonBox::Apply)->setText(QObject::tr("IDS_APPLY"));
 			connect(m_pDialogBtnBox->button(QDialogButtonBox::Apply),
-				&QPushButton::clicked,
-				this,
-				&CUVBaseDialog::apply
+			        &QPushButton::clicked,
+			        this,
+			        &CUVBaseDialog::apply
 			);
 		}
 		m_pDialogBtnBox->show();

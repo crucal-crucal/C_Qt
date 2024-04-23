@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -16,7 +16,7 @@
 #endif
 
 /*
- * @brief �ޱ߿����ӰDialog
+ * @brief 无边框带阴影Dialog
  */
 #define TITLE_HEIGHT            30
 #define BORDER_SHADOW_WIDTH        6
@@ -94,10 +94,10 @@ private slots:
 	void switchSize();
 
 private:
-	QDialogButtonBox* m_pDialogBtnBox{nullptr};
-	QVBoxLayout* m_plyVTotal{nullptr};
-	QHBoxLayout* m_plyHTitle{nullptr};
-	QHBoxLayout* m_plyHContent{nullptr};
+	QDialogButtonBox* m_pDialogBtnBox{ nullptr };
+	QVBoxLayout* m_plyVTotal{ nullptr };
+	QHBoxLayout* m_plyHTitle{ nullptr };
+	QHBoxLayout* m_plyHContent{ nullptr };
 
 private:
 	QString m_strTitle;
@@ -105,13 +105,13 @@ private:
 	QPixmap m_icon;
 	QPoint m_PressTitlePoint;
 	QRect m_rtTitle;
-	bool m_bPressTitle{false};
-	bool m_bResizeable{false};
-	bool m_bIconScaled{false};
-	bool m_bEscEnable{false};
-	bool m_bMoveEnable{true};
-	bool m_bTitleVisible{true};
-	bool m_bShadowVisible{true};
-	bool m_bEnterEnable{true};
+	bool m_bPressTitle{ false };
+	bool m_bResizeable{ false };
+	bool m_bIconScaled{ false };
+	bool m_bEscEnable{ false };
+	bool m_bMoveEnable{ true };
+	bool m_bTitleVisible{ true };
+	bool m_bShadowVisible{ true };
+	bool m_bEnterEnable{ true };
 	QHash<TitleButtonRole, QAbstractButton*> m_hashTitleButtons;
 };

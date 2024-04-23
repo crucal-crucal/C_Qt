@@ -3,14 +3,14 @@
 #include <QDateTime>
 #include <QTextCodec>
 #include <QThreadPool>
+#include <cmath>
 
 #include "logger/logger.h"
 
 CPatch::CPatch(const int LabelWidth, const WINDOWLANAGUAGE Lanaguage, const WINDOWPROGRESSBARSTYLE ProgressbarStyle,
-	const WINDOWTHEMESTYLE ThemeStyle, std::string dirPath, QWidget* parent)
-: FramelessMainWindow(parent), m_LabelWidth(LabelWidth),
-m_language(Lanaguage), m_ProgressbarStyle(ProgressbarStyle), m_ThemeStyle(ThemeStyle),
-m_dirPath(std::move(dirPath)) {
+               const WINDOWTHEMESTYLE ThemeStyle, std::string dirPath, QWidget* parent)
+: FramelessMainWindow(parent), m_LabelWidth(LabelWidth), m_language(Lanaguage), m_ProgressbarStyle(ProgressbarStyle),
+  m_ThemeStyle(ThemeStyle), m_dirPath(std::move(dirPath)) {
 	createCtrl();
 	layOut();
 	init();
@@ -161,9 +161,8 @@ void CPatch::onBtnDoneClicked() {
 		return;
 	}
 	if (QDir(m_output).exists()) {
-		if (const QString newDirectoryName = CUVFileDialog::getSaveFileName(this,
-			tr("INPUT_NAME"),
-			dirPath + QDir::separator() + m_outDirName,
+		if (const QString newDirectoryName = CUVFileDialog::getSaveFileName(
+			this, tr("INPUT_NAME"), dirPath + QDir::separator() + m_outDirName,
 			tr("DIR_NAME")); !newDirectoryName.isEmpty()) {
 			try {
 				if (QDir().rename(m_output, newDirectoryName)) {
@@ -186,9 +185,9 @@ void CPatch::onBtnStyleClicked() {
 }
 
 void CPatch::onActChineseClicked() {
-	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
-		tr("Change language"),
-		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"),
+	                                                            tr("reboot applicaion to take effect")); nRes ==
+		QMessageBox::ButtonRole::AcceptRole) {
 		m_language = WINDOWLANAGUAGE::Chinese;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -198,9 +197,9 @@ void CPatch::onActChineseClicked() {
 }
 
 void CPatch::onActEnglishClicked() {
-	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
-		tr("Change language"),
-		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"),
+	                                                            tr("reboot applicaion to take effect")); nRes ==
+		QMessageBox::ButtonRole::AcceptRole) {
 		m_language = WINDOWLANAGUAGE::English;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -210,9 +209,9 @@ void CPatch::onActEnglishClicked() {
 }
 
 void CPatch::onActProgressbar_normalClicked() {
-	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
-		tr("Change Progressbar Style"),
-		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"),
+	                                                            tr("reboot applicaion to take effect")); nRes ==
+		QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::NORMAL;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -222,9 +221,9 @@ void CPatch::onActProgressbar_normalClicked() {
 }
 
 void CPatch::onActProgressbar_borderClicked() {
-	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
-		tr("Change Progressbar Style"),
-		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"),
+	                                                            tr("reboot applicaion to take effect")); nRes ==
+		QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RED;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -234,9 +233,9 @@ void CPatch::onActProgressbar_borderClicked() {
 }
 
 void CPatch::onActProgressbar_border_radiusClicked() {
-	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
-		tr("Change Progressbar Style"),
-		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"),
+	                                                            tr("reboot applicaion to take effect")); nRes ==
+		QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RADIUS;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -246,9 +245,9 @@ void CPatch::onActProgressbar_border_radiusClicked() {
 }
 
 void CPatch::onActProgressbar_blockClicked() {
-	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
-		tr("Change Progressbar Style"),
-		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"),
+	                                                            tr("reboot applicaion to take effect")); nRes ==
+		QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -258,9 +257,9 @@ void CPatch::onActProgressbar_blockClicked() {
 }
 
 void CPatch::onActProgressbar_gradationClicked() {
-	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
-		tr("Change Progressbar Style"),
-		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"),
+	                                                            tr("reboot applicaion to take effect")); nRes ==
+		QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::GRADATION;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -329,11 +328,9 @@ QString CPatch::getFileCodec(const QString& _fileName) {
 void CPatch::readDirToList(const QDir& _dir) {
 	m_pLwPatchList->clear();
 	QStringList dirctories = _dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	std::sort(dirctories.begin(),
-		dirctories.end(),
-		[&](const QString& a, const QString& b) {
-			return GetDateTimeFromString(a.right(8)) < GetDateTimeFromString(b.right(8));
-		});
+	std::sort(dirctories.begin(), dirctories.end(), [&](const QString& a, const QString& b) {
+		return GetDateTimeFromString(a.right(8)) < GetDateTimeFromString(b.right(8));
+	});
 
 	for (const QString& dirName : dirctories) {
 		m_pLwPatchList->addItem(dirName);
@@ -591,24 +588,18 @@ void CPatch::initConnect() {
 	connect(m_pActProgressbar_border_radius, &QAction::triggered, this, &CPatch::onActProgressbar_border_radiusClicked);
 	connect(m_pActProgressbar_block, &QAction::triggered, this, &CPatch::onActProgressbar_blockClicked);
 	connect(m_pActProgressbar_gradation, &QAction::triggered, this, &CPatch::onActProgressbar_gradationClicked);
-	connect(m_pFlickerTimer,
-		&QTimer::timeout,
-		this,
-		[&]() {
-			if (m_pBtnPatchOutPath->styleSheet().isEmpty()) {
-				m_pBtnPatchOutPath->setStyleSheet("background-color: lightcoral;");
-			} else {
-				m_pBtnPatchOutPath->setStyleSheet("");
-				m_pFlickerTimer->stop();
-			}
-		});
-	connect(m_pGenerateTime,
-		&QTimer::timeout,
-		this,
-		[&]() {
-			m_GenerateTime++;
-			m_pLbTime->setText(tr("Time: ") + QString::number(m_GenerateTime) + tr(" s"));
-		});
+	connect(m_pFlickerTimer, &QTimer::timeout, this, [&]() {
+		if (m_pBtnPatchOutPath->styleSheet().isEmpty()) {
+			m_pBtnPatchOutPath->setStyleSheet("background-color: lightcoral;");
+		} else {
+			m_pBtnPatchOutPath->setStyleSheet("");
+			m_pFlickerTimer->stop();
+		}
+	});
+	connect(m_pGenerateTime, &QTimer::timeout, this, [&]() {
+		m_GenerateTime++;
+		m_pLbTime->setText(tr("Time: ") + QString::number(m_GenerateTime) + tr(" s"));
+	});
 }
 
 void CPatch::getFilesInDirectory(const QStringList& directoryPaths, QStringList& filesToMerge) {
@@ -688,7 +679,8 @@ bool CPatch::splitFileListByThread(const std::map<QString, QStringList>& mp, std
 	// 计算每个线程应该分配的QStringList数量
 	const int numThreads = static_cast<int>(threadFiles.size());
 	const int avgListPerThread = static_cast<int>(std::ceil(static_cast<double>(mp.size()) / numThreads)); // 向上取整
-	int remainingLists = static_cast<int>(mp.size()) % numThreads;                                         // 余下的QStringList
+	int remainingLists = static_cast<int>(mp.size()) %
+		numThreads; // 余下的QStringList
 
 	auto iter = mp.begin();
 	for (size_t i = 0; i < numThreads; ++i) {

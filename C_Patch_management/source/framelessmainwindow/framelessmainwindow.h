@@ -23,7 +23,7 @@ protected:
 
 	// 事件过滤器识别拖动拉伸等
 	void doWindowStateChange(const QEvent* event);
-	static void doResizeEvent(QEvent* event);
+	void doResizeEvent(QEvent* event);
 	bool eventFilter(QObject* watched, QEvent* event) override;
 
 	// 拦截系统事件用于修复系统休眠后唤醒程序的bug
@@ -47,7 +47,7 @@ private:
 	bool resizeEnable{};
 
 	// 标题栏控件
-	QWidget* titleBar{nullptr};
+	QWidget* titleBar{ nullptr };
 
 	// 鼠标是否按下、按下坐标、按下时窗体区域
 	bool mousePressed{};

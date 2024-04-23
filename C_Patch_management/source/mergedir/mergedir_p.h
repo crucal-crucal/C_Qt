@@ -6,7 +6,7 @@
 #include <QWaitCondition>
 #include <utility>
 
-#include "logger/Logger.h"
+#include "logger/logger.h"
 
 #ifdef MERGEDIR_P_LIB
 #define MERGEDIR_P_EXPORT Q_DECL_EXPORT

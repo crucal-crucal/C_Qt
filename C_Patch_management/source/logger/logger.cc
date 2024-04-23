@@ -1,4 +1,4 @@
-﻿#include "Logger.h"
+﻿#include "logger.h"
 
 #include <QDateTime>
 
@@ -44,6 +44,6 @@ void Logger::logToFile(const QString& level, const QString& message) {
 	QMutexLocker locker(&m_mutex);
 	if (logStream.device()) {
 		logStream << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << " [" << level << "] " << message <<
-				Qt::endl;
+			Qt::endl;
 	}
 }

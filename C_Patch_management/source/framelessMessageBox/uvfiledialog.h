@@ -18,8 +18,8 @@ class FRAMELESSFILEDIALOG_EXPORT CUVFileBase final : public CUVBaseDialog {
 
 public:
 	explicit CUVFileBase(QString strRegisterName, QWidget* parent = Q_NULLPTR,
-		const QString& caption = QString(), const QString& directory = QString(),
-		const QString& filter = QString());
+	                     const QString& caption = QString(), const QString& directory = QString(),
+	                     const QString& filter = QString());
 	~CUVFileBase() override;
 
 public:
@@ -46,37 +46,37 @@ public:
 	[[nodiscard]] QStringList selectedFiles() const;
 
 	QString getOpenFileName(QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options());
+	                        QFileDialog::Options options = QFileDialog::Options());
 
 	QUrl getOpenFileUrl(const QUrl& dir = QUrl(),
-		QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options(),
-		const QStringList& supportedSchemes = QStringList());
+	                    QString* selectedFilter = nullptr,
+	                    QFileDialog::Options options = QFileDialog::Options(),
+	                    const QStringList& supportedSchemes = QStringList());
 
 	QString getSaveFileName(QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options());
+	                        QFileDialog::Options options = QFileDialog::Options());
 
 	QUrl getSaveFileUrl(const QUrl& dir = QUrl(),
-		QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options(),
-		const QStringList& supportedSchemes = QStringList());
+	                    QString* selectedFilter = nullptr,
+	                    QFileDialog::Options options = QFileDialog::Options(),
+	                    const QStringList& supportedSchemes = QStringList());
 
 	QString getExistingDirectory(QFileDialog::Options options = QFileDialog::ShowDirsOnly);
 
 	QString getExistingDirectoryUrl(const QUrl& dir = QUrl(),
-		QFileDialog::Options options = QFileDialog::ShowDirsOnly,
-		const QStringList& supportedSchemes = QStringList());
+	                                QFileDialog::Options options = QFileDialog::ShowDirsOnly,
+	                                const QStringList& supportedSchemes = QStringList());
 
 	QStringList getOpenFileNames(QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options());
+	                             QFileDialog::Options options = QFileDialog::Options());
 
 	QList<QUrl> getOpenFileUrls(const QUrl& dir = QUrl(),
-		QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options(),
-		const QStringList& supportedSchemes = QStringList());
+	                            QString* selectedFilter = nullptr,
+	                            QFileDialog::Options options = QFileDialog::Options(),
+	                            const QStringList& supportedSchemes = QStringList());
 
 	void getOpenFileContent(const QString& nameFilter,
-		const std::function<void(const QString&, const QByteArray&)>& fileContentsReady);
+	                        const std::function<void(const QString&, const QByteArray&)>& fileContentsReady);
 
 	void saveFileContent(const QByteArray& fileContent, const QString& fileNameHint = QString());
 
@@ -84,8 +84,8 @@ private:
 	void init();
 
 private:
-	QFileDialog* m_pFileDialog{nullptr};
-	QString m_strRegisterName{""};
+	QFileDialog* m_pFileDialog{ nullptr };
+	QString m_strRegisterName{ "" };
 };
 
 class FRAMELESSFILEDIALOG_EXPORT CUVFileDialog final : public CUVBaseDialog {
@@ -96,64 +96,66 @@ public:
 	~CUVFileDialog() override;
 
 	static QString getOpenFileName(QWidget* parent = nullptr,
-		const QString& caption = QString(),
-		const QString& dir = QString(),
-		const QString& filter = QString(),
-		QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options());
+	                               const QString& caption = QString(),
+	                               const QString& dir = QString(),
+	                               const QString& filter = QString(),
+	                               QString* selectedFilter = nullptr,
+	                               QFileDialog::Options options = QFileDialog::Options());
 
 	static QUrl getOpenFileUrl(QWidget* parent = nullptr,
-		const QString& caption = QString(),
-		const QUrl& dir = QUrl(),
-		const QString& filter = QString(),
-		QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options(),
-		const QStringList& supportedSchemes = QStringList());
+	                           const QString& caption = QString(),
+	                           const QUrl& dir = QUrl(),
+	                           const QString& filter = QString(),
+	                           QString* selectedFilter = nullptr,
+	                           QFileDialog::Options options = QFileDialog::Options(),
+	                           const QStringList& supportedSchemes = QStringList());
 
 	static QString getSaveFileName(QWidget* parent = nullptr,
-		const QString& caption = QString(),
-		const QString& dir = QString(),
-		const QString& filter = QString(),
-		QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options());
+	                               const QString& caption = QString(),
+	                               const QString& dir = QString(),
+	                               const QString& filter = QString(),
+	                               QString* selectedFilter = nullptr,
+	                               QFileDialog::Options options = QFileDialog::Options());
 
 	static QUrl getSaveFileUrl(QWidget* parent = nullptr,
-		const QString& caption = QString(),
-		const QUrl& dir = QUrl(),
-		const QString& filter = QString(),
-		QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options(),
-		const QStringList& supportedSchemes = QStringList());
+	                           const QString& caption = QString(),
+	                           const QUrl& dir = QUrl(),
+	                           const QString& filter = QString(),
+	                           QString* selectedFilter = nullptr,
+	                           QFileDialog::Options options = QFileDialog::Options(),
+	                           const QStringList& supportedSchemes = QStringList());
 
 	static QString getExistingDirectory(QWidget* parent = nullptr,
-		const QString& caption = QString(),
-		const QString& dir = QString(),
-		QFileDialog::Options options = QFileDialog::ShowDirsOnly | QFileDialog::ReadOnly);
+	                                    const QString& caption = QString(),
+	                                    const QString& dir = QString(),
+	                                    QFileDialog::Options options = QFileDialog::ShowDirsOnly |
+		                                    QFileDialog::ReadOnly);
 
 	static QUrl getExistingDirectoryUrl(QWidget* parent = nullptr,
-		const QString& caption = QString(),
-		const QUrl& dir = QUrl(),
-		QFileDialog::Options options = QFileDialog::ShowDirsOnly | QFileDialog::ReadOnly,
-		const QStringList& supportedSchemes = QStringList());
+	                                    const QString& caption = QString(),
+	                                    const QUrl& dir = QUrl(),
+	                                    QFileDialog::Options options = QFileDialog::ShowDirsOnly |
+		                                    QFileDialog::ReadOnly,
+	                                    const QStringList& supportedSchemes = QStringList());
 
 	static QStringList getOpenFileNames(QWidget* parent = nullptr,
-		const QString& caption = QString(),
-		const QString& dir = QString(),
-		const QString& filter = QString(),
-		QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options());
+	                                    const QString& caption = QString(),
+	                                    const QString& dir = QString(),
+	                                    const QString& filter = QString(),
+	                                    QString* selectedFilter = nullptr,
+	                                    QFileDialog::Options options = QFileDialog::Options());
 
 	static QList<QUrl> getOpenFileUrls(QWidget* parent = nullptr,
-		const QString& caption = QString(),
-		const QUrl& dir = QUrl(),
-		const QString& filter = QString(),
-		QString* selectedFilter = nullptr,
-		QFileDialog::Options options = QFileDialog::Options(),
-		const QStringList& supportedSchemes = QStringList());
+	                                   const QString& caption = QString(),
+	                                   const QUrl& dir = QUrl(),
+	                                   const QString& filter = QString(),
+	                                   QString* selectedFilter = nullptr,
+	                                   QFileDialog::Options options = QFileDialog::Options(),
+	                                   const QStringList& supportedSchemes = QStringList());
 
 	static void getOpenFileContent(const QString& nameFilter,
-		const std::function<void(const QString&, const QByteArray&)>& fileContentsReady);
+	                               const std::function<void(const QString&, const QByteArray&)>& fileContentsReady);
 
 	static void
-		saveFileContent(const QByteArray& fileContent, const QString& fileNameHint = QString());
+	saveFileContent(const QByteArray& fileContent, const QString& fileNameHint = QString());
 };

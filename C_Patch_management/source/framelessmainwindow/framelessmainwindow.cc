@@ -101,7 +101,7 @@ void FramelessMainWindow::doResizeEvent(QEvent* event) {
 		pressedRect[7] = QRect(width - padding, height - padding, padding, padding);
 	} else if (type == QEvent::HoverMove) {
 		//设置对应鼠标形状,这个必须放在这里而不是下面,因为可以在鼠标没有按下的时候识别
-		QHoverEvent *hoverEvent = (QHoverEvent *)event;
+		QHoverEvent* hoverEvent = (QHoverEvent*)event;
 		QPoint point = hoverEvent->pos();
 		if (resizeEnable) {
 			if (pressedRect.at(0).contains(point)) {
@@ -186,7 +186,7 @@ void FramelessMainWindow::doResizeEvent(QEvent* event) {
 		}
 	} else if (type == QEvent::MouseButtonPress) {
 		//记住鼠标按下的坐标+窗体区域
-		QMouseEvent *mouseEvent = (QMouseEvent *)event;
+		QMouseEvent* mouseEvent = (QMouseEvent*)event;
 		mousePoint = mouseEvent->pos();
 		mouseRect = this->geometry();
 
