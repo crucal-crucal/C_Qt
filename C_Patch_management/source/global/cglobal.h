@@ -40,10 +40,11 @@ static const std::string configName = configDir + "/config.ini";
 constexpr static auto logDir = "log";
 constexpr static auto logFileName = "user.log";
 /*
- * @breif Label大小
+ * @breif Label宽度, QMenuBar宽度
  */
 constexpr static int ENGLISH_LABEL_WIDTH = 110;
 constexpr static int CHINESE_LABEL_WIDTH = 60;
+constexpr static int MENUBAR_WIDTH = 90;
 /*
  * @breif 窗口显示语言, 默认中文; 进度条样式, 默认块状; 主题样式, 默认亮色
  */

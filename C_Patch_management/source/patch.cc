@@ -387,6 +387,7 @@ void CPatch::createCtrl() {
 
 	m_pMenuBar = new QMenuBar(m_pTitleBar);
 	m_pMenuBar->setObjectName("Main_MenuBar");
+	m_pMenuBar->setFixedWidth(MENUBAR_WIDTH);
 
 	m_menuPreference = m_pMenuBar->addMenu(tr("Preference"));
 
