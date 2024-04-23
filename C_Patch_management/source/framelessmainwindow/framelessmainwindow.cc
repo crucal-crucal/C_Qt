@@ -76,12 +76,10 @@ void FramelessMainWindow::doResizeEvent(QEvent* event) {
 	// 非win系统的无边框拉伸,win系统上已经采用了nativeEvent来处理拉伸
 	// 为何不统一用计算的方式因为在win上用这个方式往左拉伸会发抖妹的
 #ifndef Q_OS_WIN
-	int type = event->type();
-	if (type == QEvent::Resize) {
+	if (const int type = event->type(); type == QEvent::Resize) {
 		//重新计算八个描点的区域,描点区域的作用还有就是计算鼠标坐标是否在某一个区域内
-		int width = this->width();
-		int height = this->height();
-
+		const int width = this->width();
+		const int height = this->height();
 		//左侧描点区域
 		pressedRect[0] = QRect(0, padding, padding, height - padding * 2);
 		//右侧描点区域
@@ -101,33 +99,25 @@ void FramelessMainWindow::doResizeEvent(QEvent* event) {
 		pressedRect[7] = QRect(width - padding, height - padding, padding, padding);
 	} else if (type == QEvent::HoverMove) {
 		//设置对应鼠标形状,这个必须放在这里而不是下面,因为可以在鼠标没有按下的时候识别
-		QHoverEvent* hoverEvent = (QHoverEvent*)event;
-		QPoint point = hoverEvent->pos();
+		const auto* hoverEvent = dynamic_cast<QHoverEvent*>(event);
+		const QPoint point = hoverEvent->pos();
 		if (resizeEnable) {
-			if (pressedRect.at(0).contains(point)) {
+			if (pressedRect.at(0).contains(point) || pressedRect.at(1).contains(point)) {
 				this->setCursor(Qt::SizeHorCursor);
-			} else if (pressedRect.at(1).contains(point)) {
-				this->setCursor(Qt::SizeHorCursor);
-			} else if (pressedRect.at(2).contains(point)) {
+			} else if (pressedRect.at(2).contains(point) || pressedRect.at(3).contains(point)) {
 				this->setCursor(Qt::SizeVerCursor);
-			} else if (pressedRect.at(3).contains(point)) {
-				this->setCursor(Qt::SizeVerCursor);
-			} else if (pressedRect.at(4).contains(point)) {
+			} else if (pressedRect.at(4).contains(point) || pressedRect.at(7).contains(point)) {
 				this->setCursor(Qt::SizeFDiagCursor);
-			} else if (pressedRect.at(5).contains(point)) {
+			} else if (pressedRect.at(5).contains(point) || pressedRect.at(6).contains(point)) {
 				this->setCursor(Qt::SizeBDiagCursor);
-			} else if (pressedRect.at(6).contains(point)) {
-				this->setCursor(Qt::SizeBDiagCursor);
-			} else if (pressedRect.at(7).contains(point)) {
-				this->setCursor(Qt::SizeFDiagCursor);
 			} else {
 				this->setCursor(Qt::ArrowCursor);
 			}
 		}
 
 		//根据当前鼠标位置,计算XY轴移动了多少
-		int offsetX = point.x() - mousePoint.x();
-		int offsetY = point.y() - mousePoint.y();
+		const int offsetX = point.x() - mousePoint.x();
+		const int offsetY = point.y() - mousePoint.y();
 
 		//根据按下处的位置判断是否是移动控件还是拉伸控件
 		if (moveEnable && mousePressed) {
@@ -135,28 +125,26 @@ void FramelessMainWindow::doResizeEvent(QEvent* event) {
 		}
 
 		if (resizeEnable) {
-			int rectX = mouseRect.x();
-			int rectY = mouseRect.y();
-			int rectW = mouseRect.width();
-			int rectH = mouseRect.height();
+			const int rectX = mouseRect.x();
+			const int rectY = mouseRect.y();
+			const int rectW = mouseRect.width();
+			const int rectH = mouseRect.height();
 
 			if (pressedArea.at(0)) {
-				int resizeW = this->width() - offsetX;
-				if (this->minimumWidth() <= resizeW) {
+				if (const int resizeW = this->width() - offsetX; this->minimumWidth() <= resizeW) {
 					this->setGeometry(this->x() + offsetX, rectY, resizeW, rectH);
 				}
 			} else if (pressedArea.at(1)) {
 				this->setGeometry(rectX, rectY, rectW + offsetX, rectH);
 			} else if (pressedArea.at(2)) {
-				int resizeH = this->height() - offsetY;
-				if (this->minimumHeight() <= resizeH) {
+				if (const int resizeH = this->height() - offsetY; this->minimumHeight() <= resizeH) {
 					this->setGeometry(rectX, this->y() + offsetY, rectW, resizeH);
 				}
 			} else if (pressedArea.at(3)) {
 				this->setGeometry(rectX, rectY, rectW, rectH + offsetY);
 			} else if (pressedArea.at(4)) {
-				int resizeW = this->width() - offsetX;
-				int resizeH = this->height() - offsetY;
+				const int resizeW = this->width() - offsetX;
+				const int resizeH = this->height() - offsetY;
 				if (this->minimumWidth() <= resizeW) {
 					this->setGeometry(this->x() + offsetX, this->y(), resizeW, resizeH);
 				}
@@ -164,14 +152,13 @@ void FramelessMainWindow::doResizeEvent(QEvent* event) {
 					this->setGeometry(this->x(), this->y() + offsetY, resizeW, resizeH);
 				}
 			} else if (pressedArea.at(5)) {
-				int resizeW = rectW + offsetX;
-				int resizeH = this->height() - offsetY;
-				if (this->minimumHeight() <= resizeH) {
+				const int resizeW = rectW + offsetX;
+				if (const int resizeH = this->height() - offsetY; this->minimumHeight() <= resizeH) {
 					this->setGeometry(this->x(), this->y() + offsetY, resizeW, resizeH);
 				}
 			} else if (pressedArea.at(6)) {
-				int resizeW = this->width() - offsetX;
-				int resizeH = rectH + offsetY;
+				const int resizeW = this->width() - offsetX;
+				const int resizeH = rectH + offsetY;
 				if (this->minimumWidth() <= resizeW) {
 					this->setGeometry(this->x() + offsetX, this->y(), resizeW, resizeH);
 				}
@@ -179,14 +166,14 @@ void FramelessMainWindow::doResizeEvent(QEvent* event) {
 					this->setGeometry(this->x(), this->y(), resizeW, resizeH);
 				}
 			} else if (pressedArea.at(7)) {
-				int resizeW = rectW + offsetX;
-				int resizeH = rectH + offsetY;
+				const int resizeW = rectW + offsetX;
+				const int resizeH = rectH + offsetY;
 				this->setGeometry(this->x(), this->y(), resizeW, resizeH);
 			}
 		}
 	} else if (type == QEvent::MouseButtonPress) {
 		//记住鼠标按下的坐标+窗体区域
-		QMouseEvent* mouseEvent = (QMouseEvent*)event;
+		const QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(event);
 		mousePoint = mouseEvent->pos();
 		mouseRect = this->geometry();
 
@@ -224,7 +211,7 @@ void FramelessMainWindow::doResizeEvent(QEvent* event) {
 }
 
 bool FramelessMainWindow::eventFilter(QObject* watched, QEvent* event) {
-	int type = event->type();
+	const int type = event->type();
 	if (watched == this) {
 		if (type == QEvent::WindowStateChange) {
 			doWindowStateChange(event);
@@ -235,9 +222,7 @@ bool FramelessMainWindow::eventFilter(QObject* watched, QEvent* event) {
 		// 双击标题栏发出双击信号给主界面
 		// 下面的 *result = HTCAPTION; 标志位也会自动识别双击标题栏
 #ifndef Q_OS_WIN
-		if (type == QEvent::MouseButtonDblClick) {
-			Q_EMIT titleDblClick();
-		} else if (type == QEvent::NonClientAreaMouseButtonDblClick) {
+		if (type == QEvent::MouseButtonDblClick || type == QEvent::NonClientAreaMouseButtonDblClick) {
 			Q_EMIT titleDblClick();
 		}
 #endif
