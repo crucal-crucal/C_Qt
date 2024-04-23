@@ -106,6 +106,7 @@ int main(int argc, char* argv[]) {
 	QObject::connect(&w, &CPatch::destroyed, [&]() {
 		unloadResources(strRes);
 		unLoadTranslations();
+		g_sharedMemory.detach();
 	});
 
 	if (!checkSingleInstance(g_sharedMemory)) {
