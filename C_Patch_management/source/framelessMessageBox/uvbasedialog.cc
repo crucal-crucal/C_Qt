@@ -266,7 +266,7 @@ bool CUVBaseDialog::nativeEvent(const QByteArray& eventType, void* message, long
 		break;
 		case WM_GETMINMAXINFO: {
 			if (::IsZoomed(msg->hwnd)) {
-				RECT frame = {0, 0, 0, 0};
+				RECT frame = { 0, 0, 0, 0 };
 				AdjustWindowRectEx(&frame, WS_OVERLAPPEDWINDOW, FALSE, 0);
 
 				//record frame area data
@@ -280,9 +280,9 @@ bool CUVBaseDialog::nativeEvent(const QByteArray& eventType, void* message, long
 				frames.setBottom(lround(abs(frame.bottom) / dpr + 0.5));
 
 				setContentsMargins(frames.left() + margins.left(),
-					frames.top() + margins.top(),
-					frames.right() + margins.right(),
-					frames.bottom() + margins.bottom()
+				                   frames.top() + margins.top(),
+				                   frames.right() + margins.right(),
+				                   frames.bottom() + margins.bottom()
 				);
 
 				if (m_hashTitleButtons[MaxRole]) {

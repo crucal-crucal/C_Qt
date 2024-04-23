@@ -10,7 +10,7 @@
 CUVFileBase::CUVFileBase(QString strRegisterName, QWidget* parent, const QString& caption,
                          const QString& directory, const QString& filter)
 : CUVBaseDialog(parent), m_pFileDialog(new QFileDialog(this, caption, directory, filter)),
-  m_strRegisterName(std::move(strRegisterName)) {
+m_strRegisterName(std::move(strRegisterName)) {
 	setTitle(caption);
 	init();
 	setObjectName("CUVFileBase");

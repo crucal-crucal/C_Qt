@@ -16,7 +16,7 @@ void CMergeDir_p::run() {
 		return;
 	}
 
-	qint64 currentFile{0};
+	qint64 currentFile{ 0 };
 	for (auto& filePath : m_sourcefilePaths) {
 		// 截取包含 m_dirname 的位置后的目录路径
 		if (const int patchIndex = filePath.indexOf("/" + m_dirname); patchIndex != -1) {
