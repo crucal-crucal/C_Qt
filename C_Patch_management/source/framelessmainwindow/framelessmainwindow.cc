@@ -28,7 +28,7 @@ FramelessMainWindow::FramelessMainWindow(QWidget* parent) : QMainWindow(parent) 
 	titleBar = nullptr;
 	// 设置背景透明 官方在5.3以后才彻底修复 WA_TranslucentBackground+FramelessWindowHint 并存不绘制的bug
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 3, 0))
-//	this->setAttribute(Qt::WA_TranslucentBackground);
+	//	this->setAttribute(Qt::WA_TranslucentBackground);
 #endif
 	// 设置无边框属性
 	this->setWindowFlags(flags | Qt::FramelessWindowHint);
@@ -37,8 +37,8 @@ FramelessMainWindow::FramelessMainWindow(QWidget* parent) : QMainWindow(parent) 
 	// 设置属性产生win窗体效果,移动到边缘半屏或者最大化等
 	// 设置以后会产生标题栏,需要在下面拦截消息WM_NCCALCSIZE重新去掉
 #ifdef Q_OS_WIN
-	HWND hwnd = (HWND)this->winId();
-	auto style = ::GetWindowLong(hwnd, GWL_STYLE);
+	const auto hwnd = reinterpret_cast<HWND>(this->winId());
+	const auto style = ::GetWindowLong(hwnd, GWL_STYLE);
 	::SetWindowLong(hwnd, GWL_STYLE, style | WS_MAXIMIZEBOX | WS_THICKFRAME | WS_CAPTION);
 #endif
 }
@@ -51,7 +51,7 @@ void FramelessMainWindow::showEvent(QShowEvent* event) {
 	QMainWindow::showEvent(event);
 }
 
-void FramelessMainWindow::doWindowStateChange(QEvent* event) {
+void FramelessMainWindow::doWindowStateChange(const QEvent* event) {
 	Q_UNUSED(event)
 	// 非最大化才能移动和拖动大小
 	moveEnable = resizeEnable = windowState() == Qt::WindowNoState;
@@ -254,8 +254,7 @@ bool FramelessMainWindow::nativeEvent(const QByteArray& eventType, void* message
 {
 	if (eventType == "windows_generic_MSG") {
 #ifdef Q_OS_WIN
-		MSG* msg = static_cast<MSG*>(message);
-		switch (msg->message) {
+		switch (const auto* msg = static_cast<MSG*>(message); msg->message) {
 			case WM_NCCALCSIZE: {
 				*result = 0;
 				return true;
@@ -265,15 +264,15 @@ bool FramelessMainWindow::nativeEvent(const QByteArray& eventType, void* message
 				// 计算鼠标对应的屏幕坐标
 				// 这里最开始用的 LOWORD HIWORD 在多屏幕的时候会有问题
 				// 官方说明在这里 https://docs.microsoft.com/zh-cn/windows/win32/inputdev/wm-nchittest
-				long x = GET_X_LPARAM(msg->lParam);
-				long y = GET_Y_LPARAM(msg->lParam);
-				QPoint pos = mapFromGlobal(QPoint(x, y));
+				const long x = GET_X_LPARAM(msg->lParam);
+				const long y = GET_Y_LPARAM(msg->lParam);
+				const QPoint pos = mapFromGlobal(QPoint(x, y));
 
 				// 判断当前鼠标位置在哪个区域
-				bool left = pos.x() < padding;
-				bool right = pos.x() > width() - padding;
-				bool top = pos.y() < padding;
-				bool bottom = pos.y() > height() - padding;
+				const bool left = pos.x() < padding;
+				const bool right = pos.x() > width() - padding;
+				const bool top = pos.y() < padding;
+				const bool bottom = pos.y() > height() - padding;
 
 				// 鼠标移动到四个角,这个消息是当鼠标移动或者有鼠标键按下时候发出的
 				*result = 0;
@@ -304,8 +303,7 @@ bool FramelessMainWindow::nativeEvent(const QByteArray& eventType, void* message
 
 				// 识别标题栏拖动产生半屏全屏效果
 				if (titleBar && titleBar->rect().contains(pos)) {
-					QWidget* child = titleBar->childAt(pos);
-					if (!child) {
+					if (const QWidget* child = titleBar->childAt(pos); !child) {
 						*result = HTCAPTION;
 						return true;
 					}
@@ -343,15 +341,15 @@ bool FramelessMainWindow::winEvent(MSG *message, long *result)
 #endif
 #endif
 
-[[maybe_unused]] void FramelessMainWindow::setPadding(int _padding) {
+void FramelessMainWindow::setPadding(const int _padding) {
 	this->padding = _padding;
 }
 
-[[maybe_unused]] void FramelessMainWindow::setMoveEnable(bool _moveEnable) {
+void FramelessMainWindow::setMoveEnable(const bool _moveEnable) {
 	this->moveEnable = _moveEnable;
 }
 
-[[maybe_unused]] void FramelessMainWindow::setResizeEnable(bool _resizeEnable) {
+void FramelessMainWindow::setResizeEnable(const bool _resizeEnable) {
 	this->resizeEnable = _resizeEnable;
 }
 

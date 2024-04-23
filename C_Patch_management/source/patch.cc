@@ -1,9 +1,16 @@
 ﻿#include "patch.h"
 
-CPatch::CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage, WINDOWPROGRESSBARSTYLE ProgressbarStyle,
-			   WINDOWTHEMESTYLE ThemeStyle, QWidget* parent)
-	: FramelessMainWindow(parent), m_LabelWidth(LabelWidth),
-	  m_language(Lanaguage), m_ProgressbarStyle(ProgressbarStyle), m_ThemeStyle(ThemeStyle) {
+#include <QDateTime>
+#include <QTextCodec>
+#include <QThreadPool>
+
+#include "logger/logger.h"
+
+CPatch::CPatch(const int LabelWidth, const WINDOWLANAGUAGE Lanaguage, const WINDOWPROGRESSBARSTYLE ProgressbarStyle,
+	const WINDOWTHEMESTYLE ThemeStyle, std::string dirPath, QWidget* parent)
+: FramelessMainWindow(parent), m_LabelWidth(LabelWidth),
+m_language(Lanaguage), m_ProgressbarStyle(ProgressbarStyle), m_ThemeStyle(ThemeStyle),
+m_dirPath(std::move(dirPath)) {
 	createCtrl();
 	layOut();
 	init();
@@ -15,31 +22,26 @@ CPatch::CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage, WINDOWPROGRESSBARSTYLE
 CPatch::~CPatch() = default;
 
 void CPatch::onBtnOpenClicked() {
-	QString dirPath = CUVFileDialog::getExistingDirectory(this, tr("Open Directory"), QDir::currentPath());
+	const QString dirPath = CUVFileDialog::getExistingDirectory(this, tr("Open Directory"), QDir::currentPath());
 	if (dirPath.isEmpty()) {
 		Logger::instance().logInfo(tr("User deselect ditectory"));
 		return;
 	}
-	QDir dir(dirPath);
-	m_dirname = dir.dirName();
-
-	m_pLePatchPath->setText(dirPath);
-	Logger::instance().logInfo(tr("open directory ") + dirPath);
-	readDirToList(dirPath);
+	openDir(dirPath);
 }
 
-void CPatch::showInTextEdit() {
-	QString dirName = m_pLwPatchList->currentItem()->text();
-	QString basePath = m_pLePatchPath->text() + QDir::separator() + dirName;
+void CPatch::showInTextEdit() const {
+	const QString dirName = m_pLwPatchList->currentItem()->text();
+	const QString basePath = m_pLePatchPath->text() + QDir::separator() + dirName;
 
-	QDir directory(basePath);
+	const QDir directory(basePath);
 	QStringList txtFiles = directory.entryList(QStringList() << "*.txt", QDir::Files);
 
 	m_pTePreviewTxt->clear();
 
 	if (!txtFiles.isEmpty()) {
-		QString fileName = basePath + QDir::separator() + txtFiles.first();
-		QString codeType = getFileCodec(fileName);
+		const QString fileName = basePath + QDir::separator() + txtFiles.first();
+		const QString codeType = getFileCodec(fileName);
 		QFile file(fileName);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			Logger::instance().logError(tr("open error ") + file.errorString());
@@ -50,7 +52,7 @@ void CPatch::showInTextEdit() {
 			QTextStream in(&file);
 			in.setCodec(codeType.toLatin1());
 
-			QString fileContent = in.readAll();
+			const QString fileContent = in.readAll();
 			file.close();
 
 			m_pTePreviewTxt->append(fileContent);
@@ -58,8 +60,7 @@ void CPatch::showInTextEdit() {
 			QTextCursor cursor = m_pTePreviewTxt->textCursor();
 			cursor.setPosition(QTextCursor::Start);
 			m_pTePreviewTxt->setTextCursor(cursor);
-		}
-		catch (const std::exception& e) {
+		} catch (const std::exception& e) {
 			Logger::instance().logError(tr("Exception:") + QString::fromLocal8Bit(e.what()));
 		}
 	} else {
@@ -71,7 +72,7 @@ void CPatch::onBtnRefreshClicked() {
 	if (m_pLePatchPath->text().isEmpty()) {
 		return;
 	}
-	readDirToList(m_pLePatchPath->text());
+	readDirToList(QDir(m_pLePatchPath->text()));
 	m_pTePreviewTxt->clear();
 }
 
@@ -79,23 +80,22 @@ void CPatch::onBtnGenerateClicked() {
 	m_pPbschedule->reset();
 	m_totalProcess = 0;
 	QStringList filePaths{};
-	QString begin = m_pCbStartTime->currentText();
-	QString end = m_pCbEndTime->currentText();
+	const QString begin = m_pCbStartTime->currentText();
+	const QString end = m_pCbEndTime->currentText();
 	if (m_pLePatchPath->text().isEmpty()) {
 		UVMessageBox::CUVMessageBox::warning(this, tr("Waring"), tr("please open a directory"));
 		return;
 	}
 
 	auto beginIndex = m_localMap.find(begin);
-	auto endIndex = m_localMap.find(end);
-	if (beginIndex != m_localMap.end() && endIndex != m_localMap.end()) {
+	if (const auto endIndex = m_localMap.find(end); beginIndex != m_localMap.end() && endIndex != m_localMap.end()) {
 		for (auto& it = beginIndex; it != std::next(endIndex); ++it) {
 			QString str = m_pLePatchPath->text() + QDir::separator() + it->second;
 			filePaths.append(str);
 		}
 	}
 
-	QString outDirName = "output" + QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss");
+	const QString outDirName = "output" + QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss");
 	m_outDirName = outDirName;
 	m_output = qApp->applicationDirPath() + QDir::separator() + outDirName;
 
@@ -104,8 +104,8 @@ void CPatch::onBtnGenerateClicked() {
 	getFilesInDirectory(filePaths, filesToMerge);
 	m_localProcess = filesToMerge.size();
 
-	auto mp = splitFileList(m_dirname, filesToMerge);
-	int threadNum = qMin(static_cast<int>(mp.size()), m_pCbThreadNum->currentText().toInt());
+	const auto mp = splitFileList(m_dirname, filesToMerge);
+	const int threadNum = qMin(static_cast<int>(mp.size()), m_pCbThreadNum->currentText().toInt());
 	QThreadPool::globalInstance()->setMaxThreadCount(threadNum);
 
 	std::vector<QStringList> threadFiles{};
@@ -113,7 +113,7 @@ void CPatch::onBtnGenerateClicked() {
 	splitFileListByThread(mp, threadFiles);
 
 	std::vector<CMergeDir_p*> m_workers;
-	for (auto& filesPerThread : threadFiles) {
+	for (const auto& filesPerThread : threadFiles) {
 		auto* worker = new CMergeDir_p(filesPerThread, m_output, m_dirname);
 		connect(worker, &CMergeDir_p::progressUpdated, this, &CPatch::updateProcess, Qt::QueuedConnection);
 		m_workers.emplace_back(worker);
@@ -123,11 +123,11 @@ void CPatch::onBtnGenerateClicked() {
 		m_pBtnGenerate->setText(tr("Generate"));
 		m_pLbCopy->setText(tr("Copying..."));
 		m_pGenerateTime->start();
-		for (auto& worker : m_workers) {
+		for (const auto& worker : m_workers) {
 			QThreadPool::globalInstance()->start(worker);
 		}
 
-		QString msg = tr("Merge directories from ") + begin + tr(" To ") + end + tr(" for ") + outDirName;
+		const QString msg = tr("Merge directories from ") + begin + tr(" To ") + end + tr(" for ") + outDirName;
 		Logger::instance().logInfo(msg);
 
 		updatePage(begin, end, outDirName);
@@ -135,10 +135,10 @@ void CPatch::onBtnGenerateClicked() {
 		m_pBtnGenerate->setText(tr("Cancel"));
 		m_pLbCopy->setText(tr("Cancel..."));
 		m_pGenerateTime->stop();
-		for (auto& worker : m_workers) {
+		for (const auto& worker : m_workers) {
 			worker->exit();
-			bool result = QThreadPool::globalInstance()->tryTake(worker);
-			QString msg = tr("try to stop thread ") + (result ? tr("success") : tr("fail"));
+			const bool result = QThreadPool::globalInstance()->tryTake(worker);
+			const QString msg = tr("try to stop thread ") + (result ? tr("success") : tr("fail"));
 			Logger::instance().logInfo(msg);
 			delete worker;
 		}
@@ -146,7 +146,7 @@ void CPatch::onBtnGenerateClicked() {
 }
 
 void CPatch::onBtnChoosePathCliecked() {
-	QString dirPath = CUVFileDialog::getExistingDirectory(this, tr("CHOOSE_PATH"), QDir::currentPath());
+	const QString dirPath = CUVFileDialog::getExistingDirectory(this, tr("CHOOSE_PATH"), QDir::currentPath());
 	if (dirPath.isEmpty()) {
 		Logger::instance().logWarning(tr("User deselect ditectory"));
 		return;
@@ -155,23 +155,23 @@ void CPatch::onBtnChoosePathCliecked() {
 }
 
 void CPatch::onBtnDoneClicked() {
-	QString dirPath = m_pLePatchOutPath->text();
+	const QString dirPath = m_pLePatchOutPath->text();
 	if (dirPath.isEmpty()) {
 		m_pFlickerTimer->start();
 		return;
 	}
 	if (QDir(m_output).exists()) {
-		QString newDirectoryName = CUVFileDialog::getSaveFileName(this, tr("INPUT_NAME"),
-																  dirPath + QDir::separator() + m_outDirName, tr("DIR_NAME"));
-		if (!newDirectoryName.isEmpty()) {
+		if (const QString newDirectoryName = CUVFileDialog::getSaveFileName(this,
+			tr("INPUT_NAME"),
+			dirPath + QDir::separator() + m_outDirName,
+			tr("DIR_NAME")); !newDirectoryName.isEmpty()) {
 			try {
 				if (QDir().rename(m_output, newDirectoryName)) {
 					Logger::instance().logInfo(tr("Rename ") + m_output + tr(" To ") + newDirectoryName);
 				} else {
 					Logger::instance().logError(tr("Unable to rename directory"));
 				}
-			}
-			catch (const std::exception& e) {
+			} catch (const std::exception& e) {
 				Logger::instance().logError(tr("Exception during rename: ") + QString::fromStdString(e.what()));
 			}
 		}
@@ -186,8 +186,9 @@ void CPatch::onBtnStyleClicked() {
 }
 
 void CPatch::onActChineseClicked() {
-	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"), tr("reboot applicaion to take effect"));
-	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
+		tr("Change language"),
+		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_language = WINDOWLANAGUAGE::Chinese;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -197,8 +198,9 @@ void CPatch::onActChineseClicked() {
 }
 
 void CPatch::onActEnglishClicked() {
-	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"), tr("reboot applicaion to take effect"));
-	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
+		tr("Change language"),
+		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_language = WINDOWLANAGUAGE::English;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -208,8 +210,9 @@ void CPatch::onActEnglishClicked() {
 }
 
 void CPatch::onActProgressbar_normalClicked() {
-	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"), tr("reboot applicaion to take effect"));
-	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
+		tr("Change Progressbar Style"),
+		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::NORMAL;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -219,8 +222,9 @@ void CPatch::onActProgressbar_normalClicked() {
 }
 
 void CPatch::onActProgressbar_borderClicked() {
-	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"), tr("reboot applicaion to take effect"));
-	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
+		tr("Change Progressbar Style"),
+		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RED;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -230,8 +234,9 @@ void CPatch::onActProgressbar_borderClicked() {
 }
 
 void CPatch::onActProgressbar_border_radiusClicked() {
-	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"), tr("reboot applicaion to take effect"));
-	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
+		tr("Change Progressbar Style"),
+		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RADIUS;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -241,8 +246,9 @@ void CPatch::onActProgressbar_border_radiusClicked() {
 }
 
 void CPatch::onActProgressbar_blockClicked() {
-	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"), tr("reboot applicaion to take effect"));
-	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
+		tr("Change Progressbar Style"),
+		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -252,8 +258,9 @@ void CPatch::onActProgressbar_blockClicked() {
 }
 
 void CPatch::onActProgressbar_gradationClicked() {
-	auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"), tr("reboot applicaion to take effect"));
-	if (nRes == QMessageBox::ButtonRole::AcceptRole) {
+	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this,
+		tr("Change Progressbar Style"),
+		tr("reboot applicaion to take effect")); nRes == QMessageBox::ButtonRole::AcceptRole) {
 		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::GRADATION;
 		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
 		CPatch::restart();
@@ -262,7 +269,7 @@ void CPatch::onActProgressbar_gradationClicked() {
 	}
 }
 
-void CPatch::updateProcess(qint64 value) {
+void CPatch::updateProcess(const qint64 value) {
 	m_totalProcess += value;
 	m_pPbschedule->setValue(static_cast<int>(m_totalProcess / m_localProcess) * 100);
 
@@ -274,40 +281,40 @@ void CPatch::updateProcess(qint64 value) {
 	}
 }
 
-void CPatch::onSystemTrayIconActivated(QSystemTrayIcon::ActivationReason reason) {
-	if (reason == QSystemTrayIcon::DoubleClick) { // 双击显示
+void CPatch::onSystemTrayIconActivated(const QSystemTrayIcon::ActivationReason reason) {
+	if (reason == QSystemTrayIcon::DoubleClick) {
+		// 双击显示
 		this->isMinimized() ? this->showNormal() : this->showMinimized(); // 将主窗口显示出来
-		this->activateWindow(); // 激活主窗口，确保它位于顶部
-	} else if (reason == QSystemTrayIcon::Context) { // 右键菜单
+		this->activateWindow();                                           // 激活主窗口，确保它位于顶部
+	} else if (reason == QSystemTrayIcon::Context) {
+		// 右键菜单
 		// 调整显示始终在鼠标之上
-		auto pos = QCursor::pos();
-		int offsetY = m_ptrayMenu->sizeHint().height();
+		const auto pos = QCursor::pos();
+		const int offsetY = m_ptrayMenu->sizeHint().height();
 		m_ptrayMenu->move(pos.x(), pos.y() - offsetY);
 		m_ptrayMenu->exec();
 	}
 }
 
-void CPatch::updateEndTimeOptions(int _index) {
+void CPatch::updateEndTimeOptions(const int _index) {
 	m_pCbEndTime->clear();
-	QString selectedStartTime = m_pCbStartTime->itemText(_index);
-	QDateTime startDateTime = GetDateTimeFromString(selectedStartTime);
+	const QString selectedStartTime = m_pCbStartTime->itemText(_index);
+	const QDateTime startDateTime = GetDateTimeFromString(selectedStartTime);
 
 	for (const auto& [end, full] : m_localMap) {
-		QDateTime endDateTime = GetDateTimeFromString(end);
-
-		if (endDateTime >= startDateTime) {
+		if (const QDateTime endDateTime = GetDateTimeFromString(end); endDateTime >= startDateTime) {
 			m_pCbEndTime->addItem(end);
 		}
 	}
 }
 
-QString CPatch::getFileCodec(QString& _fileName) {
+QString CPatch::getFileCodec(const QString& _fileName) {
 	QFile file(_fileName);
 	QString codeType = "UTF-8";
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QByteArray text = file.readAll();
+		const QByteArray text = file.readAll();
 		QTextCodec::ConverterState state;
-		QTextCodec* codec = QTextCodec::codecForName("UTF-8");
+		const QTextCodec* codec = QTextCodec::codecForName("UTF-8");
 		codec->toUnicode(text.constData(), text.size(), &state);
 
 		if (state.invalidChars > 0) {
@@ -319,13 +326,14 @@ QString CPatch::getFileCodec(QString& _fileName) {
 	return codeType;
 }
 
-void CPatch::readDirToList(const QString& _dirpath) {
+void CPatch::readDirToList(const QDir& _dir) {
 	m_pLwPatchList->clear();
-	QDir curDir(_dirpath);
-	QStringList dirctories = curDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-	std::sort(dirctories.begin(), dirctories.end(), [&](const QString& a, const QString& b) {
-		return GetDateTimeFromString(a.right(8)) < GetDateTimeFromString(b.right(8));
-	});
+	QStringList dirctories = _dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	std::sort(dirctories.begin(),
+		dirctories.end(),
+		[&](const QString& a, const QString& b) {
+			return GetDateTimeFromString(a.right(8)) < GetDateTimeFromString(b.right(8));
+		});
 
 	for (const QString& dirName : dirctories) {
 		m_pLwPatchList->addItem(dirName);
@@ -341,18 +349,18 @@ void CPatch::updateCombox() {
 	for (const auto& [str, fullstr] : m_localMap) {
 		m_pCbStartTime->addItem(str);
 	}
+	updateEndTimeOptions(m_pCbStartTime->currentIndex());
 }
 
 QDateTime CPatch::GetDateTimeFromString(const QString& str) {
 	return QDateTime::fromString(str, "yyyyMMdd");
 }
 
-void CPatch::updatePage(QString& begin, QString& end, const QString& outputDir) {
+void CPatch::updatePage(const QString& begin, const QString& end, const QString& outputDir) {
 	m_pBtnGenerate->setChecked(false);
 	m_pLwOutPatchList->clear();
 	auto beginIndex = m_localMap.find(begin);
-	auto endIndex = m_localMap.find(end);
-	if (beginIndex != m_localMap.end() && endIndex != m_localMap.end()) {
+	if (const auto endIndex = m_localMap.find(end); beginIndex != m_localMap.end() && endIndex != m_localMap.end()) {
 		for (auto& it = beginIndex; it != std::next(endIndex); ++it) {
 			m_pLwOutPatchList->addItem(it->second);
 		}
@@ -476,7 +484,7 @@ void CPatch::createCtrl() {
 	setCentralWidget(m_pCentralWidget);
 }
 
-void CPatch::layOut() {
+void CPatch::layOut() const {
 	m_plyHTitle->addWidget(m_pMenuBar);
 	m_plyHTitle->addStretch();
 	m_plyHTitle->addWidget(m_pBtnStyle);
@@ -543,11 +551,9 @@ void CPatch::init() {
 	m_pLePatchPath->setReadOnly(true);
 	m_pLePatchOutPath->setReadOnly(true);
 
-	QString sheet = "QComboBox{ combobox-popup:0; }";
-	m_pCbStartTime->setStyleSheet(sheet);
-	m_pCbStartTime->setMaxVisibleItems(10);
-	m_pCbEndTime->setStyleSheet(sheet);
-	m_pCbEndTime->setMaxVisibleItems(10);
+	m_pCbStartTime->setMaxVisibleItems(7);
+	m_pCbEndTime->setMaxVisibleItems(7);
+
 	for (int i = 1; i <= 5; i++) {
 		m_pCbThreadNum->addItem(QString::number(i));
 	}
@@ -556,8 +562,12 @@ void CPatch::init() {
 
 	m_pBtnStyle->setChecked(m_ThemeStyle == WINDOWTHEMESTYLE::LIGHT);
 
-	int progressbarStyle = static_cast<int>(m_ProgressbarStyle);
+	const int progressbarStyle = static_cast<int>(m_ProgressbarStyle);
 	m_pPbschedule->setProperty("customProgressBar", progressbarStyle);
+
+	if (!m_dirPath.empty()) {
+		openDir(QString::fromStdString(m_dirPath));
+	}
 }
 
 void CPatch::initConnect() {
@@ -581,18 +591,24 @@ void CPatch::initConnect() {
 	connect(m_pActProgressbar_border_radius, &QAction::triggered, this, &CPatch::onActProgressbar_border_radiusClicked);
 	connect(m_pActProgressbar_block, &QAction::triggered, this, &CPatch::onActProgressbar_blockClicked);
 	connect(m_pActProgressbar_gradation, &QAction::triggered, this, &CPatch::onActProgressbar_gradationClicked);
-	connect(m_pFlickerTimer, &QTimer::timeout, this, [&]() {
-		if (m_pBtnPatchOutPath->styleSheet().isEmpty()) {
-			m_pBtnPatchOutPath->setStyleSheet("background-color: lightcoral;");
-		} else {
-			m_pBtnPatchOutPath->setStyleSheet("");
-			m_pFlickerTimer->stop();
-		}
-	});
-	connect(m_pGenerateTime, &QTimer::timeout, this, [&]() {
-		m_GenerateTime++;
-		m_pLbTime->setText(tr("Time: ") + QString::number(m_GenerateTime) + tr(" s"));
-	});
+	connect(m_pFlickerTimer,
+		&QTimer::timeout,
+		this,
+		[&]() {
+			if (m_pBtnPatchOutPath->styleSheet().isEmpty()) {
+				m_pBtnPatchOutPath->setStyleSheet("background-color: lightcoral;");
+			} else {
+				m_pBtnPatchOutPath->setStyleSheet("");
+				m_pFlickerTimer->stop();
+			}
+		});
+	connect(m_pGenerateTime,
+		&QTimer::timeout,
+		this,
+		[&]() {
+			m_GenerateTime++;
+			m_pLbTime->setText(tr("Time: ") + QString::number(m_GenerateTime) + tr(" s"));
+		});
 }
 
 void CPatch::getFilesInDirectory(const QStringList& directoryPaths, QStringList& filesToMerge) {
@@ -622,8 +638,7 @@ void CPatch::getFilesInDirectory(const QStringList& directoryPaths, QStringList&
 		// 将文件路径添加到 filesToMerge 列表中，并排除重复的文件
 		for (auto& filePath : allFilePaths) {
 			// 移除目录路径部分，只保留相对路径
-			QString relativePath = filePath.mid(directoryPath.length());
-			if (!m_set_path_files.contains(relativePath)) {
+			if (QString relativePath = filePath.mid(directoryPath.length()); !m_set_path_files.contains(relativePath)) {
 				m_set_path_files.insert(relativePath);
 				filesToMerge.append(filePath);
 			}
@@ -638,17 +653,14 @@ std::map<QString, QStringList> CPatch::splitFileList(const QString& flag, const 
 	QString separator = QDir::separator();
 #endif
 	std::map<QString, QStringList> mp{};
-	QStringList files{}; // 存储抛开目录过后的文件
+	QStringList files{};    // 存储抛开目录过后的文件
 	QString index = "file"; // 最后一次创建的Key
 	for (auto& file : filesToMerge) {
 		QString fileName{};
-		int flagindex = file.lastIndexOf(flag);
-		if (flagindex != -1) {
+		if (const int flagindex = file.lastIndexOf(flag); flagindex != -1) {
 			QString str = file.mid(flagindex + flag.length() + 1);
-			int firstSlashIndex = str.indexOf(separator);
-			if (firstSlashIndex != -1) {
-				int secondSlashIndex = str.indexOf(separator, firstSlashIndex + 1);
-				if (secondSlashIndex != -1) {
+			if (const int firstSlashIndex = str.indexOf(separator); firstSlashIndex != -1) {
+				if (const int secondSlashIndex = str.indexOf(separator, firstSlashIndex + 1); secondSlashIndex != -1) {
 					fileName = str.mid(firstSlashIndex + 1, secondSlashIndex - firstSlashIndex - 1);
 				} else {
 					files.append(file);
@@ -674,9 +686,9 @@ bool CPatch::splitFileListByThread(const std::map<QString, QStringList>& mp, std
 	}
 
 	// 计算每个线程应该分配的QStringList数量
-	int numThreads = static_cast<int>(threadFiles.size());
-	int avgListPerThread = static_cast<int>(std::ceil(static_cast<double>(mp.size()) / numThreads)); // 向上取整
-	int remainingLists = static_cast<int>(mp.size()) % numThreads; // 余下的QStringList
+	const int numThreads = static_cast<int>(threadFiles.size());
+	const int avgListPerThread = static_cast<int>(std::ceil(static_cast<double>(mp.size()) / numThreads)); // 向上取整
+	int remainingLists = static_cast<int>(mp.size()) % numThreads;                                         // 余下的QStringList
 
 	auto iter = mp.begin();
 	for (size_t i = 0; i < numThreads; ++i) {
@@ -700,7 +712,7 @@ void CPatch::restart() {
 	qApp->exit(RETCODE_RESTART);
 }
 
-void CPatch::recoveryStateWithAct() {
+void CPatch::recoveryStateWithAct() const {
 	m_pActChinese->setChecked(m_language == WINDOWLANAGUAGE::Chinese);
 	m_pActEnglish->setChecked(m_language == WINDOWLANAGUAGE::English);
 
@@ -729,4 +741,12 @@ void CPatch::setSystemTrayIcon() {
 
 	m_ptrayIcon->setContextMenu(m_ptrayMenu.get());
 	m_ptrayIcon->show();
+}
+
+void CPatch::openDir(const QString& _dirpath) {
+	const QDir dir(_dirpath);
+	m_dirname = dir.dirName();
+	m_pLePatchPath->setText(dir.absolutePath());
+	Logger::instance().logInfo(tr("open directory ") + dir.absolutePath());
+	readDirToList(dir);
 }

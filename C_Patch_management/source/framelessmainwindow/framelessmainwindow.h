@@ -12,17 +12,18 @@
 #endif
 
 class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
-  Q_OBJECT
-  public:
+	Q_OBJECT
+
+public:
 	explicit FramelessMainWindow(QWidget* parent = nullptr);
 	~FramelessMainWindow() override;
 
-  protected:
+protected:
 	void showEvent(QShowEvent* event) override;
 
 	// 事件过滤器识别拖动拉伸等
-	void doWindowStateChange(QEvent* event);
-	void doResizeEvent(QEvent* event);
+	void doWindowStateChange(const QEvent* event);
+	static void doResizeEvent(QEvent* event);
 	bool eventFilter(QObject* watched, QEvent* event) override;
 
 	// 拦截系统事件用于修复系统休眠后唤醒程序的bug
@@ -39,7 +40,7 @@ class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
 #endif
 #endif
 
-  private:
+private:
 	// 边距+可移动+可拉伸
 	int padding{};
 	bool moveEnable{};
@@ -63,17 +64,16 @@ class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
 	// 存储窗体默认的属性
 	Qt::WindowFlags flags{};
 
-  public Q_SLOTS:
+public Q_SLOTS:
 	// 设置边距+可拖动+可拉伸
-	[[maybe_unused]] void setPadding(int _padding);
-	[[maybe_unused]] void setMoveEnable(bool _moveEnable);
-	[[maybe_unused]] void setResizeEnable(bool _resizeEnable);
+	void setPadding(int _padding);
+	void setMoveEnable(bool _moveEnable);
+	void setResizeEnable(bool _resizeEnable);
 
 	// 设置标题栏控件
 	void setTitleBar(QWidget* _titleBar);
 
-  Q_SIGNALS:
+Q_SIGNALS:
 	void titleDblClick();
 	void windowStateChange(bool max);
 };
-

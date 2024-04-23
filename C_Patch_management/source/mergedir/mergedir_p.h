@@ -1,13 +1,8 @@
 ﻿#pragma once
 
 #include <QObject>
-#include <QDebug>
-#include <QThread>
 #include <QRunnable>
-#include <QDir>
-#include <QDateTime>
-#include <QMutex>
-#include <QStack>
+#include <QThread>
 #include <QWaitCondition>
 #include <utility>
 
@@ -19,20 +14,20 @@
 #define MERGEDIR_P_EXPORT Q_DECL_IMPORT
 #endif
 
-class MERGEDIR_P_EXPORT CMergeDir_p : public QThread, public QRunnable {
-  Q_OBJECT
+class MERGEDIR_P_EXPORT CMergeDir_p final : public QThread, public QRunnable {
+	Q_OBJECT
 
-  public:
+public:
 	CMergeDir_p(QStringList _filePaths, QString _outputFilePath, QString dirname, QObject* parent = nullptr);
 	~CMergeDir_p() override;
 
-  signals:
+signals:
 	void progressUpdated(qint64 value);
 
-  protected:
+protected:
 	void run() override;
 
-  private:
+private:
 	QMutex m_mutex{};
 	QStringList m_sourcefilePaths;
 	QString m_outputFilePath{};

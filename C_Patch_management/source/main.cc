@@ -1,17 +1,15 @@
-﻿#include <QApplication>
-#include <QResource>
-#include <QTranslator>
-#include <QObject>
-#include <iostream>
+﻿#include <filesystem>
 #include <fstream>
-#include <string>
-#include <filesystem>
-#include <QStyleHints>
+#include <iostream>
+#include <QApplication>
 #include <QCommandLineParser>
-#include <QSharedMemory>
+#include <QObject>
 #include <QProcess>
-#include <QStringList>
-#include <QCommandLineParser>
+#include <QResource>
+#include <QSettings>
+#include <QSharedMemory>
+#include <QTranslator>
+#include <string>
 #ifdef Q_OS_LINUX
 #include <QTextCodec>
 #endif
@@ -53,7 +51,7 @@ inline bool checkSingleInstance(QSharedMemory& shared_memory);
 /*
  * @note: 创建命令行参数
  */
-void createCommandLineParser(QApplication& app);
+void createCommandLineParser(const QApplication& app);
 
 int main(int argc, char* argv[]) {
 #ifdef Q_OS_LINUX
@@ -64,16 +62,16 @@ int main(int argc, char* argv[]) {
 	createCommandLineParser(app);
 	checkWindowThemeStyle();
 
-	QFileInfo appFile(QApplication::applicationFilePath());
+	const QFileInfo appFile(QApplication::applicationFilePath());
 	// 将路径切换到上级目录
 	QDir dir(appFile.absolutePath());
 	dir.cdUp();
-	QString appParPath = dir.absolutePath();
-	QString strStyle_light = appParPath + QString::fromStdString(qssFilePathLight);
-	QString strStyle_dark = appParPath + QString::fromStdString(qssFilePathDark);
-	QString strRcc = appParPath + QString::fromStdString(rccFilePath);
-	QString strtrans_cn = appParPath + QString::fromStdString(translationFilePath_CN);
-	QString strtrans_en = appParPath + QString::fromStdString(translationFilePath_EN);
+	const QString appParPath = dir.absolutePath();
+	const QString strStyle_light = appParPath + QString::fromLatin1(qssFilePathLight);
+	const QString strStyle_dark = appParPath + QString::fromLatin1(qssFilePathDark);
+	const QString strRcc = appParPath + QString::fromLatin1(rccFilePath);
+	const QString strtrans_cn = appParPath + QString::fromLatin1(translationFilePath_CN);
+	const QString strtrans_en = appParPath + QString::fromLatin1(translationFilePath_EN);
 
 	initializeConfigFile();
 	auto [language, progressBarStyle, themeStyle] = readConf();
@@ -89,16 +87,16 @@ int main(int argc, char* argv[]) {
 	str = (windowLanguage == WINDOWLANAGUAGE::Chinese) ? strtrans_cn : strtrans_en;
 	Logger::instance().logInfo(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!");
 
-	int LabelWidth = windowLanguage == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH;
-	CPatch w(LabelWidth, windowLanguage, progressbarstyle, windowThemeStyle);
+	const int LabelWidth = windowLanguage == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH;
+	CPatch w(LabelWidth, windowLanguage, progressbarstyle, windowThemeStyle, App_arg_dir);
 	// 修改配置文件
-	QObject::connect(&w, &CPatch::ConfChanged, [&](WINDOWLANAGUAGE lang, WINDOWPROGRESSBARSTYLE prostyle) {
+	QObject::connect(&w, &CPatch::ConfChanged, [&](const WINDOWLANAGUAGE lang, const WINDOWPROGRESSBARSTYLE prostyle) {
 		windowLanguage = lang;
 		progressbarstyle = prostyle;
 		changeConf(windowLanguage, progressbarstyle, windowThemeStyle);
 	});
 	// 修改主题
-	QObject::connect(&w, &CPatch::ThemeChanged, [&](WINDOWTHEMESTYLE windowthemestyle) {
+	QObject::connect(&w, &CPatch::ThemeChanged, [&](const WINDOWTHEMESTYLE windowthemestyle) {
 		windowThemeStyle = windowthemestyle;
 		loadStyle(app, (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark);
 		changeConf(windowLanguage, progressbarstyle, windowThemeStyle);
@@ -117,7 +115,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	w.show();
-	int nRet = QApplication::exec();
+	const int nRet = QApplication::exec();
 	if (nRet == RETCODE_RESTART) {
 		// 传入 qApp->applicationFilePath()，启动自己
 		QProcess::startDetached(qApp->applicationFilePath(), QStringList());
@@ -145,7 +143,7 @@ bool loadStyle(QApplication& app, const QString& filePath) {
 	qDebug() << "Style filePath:\t" << filePath;
 	QFile file(filePath);
 	if (file.open(QFile::ReadOnly)) {
-		QString strStyleSheet = QLatin1String(file.readAll());
+		const QString strStyleSheet = QLatin1String(file.readAll());
 		app.setStyleSheet(strStyleSheet);
 		file.close();
 		return true;
@@ -177,9 +175,9 @@ void unLoadTranslations() {
 }
 
 void initializeConfigFile() {
-	int language = static_cast<int>(windowLanguage);
-	int progressBarStyle = static_cast<int>(progressbarstyle);
-	int themeStyle = static_cast<int>(windowThemeStyle);
+	const int language = static_cast<int>(windowLanguage);
+	const int progressBarStyle = static_cast<int>(progressbarstyle);
+	const int themeStyle = static_cast<int>(windowThemeStyle);
 	// 检查config文件夹是否存在，如果不存在则创建
 	if (!std::filesystem::exists(configDir)) {
 		if (!std::filesystem::create_directory(configDir)) {
@@ -189,11 +187,9 @@ void initializeConfigFile() {
 		std::cout << "Directory " << configDir << " created." << std::endl;
 	}
 
-	std::ifstream configFile(configName);
-	if (!configFile) {
+	if (const std::ifstream configFile(configName); !configFile) {
 		// 配置文件不存在
-		std::ofstream outputFile(configName);
-		if (outputFile) {
+		if (std::ofstream outputFile(configName); outputFile) {
 			// 写入语言和进度条样式
 			outputFile << "Language: " << language << "\n";
 			outputFile << "ProgressbarStyle: " << progressBarStyle << "\n";
@@ -209,12 +205,11 @@ void initializeConfigFile() {
 }
 
 std::tuple<WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE> readConf() {
-	auto language = windowLanguage; // 默认语言
+	auto language = windowLanguage;           // 默认语言
 	auto progressBarStyle = progressbarstyle; // 默认进度条样式
-	auto themeStyle = windowThemeStyle; // 默认主题样式
+	auto themeStyle = windowThemeStyle;       // 默认主题样式
 
-	std::ifstream configFile(configName);
-	if (configFile) {
+	if (std::ifstream configFile(configName); configFile) {
 		std::string line;
 		while (std::getline(configFile, line)) {
 			if (line.find("Language:") != std::string::npos) {
@@ -279,8 +274,7 @@ void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressB
 
 	// 如果找到了语言和样式行，则写回到文件中
 	if (languageFound && styleFound && themeFound) {
-		std::ofstream outputFile(configName, std::ios::trunc);
-		if (outputFile) {
+		if (std::ofstream outputFile(configName, std::ios::trunc); outputFile) {
 			for (const std::string& line : lines) {
 				outputFile << line << std::endl;
 			}
@@ -319,7 +313,7 @@ bool isDarkTheme() {
 
 void checkWindowThemeStyle() {
 #ifdef Q_OS_WIN
-	QSettings settings(R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)", QSettings::NativeFormat);
+	const QSettings settings(R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)", QSettings::NativeFormat);
 	windowThemeStyle = settings.value("AppsUseLightTheme").toBool() ? WINDOWTHEMESTYLE::LIGHT : WINDOWTHEMESTYLE::DARK;
 #elif defined(Q_OS_LINUX)
 	windowThemeStyle = isDarkTheme() ? WINDOWTHEMESTYLE::DARK : WINDOWTHEMESTYLE::LIGHT;
@@ -327,7 +321,7 @@ void checkWindowThemeStyle() {
 }
 
 inline bool checkSingleInstance(QSharedMemory& shared_memory) {
-	shared_memory.setKey(QString::fromStdString(AppID));
+	shared_memory.setKey(QString::fromLatin1(AppID));
 	if (shared_memory.attach()) {
 		return false;
 	}
@@ -337,25 +331,26 @@ inline bool checkSingleInstance(QSharedMemory& shared_memory) {
 	return false;
 }
 
-void createCommandLineParser(QApplication& app) {
+void createCommandLineParser(const QApplication& app) {
 	// 命令行参数
 	QCoreApplication::setApplicationName("C_Patch_management");
 	QCoreApplication::setApplicationVersion("1.0.0");
 	QCommandLineParser parser;
-	parser.setApplicationDescription("This is a command line parser example");
 	parser.addHelpOption();
 	parser.addVersionOption();
-	parser.addOption({{"f", "file"}, "Specify the file to open", "file"});
-	parser.addPositionalArgument("input", "Input file");
+	const QString optionShort = "d";
+	const QString optionLong = "directory";
+	parser.addOption(QCommandLineOption({optionShort, optionLong}, "Specify the directory to open", "directory"));
 	parser.process(app);
-	if (parser.isSet("file")) {
-		QString filename = parser.value("file");
-		qDebug() << "File option is set. Filename:" << filename;
-	}
-
-	QStringList positionalArgs = parser.positionalArguments();
-	if (!positionalArgs.isEmpty()) {
-		qDebug() << "Positional arguments:" << positionalArgs;
+	if (parser.isSet(optionShort) || parser.isSet(optionLong)) {
+		QString directory;
+		if (parser.isSet(optionShort))
+			directory = parser.value(optionShort);
+		else
+			directory = parser.value(optionLong);
+		App_arg_dir = directory.toStdString();
+		qDebug() << "Directory option is set. Directory:" << directory;
+	} else {
+		qDebug() << "Directory option is not set.";
 	}
 }
-

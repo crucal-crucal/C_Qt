@@ -1,15 +1,10 @@
 ﻿#pragma once
 
-#include <QLoggingCategory>
-#include <QDebug>
 #include <QCoreApplication>
-#include <QFile>
-#include <QTextStream>
-#include <QDateTime>
 #include <QDir>
+#include <QLoggingCategory>
 #include <QMutex>
-
-#include "global/cglobal.h"
+#include <QTextStream>
 
 #ifdef LOGGER_LIB
 #define LOGGER_EXPORT Q_DECL_EXPORT
@@ -18,14 +13,14 @@
 #endif
 
 class LOGGER_EXPORT Logger {
-  public:
+public:
 	static Logger& instance();
 
 	void logInfo(const QString& message);
 	void logWarning(const QString& message);
 	void logError(const QString& message);
 
-  private:
+private:
 	Logger();
 	Q_DISABLE_COPY(Logger)
 	~Logger();

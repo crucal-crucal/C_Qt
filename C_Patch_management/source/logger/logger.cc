@@ -1,5 +1,9 @@
 ﻿#include "Logger.h"
 
+#include <QDateTime>
+
+#include "global/cglobal.h"
+
 Logger& Logger::instance() {
 	static Logger instance;
 	return instance;
@@ -18,15 +22,15 @@ void Logger::logError(const QString& message) {
 }
 
 Logger::Logger() {
-	QString appDirPath = QCoreApplication::applicationDirPath();
-	QDir log_dir(appDirPath + QDir::separator() + QString::fromStdString(logDir));
+	const QString appDirPath = QCoreApplication::applicationDirPath();
+	const QDir log_dir(appDirPath + QDir::separator() + QString::fromLatin1(logDir));
 	if (!log_dir.exists()) {
 		if (!log_dir.mkpath(".")) {
 			qWarning() << "Failed to create log directory.";
 			return;
 		}
 	}
-	logFile.setFileName(log_dir.filePath(QString::fromStdString(logFileName)));
+	logFile.setFileName(log_dir.filePath(QString::fromLatin1(logFileName)));
 	if (logFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
 		logStream.setDevice(&logFile);
 	}
@@ -39,6 +43,7 @@ Logger::~Logger() {
 void Logger::logToFile(const QString& level, const QString& message) {
 	QMutexLocker locker(&m_mutex);
 	if (logStream.device()) {
-		logStream << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << " [" << level << "] " << message << Qt::endl;
+		logStream << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") << " [" << level << "] " << message <<
+				Qt::endl;
 	}
 }
