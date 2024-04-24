@@ -22,6 +22,7 @@ QTranslator* g_translator{ nullptr };
 QSharedMemory g_sharedMemory{ nullptr };
 /*
  * @note: 加载、卸载资源文件，加载样式表，加载、卸载翻译文件
+ * @return: 返回true表示加载成功，返回false表示加载失败
  */
 bool loadResources(const QString& strPath);
 bool unloadResources(const QString& strPath);
@@ -32,7 +33,9 @@ void unLoadTranslations();
  * @note: 配置文件操作
  */
 void initializeConfigFile();
-std::tuple<WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE> readConf();
+ConfigData readConf();
+void readConf(std::vector<std::string>& lines);
+void writeConf(const std::vector<std::string>& lines);
 void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
                 WINDOWTHEMESTYLE newThemeStyle);
 /*
@@ -47,11 +50,13 @@ bool isDarkTheme();                // 检查当前主题模式
  */
 void checkWindowThemeStyle();
 /*
- * @note: 程序唯一性检查
+ * @note: 程序唯一性检查, 利用共享内存机制，设置一个唯一的Key，尝试将共享内存附加到当前进程，如果共享内存存在，则说明程序已存在，返回false；如果共享内存不存在，则说明程序唯一，返回true
+ * @param: 共享内存
+ * @return: 返回true表示程序唯一, 返回false表示程序已存在
  */
 inline bool checkSingleInstance(QSharedMemory& shared_memory);
 /*
- * @note: 创建命令行参数
+ * @note: 创建命令行参数, -d 指定程序打开的目录, -v 版本, -h 帮助
  */
 void createCommandLineParser(const QApplication& app);
 
@@ -89,8 +94,7 @@ int main(int argc, char* argv[]) {
 	str = (windowLanguage == WINDOWLANAGUAGE::Chinese) ? strtrans_cn : strtrans_en;
 	Logger::instance().logInfo(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!");
 
-	const int LabelWidth = windowLanguage == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH;
-	CPatch w(LabelWidth, windowLanguage, progressbarstyle, windowThemeStyle, App_arg_dir);
+	CPatch w(windowLanguage, progressbarstyle, windowThemeStyle, App_arg_dir);
 	// 修改配置文件
 	QObject::connect(&w, &CPatch::ConfChanged, [&](const WINDOWLANAGUAGE lang, const WINDOWPROGRESSBARSTYLE prostyle) {
 		windowLanguage = lang;
@@ -208,7 +212,7 @@ void initializeConfigFile() {
 	}
 }
 
-std::tuple<WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE> readConf() {
+ConfigData readConf() {
 	auto language = windowLanguage;           // 默认语言
 	auto progressBarStyle = progressbarstyle; // 默认进度条样式
 	auto themeStyle = windowThemeStyle;       // 默认主题样式
@@ -234,19 +238,12 @@ std::tuple<WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE> readConf()
 			}
 		}
 	}
-	return std::make_tuple(language, progressBarStyle, themeStyle);
+	return { language, progressBarStyle, themeStyle };
 }
 
-void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
-                WINDOWTHEMESTYLE newThemeStyle) {
-	int newLanguageInt = static_cast<int>(newLanguage);
-	int newProgressBarStyleInt = static_cast<int>(newprogressBarStyle);
-	int newThemeStyleInt = static_cast<int>(newThemeStyle);
-
+void readConf(std::vector<std::string>& lines) {
 	// 读取整个文件内容到内存中
-	std::ifstream configFile(configName);
-	std::vector<std::string> lines;
-	if (configFile) {
+	if (std::ifstream configFile(configName); configFile) {
 		std::string line;
 		while (std::getline(configFile, line)) {
 			lines.push_back(line);
@@ -254,45 +251,47 @@ void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressB
 		configFile.close();
 	} else {
 		Logger::instance().logError("Error: Unable to open config file for reading.");
-		return;
 	}
+}
 
+void writeConf(const std::vector<std::string>& lines) {
+	if (std::ofstream outputFile(configName, std::ios::trunc); outputFile) {
+		for (const std::string& line : lines) {
+			outputFile << line << std::endl;
+		}
+		outputFile.close();
+	} else {
+		Logger::instance().logError("Error: Unable to open config file for writing.");
+	}
+}
+
+void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
+                WINDOWTHEMESTYLE newThemeStyle) {
+	const int newLanguageInt = static_cast<int>(newLanguage);
+	const int newProgressBarStyleInt = static_cast<int>(newprogressBarStyle);
+	const int newThemeStyleInt = static_cast<int>(newThemeStyle);
+
+	std::vector<std::string> lines;
+	readConf(lines);
 	// 查找并修改 "Language:", "ProgressbarStyle:", "ThemeStyle:"
-	bool languageFound = false;
-	bool styleFound = false;
-	bool themeFound = false;
+	bool Found = true;
 	for (std::string& line : lines) {
 		if (line.find("Language:") != std::string::npos) {
 			line = "Language: " + std::to_string(newLanguageInt); // 修改语言值
-			languageFound = true;
 		} else if (line.find("ProgressbarStyle:") != std::string::npos) {
 			line = "ProgressbarStyle: " + std::to_string(newProgressBarStyleInt); // 修改样式值
-			styleFound = true;
 		} else if (line.find("ThemeStyle:") != std::string::npos) {
 			line = "ThemeStyle: " + std::to_string(newThemeStyleInt); // 修改主题值
-			themeFound = true;
-		}
-		if (languageFound && styleFound && themeFound) {
+		} else {
+			Found = false;
 			break;
 		}
 	}
-
 	// 如果找到了语言和样式行，则写回到文件中
-	if (languageFound && styleFound && themeFound) {
-		if (std::ofstream outputFile(configName, std::ios::trunc); outputFile) {
-			for (const std::string& line : lines) {
-				outputFile << line << std::endl;
-			}
-			outputFile.close();
-			std::cout << "Language changed to " << (newLanguage == WINDOWLANAGUAGE::English ? "English" : "Chinese") <<
-				std::endl;
-			std::cout << "Progressbar style changed" << std::endl;
-			std::cout << "Theme style changed" << std::endl;
-		} else {
-			Logger::instance().logError("Error: Unable to open config file for writing.");
-		}
+	if (Found) {
+		writeConf(lines);
 	} else {
-		Logger::instance().logError("Error: Language or style line not found in config file.");
+		Logger::instance().logError("Error: config line not found in config file.");
 	}
 }
 
@@ -344,16 +343,9 @@ void createCommandLineParser(const QApplication& app) {
 	QCommandLineParser parser;
 	parser.addHelpOption();
 	parser.addVersionOption();
-	const QString optionShort = "d";
-	const QString optionLong = "directory";
-	parser.addOption(QCommandLineOption({ optionShort, optionLong }, "Specify the directory to open", "directory"));
+	parser.addOption(QCommandLineOption({ "d", "directory" }, "Specify the directory to open", "directory"));
 	parser.process(app);
-	if (parser.isSet(optionShort) || parser.isSet(optionLong)) {
-		QString directory;
-		if (parser.isSet(optionShort))
-			directory = parser.value(optionShort);
-		else
-			directory = parser.value(optionLong);
+	if (const QString directory = parser.value("d"); !directory.isEmpty()) {
 		App_arg_dir = directory.toStdString();
 		qDebug() << "Directory option is set. Directory:" << directory;
 	} else {

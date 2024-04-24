@@ -7,9 +7,9 @@
 
 #include "logger/logger.h"
 
-CPatch::CPatch(const int LabelWidth, const WINDOWLANAGUAGE Lanaguage, const WINDOWPROGRESSBARSTYLE ProgressbarStyle,
+CPatch::CPatch(const WINDOWLANAGUAGE Lanaguage, const WINDOWPROGRESSBARSTYLE ProgressbarStyle,
                const WINDOWTHEMESTYLE ThemeStyle, std::string dirPath, QWidget* parent)
-: FramelessMainWindow(parent), m_LabelWidth(LabelWidth), m_language(Lanaguage), m_ProgressbarStyle(ProgressbarStyle),
+: FramelessMainWindow(parent), m_language(Lanaguage), m_ProgressbarStyle(ProgressbarStyle),
   m_ThemeStyle(ThemeStyle), m_dirPath(std::move(dirPath)) {
 	createCtrl();
 	layOut();
@@ -387,7 +387,6 @@ void CPatch::createCtrl() {
 
 	m_pMenuBar = new QMenuBar(m_pTitleBar);
 	m_pMenuBar->setObjectName("Main_MenuBar");
-	m_pMenuBar->setFixedWidth(MENUBAR_WIDTH);
 
 	m_menuPreference = m_pMenuBar->addMenu(tr("Preference"));
 
@@ -433,7 +432,6 @@ void CPatch::createCtrl() {
 	m_pTePreviewTxt = new QTextEdit(m_pReadWidget);
 
 	m_pLbGeneratePath = new QLabel(tr("GENERATE_PATH"), m_pReadWidget);
-	m_pLbGeneratePath->setFixedWidth(m_LabelWidth);
 	m_pCbStartTime = new QComboBox(m_pReadWidget);
 	m_pCbStartTime->setView(new QListView(m_pCbStartTime));
 	m_pCbStartTime->setMinimumWidth(150);
@@ -444,7 +442,6 @@ void CPatch::createCtrl() {
 	m_pBtnGenerate->setFixedWidth(100);
 	m_pBtnGenerate->setCheckable(true);
 	m_pLbThreadNum = new QLabel(tr("Thread Num"), m_pReadWidget);
-	m_pLbThreadNum->setFixedWidth(m_LabelWidth);
 	m_pCbThreadNum = new QComboBox(m_pReadWidget);
 	m_pCbThreadNum->setView(new QListView(m_pCbThreadNum));
 	m_pCbThreadNum->setMinimumWidth(70);
@@ -557,6 +554,9 @@ void CPatch::init() {
 	}
 
 	recoveryStateWithAct();
+	m_pLbGeneratePath->setFixedWidth(m_language == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH);
+	m_pLbThreadNum->setFixedWidth(m_language == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH);
+	m_pMenuBar->setFixedWidth(m_language == WINDOWLANAGUAGE::Chinese ? CHINESE_MENUBAR_WIDTH : ENGLISH_MENUBAR_WIDTH);
 
 	m_pBtnStyle->setChecked(m_ThemeStyle == WINDOWTHEMESTYLE::LIGHT);
 

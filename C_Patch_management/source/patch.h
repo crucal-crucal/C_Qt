@@ -21,7 +21,7 @@ class CPatch final : public FramelessMainWindow {
 	Q_OBJECT
 
 public:
-	explicit CPatch(int LabelWidth, WINDOWLANAGUAGE Lanaguage = WINDOWLANAGUAGE::Chinese,
+	explicit CPatch(WINDOWLANAGUAGE Lanaguage = WINDOWLANAGUAGE::Chinese,
 	                WINDOWPROGRESSBARSTYLE ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK,
 	                WINDOWTHEMESTYLE ThemeStyle = WINDOWTHEMESTYLE::LIGHT,
 	                std::string dirPath = "", QWidget* parent = nullptr);
@@ -198,7 +198,6 @@ private:
 	QTimer* m_pGenerateTime{ nullptr };            // 生成时间定时器
 	qint64 m_localProcess{ 0 };                    // 当前进度
 	qint64 m_totalProcess{ 0 };                    // 总进度
-	int m_LabelWidth{};                            // 标签宽度
 	WINDOWLANAGUAGE m_language{};                  // 语言
 	WINDOWPROGRESSBARSTYLE m_ProgressbarStyle{};   // 进度条样式
 	WINDOWTHEMESTYLE m_ThemeStyle{};               // 主题
