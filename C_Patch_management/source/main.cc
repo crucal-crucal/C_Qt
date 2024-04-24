@@ -89,6 +89,7 @@ int main(int argc, char* argv[]) {
 	// 加载rcc
 	Logger::instance().logInfo(loadResources(strRcc) ? "Load Resource Success!" : "Load Resource Failed!");
 	g_splashScreen = createSplashScreen(QPixmap(":/icon/start.png"));
+	// 初始化配置文件
 	initializeConfigFile();
 	auto [language, progressBarStyle, themeStyle] = readConf();
 	windowLanguage = language;
