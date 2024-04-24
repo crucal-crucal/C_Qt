@@ -17,9 +17,11 @@
 #include "patch.h"
 #include "global/cglobal.h"
 #include "logger/logger.h"
+#include "splashscreen/SplashScreen.h"
 
 QTranslator* g_translator{ nullptr };
 QSharedMemory g_sharedMemory{ nullptr };
+SplashScreen* g_splashScreen{ nullptr };
 /*
  * @note: 加载、卸载资源文件，加载样式表，加载、卸载翻译文件
  * @return: 返回true表示加载成功，返回false表示加载失败
@@ -59,6 +61,10 @@ inline bool checkSingleInstance(QSharedMemory& shared_memory);
  * @note: 创建命令行参数, -d 指定程序打开的目录, -v 版本, -h 帮助
  */
 void createCommandLineParser(const QApplication& app);
+/*
+ * @note: 创建程序启动页面
+ */
+SplashScreen* createSplashScreen(const QPixmap& pixmap, int w = 400, int h = 400, Qt::AspectRatioMode mode = Qt::IgnoreAspectRatio);
 
 int main(int argc, char* argv[]) {
 #ifdef Q_OS_LINUX
@@ -80,19 +86,22 @@ int main(int argc, char* argv[]) {
 	const QString strtrans_cn = appParPath + QString::fromLatin1(translationFilePath_CN);
 	const QString strtrans_en = appParPath + QString::fromLatin1(translationFilePath_EN);
 
+	// 加载rcc
+	Logger::instance().logInfo(loadResources(strRcc) ? "Load Resource Success!" : "Load Resource Failed!");
+	g_splashScreen = createSplashScreen(QPixmap(":/icon/start.png"));
 	initializeConfigFile();
 	auto [language, progressBarStyle, themeStyle] = readConf();
 	windowLanguage = language;
 	progressbarstyle = progressBarStyle;
 	windowThemeStyle = themeStyle;
-	// 加载rcc
-	Logger::instance().logInfo(loadResources(strRcc) ? "Load Resource Success!" : "Load Resource Failed!");
 	// 加载样式表
 	QString str = (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark;
-	Logger::instance().logInfo(loadStyle(app, str) ? "Load Style Success!" : "Load Style Failed!");
+	QThread::sleep(1);
+	g_splashScreen->showMessage(loadStyle(app, str) ? "Load Style Success!" : "Load Style Failed!", Qt::AlignBottom);
 	// 加载翻译 & 加载Label大小
 	str = (windowLanguage == WINDOWLANAGUAGE::Chinese) ? strtrans_cn : strtrans_en;
-	Logger::instance().logInfo(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!");
+	QThread::sleep(1);
+	g_splashScreen->showMessage(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!", Qt::AlignBottom);
 
 	CPatch w(windowLanguage, progressbarstyle, windowThemeStyle, App_arg_dir);
 	// 修改配置文件
@@ -133,7 +142,7 @@ int main(int argc, char* argv[]) {
 }
 
 bool loadResources(const QString& strPath) {
-	qDebug() << "Resource filePath:\t" << strPath;
+	qDebug() << ("Resource filePath:\t" + strPath);
 	return QResource::registerResource(strPath);
 }
 
@@ -148,7 +157,8 @@ bool unloadResources(const QString& strPath) {
 }
 
 bool loadStyle(QApplication& app, const QString& filePath) {
-	qDebug() << "Style filePath:\t" << filePath;
+	QThread::sleep(1);
+	g_splashScreen->showMessage("Style filePath:\t" + filePath, Qt::AlignBottom);
 	QFile file(filePath);
 	if (file.open(QFile::ReadOnly)) {
 		const QString strStyleSheet = QLatin1String(file.readAll());
@@ -192,7 +202,8 @@ void initializeConfigFile() {
 			Logger::instance().logError("Error: Unable to create directory " + QString::fromStdString(configDir));
 			return;
 		}
-		std::cout << "Directory " << configDir << " created." << std::endl;
+		QThread::sleep(1);
+		g_splashScreen->showMessage("Directory " + QString::fromStdString(configDir) + " created.", Qt::AlignBottom);
 	}
 
 	if (const std::ifstream configFile(configName); !configFile) {
@@ -203,12 +214,14 @@ void initializeConfigFile() {
 			outputFile << "ProgressbarStyle: " << progressBarStyle << "\n";
 			outputFile << "ThemeStyle: " << themeStyle;
 			outputFile.close();
-			std::cout << "Config file created." << std::endl;
+			QThread::sleep(1);
+			g_splashScreen->showMessage("Config file created.", Qt::AlignBottom);
 		} else {
 			Logger::instance().logError("Error: Unable to create config file.");
 		}
 	} else {
-		std::cout << "Config file already exists." << std::endl;
+		QThread::sleep(1);
+		g_splashScreen->showMessage("Config file already exists.", Qt::AlignBottom);
 	}
 }
 
@@ -347,8 +360,15 @@ void createCommandLineParser(const QApplication& app) {
 	parser.process(app);
 	if (const QString directory = parser.value("d"); !directory.isEmpty()) {
 		App_arg_dir = directory.toStdString();
-		qDebug() << "Directory option is set. Directory:" << directory;
+		std::cout << "Directory option is set. Directory:" << directory.toStdString() << std::endl;
 	} else {
-		qDebug() << "Directory option is not set.";
+		std::cout << "Directory option is not set." << std::endl;
 	}
+}
+
+SplashScreen* createSplashScreen(const QPixmap& pixmap, int w, int h, Qt::AspectRatioMode mode) {
+	auto* splash = new SplashScreen(pixmap.scaled(w, h, mode));
+	splash->show();
+	QApplication::processEvents();
+	return splash;
 }

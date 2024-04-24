@@ -38,11 +38,6 @@
         <translation type="unfinished">User deselect ditectory</translation>
     </message>
     <message>
-        <location filename="../../source/patch.cc" line="24"/>
-        <source>open directory </source>
-        <translation type="unfinished">open Directory </translation>
-    </message>
-    <message>
         <location filename="../../source/patch.cc" line="42"/>
         <source>open error </source>
         <translation type="unfinished">Open Error </translation>
@@ -323,6 +318,11 @@
         <source>Time: </source>
         <translation type="unfinished">Time: </translation>
     </message>
+    <message>
+        <location filename="../../source/patch.cc" line="24"/>
+        <source>open directory </source>
+        <translation type="unfinished">open Directory </translation>
+    </message>
 </context>
 <context>
     <name>CUVBaseDialog</name>
@@ -456,8 +456,8 @@
     </message>
     <message>
         <location filename="../../source/patch.cc" line="721"/>
-        <source>Minimize</source>
-        <translation type="unfinished">Minimize</translation>
+        <source>Show</source>
+        <translation type="unfinished">Show</translation>
     </message>
     <message>
         <location filename="../../source/patch.cc" line="722"/>

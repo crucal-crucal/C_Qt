@@ -33,11 +33,6 @@
         <translation type="unfinished">用户取消选择目录</translation>
     </message>
     <message>
-        <location filename="../../source/patch.cc" line="24"/>
-        <source>open directory </source>
-        <translation type="unfinished">打开目录 </translation>
-    </message>
-    <message>
         <location filename="../../source/patch.cc" line="42"/>
         <source>open error </source>
         <translation type="unfinished">打开错误 </translation>
@@ -318,6 +313,11 @@
         <source>Time: </source>
         <translation type="unfinished">时间: </translation>
     </message>
+    <message>
+        <location filename="../../source/patch.cc" line="24"/>
+        <source>open directory </source>
+        <translation type="unfinished">打开目录 </translation>
+    </message>
 </context>
 <context>
     <name>CUVBaseDialog</name>
@@ -451,8 +451,8 @@
     </message>
     <message>
         <location filename="../../source/patch.cc" line="721"/>
-        <source>Minimize</source>
-        <translation type="unfinished">最小化</translation>
+        <source>Show</source>
+        <translation type="unfinished">打开主界面</translation>
     </message>
     <message>
         <location filename="../../source/patch.cc" line="722"/>

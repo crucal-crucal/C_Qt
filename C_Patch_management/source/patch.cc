@@ -367,31 +367,26 @@ void CPatch::updatePage(const QString& begin, const QString& end, const QString&
 }
 
 void CPatch::createCtrl() {
-	m_pCentralWidget = new QWidget(this);
-	m_pCentralWidget->setObjectName("CPatch_CentralWidget");
-	m_pTitleBar = new QWidget(m_pCentralWidget);
+	m_pCentralWidget = this->createWidget<QWidget>(this, "CPatch_CentralWidget");
+	m_pTitleBar = this->createWidget<QWidget>(m_pCentralWidget);
 	this->setTitleBar(m_pTitleBar);
 
-	m_pBtnStyle = new QPushButton(m_pTitleBar);
+	m_pBtnStyle = this->createWidget<QPushButton>(m_pTitleBar, "CPatch_BtnStyle");
 	m_pBtnStyle->setCheckable(true);
-	m_pBtnStyle->setObjectName("CPatch_BtnStyle");
 	m_pBtnStyle->setToolTip(tr("Change Style"));
 
-	m_pBtnMin = new QPushButton(m_pTitleBar);
-	m_pBtnMin->setObjectName("Dialog_Btn_Min");
+	m_pBtnMin = this->createWidget<QPushButton>(m_pTitleBar, "Dialog_Btn_Min");
 	m_pBtnMin->setToolTip(tr("Min"));
 
-	m_pBtnClose = new QPushButton(m_pTitleBar);
-	m_pBtnClose->setObjectName("Dialog_Btn_Close");
+	m_pBtnClose = this->createWidget<QPushButton>(m_pTitleBar, "Dialog_Btn_Close");
 	m_pBtnClose->setToolTip(tr("Close"));
 
-	m_pMenuBar = new QMenuBar(m_pTitleBar);
-	m_pMenuBar->setObjectName("Main_MenuBar");
+	m_pMenuBar = this->createWidget<QMenuBar>(m_pTitleBar, "Main_MenuBar");
 
 	m_menuPreference = m_pMenuBar->addMenu(tr("Preference"));
 
 	m_menuLanguage = m_menuPreference->addMenu(tr("Language"));
-	m_pActGroupLanguage = new QActionGroup(m_menuLanguage);
+	m_pActGroupLanguage = this->createWidget<QActionGroup>(m_menuLanguage);
 	m_pActChinese = m_pActGroupLanguage->addAction(tr("CHINESE"));
 	m_pActEnglish = m_pActGroupLanguage->addAction(tr("ENGLISH"));
 	m_pActChinese->setCheckable(true);
@@ -401,7 +396,7 @@ void CPatch::createCtrl() {
 	m_pActGroupLanguage->setExclusive(true); // 设置互斥
 
 	m_menuProgressbar = m_menuPreference->addMenu(tr("ProgressBar Style"));
-	m_pActGroupProgressbar = new QActionGroup(m_menuProgressbar);
+	m_pActGroupProgressbar = this->createWidget<QActionGroup>(m_menuProgressbar);
 	m_pActProgressbar_normal = m_pActGroupProgressbar->addAction(tr("Normal"));
 	m_pActProgressbar_block = m_pActGroupProgressbar->addAction(tr("Block"));
 	m_pActProgressbar_border = m_pActGroupProgressbar->addAction(tr("Border_Red"));
@@ -416,64 +411,64 @@ void CPatch::createCtrl() {
 	m_menuProgressbar->addActions(m_pActGroupProgressbar->actions());
 	m_pActGroupProgressbar->setExclusive(true); // 设置互斥
 
-	m_pTabWidget = new QTabWidget(m_pCentralWidget);
+	m_pTabWidget = this->createWidget<QTabWidget>(m_pCentralWidget);
 	m_pTabWidget->tabBar()->setObjectName("CPatch_TabBar");
-	m_pReadWidget = new QWidget(m_pTabWidget);
-	m_pRenewalWidget = new QWidget(m_pTabWidget);
+	m_pReadWidget = this->createWidget<QWidget>(m_pTabWidget);
+	m_pRenewalWidget = this->createWidget<QWidget>(m_pTabWidget);
 	m_pTabWidget->addTab(m_pReadWidget, tr("READ"));
 	m_pTabWidget->addTab(m_pRenewalWidget, tr("RENEWAL"));
 
-	m_pLbPatchPath = new QLabel(tr("PATCH_VERSION"), m_pReadWidget);
-	m_pLePatchPath = new QLineEdit(m_pReadWidget);
-	m_pBtnOpen = new QPushButton(tr("OPEN_FILE"), m_pReadWidget);
-	m_pBtnRefresh = new QPushButton(tr("REFRESH"), m_pReadWidget);
+	m_pLbPatchPath = this->createWidget<QLabel>(tr("PATCH_VERSION"), m_pReadWidget);
+	m_pLePatchPath = this->createWidget<QLineEdit>(m_pReadWidget);
+	m_pBtnOpen = this->createWidget<QPushButton>(tr("OPEN_FILE"), m_pReadWidget);
+	m_pBtnRefresh = this->createWidget<QPushButton>(tr("REFRESH"), m_pReadWidget);
 
-	m_pLwPatchList = new QListWidget(m_pReadWidget);
-	m_pTePreviewTxt = new QTextEdit(m_pReadWidget);
+	m_pLwPatchList = this->createWidget<QListWidget>(m_pReadWidget);
+	m_pTePreviewTxt = this->createWidget<QTextEdit>(m_pReadWidget);
 
-	m_pLbGeneratePath = new QLabel(tr("GENERATE_PATH"), m_pReadWidget);
-	m_pCbStartTime = new QComboBox(m_pReadWidget);
-	m_pCbStartTime->setView(new QListView(m_pCbStartTime));
+	m_pLbGeneratePath = this->createWidget<QLabel>(tr("GENERATE_PATH"), m_pReadWidget);
+	m_pCbStartTime = this->createWidget<QComboBox>(m_pReadWidget);
+	m_pCbStartTime->setView(this->createWidget<QListView>(m_pCbStartTime));
 	m_pCbStartTime->setMinimumWidth(150);
-	m_pCbEndTime = new QComboBox(m_pReadWidget);
-	m_pCbEndTime->setView(new QListView(m_pCbEndTime));
+	m_pCbEndTime = this->createWidget<QComboBox>(m_pReadWidget);
+	m_pCbEndTime->setView(this->createWidget<QListView>(m_pCbEndTime));
 	m_pCbEndTime->setMinimumWidth(150);
-	m_pBtnGenerate = new QPushButton(tr("GENERATE"), m_pReadWidget);
+	m_pBtnGenerate = this->createWidget<QPushButton>(tr("GENERATE"), m_pReadWidget);
 	m_pBtnGenerate->setFixedWidth(100);
 	m_pBtnGenerate->setCheckable(true);
-	m_pLbThreadNum = new QLabel(tr("Thread Num"), m_pReadWidget);
-	m_pCbThreadNum = new QComboBox(m_pReadWidget);
-	m_pCbThreadNum->setView(new QListView(m_pCbThreadNum));
+	m_pLbThreadNum = this->createWidget<QLabel>(tr("Thread Num"), m_pReadWidget);
+	m_pCbThreadNum = this->createWidget<QComboBox>(m_pReadWidget);
+	m_pCbThreadNum->setView(this->createWidget<QListView>(m_pCbThreadNum));
 	m_pCbThreadNum->setMinimumWidth(70);
-	m_pLbTime = new QLabel(tr("TIME: ") + QString::number(m_GenerateTime) + tr(" s"), m_pReadWidget);
+	m_pLbTime = this->createWidget<QLabel>(tr("TIME: ") + QString::number(m_GenerateTime) + tr(" s"), m_pReadWidget);
 	m_pLbTime->setFixedWidth(100);
-	m_pLbCopy = new QLabel(m_pReadWidget);
+	m_pLbCopy = this->createWidget<QLabel>(m_pReadWidget);
 	m_pLbCopy->setFixedWidth(100);
-	m_pPbschedule = new QProgressBar(m_pReadWidget);
+	m_pPbschedule = this->createWidget<QProgressBar>(m_pReadWidget);
 
-	m_pLbPatchVersion = new QLabel(tr("PATCH_VERSION"), m_pRenewalWidget);
-	m_pLePatchVersion = new QLineEdit(m_pRenewalWidget);
+	m_pLbPatchVersion = this->createWidget<QLabel>(tr("PATCH_VERSION"), m_pRenewalWidget);
+	m_pLePatchVersion = this->createWidget<QLineEdit>(m_pRenewalWidget);
 
-	m_pLePatchOutPath = new QLineEdit(m_pRenewalWidget);
-	m_pBtnPatchOutPath = new QPushButton(tr("PATCH_OUT_PATH"), m_pRenewalWidget);
+	m_pLePatchOutPath = this->createWidget<QLineEdit>(m_pRenewalWidget);
+	m_pBtnPatchOutPath = this->createWidget<QPushButton>(tr("PATCH_OUT_PATH"), m_pRenewalWidget);
 
-	m_pLwOutPatchList = new QListWidget(m_pRenewalWidget);
+	m_pLwOutPatchList = this->createWidget<QListWidget>(m_pRenewalWidget);
 
-	m_pLbVersionPath = new QLabel(tr("LAB_VERSION_PATH"), m_pRenewalWidget);
-	m_pBtnVersionPatch = new QPushButton(tr("BTN_VERSION_PATH"), m_pRenewalWidget);
+	m_pLbVersionPath = this->createWidget<QLabel>(tr("LAB_VERSION_PATH"), m_pRenewalWidget);
+	m_pBtnVersionPatch = this->createWidget<QPushButton>(tr("BTN_VERSION_PATH"), m_pRenewalWidget);
 
-	m_plyHTitle = new QHBoxLayout(m_pTitleBar);
-	m_pCentralLayout = new QVBoxLayout(m_pCentralWidget);
+	m_plyHTitle = this->createWidget<QHBoxLayout>(m_pTitleBar);
+	m_pCentralLayout = this->createWidget<QVBoxLayout>(m_pCentralWidget);
 
-	m_pReadWidgetLayout = new QVBoxLayout(m_pReadWidget);
-	m_pReadFirstRowLayout = new QHBoxLayout(m_pReadWidget);
-	m_pReadSecondRowLayout = new QHBoxLayout(m_pReadWidget);
-	m_pReadThirdRowLayout = new QHBoxLayout(m_pReadWidget);
+	m_pReadWidgetLayout = this->createWidget<QVBoxLayout>(m_pReadWidget);
+	m_pReadFirstRowLayout = this->createWidget<QHBoxLayout>(m_pReadWidget);
+	m_pReadSecondRowLayout = this->createWidget<QHBoxLayout>(m_pReadWidget);
+	m_pReadThirdRowLayout = this->createWidget<QHBoxLayout>(m_pReadWidget);
 
-	m_pRenewalWidgetLayout = new QVBoxLayout(m_pRenewalWidget);
-	m_pRenewalFirstRowLayout = new QHBoxLayout(m_pRenewalWidget);
-	m_pRenewalSecondRowLayout = new QHBoxLayout(m_pRenewalWidget);
-	m_pRenewalThirdRowLayout = new QHBoxLayout(m_pRenewalWidget);
+	m_pRenewalWidgetLayout = this->createWidget<QVBoxLayout>(m_pRenewalWidget);
+	m_pRenewalFirstRowLayout = this->createWidget<QHBoxLayout>(m_pRenewalWidget);
+	m_pRenewalSecondRowLayout = this->createWidget<QHBoxLayout>(m_pRenewalWidget);
+	m_pRenewalThirdRowLayout = this->createWidget<QHBoxLayout>(m_pRenewalWidget);
 
 	setMenuWidget(m_pTitleBar);
 	setCentralWidget(m_pCentralWidget);
@@ -536,9 +531,9 @@ void CPatch::layOut() const {
 }
 
 void CPatch::init() {
-	m_pFlickerTimer = new QTimer(this);
+	m_pFlickerTimer = this->createWidget<QTimer>(this);
 	m_pFlickerTimer->setInterval(100); // 设置定时器间隔为100毫秒
-	m_pGenerateTime = new QTimer(this);
+	m_pGenerateTime = this->createWidget<QTimer>(this);
 	m_pGenerateTime->setInterval(1000);
 
 	m_pLePatchVersion->setReadOnly(true);
@@ -572,7 +567,7 @@ void CPatch::initConnect() {
 	connect(m_pBtnClose, &QPushButton::clicked, this, &CPatch::close);
 	connect(m_pBtnMin, &QPushButton::clicked, this, &CPatch::showMinimized);
 	connect(m_pActQuit, &QAction::triggered, this, &CPatch::close);
-	connect(m_pActMin, &QAction::triggered, this, &CPatch::showMinimized);
+	connect(m_pActShow, &QAction::triggered, this, &CPatch::show);
 	connect(m_ptrayIcon, &QSystemTrayIcon::activated, this, &CPatch::onSystemTrayIconActivated);
 	connect(m_pBtnStyle, &QPushButton::clicked, this, &CPatch::onBtnStyleClicked);
 	connect(m_pBtnOpen, &QPushButton::clicked, this, &CPatch::onBtnOpenClicked);
@@ -589,7 +584,7 @@ void CPatch::initConnect() {
 	connect(m_pActProgressbar_border_radius, &QAction::triggered, this, &CPatch::onActProgressbar_border_radiusClicked);
 	connect(m_pActProgressbar_block, &QAction::triggered, this, &CPatch::onActProgressbar_blockClicked);
 	connect(m_pActProgressbar_gradation, &QAction::triggered, this, &CPatch::onActProgressbar_gradationClicked);
-	connect(m_pFlickerTimer, &QTimer::timeout, this, [&]() {
+	connect(m_pFlickerTimer, &QTimer::timeout, this, [=]() {
 		if (m_pBtnPatchOutPath->styleSheet().isEmpty()) {
 			m_pBtnPatchOutPath->setStyleSheet("background-color: lightcoral;");
 		} else {
@@ -597,7 +592,7 @@ void CPatch::initConnect() {
 			m_pFlickerTimer->stop();
 		}
 	});
-	connect(m_pGenerateTime, &QTimer::timeout, this, [&]() {
+	connect(m_pGenerateTime, &QTimer::timeout, this, [=]() {
 		m_GenerateTime++;
 		m_pLbTime->setText(tr("Time: ") + QString::number(m_GenerateTime) + tr(" s"));
 	});
@@ -723,9 +718,9 @@ void CPatch::setSystemTrayIcon() {
 
 	m_ptrayIcon = new QSystemTrayIcon(this);
 	m_ptrayMenu = std::make_unique<QMenu>();
-	m_pActMin = new QAction(QObject::tr("Minimize"), m_ptrayMenu.get());
+	m_pActShow = new QAction(QObject::tr("Show"), m_ptrayMenu.get());
 	m_pActQuit = new QAction(QObject::tr("Exit"), m_ptrayMenu.get());
-	m_ptrayMenu->addAction(m_pActMin);
+	m_ptrayMenu->addAction(m_pActShow);
 	m_ptrayMenu->addAction(m_pActQuit);
 	m_ptrayMenu->setWindowFlag(Qt::FramelessWindowHint);
 	m_ptrayMenu->setAttribute(Qt::WA_TranslucentBackground);

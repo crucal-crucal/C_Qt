@@ -112,13 +112,28 @@ private:
 	 */
 	void openDir(const QString& _dirpath);
 
-private:
+	/*
+	 * @note: 构建模板
+	 */
+	template<typename T>
+	T* createWidget(QWidget* parent = nullptr, const QString& objName = "") {
+		T* widget = new T(parent);
+		widget->setObjectName(objName);
+		return widget;
+	}
+
+	template<typename T>
+	T* createWidget(const QString& text, QWidget* parent = nullptr, const QString& objName = "") {
+		T* widget = new T(text, parent);
+		widget->setObjectName(objName);
+		return widget;
+	}
+
 	void createCtrl();
 	void layOut() const;
 	void init();
 	void initConnect();
 
-private:
 	QWidget* m_pCentralWidget{ nullptr };
 
 	QWidget* m_pTitleBar{ nullptr };
@@ -188,7 +203,6 @@ private:
 	QHBoxLayout* m_pRenewalSecondRowLayout{ nullptr };
 	QHBoxLayout* m_pRenewalThirdRowLayout{ nullptr };
 
-private:
 	std::map<QString, QString> m_localMap{};       // 时间，完整路径
 	QString m_output{};                            // 记录上一次输出路径
 	QString m_dirname{};                           // 记录合并的文件夹名
@@ -203,7 +217,7 @@ private:
 	WINDOWTHEMESTYLE m_ThemeStyle{};               // 主题
 	QSystemTrayIcon* m_ptrayIcon{ nullptr };       // 系统托盘图标
 	std::unique_ptr<QMenu> m_ptrayMenu{ nullptr }; // 系统托盘菜单
-	QAction* m_pActMin{ nullptr };                 // 最小化按钮
+	QAction* m_pActShow{ nullptr };                 // 显示主界面按钮
 	QAction* m_pActQuit{ nullptr };                // 退出按钮
 	std::string m_dirPath{};                       // 记录上一次打开的目录路径，方便使用命令行直接打开控制
 };
