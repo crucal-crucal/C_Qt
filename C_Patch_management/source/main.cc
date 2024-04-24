@@ -131,6 +131,8 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
+	g_splashScreen->close();
+	g_splashScreen->deleteLater();
 	w.show();
 	const int nRet = QApplication::exec();
 	if (nRet == RETCODE_RESTART) {
