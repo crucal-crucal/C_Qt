@@ -96,12 +96,12 @@ int main(int argc, char* argv[]) {
 	windowThemeStyle = themeStyle;
 	// 加载样式表
 	QString str = (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark;
-	QThread::sleep(1);
 	g_splashScreen->showMessage(loadStyle(app, str) ? "Load Style Success!" : "Load Style Failed!", Qt::AlignBottom);
+	QThread::sleep(1);
 	// 加载翻译 & 加载Label大小
 	str = (windowLanguage == WINDOWLANAGUAGE::Chinese) ? strtrans_cn : strtrans_en;
-	QThread::sleep(1);
 	g_splashScreen->showMessage(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!", Qt::AlignBottom);
+	QThread::sleep(1);
 
 	CPatch w(windowLanguage, progressbarstyle, windowThemeStyle, App_arg_dir);
 	// 修改配置文件
@@ -121,6 +121,7 @@ int main(int argc, char* argv[]) {
 		unloadResources(strRcc);
 		unLoadTranslations();
 		g_sharedMemory.detach();
+		g_splashScreen->deleteLater();
 	});
 	// 程序唯一性检查
 	if (!checkSingleInstance(g_sharedMemory)) {
@@ -131,8 +132,7 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	g_splashScreen->close();
-	g_splashScreen->deleteLater();
+	g_splashScreen->hide();
 	w.show();
 	const int nRet = QApplication::exec();
 	if (nRet == RETCODE_RESTART) {
@@ -159,8 +159,7 @@ bool unloadResources(const QString& strPath) {
 }
 
 bool loadStyle(QApplication& app, const QString& filePath) {
-	QThread::sleep(1);
-	g_splashScreen->showMessage("Style filePath:\t" + filePath, Qt::AlignBottom);
+	qDebug() << ("Style filePath:\t" + filePath);
 	QFile file(filePath);
 	if (file.open(QFile::ReadOnly)) {
 		const QString strStyleSheet = QLatin1String(file.readAll());
@@ -204,8 +203,8 @@ void initializeConfigFile() {
 			Logger::instance().logError("Error: Unable to create directory " + QString::fromStdString(configDir));
 			return;
 		}
-		QThread::sleep(1);
 		g_splashScreen->showMessage("Directory " + QString::fromStdString(configDir) + " created.", Qt::AlignBottom);
+		QThread::sleep(1);
 	}
 
 	if (const std::ifstream configFile(configName); !configFile) {
@@ -216,14 +215,14 @@ void initializeConfigFile() {
 			outputFile << "ProgressbarStyle: " << progressBarStyle << "\n";
 			outputFile << "ThemeStyle: " << themeStyle;
 			outputFile.close();
-			QThread::sleep(1);
 			g_splashScreen->showMessage("Config file created.", Qt::AlignBottom);
+			QThread::sleep(1);
 		} else {
 			Logger::instance().logError("Error: Unable to create config file.");
 		}
 	} else {
-		QThread::sleep(1);
 		g_splashScreen->showMessage("Config file already exists.", Qt::AlignBottom);
+		QThread::sleep(1);
 	}
 }
 
