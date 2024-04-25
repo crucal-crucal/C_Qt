@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>./icon/close_hover.png</file>
+        <file>./icon/close_normal.png</file>
+        <file>./icon/min_hover.png</file>
+        <file>./icon/min_normal.png</file>
+        <file>./icon/dark.png</file>
+        <file>./icon/light.png</file>
+        <file>./icon/combobox_down_arrow_on.png</file>
+        <file>./icon/combobox_down_arrow.png</file>
+        <file>./icon/start.png</file>
+    </qresource>
+</RCC>
