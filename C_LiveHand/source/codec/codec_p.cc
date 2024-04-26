@@ -259,10 +259,9 @@ void CCodecThread::stop() {
 }
 
 void CCodecThread::run() {
-	int nRet = -1;
 	char errBuf[ERRBUFSIZE]{};
 	//查找视频流和音频流
-	nRet = avformat_open_input(&m_pFormatCtx, m_strFile.toStdString().c_str(), nullptr, nullptr);
+	int nRet = avformat_open_input(&m_pFormatCtx, m_strFile.toStdString().c_str(), nullptr, nullptr);
 	if (nRet < 0) {
 		av_strerror(nRet, errBuf, ERRBUFSIZE);
 		av_log(nullptr, AV_LOG_ERROR, "Can't open input, %s\n", errBuf);
@@ -486,7 +485,7 @@ void CCodecThread::run() {
 			// 存储音频流的索引
 			nAudioEncodeIndex = out_AudioStream->index;
 			// 将音频编码器的参数复制到音频流的参数中
-			nRet = avcodec_parameters_from_context(out_AudioStream->codecpar, pOutputAudioCodecCtx);
+			avcodec_parameters_from_context(out_AudioStream->codecpar, pOutputAudioCodecCtx);
 			// 不使用标签
 			out_AudioStream->codecpar->codec_tag = 0;
 
@@ -503,14 +502,16 @@ void CCodecThread::run() {
 		}
 
 		// 根据文件格式判断推流类型
-		int nPushStreamType = 0;
+		int nPushStreamType{0};
 		AVDictionary* avdic = nullptr;
-		if (strFileFormat == "flv")
+		if (strFileFormat == "flv") {
 			nPushStreamType = 0;
-		else if (strFileFormat == "mpegts")
+		} else if (strFileFormat == "mpegts") {
 			nPushStreamType = 1;
-		else if (strFileFormat == "mp4") {
+		} else if (strFileFormat == "mp4") {
 			nPushStreamType = 2;
+		} else {
+			nPushStreamType = 3;
 		}
 		if (nPushStreamType == 0) {
 			//		av_dict_set(&avdic, "rtmp_live", "1", 0);
@@ -1883,11 +1884,10 @@ QPair<AVCodecParameters*, AVCodecParameters*> CRecvThread::getContext() const {
 }
 
 void CRecvThread::run() {
-	int nRet{ -1 };
 	char errBuf[ERRBUFSIZE];
 	// 查找视频流和音频流
 	// 保存媒体文件的格式相关信息
-	nRet = avformat_open_input(&m_pFormatCtx, m_strPath.toStdString().c_str(), nullptr, nullptr);
+	int nRet = avformat_open_input(&m_pFormatCtx, m_strPath.toStdString().c_str(), nullptr, nullptr);
 	if (nRet < 0) {
 		av_strerror(nRet, errBuf, ERRBUFSIZE);
 		av_log(nullptr, AV_LOG_ERROR, "Can't open input, %s\n", errBuf);

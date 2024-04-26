@@ -5,9 +5,6 @@ if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif ()
 
-set(ffmpeg_libs_DIR ${CMAKE_SOURCE_DIR}/ffmpeg-5.0.1/Windows/lib)
-set(ffmpeg_headers_DIR ${CMAKE_SOURCE_DIR}/ffmpeg-5.0.1/Windows/include)
-
 # 添加头文件路径到编译器的头文件搜索路径下，多个路径以空格分隔
 include_directories(${ffmpeg_headers_DIR})
 include_directories(..)

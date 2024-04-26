@@ -13,49 +13,49 @@ QDialog#CUVFileBase {
     color: black;
     background-color: white;
 }
-QPushButton#CPatch_BtnStyle {
+QPushButton#CLiveHand_BtnStyle {
     color: black;
     width: 30px;
     height: 30px;
     border-radius: 15px;
 }
-QPushButton#CPatch_BtnStyle:checked {
+QPushButton#CLiveHand_BtnStyle:checked {
     border-image: url(:icon/light.png);
 }
-QPushButton#CPatch_BtnStyle:!checked {
+QPushButton#CLiveHand_BtnStyle:!checked {
     color: black;
     width: 30px;
     height: 30px;
     border-image: url(:icon/dark.png);
 }
-QPushButton#CPatch_BtnStyle:hover {
+QPushButton#CLiveHand_BtnStyle:hover {
     color: black;
     background-color: grey;
 }
 QPushButton#CUVBaseDialog_Dialog_Btn_Close,
-QPushButton#Dialog_Btn_Close,
+QPushButton#CLiveHand_Btn_Close,
 QPushButton#Dialog_Btn_Min {
     color: black;
     border: none;
     background: transparent;
 }
 QPushButton#CUVBaseDialog_Dialog_Btn_Close:hover,
-QPushButton#Dialog_Btn_Close:hover {
+QPushButton#CLiveHand_Btn_Close:hover {
     color: black;
     border-image: url(:/icon/close_hover.png);
 }
 QPushButton#CUVBaseDialog_Dialog_Btn_Close,
-QPushButton#Dialog_Btn_Close {
+QPushButton#CLiveHand_Btn_Close {
     color: black;
     border-image: url(:/icon/close_normal.png);
     width: 30px;
     height: 30px;
 }
-QPushButton#Dialog_Btn_Min:hover {
+QPushButton#CLiveHand_Btn_Min:hover {
     color: black;
     border-image: url(:/icon/min_hover.png);
 }
-QPushButton#Dialog_Btn_Min{
+QPushButton#CLiveHand_Btn_Min{
     color: black;
     border-image: url(:/icon/min_normal.png);
     width: 30px;

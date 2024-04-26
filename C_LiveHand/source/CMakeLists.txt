@@ -1,17 +1,20 @@
-set(TARGET_NAME application)
+set(TARGET_NAME CLiveHand)
 
 include_directories(.)
+include_directories(${ffmpeg_headers_DIR})
 
 set(header
-        test.h
+        clivehand.h
         CPlayBackWidget.h
 )
 
 set(source
         main.cc
-        test.cc
+        clivehand.cc
         CPlayBackWidget.cc
 )
+
+link_directories(${ffmpeg_libs_DIR})
 
 add_executable(${TARGET_NAME}
         ${header}

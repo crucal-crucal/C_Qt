@@ -12,7 +12,7 @@
 
 #include <QSettings>
 
-#include "test.h"
+#include "clivehand.h"
 #include "global/interface_global.h"
 #include "logger/logger.h"
 #include "splashscreen/SplashScreen.h"
@@ -69,9 +69,7 @@ int main(int argc, char* argv[]) {
 	checkWindowThemeStyle();
 	const QFileInfo appFile(QApplication::applicationFilePath());
 	// 将路径切换到上级目录
-	QDir dir(appFile.absolutePath());
-	dir.cdUp();
-	const QString appParPath = dir.absolutePath();
+	const QString appParPath = appFile.absolutePath();
 	const QString strStyle_light = appParPath + QString::fromLatin1(qssFilePathLight);
 	const QString strStyle_dark = appParPath + QString::fromLatin1(qssFilePathDark);
 	const QString strRcc = appParPath + QString::fromLatin1(rccFilePath);
@@ -94,9 +92,9 @@ int main(int argc, char* argv[]) {
 	g_splashScreen->showMessage(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!", Qt::AlignBottom);
 	QThread::sleep(1);
 
-	Test w;
+	CLiveHand w;
 	// 释放资源
-	QObject::connect(&w, &Test::destroyed, [&]() {
+	QObject::connect(&w, &CLiveHand::destroyed, [&]() {
 		unloadResources(strRcc);
 		unLoadTranslations();
 		g_sharedMemory.detach();

@@ -35,6 +35,8 @@ else ()
     message(FATAL_ERROR "Qt version not found. Please check if the QTDIR environment variable is set correctly.")
 endif ()
 
+set(ffmpeg_libs_DIR ${CMAKE_SOURCE_DIR}/bin/ffmpeg-5.0.1/Windows/lib)
+set(ffmpeg_headers_DIR ${CMAKE_SOURCE_DIR}/bin/ffmpeg-5.0.1/Windows/include)
 include_directories(${QT_DIR}/include)
 
 find_package(${Qt}

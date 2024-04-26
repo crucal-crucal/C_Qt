@@ -24,21 +24,21 @@ void CPlayBackWidget::openFile(const QString& strFile, const bool bLoop, const b
 	}
 
 	//rtmp://172.16.160.34/live/hpx  udp://233.233.233.233:5200
-	//m_pCodecThread->open(strFile, QVector<LXPushStreamInfo>{}, CLXCodecThread::OpenMode::OpenMode_Play, bLoop);
-	//LXPushStreamInfo stStream;
-	//stStream.eStream = LXPushStreamInfo::Video;
-	//stStream.eStream = LXPushStreamInfo::Audio;
-	//stStream.strAddress = "srt://127.0.0.1:22071?mode=listener";
-	//stStream.strAddress = "udp://127.0.0.1:5200";
-	//stStream.strAddress = "rtmp://192.168.190.130:1935/live/test1";
-	//stStream.nWidth = 1920;
-	//stStream.nHeight = 1080;
-	//stStream.nAudioSampleRate = 44100;
-	//stStream.nFrameRateNum = 1;
-	//stStream.nFrameRateDen = 50;
+	m_pCodecThread->open(strFile, m_pLbDisplay->size(), CPushStreamInfo{}, CCodecThread::OpenMode::OpenMode_Play, bLoop);
+	CPushStreamInfo stStream;
+	// stStream.eStream = CPushStreamInfo::Video;
+	// stStream.eStream = CPushStreamInfo::Audio;
+	stStream.strAddress = "srt://127.0.0.1:22071?mode=listener";
+	stStream.strAddress = "udp://127.0.0.1:5200";
+	stStream.strAddress = "rtmp://192.168.190.130:1935/live/test1";
+	stStream.nWidth = 1920;
+	stStream.nHeight = 1080;
+	stStream.nAudioSampleRate = 44100;
+	stStream.nFrameRateNum = 1;
+	stStream.nFrameRateDen = 50;
 
 	// 打开媒体文件或流
-	m_pCodecThread->open(strFile, m_pLbDisplay->size(), CPushStreamInfo(), CCodecThread::OpenMode::OpenMode_Play, bLoop, bPicture);
+	// m_pCodecThread->open(strFile, m_pLbDisplay->size(), CPushStreamInfo(), CCodecThread::OpenMode::OpenMode_Play, bLoop, bPicture);
 	// 处理所有当前事件，确保 open 函数执行完成
 	qApp->processEvents(QEventLoop::EventLoopExec);
 	//m_pCodecThread->open(strFile, m_pLbDisplay->size(), stStream,
