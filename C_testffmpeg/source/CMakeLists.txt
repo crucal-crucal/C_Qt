@@ -4,13 +4,13 @@ include_directories(.)
 
 set(header
         test.h
-        playbackwidget.h
+        CPlayBackWidget.h
 )
 
 set(source
         main.cc
         test.cc
-        playbackwidget.cc
+        CPlayBackWidget.cc
 )
 
 add_executable(${TARGET_NAME}

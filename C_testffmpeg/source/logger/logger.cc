@@ -2,7 +2,7 @@
 
 #include <QDateTime>
 
-#include "global/cglobal.h"
+#include "global/interface_global.h"
 
 Logger& Logger::instance() {
 	static Logger instance;

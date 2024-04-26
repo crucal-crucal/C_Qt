@@ -2,7 +2,7 @@
 
 #include <QString>
 
-#define  SAFE_DELETE(p) {if(p){delete p;p=nullptr;}}
+#define  SAFE_DELETE(p) { if (p) { delete p; p = nullptr; } }
 
 // 进程状态
 enum eProcessState {
@@ -32,6 +32,7 @@ struct CPushStreamInfo {
 	int nAudioSampleRate{ 0 };                       // 音频采样率
 };
 
+constexpr int ERRBUFSIZE = 4096; // 错误信息大小
 // 循环队列
 template<typename T>
 struct CircularQueue {

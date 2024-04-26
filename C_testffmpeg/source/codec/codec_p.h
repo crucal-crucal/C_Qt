@@ -8,7 +8,17 @@
 #include <QMutex>
 #include <QDebug>
 #include <QApplication>
+
 #include "global/cdefine.h"
+#include "ccalcptsdur.h"
+
+extern "C" {
+#include "libavcodec/avcodec.h"
+#include "libavformat/avformat.h"
+#include "libswscale/swscale.h"
+#include "libavcodec/codec_par.h"
+#include "libavutil/pixfmt.h"
+}
 
 class CCodecThread;
 class CVideoThread;
@@ -19,15 +29,21 @@ class CEncodeVideoThread;
 class CEncodeAudioThread;
 class CEncodeMuteAudioThread;
 class CPushThread;
-class AVFormatContext;
-class AVCodecContext;
-class AVFrame;
-class SwsContext;
-class AVPacket;
-class AVRational;
-class AVCodecParameters;
+struct AVFormatContext;
+struct AVCodecContext;
+struct AVFrame;
+struct SwsContext;
+struct AVPacket;
+struct AVRational;
+struct AVCodecParameters;
 
-class CCalcPtsDur {
+#ifdef CODEC_P_LIB
+#define CODEC_P_EXPORT Q_DECL_EXPORT
+#else
+#define CODEC_P_EXPORT Q_DECL_IMPORT
+#endif
+
+class CODEC_P_EXPORT CCalcPtsDur {
 public:
 	CCalcPtsDur();
 	~CCalcPtsDur();
@@ -37,13 +53,13 @@ public:
 	// 设置绝对基准时间
 	void SetAbsBaseTime(const __int64& llAbsBaseTime);
 	// 根据帧索引计算视频帧的时间戳
-	__int64 GetVideoPts(__int64 lFrameIndex) const;
+	[[nodiscard]] __int64 GetVideoPts(__int64 lFrameIndex) const;
 	// 根据帧索引计算视频帧的持续时间
-	__int64 GetVideoDur(__int64 lFrameIndex) const;
+	[[nodiscard]] __int64 GetVideoDur(__int64 lFrameIndex) const;
 	// 根据包索引和音频样本数计算音频帧的时间戳
-	__int64 GetAudioPts(__int64 lPaketIndex, int iAudioSample) const;
+	[[nodiscard]] __int64 GetAudioPts(__int64 lPaketIndex, int iAudioSample) const;
 	// 根据包索引和音频样本数计算音频帧的持续时间
-	__int64 GetAudioDur(__int64 lPaketIndex, int iAudioSample) const;
+	[[nodiscard]] __int64 GetAudioDur(__int64 lPaketIndex, int iAudioSample) const;
 	// 时间基准
 	double m_dTimeBase;
 	// 帧率分子
@@ -58,7 +74,7 @@ private:
 	__int64 m_llAbsBaseTime;
 };
 
-class CCodecThread : public QThread, public QRunnable {
+class CODEC_P_EXPORT CCodecThread final : public QThread, public QRunnable {
 	Q_OBJECT
 
 public:
@@ -66,9 +82,9 @@ public:
 		OpenMode_Play = 0x1,
 		OpenMode_Push = 0x2
 	};
-	enum eLXDecodeMode {
-		eLXDecodeMode_CPU = 0, // cpu解码
-		eLXDecodeMode_GPU      // gpu解码
+	enum eDecodeMode {
+		eDecodeMode_CPU = 0, // cpu解码
+		eDecodeMode_GPU      // gpu解码
 	};
 	explicit CCodecThread(QString strFile, CPushStreamInfo stStreamInfo, QSize szPlay,
 	                      QPair<AVCodecParameters*, AVCodecParameters*> pairRecvCodecPara,
@@ -78,7 +94,7 @@ public:
 	~CCodecThread() override;
 
 public:
-	void open(QString strFile, QSize szPlay, CPushStreamInfo stStreamInfo = CPushStreamInfo(),
+	void open(const QString& strFile, const QSize& szPlay, const CPushStreamInfo& stStreamInfo = CPushStreamInfo(),
 	          OpenMode mode = OpenMode_Play, bool bLoop = false, bool bPicture = false);
 	void seek(const quint64& nDuration);
 	void pause();
@@ -133,11 +149,11 @@ private:
 	CCodecThread::OpenMode m_eMode{ CCodecThread::OpenMode::OpenMode_Play };
 	bool m_bLoop{ false };
 	bool m_bPicture{ false };
-	eLXDecodeMode m_eDecodeMode{ eLXDecodeMode::eLXDecodeMode_CPU };
+	eDecodeMode m_eDecodeMode{ eDecodeMode::eDecodeMode_CPU };
 	static FILE* m_pLogFile;
 };
 
-class CVideoThread : public QThread {
+class CODEC_P_EXPORT CVideoThread final : public QThread {
 	Q_OBJECT
 
 public:
@@ -159,10 +175,9 @@ public:
 	eDecodeMode 解码模式
 	*/
 	explicit CVideoThread(CircularQueue<AVPacket*>& packetQueue, CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& waitCondition,
-	                      QMutex& mutex,
-	                      QWaitCondition& videoWaitCondition, QMutex& videoMutex, AVFormatContext* pFormatCtx,
-	                      int nStreamIndex, int nEncodeStreamIndex, QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> mapOutputCtx,
-	                      CCodecThread::OpenMode eMode, bool bSendCountDown, bool bPush, QSize szPlay, CCodecThread::eLXDecodeMode eDecodeMode,
+	                      QMutex& mutex, QWaitCondition& videoWaitCondition, QMutex& videoMutex, AVFormatContext* pFormatCtx,
+	                      int nStreamIndex, int nEncodeStreamIndex, QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairOutputCtx,
+	                      CCodecThread::OpenMode eMode, bool bSendCountDown, bool bPush, QSize szPlay, CCodecThread::eDecodeMode eDecodeMode,
 	                      QObject* parent = nullptr);
 	~CVideoThread() override;
 
@@ -176,13 +191,15 @@ public:
 	void setCurrentPts(int64_t nPts);
 
 	static enum AVPixelFormat hw_pix_fmt;
-	static enum AVPixelFormat get_hw_format(AVCodecContext* ctx,
-	                                        const enum AVPixelFormat* pix_fmts);
+	static enum AVPixelFormat get_hw_format(AVCodecContext* ctx, const enum AVPixelFormat* pix_fmts);
 signals:
 	// 通知倒计时
 	void notifyCountDown(const quint64&);
 	// 通知图像
 	void notifyImage(const QPixmap&);
+
+private:
+	static void clearQueue(CircularQueue<AVFrame*>& queue);
 
 protected:
 	void run() override;
@@ -198,7 +215,7 @@ private:
 	bool m_bPause{ false };                                                            // 是否暂停
 	bool m_bSendCountDown{ false };                                                    // 是否发送倒计时信号
 	bool m_bPush{ false };                                                             // 是否推流
-	bool m_decodeType{ 0 };                                                            // 解码类型
+	bool m_decodeType{ false };                                                        // 解码类型
 
 	CEncodeVideoThread* m_pEncodeThread{ nullptr };    // 视频编码线程
 	CVideoPlayThread* m_pPlayThread{ nullptr };        // 视频播放线程
@@ -215,10 +232,10 @@ private:
 	QWaitCondition& m_pushWaitCondition; // 推流线程条件变量和互斥锁
 	QMutex& m_pushMutex;
 	CCodecThread::OpenMode m_eMode{ CCodecThread::OpenMode::OpenMode_Play }; // 打开模式，是播放还是推流
-	const CCodecThread::eLXDecodeMode& m_eDecodeMode;                        // 解码模式
+	const CCodecThread::eDecodeMode& m_eDecodeMode;                          // 解码模式
 };
 
-class CLXAudioThread : public QThread {
+class CODEC_P_EXPORT CAudioThread final : public QThread {
 	Q_OBJECT
 
 public:
@@ -237,11 +254,11 @@ public:
 	bPush 是否推流
 	decodePara 解码参数
 	*/
-	explicit CLXAudioThread(CircularQueue<AVPacket*>& packetQueue, CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& waitCondition,
-	                        QMutex& mutex, QWaitCondition& audioWaitCondition, QMutex& audioMutex, AVFormatContext* pFormatCtx,
-	                        int nStreamIndex, int nEncodeStreamIndex, QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairOutputCtx,
-	                        CCodecThread::OpenMode eMode, bool bPush, const AVCodecParameters& decodePara, QObject* parent = nullptr);
-	~CLXAudioThread() override;
+	explicit CAudioThread(CircularQueue<AVPacket*>& packetQueue, CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& waitCondition,
+	                      QMutex& mutex, QWaitCondition& audioWaitCondition, QMutex& audioMutex, AVFormatContext* pFormatCtx,
+	                      int nStreamIndex, int nEncodeStreamIndex, QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairOutputCtx,
+	                      CCodecThread::OpenMode eMode, bool bPush, const AVCodecParameters& decodePara, QObject* parent = nullptr);
+	~CAudioThread() override;
 
 public:
 	void pause();
@@ -250,6 +267,10 @@ public:
 
 public:
 	void setCurrentPts(int64_t nPts);
+
+private:
+	static void clearQueue(CircularQueue<AVFrame*>& queue);
+
 signals:
 	// 通知倒计时信息
 	void notifyCountDown(const quint64&);
@@ -289,7 +310,7 @@ private:
 	CCodecThread::OpenMode m_eMode{ CCodecThread::OpenMode::OpenMode_Play }; // 音频处理方式
 };
 
-class CLXVideoPlayThread : public QThread {
+class CODEC_P_EXPORT CVideoPlayThread final : public QThread {
 	Q_OBJECT
 
 public:
@@ -304,10 +325,10 @@ public:
 	szPlay 播放窗口大小
 	eDecodeMode 视频解码模式
 	*/
-	explicit CLXVideoPlayThread(CircularQueue<AVFrame*>& decodeFrameQueue, QWaitCondition& waitCondition, QMutex& mutex,
-	                            AVCodecContext* pCodecCtx, const AVRational& timeBase, bool bSendCountDown, CVideoThread* videoThread, QSize szPlay,
-	                            CCodecThread::eLXDecodeMode eDecodeMode, QObject* parent = nullptr);
-	~CLXVideoPlayThread() override;
+	explicit CVideoPlayThread(CircularQueue<AVFrame*>& decodeFrameQueue, QWaitCondition& waitCondition, QMutex& mutex,
+	                          AVCodecContext* pCodecCtx, const AVRational& timeBase, bool bSendCountDown, CVideoThread* videoThread, QSize szPlay,
+	                          CCodecThread::eDecodeMode eDecodeMode, QObject* parent = nullptr);
+	~CVideoPlayThread() override;
 
 public:
 	void pause();
@@ -332,11 +353,11 @@ private:
 	CircularQueue<AVFrame*>& m_playFrameQueue; // 视频播放帧队列
 	QWaitCondition& m_playWaitCondition;       // 视频播放等待条件以及互斥锁
 	QMutex& m_playMutex;
-	QSize m_szPlay;                                   // 播放窗口尺寸
-	const CCodecThread::eLXDecodeMode& m_eDecodeMode; // 视频解码模式
+	QSize m_szPlay;                                 // 播放窗口尺寸
+	const CCodecThread::eDecodeMode& m_eDecodeMode; // 视频解码模式
 };
 
-class CLXAudioPlayThread : public QThread {
+class CODEC_P_EXPORT CAudioPlayThread final : public QThread {
 	Q_OBJECT
 
 public:
@@ -348,9 +369,9 @@ public:
 	timeBase 音频帧时间基数
 	audioThread 音频线程
 	*/
-	explicit CLXAudioPlayThread(CircularQueue<AVFrame*>& decodeFrameQueue, QWaitCondition& waitCondition, QMutex& mutex,
-	                            AVCodecContext* pCodecCtx, const AVRational& timeBase, CLXAudioThread* audioThread, QObject* parent = nullptr);
-	~CLXAudioPlayThread() override;
+	explicit CAudioPlayThread(CircularQueue<AVFrame*>& decodeFrameQueue, QWaitCondition& waitCondition, QMutex& mutex,
+	                          AVCodecContext* pCodecCtx, const AVRational& timeBase, CAudioThread* audioThread, QObject* parent = nullptr);
+	~CAudioPlayThread() override;
 
 public:
 	void pause();
@@ -370,13 +391,13 @@ private:
 	int64_t m_nLastTime{ -1 };                 // 上一次播放时间
 	int64_t m_nLastPts{ -1 };                  // 上一次播放时间戳
 	const AVRational& m_timeBase;              // 音频时间基数
-	CLXAudioThread* m_audioThread{ nullptr };  // 音频线程
+	CAudioThread* m_audioThread{ nullptr };    // 音频线程
 	CircularQueue<AVFrame*>& m_playFrameQueue; // 待播放音频帧队列
 	QWaitCondition& m_playWaitCondition;       // 音频播放等待条件以及互斥锁
 	QMutex& m_playMutex;
 };
 
-class CLXEncodeVideoThread : public QThread {
+class CODEC_P_EXPORT CEncodeVideoThread final : public QThread {
 	Q_OBJECT
 
 public:
@@ -391,12 +412,12 @@ public:
 	pairEncodeCtx 编码器上下文和相关信息的组合
 	eDecodeMode 编码模式
 	*/
-	explicit CLXEncodeVideoThread(CircularQueue<AVFrame*>& encodeFrameQueue, CircularQueue<AVPacket*>& pushPacketQueue,
-	                              QWaitCondition& encodeWaitCondition,
-	                              QMutex& encodeMutex, QWaitCondition& pushWaitCondition, QMutex& pushMutex, int nEncodeStreamIndex,
-	                              QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairEncodeCtx,
-	                              CCodecThread::eLXDecodeMode eDecodeMode, QObject* parent = nullptr);
-	~CLXEncodeVideoThread() override;
+	explicit CEncodeVideoThread(CircularQueue<AVFrame*>& encodeFrameQueue, CircularQueue<AVPacket*>& pushPacketQueue,
+	                            QWaitCondition& encodeWaitCondition,
+	                            QMutex& encodeMutex, QWaitCondition& pushWaitCondition, QMutex& pushMutex, int nEncodeStreamIndex,
+	                            QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairEncodeCtx,
+	                            CCodecThread::eDecodeMode eDecodeMode, QObject* parent = nullptr);
+	~CEncodeVideoThread() override;
 
 public:
 	void pause();
@@ -417,10 +438,10 @@ private:
 	QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> m_pairEncodeCtx; // 编码器以及相关的信息
 	bool m_bRunning{ true };                                                          // 是否运行
 	bool m_bPause{ false };                                                           // 是否暂停
-	const CCodecThread::eLXDecodeMode& m_eEncodeMode;                                 // 编码模式
+	const CCodecThread::eDecodeMode& m_eEncodeMode;                                   // 编码模式
 };
 
-class CLXEncodeAudioThread : public QThread {
+class CODEC_P_EXPORT CEncodeAudioThread final : public QThread {
 	Q_OBJECT
 
 public:
@@ -434,11 +455,11 @@ public:
 	nEncodeStreamIndex 音频流索引
 	pairEncodeCtx 编码器上下文和相关信息的组合
 	*/
-	explicit CLXEncodeAudioThread(CircularQueue<AVFrame*>& encodeFrameQueue, CircularQueue<AVPacket*>& pushPacketQueue,
-	                              QWaitCondition& encodeWaitCondition,
-	                              QMutex& encodeMutex, QWaitCondition& pushWaitCondition, QMutex& pushMutex, int nEncodeStreamIndex,
-	                              QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairEncodeCtx, QObject* parent = nullptr);
-	~CLXEncodeAudioThread() override;
+	explicit CEncodeAudioThread(CircularQueue<AVFrame*>& encodeFrameQueue, CircularQueue<AVPacket*>& pushPacketQueue,
+	                            QWaitCondition& encodeWaitCondition, QMutex& encodeMutex, QWaitCondition& pushWaitCondition, QMutex& pushMutex,
+	                            int nEncodeStreamIndex, QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairEncodeCtx,
+	                            QObject* parent = nullptr);
+	~CEncodeAudioThread() override;
 
 public:
 	void pause();
@@ -461,7 +482,7 @@ private:
 	bool m_bPause{ false };                                                           // 是否暂停
 };
 
-class CLXEncodeMuteAudioThread : public QThread {
+class CODEC_P_EXPORT CEncodeMuteAudioThread final : public QThread {
 	Q_OBJECT
 
 public:
@@ -474,10 +495,10 @@ public:
 	nEncodeStreamIndex 音频流索引
 	pairEncodeCtx 编码器上下文和相关信息的组合
 	*/
-	explicit CLXEncodeMuteAudioThread(CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& encodeWaitCondition,
-	                                  QMutex& encodeMutex, QWaitCondition& syncWaitCondition, QMutex& syncMutex, int nEncodeStreamIndex,
-	                                  std::tuple<CCalcPtsDur, AVCodecContext*> pairEncodeCtx, QObject* parent = nullptr);
-	~CLXEncodeMuteAudioThread() override;
+	explicit CEncodeMuteAudioThread(CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& encodeWaitCondition,
+	                                QMutex& encodeMutex, QWaitCondition& syncWaitCondition, QMutex& syncMutex, int nEncodeStreamIndex,
+	                                std::tuple<CCalcPtsDur, AVCodecContext*> pairEncodeCtx, QObject* parent = nullptr);
+	~CEncodeMuteAudioThread() override;
 
 public:
 	void pause();
@@ -499,14 +520,14 @@ private:
 	bool m_bPause{ false };                                   // 是否暂停
 };
 
-class CLXPushThread : public QThread {
+class CODEC_P_EXPORT CPushThread final : public QThread {
 	Q_OBJECT
 
 public:
-	explicit CLXPushThread(AVFormatContext* pOutputFormatCtx, CircularQueue<AVPacket*>& videoPacketQueue,
-	                       CircularQueue<AVPacket*>& audioPacketQueue, QWaitCondition& videoWaitCondition, QMutex& videoMutex,
-	                       QWaitCondition& audioWaitCondition, QMutex& audioMutex, bool bPushVideo, bool bPushAudio, QObject* parent = nullptr);
-	~CLXPushThread() override;
+	explicit CPushThread(AVFormatContext* pOutputFormatCtx, CircularQueue<AVPacket*>& videoPacketQueue,
+	                     CircularQueue<AVPacket*>& audioPacketQueue, QWaitCondition& videoWaitCondition, QMutex& videoMutex,
+	                     QWaitCondition& audioWaitCondition, QMutex& audioMutex, bool bPushVideo, bool bPushAudio, QObject* parent = nullptr);
+	~CPushThread() override;
 
 public:
 	// 暂停推送
@@ -533,17 +554,17 @@ private:
 	AVFormatContext* m_pOutputFormatCtx{ nullptr }; // 输出格式上下文
 };
 
-class CLXRecvThread : public QThread, public QRunnable {
+class CODEC_P_EXPORT CRecvThread final : public QThread, public QRunnable {
 	Q_OBJECT
 
 public:
-	explicit CLXRecvThread(QString strPath, QObject* parent = nullptr);
-	~CLXRecvThread() override;
+	explicit CRecvThread(QString strPath, QObject* parent = nullptr);
+	~CRecvThread() override;
 
 public:
 	void stop();
-	QString path() const;
-	QPair<AVCodecParameters*, AVCodecParameters*> getContext() const;
+	[[nodiscard]] QString path() const;
+	[[nodiscard]] QPair<AVCodecParameters*, AVCodecParameters*> getContext() const;
 
 protected:
 	void run() override;

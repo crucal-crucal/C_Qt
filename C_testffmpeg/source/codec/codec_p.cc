@@ -1,5 +1,7 @@
 #include "codec_p.h"
 
+#include <QDateTime>
+#include <qfile.h>
 #include <utility>
 
 extern "C" {
@@ -7,8 +9,6 @@ extern "C" {
 #include "libavformat/avformat.h"
 #include "libswscale/swscale.h"
 #include "libavformat/avio.h"
-#include "libavcodec/bsf.h"
-#include "libavdevice/avdevice.h"
 #include "libavutil/samplefmt.h"
 #include "libavutil/imgutils.h"
 #include "libavcodec/codec_par.h"
@@ -17,7 +17,7 @@ extern "C" {
 #include "libavutil/pixfmt.h"
 }
 
-//CCalcPtsDur
+// CCalcPtsDur
 inline CCalcPtsDur::CCalcPtsDur() {
 	m_dTimeBase = 0.0;
 	m_dFpsBen = 0.0;
@@ -33,43 +33,43 @@ inline void CCalcPtsDur::SetAbsBaseTime(const __int64& llAbsBaseTime) {
 	m_llAbsBaseTime = llAbsBaseTime;
 }
 
-inline void CCalcPtsDur::SetTimeBase(const int iTimeBase, const int iFpsNum, const int iFpsBen) {
+inline void CCalcPtsDur::SetTimeBase(const int iTimeBase, const int iFpsNum, const int iTimeBen) {
 	m_dTimeBase = static_cast<double>(iTimeBase);
-	m_dFpsBen = static_cast<double>(iFpsBen);
+	m_dFpsBen = static_cast<double>(iTimeBen);
 	m_dFpsNum = static_cast<double>(iFpsNum);
 
 	m_dFrameDur = m_dTimeBase / (m_dFpsNum / m_dFpsBen);
 }
 
-inline __int64 CCalcPtsDur::GetVideoPts(__int64 lFrameIndex) const {
+inline __int64 CCalcPtsDur::GetVideoPts(const __int64 lFrameIndex) const {
 	auto lPts = static_cast<__int64>(m_dFrameDur) * lFrameIndex;
 	lPts += m_llAbsBaseTime;
 
 	return lPts;
 }
 
-inline __int64 CCalcPtsDur::GetVideoDur(__int64 lFrameIndex) const {
-	__int64 lPts0 = static_cast<__int64>(m_dFrameDur) * lFrameIndex;
-	__int64 lPts1 = static_cast<__int64>(m_dFrameDur) * (lFrameIndex + 1);
+inline __int64 CCalcPtsDur::GetVideoDur(const __int64 lFrameIndex) const {
+	const __int64 lPts0 = static_cast<__int64>(m_dFrameDur) * lFrameIndex;
+	const __int64 lPts1 = static_cast<__int64>(m_dFrameDur) * (lFrameIndex + 1);
 	return lPts1 - lPts0;
 }
 
-inline __int64 CCalcPtsDur::GetAudioPts(__int64 lPaketIndex, int iAudioSample) const {
-	__int64 dAACSample = 1024.0;
+inline __int64 CCalcPtsDur::GetAudioPts(const __int64 lPaketIndex, const int iAudioSample) const {
+	constexpr __int64 dAACSample = 1024.0;
 
 	__int64 llPts = lPaketIndex * static_cast<__int64>(m_dTimeBase) * dAACSample / iAudioSample;
 	llPts += m_llAbsBaseTime;
 	return llPts;
 }
 
-__int64 CCalcPtsDur::GetAudioDur(__int64 lPaketIndex, int iAudioSample) const {
-	__int64 lPts0 = GetAudioPts(lPaketIndex, iAudioSample);
-	__int64 lPts1 = GetAudioPts(lPaketIndex + 1, iAudioSample);
+__int64 CCalcPtsDur::GetAudioDur(const __int64 lPaketIndex, const int iAudioSample) const {
+	const __int64 lPts0 = GetAudioPts(lPaketIndex, iAudioSample);
+	const __int64 lPts1 = GetAudioPts(lPaketIndex + 1, iAudioSample);
 	return lPts1 - lPts0;
 }
 
 // 根据给定的采样率和通道数，为 ADTS 格式的音频帧补充 ADTS 头部信息
-void GetADTS(uint8_t* pBuf, __int64 nSampleRate, __int64 nChannels) {
+void GetADTS(uint8_t* pBuf, const __int64 nSampleRate, const __int64 nChannels) {
 	// 根据采样率确定 ADTS 头部中的 smap 值
 	int iSmapIndex = 0;
 	if (nSampleRate == 44100)
@@ -99,10 +99,13 @@ void GetADTS(uint8_t* pBuf, __int64 nSampleRate, __int64 nChannels) {
 
 // CCodecThread
 FILE* CCodecThread::m_pLogFile = nullptr;
-CCodecThread::CCodecThread(QString strFile, CPushStreamInfo stStreamInfo, QSize szPlay,
-                           QPair<AVCodecParameters*, AVCodecParameters*> pairRecvCodecPara, OpenMode mode, bool bLoop, bool bPicture, QObject* parent)
-: QThread(parent), m_eMode(mode), m_stPushStreamInfo(std::move(stStreamInfo)), m_strFile(std::move(strFile)), m_bLoop(bLoop),
-  m_pairRecvCodecPara(pairRecvCodecPara), m_szPlay(szPlay), m_bPicture(bPicture) {
+
+CCodecThread::CCodecThread(QString strFile, CPushStreamInfo stStreamInfo, const QSize szPlay,
+                           const QPair<AVCodecParameters*, AVCodecParameters*> pairRecvCodecPara, const OpenMode mode, const bool bLoop,
+                           const bool bPicture, QObject* parent)
+: QThread(parent), m_pairRecvCodecPara(pairRecvCodecPara), m_strFile(std::move(strFile)), m_szPlay(szPlay),
+  m_stPushStreamInfo(std::move(stStreamInfo)),
+  m_eMode(mode), m_bLoop(bLoop), m_bPicture(bPicture) {
 	// 设置日志级别为最详细的日志信息
 	av_log_set_level(AV_LOG_TRACE);
 	// 设置回调函数，写入日志信息
@@ -123,7 +126,8 @@ CCodecThread::~CCodecThread() {
 	clearMemory();
 }
 
-void CCodecThread::open(QString strFile, QSize szPlay, CPushStreamInfo stStreamInfo, OpenMode mode, bool bLoop, bool bPicture) {
+void CCodecThread::open(const QString& strFile, const QSize& szPlay, const CPushStreamInfo& stStreamInfo, const OpenMode mode, const bool bLoop,
+                        const bool bPicture) {
 	stop();
 	m_strFile = strFile;
 	m_stPushStreamInfo = stStreamInfo;
@@ -143,12 +147,14 @@ void CCodecThread::seek(const quint64& nDuration) {
 		// 处理视频定位
 		if (m_pVideoThread) {
 			// 定位视频流
-			int nRet = avformat_seek_file(m_pFormatCtx, m_nVideoIndex, m_pFormatCtx->streams[m_nVideoIndex]->start_time,
-			                              nDuration / av_q2d(m_pFormatCtx->streams[m_nVideoIndex]->time_base),
-			                              m_pFormatCtx->streams[m_nVideoIndex]->duration, AVSEEK_FLAG_BACKWARD | AVSEEK_FLAG_FRAME);
-			if (nRet >= 0) {
+			if (const int nRet = avformat_seek_file(m_pFormatCtx, m_nVideoIndex, m_pFormatCtx->streams[m_nVideoIndex]->start_time,
+			                                        static_cast<int64_t>(nDuration / static_cast<int64_t>(av_q2d(
+				                                        m_pFormatCtx->streams[m_nVideoIndex]->time_base))),
+			                                        m_pFormatCtx->streams[m_nVideoIndex]->duration,
+			                                        AVSEEK_FLAG_BACKWARD | AVSEEK_FLAG_FRAME); nRet >= 0) {
 				// 设置视频线程当前的 PTS
-				m_pVideoThread->setCurrentPts(nDuration / av_q2d(m_pFormatCtx->streams[m_nVideoIndex]->time_base));
+				m_pVideoThread->setCurrentPts(
+					static_cast<int64_t>(nDuration / static_cast<int64_t>(av_q2d(m_pFormatCtx->streams[m_nVideoIndex]->time_base))));
 				// 清空视频队列中的数据
 				while (!m_videoPacketQueue.isEmpty()) {
 					AVPacket* pkt = m_videoPacketQueue.pop();
@@ -163,18 +169,20 @@ void CCodecThread::seek(const quint64& nDuration) {
 				}
 				m_videoPushPacketQueue.clear();
 			} else {
-				av_log(NULL, AV_LOG_WARNING, "seek video fail, avformat_seek_file return %d\n", nRet);
+				av_log(nullptr, AV_LOG_WARNING, "seek video fail, avformat_seek_file return %d\n", nRet);
 			}
 		}
 		// 处理音频定位
 		if (m_pAudioThread) {
 			if (m_nAudioIndex >= 0) {
 				// 定位音频流
-				int nRet = avformat_seek_file(m_pFormatCtx, m_nAudioIndex, m_pFormatCtx->streams[m_nAudioIndex]->start_time,
-				                              nDuration / av_q2d(m_pFormatCtx->streams[m_nAudioIndex]->time_base),
-				                              m_pFormatCtx->streams[m_nAudioIndex]->duration, AVSEEK_FLAG_BACKWARD | AVSEEK_FLAG_FRAME);
-				if (nRet >= 0) {
-					m_pAudioThread->setCurrentPts(nDuration / av_q2d(m_pFormatCtx->streams[m_nAudioIndex]->time_base));
+				if (const int nRet = avformat_seek_file(m_pFormatCtx, m_nAudioIndex, m_pFormatCtx->streams[m_nAudioIndex]->start_time,
+				                                        static_cast<int64_t>(nDuration / static_cast<int64_t>(av_q2d(
+					                                        m_pFormatCtx->streams[m_nAudioIndex]->time_base))),
+				                                        m_pFormatCtx->streams[m_nAudioIndex]->duration,
+				                                        AVSEEK_FLAG_BACKWARD | AVSEEK_FLAG_FRAME); nRet >= 0) {
+					m_pAudioThread->setCurrentPts(
+						static_cast<int64_t>(nDuration / static_cast<int64_t>(av_q2d(m_pFormatCtx->streams[m_nAudioIndex]->time_base))));
 					while (!m_audioPacketQueue.isEmpty()) {
 						AVPacket* pkt = m_audioPacketQueue.pop();
 						av_packet_unref(pkt);
@@ -188,23 +196,21 @@ void CCodecThread::seek(const quint64& nDuration) {
 					}
 					m_audioPushPacketQueue.clear();
 				} else {
-					av_log(NULL, AV_LOG_WARNING, "seek audio fail, avformat_seek_file return %d\n", nRet);
+					av_log(nullptr, AV_LOG_WARNING, "seek audio fail, avformat_seek_file return %d\n", nRet);
 				}
 			} else if (m_pEncodeMuteThread) {
-				//while (!m_audioPacketQueue.isEmpty())
-				//{
-				//    AVPacket* pkt = m_audioPacketQueue.pop();
-				//    av_packet_unref(pkt);
-				//    av_packet_free(&pkt);
-				//}
-				//m_audioPacketQueue.clear();
-				//while (!m_audioPushPacketQueue.isEmpty())
-				//{
-				//    AVPacket* pkt = m_audioPushPacketQueue.pop();
-				//    av_packet_unref(pkt);
-				//    av_packet_free(&pkt);
-				//}
-				//m_audioPushPacketQueue.clear();
+				while (!m_audioPacketQueue.isEmpty()) {
+					AVPacket* pkt = m_audioPacketQueue.pop();
+					av_packet_unref(pkt);
+					av_packet_free(&pkt);
+				}
+				m_audioPacketQueue.clear();
+				while (!m_audioPushPacketQueue.isEmpty()) {
+					AVPacket* pkt = m_audioPushPacketQueue.pop();
+					av_packet_unref(pkt);
+					av_packet_free(&pkt);
+				}
+				m_audioPushPacketQueue.clear();
 			}
 		}
 	}
@@ -249,31 +255,31 @@ void CCodecThread::stop() {
 	m_videoWaitCondition.wakeAll();
 	m_audioWaitCondition.wakeAll();
 	m_AVSyncWaitCondition.wakeAll();
-	wait();
+	this->wait();
 }
 
 void CCodecThread::run() {
 	int nRet = -1;
-	char errBuf[4096];
+	char errBuf[ERRBUFSIZE]{};
 	//查找视频流和音频流
-	nRet = avformat_open_input(&m_pFormatCtx, m_strFile.toStdString().c_str(), NULL, NULL);
+	nRet = avformat_open_input(&m_pFormatCtx, m_strFile.toStdString().c_str(), nullptr, nullptr);
 	if (nRet < 0) {
-		av_strerror(nRet, errBuf, 4096);
-		av_log(NULL, AV_LOG_ERROR, "Can't open input, %s\n", errBuf);
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_ERROR, "Can't open input, %s\n", errBuf);
 		return;
 	}
-	nRet = avformat_find_stream_info(m_pFormatCtx, NULL);
+	nRet = avformat_find_stream_info(m_pFormatCtx, nullptr);
 	if (nRet < 0) {
-		av_strerror(nRet, errBuf, 4096);
-		av_log(NULL, AV_LOG_ERROR, "Can't find stream info, %s\n", errBuf);
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_ERROR, "Can't find stream info, %s\n", errBuf);
 		avformat_close_input(&m_pFormatCtx);
 		return;
 	}
 	av_dump_format(m_pFormatCtx, 0, m_strFile.toStdString().c_str(), 0);
-	m_nVideoIndex = av_find_best_stream(m_pFormatCtx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
-	m_nAudioIndex = av_find_best_stream(m_pFormatCtx, AVMEDIA_TYPE_AUDIO, -1, -1, NULL, 0);
+	m_nVideoIndex = av_find_best_stream(m_pFormatCtx, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
+	m_nAudioIndex = av_find_best_stream(m_pFormatCtx, AVMEDIA_TYPE_AUDIO, -1, -1, nullptr, 0);
 	if (-1 == m_nVideoIndex && -1 == m_nAudioIndex) {
-		av_log(NULL, AV_LOG_ERROR, "Can't find video and audio stream, %s\n");
+		av_log(nullptr, AV_LOG_ERROR, "Can't find video and audio stream, %s\n");
 		avformat_close_input(&m_pFormatCtx);
 		return;
 	}
@@ -284,7 +290,7 @@ void CCodecThread::run() {
 	if (CCodecThread::OpenMode::OpenMode_Push & m_eMode) {
 		// 解析推流地址的 scheme
 		QUrl url(m_stPushStreamInfo.strAddress);
-		AVFormatContext* pOutputFormatCtx = NULL;
+		AVFormatContext* pOutputFormatCtx = nullptr;
 		CCalcPtsDur calPts;
 		QString strFileFormat = url.scheme();
 		// 根据 scheme 设置输出格式
@@ -308,21 +314,21 @@ void CCodecThread::run() {
 		nRet = avformat_alloc_output_context2(&pOutputFormatCtx, nullptr, strFileFormat.toStdString().c_str(),
 		                                      m_stPushStreamInfo.strAddress.toStdString().c_str());
 		if (nRet < 0) {
-			av_strerror(nRet, errBuf, 4096);
-			av_log(NULL, AV_LOG_ERROR, "Can't alloc output ctx, %s\n", errBuf);
+			av_strerror(nRet, errBuf, ERRBUFSIZE);
+			av_log(nullptr, AV_LOG_ERROR, "Can't alloc output ctx, %s\n", errBuf);
 			avformat_close_input(&m_pFormatCtx);
 			return;
 		}
 
 		//video
-		AVCodecContext* pOutputVideoCodecCtx = NULL;
+		AVCodecContext* pOutputVideoCodecCtx = nullptr;
 		if (CPushStreamInfo::Video & m_stPushStreamInfo.eStream) {
 			// 查找H.264视频编码器
 			const AVCodec* out_VideoCodec = avcodec_find_encoder(AV_CODEC_ID_H264);
 			//const AVCodec* out_VideoCodec = avcodec_find_encoder_by_name("h264_nvenc");
 
 			// 分配和初始化输出视频编码器上下文
-			pOutputVideoCodecCtx = avcodec_alloc_context3(NULL);
+			pOutputVideoCodecCtx = avcodec_alloc_context3(nullptr);
 			if (m_pairRecvCodecPara.first && m_pairRecvCodecPara.first->width > 0 && m_pairRecvCodecPara.first->height > 0) {
 				// 存在输入流参数，将其拷贝到输出视频编码器的上下文中
 				avcodec_parameters_to_context(pOutputVideoCodecCtx, m_pairRecvCodecPara.first);
@@ -337,7 +343,8 @@ void CCodecThread::run() {
 				pOutputVideoCodecCtx->height = m_stPushStreamInfo.nHeight > 0 ? m_stPushStreamInfo.nHeight :
 					                               m_pFormatCtx->streams[m_nVideoIndex]->codecpar->height;
 				//平均码率
-				pOutputVideoCodecCtx->bit_rate = m_stPushStreamInfo.fVideoBitRate > 0 ? m_stPushStreamInfo.fVideoBitRate : 2000000; //变小码率画质不清晰
+				pOutputVideoCodecCtx->bit_rate = m_stPushStreamInfo.fVideoBitRate > 0 ? static_cast<int64_t>(m_stPushStreamInfo.fVideoBitRate)
+					                                 : 2000000; //变小码率画质不清晰
 				//指定图像中每个像素的颜色数据的格式
 				//I帧间隔  50帧一个I帧
 				pOutputVideoCodecCtx->gop_size = 50;
@@ -368,14 +375,13 @@ void CCodecThread::run() {
 			/*
 			preset有ultrafast，superfast，veryfast，faster，fast，medium，slow，slower，veryslow，placebo这10个级别，每个级别的preset对应一组编码参数，不同级别的preset对应的编码参数集不一致。preset级别越高，编码速度越慢，解码后的质量也越高；级别越低，速度也越快，解码后的图像质量也就越差，从左到右，编码速度越来越慢，编码质量越来越好
 			*/
-			AVDictionary* param = 0;
+			AVDictionary* param = nullptr;
 			av_dict_set(&param, "preset", "superfast", 0);
 			av_dict_set(&param, "tune", "zerolatency", 0);
 			//av_dict_set(&param, "profile", "baseline", 0);
-			int nRet = avcodec_open2(pOutputVideoCodecCtx, out_VideoCodec, &param);
-			if (nRet < 0) {
-				av_strerror(nRet, errBuf, 4096);
-				av_log(NULL, AV_LOG_ERROR, "Can't open video encoder\n");
+			if (int inRet = avcodec_open2(pOutputVideoCodecCtx, out_VideoCodec, &param); inRet < 0) {
+				av_strerror(inRet, errBuf, ERRBUFSIZE);
+				av_log(nullptr, AV_LOG_ERROR, "Can't open video encoder\n");
 				avcodec_free_context(&pOutputVideoCodecCtx);
 				avformat_free_context(pOutputFormatCtx);
 				avformat_close_input(&m_pFormatCtx);
@@ -392,9 +398,9 @@ void CCodecThread::run() {
 			//memcpy(pOutputVideoCodecCtx->extradata, sps_pps, 23);
 
 			// 创建输出流视频
-			AVStream* out_VideoStream = avformat_new_stream(pOutputFormatCtx, NULL);
+			AVStream* out_VideoStream = avformat_new_stream(pOutputFormatCtx, nullptr);
 			if (!out_VideoStream) {
-				av_log(NULL, AV_LOG_ERROR, "Can't create video streeam\n");
+				av_log(nullptr, AV_LOG_ERROR, "Can't create video streeam\n");
 				avcodec_free_context(&pOutputVideoCodecCtx);
 				avformat_free_context(pOutputFormatCtx);
 				avformat_close_input(&m_pFormatCtx);
@@ -423,7 +429,7 @@ void CCodecThread::run() {
 		}
 
 		//audio
-		AVCodecContext* pOutputAudioCodecCtx = NULL;
+		AVCodecContext* pOutputAudioCodecCtx = nullptr;
 		if (CPushStreamInfo::Audio & m_stPushStreamInfo.eStream) {
 			// 查找 AAC 音频编码器
 			const AVCodec* out_AudioCodec = avcodec_find_encoder(AV_CODEC_ID_AAC);
@@ -447,13 +453,13 @@ void CCodecThread::run() {
 				//                 pOutputAudioCodecCtx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 				//             }
 
-				pOutputAudioCodecCtx->extradata_size = 5;                  // 设置音频编码器的额外数据大小为5个字节
-				pOutputAudioCodecCtx->extradata = (uint8_t*)av_mallocz(5); // 分配5个字节额外空间
+				pOutputAudioCodecCtx->extradata_size = 5;                               // 设置音频编码器的额外数据大小为5个字节
+				pOutputAudioCodecCtx->extradata = static_cast<uint8_t*>(av_mallocz(5)); // 分配5个字节额外空间
 				// 生成 AAC 的 ADTS 头信息
 				GetADTS(pOutputAudioCodecCtx->extradata, pOutputAudioCodecCtx->sample_rate, pOutputAudioCodecCtx->channels);
 			}
 			// 创建字典，存储音频编码器的配置参数
-			AVDictionary* param = 0;
+			AVDictionary* param = nullptr;
 			// 设置音频编码器的预设值，预设值影响编码速度和质量之前的权衡
 			av_dict_set(&param, "preset", "superfast", 0);
 			// 设置音频编码器的调整参数，优化编码器以减小延迟
@@ -461,17 +467,17 @@ void CCodecThread::run() {
 			// 打开音频编码器
 			nRet = avcodec_open2(pOutputAudioCodecCtx, out_AudioCodec, &param);
 			if (nRet < 0) {
-				av_strerror(nRet, errBuf, 4096);
-				av_log(NULL, AV_LOG_ERROR, "Can't open audio encoder\n");
+				av_strerror(nRet, errBuf, ERRBUFSIZE);
+				av_log(nullptr, AV_LOG_ERROR, "Can't open audio encoder\n");
 				avcodec_free_context(&pOutputAudioCodecCtx);
 				avformat_free_context(pOutputFormatCtx);
 				avformat_close_input(&m_pFormatCtx);
 				return;
 			}
 			// 创建音频流，并将其添加到输出格式上下文中
-			AVStream* out_AudioStream = avformat_new_stream(pOutputFormatCtx, NULL);
+			AVStream* out_AudioStream = avformat_new_stream(pOutputFormatCtx, nullptr);
 			if (!out_AudioStream) {
-				av_log(NULL, AV_LOG_ERROR, "Can't create audio stream\n");
+				av_log(nullptr, AV_LOG_ERROR, "Can't create audio stream\n");
 				avcodec_free_context(&pOutputAudioCodecCtx);
 				avformat_free_context(pOutputFormatCtx);
 				avformat_close_input(&m_pFormatCtx);
@@ -503,6 +509,9 @@ void CCodecThread::run() {
 			nPushStreamType = 0;
 		else if (strFileFormat == "mpegts")
 			nPushStreamType = 1;
+		else if (strFileFormat == "mp4") {
+			nPushStreamType = 2;
+		}
 		if (nPushStreamType == 0) {
 			//		av_dict_set(&avdic, "rtmp_live", "1", 0);
 			//		av_dict_set(&avdic, "live", "1", 0);
@@ -520,8 +529,8 @@ void CCodecThread::run() {
 		// 打开输出流的 I/O 上下文，传递之前设置好的音频编码器配置参数
 		nRet = avio_open2(&pOutputFormatCtx->pb, m_stPushStreamInfo.strAddress.toStdString().c_str(), AVIO_FLAG_WRITE, nullptr, &avdic);
 		if (nRet < 0) {
-			av_strerror(nRet, errBuf, 4096);
-			av_log(NULL, AV_LOG_ERROR, "Can't open io, %s\n", errBuf);
+			av_strerror(nRet, errBuf, ERRBUFSIZE);
+			av_log(nullptr, AV_LOG_ERROR, "Can't open io, %s\n", errBuf);
 			if (pOutputVideoCodecCtx) {
 				avcodec_free_context(&pOutputVideoCodecCtx);
 			}
@@ -538,33 +547,33 @@ void CCodecThread::run() {
 			avio_closep(&pOutputFormatCtx->pb);
 			avformat_free_context(pOutputFormatCtx);
 			avformat_close_input(&m_pFormatCtx);
-			av_strerror(nRet, errBuf, 4096);
-			av_log(NULL, AV_LOG_ERROR, "Can't write header, %s\n", errBuf);
+			av_strerror(nRet, errBuf, ERRBUFSIZE);
+			av_log(nullptr, AV_LOG_ERROR, "Can't write header, %s\n", errBuf);
 			return;
 		}
 		// 将推流所需的格式上下文，时间基准，以及视频和音频编码器上下文保存
 		pairPushFormat = qMakePair(pOutputFormatCtx, std::make_tuple(calPts, pOutputVideoCodecCtx, pOutputAudioCodecCtx));
 		// 启动推流线程
-		m_pPushThread = new CLXPushThread(pOutputFormatCtx, m_videoPushPacketQueue, m_audioPushPacketQueue,
-		                                  m_pushVideoWaitCondition, m_pushVideoMutex, m_pushAudioWaitCondition, m_pushAudioMutex,
-		                                  CPushStreamInfo::Video & m_stPushStreamInfo.eStream, CPushStreamInfo::Audio & m_stPushStreamInfo.eStream);
+		m_pPushThread = new CPushThread(pOutputFormatCtx, m_videoPushPacketQueue, m_audioPushPacketQueue,
+		                                m_pushVideoWaitCondition, m_pushVideoMutex, m_pushAudioWaitCondition, m_pushAudioMutex,
+		                                CPushStreamInfo::Video & m_stPushStreamInfo.eStream, CPushStreamInfo::Audio & m_stPushStreamInfo.eStream);
 		m_pPushThread->start();
 	}
 	// 如果存在视频流
 	if (m_nVideoIndex >= 0) {
 		// 设置解码模式
-		m_eDecodeMode = m_bPicture ? eLXDecodeMode::eLXDecodeMode_CPU : eLXDecodeMode::eLXDecodeMode_GPU;
+		m_eDecodeMode = m_bPicture ? eDecodeMode::eDecodeMode_CPU : eDecodeMode::eDecodeMode_GPU;
 		// 创建包含 AVFormatContext 和相关信息元组的pair对象
 		QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairVideoFormat;
 		pairVideoFormat = qMakePair(pairPushFormat.first, std::make_tuple(std::get<0>(pairPushFormat.second), std::get<1>(pairPushFormat.second)));
 		// 创建视频线程
-		m_pVideoThread = new CLXVideoThread(m_videoPacketQueue, m_videoPushPacketQueue, m_videoWaitCondition,
-		                                    m_videoMutex, m_pushVideoWaitCondition, m_pushVideoMutex, m_pFormatCtx, m_nVideoIndex, nVideoEncodeIndex,
-		                                    pairVideoFormat,
-		                                    m_eMode, m_nAudioIndex < 0, CPushStreamInfo::Video & m_stPushStreamInfo.eStream, m_szPlay, m_eDecodeMode);
+		m_pVideoThread = new CVideoThread(m_videoPacketQueue, m_videoPushPacketQueue, m_videoWaitCondition,
+		                                  m_videoMutex, m_pushVideoWaitCondition, m_pushVideoMutex, m_pFormatCtx, m_nVideoIndex, nVideoEncodeIndex,
+		                                  pairVideoFormat,
+		                                  m_eMode, m_nAudioIndex < 0, CPushStreamInfo::Video & m_stPushStreamInfo.eStream, m_szPlay, m_eDecodeMode);
 		// 连接信号
-		connect(m_pVideoThread, &CLXVideoThread::notifyImage, this, &CCodecThread::notifyImage);
-		connect(m_pVideoThread, &CLXVideoThread::notifyCountDown, this, &CCodecThread::notifyCountDown);
+		connect(m_pVideoThread, &CVideoThread::notifyImage, this, &CCodecThread::notifyImage);
+		connect(m_pVideoThread, &CVideoThread::notifyCountDown, this, &CCodecThread::notifyCountDown);
 		// 开启线程
 		m_pVideoThread->start();
 	}
@@ -578,8 +587,8 @@ void CCodecThread::run() {
 			std::tuple<CCalcPtsDur, AVCodecContext*> pairEncodeCtx = std::make_tuple(std::get<0>(pairPushFormat.second),
 			                                                                         std::get<2>(pairPushFormat.second));
 			// 创建静音音频编码线程
-			m_pEncodeMuteThread = new CLXEncodeMuteAudioThread(m_audioPacketQueue, m_audioWaitCondition, m_audioMutex, m_AVSyncWaitCondition,
-			                                                   m_AVSyncMutex, nAudioEncodeIndex, pairEncodeCtx);
+			m_pEncodeMuteThread = new CEncodeMuteAudioThread(m_audioPacketQueue, m_audioWaitCondition, m_audioMutex, m_AVSyncWaitCondition,
+			                                                 m_AVSyncMutex, nAudioEncodeIndex, pairEncodeCtx);
 			m_pEncodeMuteThread->start();
 			// 从推送格式的音频上下文中获取解码参数，并设置AAC的profile
 			avcodec_parameters_from_context(&decodePara, std::get<2>(pairPushFormat.second));
@@ -590,13 +599,13 @@ void CCodecThread::run() {
 		QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairAudioFormat;
 		pairAudioFormat = qMakePair(pairPushFormat.first, std::make_tuple(std::get<0>(pairPushFormat.second), std::get<2>(pairPushFormat.second)));
 		// 创建音频线程
-		m_pAudioThread = new CLXAudioThread(m_audioPacketQueue, m_audioPushPacketQueue, m_audioWaitCondition,
-		                                    m_audioMutex, m_pushAudioWaitCondition, m_pushAudioMutex, m_pFormatCtx, m_nAudioIndex, nAudioEncodeIndex,
-		                                    pairAudioFormat,
-		                                    m_eMode, CPushStreamInfo::Audio & m_stPushStreamInfo.eStream, decodePara);
-		connect(m_pAudioThread, &CLXAudioThread::notifyAudio, this, &CCodecThread::notifyAudio);
-		connect(m_pAudioThread, &CLXAudioThread::notifyCountDown, this, &CCodecThread::notifyCountDown);
-		connect(m_pAudioThread, &CLXAudioThread::notifyAudioPara, this, &CCodecThread::notifyAudioPara);
+		m_pAudioThread = new CAudioThread(m_audioPacketQueue, m_audioPushPacketQueue, m_audioWaitCondition,
+		                                  m_audioMutex, m_pushAudioWaitCondition, m_pushAudioMutex, m_pFormatCtx, m_nAudioIndex, nAudioEncodeIndex,
+		                                  pairAudioFormat,
+		                                  m_eMode, CPushStreamInfo::Audio & m_stPushStreamInfo.eStream, decodePara);
+		connect(m_pAudioThread, &CAudioThread::notifyAudio, this, &CCodecThread::notifyAudio);
+		connect(m_pAudioThread, &CAudioThread::notifyCountDown, this, &CCodecThread::notifyCountDown);
+		connect(m_pAudioThread, &CAudioThread::notifyAudioPara, this, &CCodecThread::notifyAudioPara);
 		// 启动音频线程
 		m_pAudioThread->start();
 	}
@@ -608,7 +617,6 @@ void CCodecThread::run() {
 	}
 	//视频准备读取
 	AVPacket* packet = av_packet_alloc();
-	av_init_packet(packet);
 
 	//读取数据包
 Loop:
@@ -697,17 +705,15 @@ Loop:
 
 void CCodecThread::LogCallBack(void* avcl, int level, const char* fmt, va_list vl) {
 	QString strLogPath = qApp->applicationDirPath() + "/log/ffmpeg.log";
-	if (m_pLogFile == nullptr) {
-		m_pLogFile = fopen(strLogPath.toStdString().c_str(), "w+");
-	}
-	if (m_pLogFile) {
+	QFile logFile(strLogPath);
+	if (logFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
+		// 文件打开成功
 		// 构建时间戳格式
-		char timeFmt[1024];
-		sprintf(timeFmt, "%s     %s", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.z").toStdString().c_str(), fmt);
-		// 将格式化后的日志信息写入文件
-		vfprintf(m_pLogFile, timeFmt, vl);
-		// 刷新缓冲区
-		fflush(m_pLogFile);
+		QString timeFmt = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.z ");
+		QTextStream out(&logFile);
+		out << timeFmt << QString::fromUtf8(fmt).arg(vl) << Qt::endl;
+		// 关闭文件
+		logFile.close();
 	}
 }
 
@@ -757,4 +763,1162 @@ void CCodecThread::clearMemory() {
 		av_packet_free(&pkt);
 	}
 	m_audioPushPacketQueue.clear();
+}
+
+// CVideoThread
+CVideoThread::CVideoThread(CircularQueue<AVPacket*>& packetQueue, CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& waitCondition,
+                           QMutex& mutex, QWaitCondition& videoWaitCondition, QMutex& videoMutex, AVFormatContext* pFormatCtx,
+                           const int nStreamIndex, const int nEncodeStreamIndex,
+                           QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairOutputCtx,
+                           const CCodecThread::OpenMode eMode, const bool bSendCountDown, const bool bPush, const QSize szPlay,
+                           CCodecThread::eDecodeMode eDecodeMode,
+                           QObject* parent)
+: QThread(parent), m_pFormatCtx(pFormatCtx), m_szPlay(szPlay), m_pairOutputCtx(std::move(pairOutputCtx)), m_nStreamIndex(nStreamIndex),
+  m_nEncodeStreamIndex(nEncodeStreamIndex), m_bSendCountDown(bSendCountDown), m_bPush(bPush), m_packetQueue(packetQueue),
+  m_pushPacketQueue(pushPacketQueue), m_decodeWaitCondition(waitCondition), m_decodeMutex(mutex), m_pushWaitCondition(videoWaitCondition),
+  m_pushMutex(videoMutex), m_eMode(eMode), m_eDecodeMode(eDecodeMode) {
+}
+
+CVideoThread::~CVideoThread() {
+	this->stop();
+}
+
+void CVideoThread::pause() {
+	QMutexLocker locker(&m_decodeMutex);
+	m_bPause = true;
+	m_encodeWaitCondition.wakeAll();
+	m_playWaitCondition.wakeAll();
+	// if (m_pEncodeThread) {
+	// 	m_pEncodeThread->pause();
+	// }
+	// if (m_pPlayThread) {
+	// 	m_pPlayThread->pause();
+	// }
+}
+
+void CVideoThread::resume() {
+	QMutexLocker locker(&m_decodeMutex);
+	m_bPause = false;
+	// if (m_pEncodeThread) {
+	// 	m_pEncodeThread->resume();
+	// }
+	// if (m_pPlayThread) {
+	// 	m_pPlayThread->resume();
+	// }
+}
+
+void CVideoThread::stop() {
+	m_bRunning = false;
+	// 唤醒所有线程
+	m_encodeWaitCondition.wakeAll();
+	m_playWaitCondition.wakeAll();
+	// if (m_pEncodeThread) {
+	// 	m_encodeWaitCondition.wakeAll();
+	// 	m_pEncodeThread->stop();
+	// 	SAFE_DELETE(m_pEncodeThread);
+	// }
+	// if (m_pPlayThread) {
+	// 	m_playWaitCondition.wakeAll();
+	// 	m_pPlayThread->stop();
+	// 	SAFE_DELETE(m_pPlayThread);
+	// }
+	// 等待线程执行完毕
+	this->wait();
+	clearQueue(m_decodeFrameQueue);
+	clearQueue(m_playFrameQueue);
+}
+
+void CVideoThread::setCurrentPts(int64_t nPts) {
+	// if (m_pPlayThread) {
+	// 	m_pPlayThread->setCurrentPts(nPts);
+	// }
+	clearQueue(m_decodeFrameQueue);
+	clearQueue(m_playFrameQueue);
+}
+
+enum AVPixelFormat CVideoThread::hw_pix_fmt = AV_PIX_FMT_NONE;
+
+// 确定编码器上下文应使用的硬件加速像素模式
+AVPixelFormat CVideoThread::get_hw_format([[maybe_unused]] AVCodecContext* ctx, const AVPixelFormat* pix_fmts) {
+	for (const enum AVPixelFormat* p = pix_fmts; *p != -1; ++p) {
+		if (*p == hw_pix_fmt) {
+			return *p;
+		}
+	}
+	fprintf(stderr, "Failed to get HW surface format.\n");
+	return AV_PIX_FMT_NONE;
+}
+
+void CVideoThread::clearQueue(CircularQueue<AVFrame*>& queue) {
+	while (!queue.isEmpty()) {
+		auto* frame = queue.pop();
+		av_frame_unref(frame);
+		av_frame_free(&frame);
+	}
+	queue.clear();
+}
+
+void CVideoThread::run() {
+	int nRet = -1;
+	char errBuf[ERRBUFSIZE]{};
+	m_pCodecCtx = avcodec_alloc_context3(nullptr);
+	const AVCodec* pVideoCodec{ nullptr };
+	AVBufferRef* hw_device_ctx{ nullptr };
+
+	auto logErr = [nRet, &errBuf](AVPacket* packet, const char* log) {
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_ERROR, log, errBuf);
+		av_packet_unref(packet);
+		av_packet_free(&packet);
+	};
+
+	auto codec = [&]() {
+		// 将解码器上下文与解码器参数进行绑定
+		avcodec_parameters_to_context(m_pCodecCtx, m_pFormatCtx->streams[m_nStreamIndex]->codecpar);
+		// 根据解码器的 id 找到对应的视频解码器
+		pVideoCodec = avcodec_find_decoder(m_pCodecCtx->codec_id);
+	};
+
+	// GPU 解码
+	if (m_eDecodeMode == CCodecThread::eDecodeMode::eDecodeMode_GPU) {
+#ifdef Q_OS_WIN
+		// 选择视频流中最佳的解码器
+		av_find_best_stream(m_pFormatCtx, AVMEDIA_TYPE_VIDEO, -1, -1, &pVideoCodec, 0);
+		// 遍历解码器的硬件配置，找到与指定硬件设备类型匹配的解码器设备
+		constexpr enum AVHWDeviceType type = AV_HWDEVICE_TYPE_DXVA2;
+		for (int i = 0;; i++) {
+			const AVCodecHWConfig* config = avcodec_get_hw_config(pVideoCodec, i);
+			if (!config) {
+				fprintf(stderr, "Decoder %s doesn't support device type %s.\n", pVideoCodec->name, av_hwdevice_get_type_name(type));
+				return;
+			}
+			if (config->methods & AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX && config->device_type == type) {
+				// 设置解码器的像素格式
+				hw_pix_fmt = config->pix_fmt;
+				break;
+			}
+		}
+		// 将视频流的参数拷贝到解码器上下文
+		avcodec_parameters_to_context(m_pCodecCtx, m_pFormatCtx->streams[m_nStreamIndex]->codecpar);
+		// 设置解码器回调函数
+		m_pCodecCtx->get_format = get_hw_format;
+		if (av_hwdevice_ctx_create(&hw_device_ctx, type, nullptr, nullptr, 0) < 0) {
+			fprintf(stderr, "Failed to create specified HW device.\n");
+			return;
+		}
+		// 将硬解码设备上下文绑定到解码器上下文
+		m_pCodecCtx->hw_device_ctx = av_buffer_ref(hw_device_ctx);
+#elif defined Q_OS_UNIX
+		codec();
+#endif
+	} else {
+		codec();
+	}
+	// 打开解码器 m_pCodecCtx, 将解码器上下文与其关联
+	nRet = avcodec_open2(m_pCodecCtx, pVideoCodec, nullptr);
+	if (nRet < 0) {
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_ERROR, "Can't open video decoder: %s\n", errBuf);
+		avcodec_free_context(&m_pCodecCtx);
+		return;
+	}
+	// 分配 pFrame 结构
+	auto pFrame = av_frame_alloc();
+	// 推流 & 需要推流
+	if (CCodecThread::OpenMode::OpenMode_Push & m_eMode && m_bPush) {
+		auto pairEncodeCtx = qMakePair(m_pCodecCtx, m_pairOutputCtx.second);
+		// 创建编码线程, 用于将解码后的帧推送到编码器并打包成推流所需的数据包
+		// m_pEncodeThread = new CEncodeVideoThread(m_decodeFrameQueue, m_pushPacketQueue, m_encodeWaitCondition, m_pushWaitCondition, m_pushMutex,
+		//                                          m_nEncodeStreamIndex, pairEncodeCtx, m_eDecodeMode);
+		// m_pEncodeThread->start();
+	}
+	// 播放
+	if (CCodecThread::OpenMode::OpenMode_Play & m_eMode) {
+		// 创建播放线程，该线程用于将解码后的帧进行播放或显示
+		// m_pPlayThread = new CLXVideoPlayThread(m_playFrameQueue, m_playWaitCondition, m_playMutex, m_pCodecCtx,
+		// 	m_pFormatCtx->streams[m_nStreamIndex]->time_base, m_bSendCountDown, this, m_szPlay, m_eDecodeMode);
+		// m_pPlayThread->start();
+	}
+	// sw_frame 存储从 GPU 到 CPU 的数据
+	auto sw_frame = av_frame_alloc();
+	// tmp_frame 用于在 GPU 解码时判断是否需要进行数据迁移
+	AVFrame* tmp_frame{ nullptr };
+	while (m_bRunning) {
+		if (m_bPause) {
+			continue;
+		}
+		// 记录当前时间, 方便后续统计解码耗时
+		QElapsedTimer ti{};
+		ti.start();
+		// 上锁
+		m_decodeMutex.lock();
+		// 判断解码队列是否为空, 唤醒等待条件, 并等待新的数据包
+		if (m_packetQueue.isEmpty()) {
+			m_decodeWaitCondition.wakeOne();
+			m_decodeWaitCondition.wait(&m_decodeMutex);
+		}
+		// 从解码队列取出数据包
+		auto* packet = m_packetQueue.pop();
+		if (Q_LIKELY(packet)) {
+			// 送入解码器
+			nRet = avcodec_send_packet(m_pCodecCtx, packet);
+			if (nRet < 0) {
+				logErr(packet, "Can't send packet for decoding: %s\n");
+				m_decodeMutex.unlock();
+				continue;
+			}
+			// 获取循环解码后的视频帧
+			while (avcodec_receive_frame(m_pCodecCtx, pFrame) >= 0) {
+				// 如果帧格式是 GPU 处理方式, 则尝试将数据从 GPU 转移到 CPU
+				if (pFrame->format == hw_pix_fmt) {
+					if (av_hwframe_transfer_data(sw_frame, pFrame, 0) < 0) {
+						logErr(packet, "Error transferring the data to system memory, %s\n");
+						m_decodeMutex.unlock();
+						continue;
+					}
+					// 将 tmp_frame 指向 sw_frame
+					tmp_frame = sw_frame;
+					tmp_frame->pts = pFrame->pts;
+					tmp_frame->pkt_dts = pFrame->pkt_dts;
+				} else {
+					tmp_frame = pFrame;
+				}
+				// 是否推流
+				if (CCodecThread::OpenMode::OpenMode_Push & m_eMode && m_bPush) {
+					// 上锁, 在队列满时唤醒等待条件
+					m_encodeMutex.lock();
+					if (m_decodeFrameQueue.isFull()) {
+						m_encodeWaitCondition.wait(&m_encodeMutex);
+					}
+					if (const auto pCopyFrame = av_frame_clone(tmp_frame)) {
+						m_decodeFrameQueue.push(pCopyFrame);
+						m_encodeWaitCondition.wakeOne();
+					}
+					m_encodeMutex.unlock();
+				}
+				// 是否播放
+				if (CCodecThread::OpenMode::OpenMode_Play & m_eMode) {
+					// 上锁, 在队列满时唤醒等待条件
+					m_playMutex.lock();
+					if (m_playFrameQueue.isFull()) {
+						m_playWaitCondition.wait(&m_playMutex);
+					}
+					if (const auto pCopyFrame = av_frame_clone(tmp_frame)) {
+						m_playFrameQueue.push(pCopyFrame);
+						m_playWaitCondition.wakeOne();
+					}
+					m_playMutex.unlock();
+				}
+			}
+			// 释放解码使用资源
+			av_packet_unref(packet);
+			av_packet_free(&packet);
+			av_frame_unref(pFrame);
+		}
+		m_decodeMutex.unlock();
+	}
+	// 释放剩余资源, 并关闭解码器
+	av_frame_free(&pFrame);
+	av_frame_free(&sw_frame);
+	av_frame_free(&tmp_frame);
+	if (hw_device_ctx) {
+		av_buffer_unref(&hw_device_ctx);
+	}
+	avcodec_close(m_pCodecCtx);
+	avcodec_free_context(&m_pCodecCtx);
+}
+
+// CAudioThread
+CAudioThread::CAudioThread(CircularQueue<AVPacket*>& packetQueue, CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& waitCondition,
+                           QMutex& mutex, QWaitCondition& audioWaitCondition, QMutex& audioMutex, AVFormatContext* pFormatCtx,
+                           const int nStreamIndex, const int nEncodeStreamIndex,
+                           QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairOutputCtx,
+                           const CCodecThread::OpenMode eMode, const bool bPush, const AVCodecParameters& decodePara, QObject* parent)
+: QThread(parent), m_pFormatCtx(pFormatCtx), m_decodePara(decodePara), m_pairOutputCtx(std::move(pairOutputCtx)), m_nStreamIndex(nStreamIndex),
+  m_nEncodeStreamIndex(nEncodeStreamIndex), m_bPush(bPush), m_packetQueue(packetQueue), m_pushPacketQueue(pushPacketQueue),
+  m_decodeWaitCondition(waitCondition), m_decodeMutex(mutex), m_pushWaitCondition(audioWaitCondition), m_pushMutex(audioMutex), m_eMode(eMode) {
+}
+
+CAudioThread::~CAudioThread() {
+	stop();
+}
+
+void CAudioThread::pause() {
+	QMutexLocker loacker(&m_decodeMutex);
+	m_encodeWaitCondition.wakeAll();
+	m_playWaitCondition.wakeAll();
+	if (m_pEncodeThread) {
+		m_pEncodeThread->pause();
+	}
+	if (m_pPlayThread) {
+		m_pPlayThread->pause();
+	}
+	m_bPause = true;
+}
+
+void CAudioThread::resume() {
+	QMutexLocker locker(&m_decodeMutex);
+	m_bPause = false;
+	if (m_pEncodeThread) {
+		m_pEncodeThread->resume();
+	}
+	if (m_pPlayThread) {
+		m_pPlayThread->resume();
+	}
+}
+
+void CAudioThread::stop() {
+	m_bRunning = false;
+	m_encodeWaitCondition.wakeAll();
+	m_playWaitCondition.wakeAll();
+	if (m_pEncodeThread) {
+		m_encodeWaitCondition.wakeAll();
+		m_pEncodeThread->stop();
+		SAFE_DELETE(m_pEncodeThread);
+	}
+	if (m_pPlayThread) {
+		m_playWaitCondition.wakeAll();
+		m_pPlayThread->stop();
+		SAFE_DELETE(m_pPlayThread);
+	}
+	this->wait();
+	clearQueue(m_decodeFrameQueue);
+	clearQueue(m_playFrameQueue);
+}
+
+void CAudioThread::setCurrentPts(const int64_t nPts) {
+	if (m_pPlayThread) {
+		m_pPlayThread->setCurrentPts(nPts);
+	}
+	clearQueue(m_decodeFrameQueue);
+	clearQueue(m_playFrameQueue);
+}
+
+void CAudioThread::clearQueue(CircularQueue<AVFrame*>& queue) {
+	while (!queue.isEmpty()) {
+		auto* frame = queue.pop();
+		av_frame_unref(frame);
+		av_frame_free(&frame);
+	}
+	queue.clear();
+}
+
+void CAudioThread::run() {
+	int nRet{ -1 };
+	char errBuf[ERRBUFSIZE]{};
+	// 分配并初始化音频解码器上下文
+	m_pCodecCtx = avcodec_alloc_context3(nullptr);
+	auto errlog = [nRet, &errBuf](AVPacket* packet, const char* log) {
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_ERROR, log, errBuf);
+		av_packet_unref(packet);
+		av_packet_free(&packet);
+	};
+	// 推流 & 无推流索引
+	if (m_bPush && m_nStreamIndex < 0) {
+		// 使用传入的解码参数
+		avcodec_parameters_to_context(m_pCodecCtx, &m_decodePara);
+	} else {
+		// 使用流的解码参数
+		avcodec_parameters_to_context(m_pCodecCtx, m_pFormatCtx->streams[m_nStreamIndex]->codecpar);
+	}
+	// 通过 id 找到音频解码器
+	const auto* pAudioCodec = avcodec_find_decoder(m_pCodecCtx->codec_id);
+	// 打开音频解码器
+	nRet = avcodec_open2(m_pCodecCtx, pAudioCodec, nullptr);
+	if (nRet < 0) {
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_ERROR, "Can't open audio decoder, %s\n", errBuf);
+		avcodec_free_context(&m_pCodecCtx);
+		return;
+	}
+	// 发送音频参数通知
+	emit notifyAudioPara(m_pCodecCtx->sample_rate, m_pCodecCtx->channels);
+	// 推流 | 播放, 创建对应线程
+	if (CCodecThread::OpenMode::OpenMode_Push & m_eMode && m_bPush) {
+		const auto pairEncodeCtx = qMakePair(m_pCodecCtx, m_pairOutputCtx.second);
+		m_pEncodeThread = new CEncodeAudioThread(m_decodeFrameQueue, m_pushPacketQueue, m_encodeWaitCondition, m_encodeMutex, m_pushWaitCondition,
+		                                         m_pushMutex, m_nEncodeStreamIndex, pairEncodeCtx);
+		m_pEncodeThread->start();
+	}
+	if (CCodecThread::OpenMode::OpenMode_Play & m_eMode) {
+		m_pPlayThread = new CAudioPlayThread(m_playFrameQueue, m_playWaitCondition, m_playMutex, m_pCodecCtx,
+		                                     m_nStreamIndex >= 0 ? m_pFormatCtx->streams[m_nStreamIndex]->time_base : m_pCodecCtx->time_base, this);
+		m_pPlayThread->start();
+	}
+
+	auto* pFrame = av_frame_alloc();
+	while (m_bRunning) {
+		if (m_bPause) {
+			continue;
+		}
+		m_decodeMutex.lock();
+		// 如果音频包队列为空, 唤醒并等待
+		if (m_packetQueue.isEmpty()) {
+			m_decodeWaitCondition.wakeOne();
+			m_decodeWaitCondition.wait(&m_decodeMutex);
+		}
+		// 取出音频包
+		auto* packet = m_packetQueue.pop();
+		if (Q_LIKELY(packet)) {
+			// 解码
+			nRet = avcodec_send_packet(m_pCodecCtx, packet);
+			if (nRet < 0) {
+				errlog(packet, "Can't send audio packet, %s\n");
+				m_decodeMutex.unlock();
+				continue;
+			}
+			// 接收解码后的音频帧
+			while (avcodec_receive_frame(m_pCodecCtx, pFrame) >= 0) {
+				// 推送 | 播放, 将解码后的音频帧放入相应的队列
+				if (CCodecThread::OpenMode::OpenMode_Push & m_eMode && m_bPush) {
+					m_encodeMutex.lock();
+					if (m_decodeFrameQueue.isFull()) {
+						m_encodeWaitCondition.wait(&m_encodeMutex);
+					}
+					if (const auto pCopyFrame = av_frame_clone(pFrame)) {
+						m_decodeFrameQueue.push(pCopyFrame);
+						m_encodeWaitCondition.wakeOne();
+					}
+					m_encodeMutex.unlock();
+				}
+				if (CCodecThread::OpenMode::OpenMode_Play & m_eMode) {
+					m_playMutex.lock();
+					if (m_playFrameQueue.isFull()) {
+						m_playWaitCondition.wait(&m_playMutex);
+					}
+					if (const auto pCopyFrame = av_frame_clone(pFrame)) {
+						m_playFrameQueue.push(pCopyFrame);
+						m_encodeWaitCondition.wakeOne();
+					}
+					m_playMutex.unlock();
+				}
+			}
+			// 释放资源
+			av_packet_unref(packet);
+			av_packet_free(&packet);
+			av_frame_unref(pFrame);
+		}
+		m_decodeMutex.unlock();
+	}
+	// 释放剩余资源, 并关闭解码器
+	av_frame_free(&pFrame);
+	avcodec_close(m_pCodecCtx);
+	avcodec_free_context(&m_pCodecCtx);
+}
+
+//CVideoPlayThread
+CVideoPlayThread::CVideoPlayThread(CircularQueue<AVFrame*>& decodeFrameQueue, QWaitCondition& waitCondition, QMutex& mutex,
+                                   AVCodecContext* pCodecCtx, const AVRational& timeBase, const bool bSendCountDown, CVideoThread* videoThread,
+                                   const QSize szPlay, CCodecThread::eDecodeMode eDecodeMode, QObject* parent)
+: QThread(parent), m_pCodecCtx(pCodecCtx), m_bSendCountDown(bSendCountDown), m_timeBase(timeBase), m_videoThread(videoThread),
+  m_playFrameQueue(decodeFrameQueue), m_playWaitCondition(waitCondition), m_playMutex(mutex), m_szPlay(szPlay), m_eDecodeMode(eDecodeMode) {
+}
+
+CVideoPlayThread::~CVideoPlayThread() = default;
+
+void CVideoPlayThread::pause() {
+	QMutexLocker locker(&m_playMutex);
+	m_bPause = true;
+}
+
+void CVideoPlayThread::resume() {
+	QMutexLocker locaer(&m_playMutex);
+	m_bPause = false;
+	m_nLastTime = av_gettime();
+}
+
+void CVideoPlayThread::stop() {
+	m_bRunning = false;
+	m_playWaitCondition.wakeOne();
+	this->wait();
+}
+
+void CVideoPlayThread::setCurrentPts(const int64_t nPts) {
+	if (m_pCodecCtx) {
+		avcodec_flush_buffers(m_pCodecCtx);
+		m_nLastPts = nPts;
+	}
+}
+
+void CVideoPlayThread::run() {
+	// 分配用于存储 RGB 格式帧的 AVFrame
+	auto pFrameRGB = av_frame_alloc();
+	if (!pFrameRGB) {
+		return;
+	}
+	// 分配 RGB 图像数据缓冲区
+	[[maybe_unused]] int iSize = av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, m_szPlay.width(), m_szPlay.height(), AV_PIX_FMT_RGB32, 1);
+	// 创建图像转换器
+	const auto srcFormat = m_eDecodeMode == CCodecThread::eDecodeMode::eDecodeMode_CPU ? m_pCodecCtx->pix_fmt : AV_PIX_FMT_NV12;
+	struct SwsContext* img_decode_convert_ctx = sws_getContext(m_pCodecCtx->width, m_pCodecCtx->height, srcFormat
+	                                                           , m_szPlay.width(), m_szPlay.height(),
+	                                                           AV_PIX_FMT_RGB32, SWS_BICUBIC, nullptr, nullptr, nullptr);
+	// 初始化播放时间戳
+	m_nLastTime = av_gettime();
+	m_nLastPts = 0;
+	while (m_bRunning) {
+		if (m_bPause) {
+			continue;
+		}
+		m_playMutex.lock();
+		if (m_playFrameQueue.isEmpty()) {
+			m_playWaitCondition.wakeOne();
+			m_playWaitCondition.wait(&m_playMutex);
+		}
+		auto* pFrame = m_playFrameQueue.pop();
+		if (Q_LIKELY(pFrame)) {
+			// 发送倒计时通知
+			if (m_bSendCountDown) {
+				const int64_t nCurTimeStamp = pFrame->pts * static_cast<int64_t>(av_q2d(m_timeBase));
+				emit m_videoThread->notifyCountDown(nCurTimeStamp);
+			}
+			// 计算时间偏移
+			const int64_t nTimeStampOffset = (pFrame->pts - m_nLastPts) * AV_TIME_BASE * static_cast<int64_t>(av_q2d(m_timeBase));
+			// 将数据帧转换为 RGB 格式
+			[[maybe_unused]] int nH = sws_scale(img_decode_convert_ctx, pFrame->data, pFrame->linesize, 0, m_pCodecCtx->height, pFrameRGB->data,
+			                                    pFrameRGB->linesize);
+			QImage tmpImg(const_cast<const uchar*>(pFrameRGB->data[0]), m_szPlay.width(), m_szPlay.height(), QImage::Format_RGB32);
+			tmpImg.detach();
+			// this -> CVideoThread -> CPlaybackWidget
+			emit m_videoThread->notifyImage(QPixmap::fromImage(tmpImg));
+			// 计算时间偏移并休眠
+			if (const int64_t nTimeOffset = nTimeStampOffset - av_gettime() + m_nLastTime; nTimeOffset > 0) {
+				av_usleep(nTimeOffset);
+			}
+			// 释放帧数据
+			av_frame_unref(pFrame);
+			av_frame_free(&pFrame);
+		}
+		m_playMutex.unlock();
+	}
+	// 释放 RGB 图像数据缓冲区, RGB 帧, 图像转换器
+	av_freep(&pFrameRGB->data[0]);
+	av_frame_free(&pFrameRGB);
+	sws_freeContext(img_decode_convert_ctx);
+}
+
+// CAudioPlayThread
+CAudioPlayThread::CAudioPlayThread(CircularQueue<AVFrame*>& decodeFrameQueue, QWaitCondition& waitCondition,
+                                   QMutex& mutex, AVCodecContext* pCodecCtx, const AVRational& timeBase,
+                                   CAudioThread* audioThread, QObject* parent)
+: QThread(parent), m_pCodecCtx(pCodecCtx), m_timeBase(timeBase), m_audioThread(audioThread),
+  m_playFrameQueue(decodeFrameQueue), m_playWaitCondition(waitCondition), m_playMutex(mutex) {
+}
+
+CAudioPlayThread::~CAudioPlayThread() {
+	stop();
+}
+
+void CAudioPlayThread::pause() {
+	QMutexLocker locker(&m_playMutex);
+	m_bPause = true;
+}
+
+void CAudioPlayThread::resume() {
+	QMutexLocker locker(&m_playMutex);
+	m_nLastTime = av_gettime();
+	m_bPause = false;
+}
+
+void CAudioPlayThread::stop() {
+	m_bRunning = false;
+	m_playWaitCondition.wakeOne();
+	this->wait();
+}
+
+void CAudioPlayThread::setCurrentPts(const int64_t nPts) {
+	if (m_pCodecCtx) {
+		avcodec_flush_buffers(m_pCodecCtx);
+		m_nLastPts = nPts;
+	}
+}
+
+void CAudioPlayThread::run() {
+	const int out_channel_nb = av_get_channel_layout_nb_channels(m_pCodecCtx->channel_layout);
+	// 分配用于存储转换后音频数据的缓冲区
+	auto* audio_decode_buffer = static_cast<uint8_t*>(av_malloc(m_pCodecCtx->channels * m_pCodecCtx->sample_rate));
+	// 创建音频转换器
+	auto audio_decode_swrCtx = swr_alloc_set_opts(nullptr, static_cast<int64_t>(m_pCodecCtx->channel_layout), AV_SAMPLE_FMT_S16,
+	                                              m_pCodecCtx->sample_rate, static_cast<int64_t>(m_pCodecCtx->channel_layout),
+	                                              m_pCodecCtx->sample_fmt, m_pCodecCtx->sample_rate, 0, nullptr);
+	swr_init(audio_decode_swrCtx);
+	// 初始化播放时间戳
+	m_nLastTime = av_gettime();
+	m_nLastPts = 0;
+	while (m_bRunning) {
+		if (m_bPause) {
+			continue;
+		}
+		m_playMutex.lock();
+		if (m_playFrameQueue.isEmpty()) {
+			m_playWaitCondition.wakeOne();
+			m_playWaitCondition.wait(&m_playMutex);
+		}
+		int64_t nTimeStampOffset{ 0 };
+		auto pFrame = m_playFrameQueue.pop();
+		if (Q_LIKELY(pFrame)) {
+			// 发送倒计时通知
+			const int64_t nCurTimeStamp = pFrame->pts * static_cast<int64_t>(av_q2d(m_timeBase));
+			emit m_audioThread->notifyCountDown(nCurTimeStamp);
+			// 计算时间偏移
+			nTimeStampOffset = (pFrame->pts - m_nLastPts) * AV_TIME_BASE * static_cast<int64_t>(av_q2d(m_timeBase));
+			// 执行音频转换
+			swr_convert(audio_decode_swrCtx, &audio_decode_buffer, m_pCodecCtx->channels * m_pCodecCtx->sample_rate,
+			            const_cast<const uint8_t**>(pFrame->data), pFrame->nb_samples);
+			// 计算输出音频数据大小
+			const int out_audio_buffer_size = av_samples_get_buffer_size(nullptr, out_channel_nb, pFrame->nb_samples, AV_SAMPLE_FMT_S16, 1);
+			// this -> CAudioThread -> CAudioPlayWidget
+			// data -> m_audioByteBuffer -> m_pAudioDevice -> m_pAudioDevice = m_pAudioOutput->start()
+			QByteArray data(reinterpret_cast<const char*>(audio_decode_buffer), out_audio_buffer_size);
+			emit m_audioThread->notifyAudio(data);
+			// 释放帧数据
+			av_frame_unref(pFrame);
+			av_frame_free(&pFrame);
+		}
+		m_playMutex.unlock();
+		// 计算时间偏移并休眠, 确保按照音频的时间戳进行播放
+		if (const int64_t nTimeOffset = nTimeStampOffset - av_gettime() + m_nLastTime; nTimeOffset > 0) {
+			av_usleep(nTimeOffset);
+		}
+	}
+	// 释放转换后音频数据缓冲区, 释放音频转换器
+	av_free(&audio_decode_buffer);
+	swr_free(&audio_decode_swrCtx);
+}
+
+CEncodeVideoThread::CEncodeVideoThread(CircularQueue<AVFrame*>& encodeFrameQueue, CircularQueue<AVPacket*>& pushPacketQueue,
+                                       QWaitCondition& encodeWaitCondition, QMutex& encodeMutex, QWaitCondition& pushWaitCondition, QMutex& pushMutex,
+                                       const int nEncodeStreamIndex, QPair<AVCodecContext*,
+                                                                           std::tuple<CCalcPtsDur, AVCodecContext*>> pairEncodeCtx,
+                                       CCodecThread::eDecodeMode eDecodeMode, QObject* parent)
+: QThread(parent), m_encodeFrameQueue(encodeFrameQueue), m_pushPacketQueue(pushPacketQueue), m_nEncodeStreamIndex(nEncodeStreamIndex),
+  m_encodeWaitCondition(encodeWaitCondition), m_encodeMutex(encodeMutex), m_pushWaitCondition(pushWaitCondition), m_pushMutex(pushMutex),
+  m_pairEncodeCtx(std::move(pairEncodeCtx)), m_eEncodeMode(eDecodeMode) {
+}
+
+CEncodeVideoThread::~CEncodeVideoThread() {
+	stop();
+}
+
+void CEncodeVideoThread::pause() {
+	QMutexLocker locker(&m_encodeMutex);
+	m_bPause = true;
+}
+
+void CEncodeVideoThread::resume() {
+	QMutexLocker locker(&m_encodeMutex);
+	m_bPause = false;
+}
+
+void CEncodeVideoThread::stop() {
+	m_bRunning = false;
+	m_encodeWaitCondition.wakeOne();
+	this->wait();
+}
+
+void CEncodeVideoThread::run() {
+	char errBuf[ERRBUFSIZE]{};
+	int nRet{ 0 };
+	int frame_index{ 0 };
+
+	auto logWaring = [nRet, &errBuf](AVPacket* packet, const char* log) {
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_WARNING, log, errBuf);
+		av_packet_unref(packet);
+	};
+	// 获取编码器
+	if (const auto pEncodeCtx = std::get<1>(m_pairEncodeCtx.second)) {
+		// 分配用于存储 YUV420P 格式帧的 AVFrame
+		auto pFrameYUV420P = av_frame_alloc();
+		auto* video_convert_buffer = static_cast<uint8_t*>(av_malloc(
+			av_image_get_buffer_size(AV_PIX_FMT_YUV420P, pEncodeCtx->width, pEncodeCtx->height, 1)));
+		av_image_fill_arrays(pFrameYUV420P->data, pFrameYUV420P->linesize, video_convert_buffer, AV_PIX_FMT_YUV420P,
+		                     pEncodeCtx->width, pEncodeCtx->height, 1);
+		// 创建图像转换器
+#ifdef Q_OS_WIN
+		auto srcFormat = m_eEncodeMode == CCodecThread::eDecodeMode::eDecodeMode_CPU ? m_pairEncodeCtx.first->pix_fmt : AV_PIX_FMT_NV12;
+		auto flags = SWS_BICUBIC;
+#else
+		auto srcFormat = m_pairEncodeCtx.first->pix_fmt;
+		auto flags = SWS_ACCURATE_RND | SWS_FAST_BILINEAR;
+#endif
+		const auto img_encode_convert_ctx = sws_getContext(m_pairEncodeCtx.first->width, m_pairEncodeCtx.first->height, srcFormat, pEncodeCtx->width,
+		                                                   pEncodeCtx->height, AV_PIX_FMT_YUV420P, flags, nullptr, nullptr, nullptr);
+		// 设置 AVFrame 的格式为 YUV420P
+		pFrameYUV420P->format = AV_PIX_FMT_YUV420P;
+		// 分配用于存储编码后数据的 AVPacket
+		auto pPushPacket = av_packet_alloc();
+		while (m_bRunning) {
+			if (m_bPause) {
+				continue;
+			}
+			m_encodeMutex.lock();
+			if (m_encodeFrameQueue.isEmpty()) {
+				m_encodeWaitCondition.wakeOne();
+				m_encodeWaitCondition.wait(&m_encodeMutex);
+			}
+			if (const auto pFrame = m_encodeFrameQueue.pop(); Q_LIKELY(pFrame)) {
+				// 获取计算 PTS 对象
+				const auto& calPts = std::get<0>(m_pairEncodeCtx.second);
+				// 使用原始帧进行编码
+				auto pEncodeFrame = pFrame;
+				// 如果编码器不支持 NV12 格式或者帧的分辨率不符合要求, 进行格式转换
+				if (AV_PIX_FMT_YUV420P != m_pairEncodeCtx.first->pix_fmt || m_pairEncodeCtx.first->width != pEncodeCtx->width ||
+					m_pairEncodeCtx.first->height != pEncodeCtx->height) {
+					nRet = sws_scale(img_encode_convert_ctx, pFrame->data, pFrame->linesize, 0, m_pairEncodeCtx.first->height,
+					                 pFrameYUV420P->data, pFrameYUV420P->linesize);
+					if (nRet < 0) {
+						logWaring(pPushPacket, "video sws_scale yuv420p fail, %s\n");
+						m_encodeMutex.unlock();
+						continue;
+					}
+					// 设置帧宽高
+					pFrameYUV420P->width = pEncodeCtx->width;
+					pFrameYUV420P->height = pEncodeCtx->height;
+					// 使用转换后的帧进行解码
+					pEncodeFrame = av_frame_clone(pFrameYUV420P);
+				}
+				// 设置帧的 PTS 并发送给编码器
+				pEncodeFrame->pts = calPts.GetVideoPts(frame_index);
+				nRet = avcodec_send_frame(pEncodeCtx, pEncodeFrame);
+				if (nRet < 0) {
+					logWaring(pPushPacket, "video avcodec_send_frame fail, %s\n");
+					m_encodeMutex.unlock();
+					continue;
+				}
+				// 接收编码后的数据包
+				nRet = avcodec_receive_packet(pEncodeCtx, pPushPacket);
+				if (nRet < 0) {
+					logWaring(pPushPacket, "video avcodec_receive_packet fail, %s\n");
+					m_encodeMutex.unlock();
+					continue;
+				}
+				// 设置推送包流索引
+				pPushPacket->stream_index = m_nEncodeStreamIndex;
+				m_pushMutex.lock();
+				if (m_pushPacketQueue.isFull()) {
+					m_pushWaitCondition.wait(&m_pushMutex);
+				}
+				// 将数据包克隆一份并推送
+				m_pushPacketQueue.push(av_packet_clone(pPushPacket));
+				m_pushWaitCondition.wakeOne();
+				m_pushMutex.unlock();
+				// 释放资源
+				av_frame_unref(pEncodeFrame);
+				av_frame_free(&pEncodeFrame);
+				av_frame_unref(pFrame);
+				av_packet_unref(pPushPacket);
+				frame_index++;
+			}
+			m_encodeMutex.unlock();
+		}
+		av_packet_free(&pPushPacket);
+		av_frame_free(&pFrameYUV420P);
+		av_free(&video_convert_buffer);
+		sws_freeContext(img_encode_convert_ctx);
+	}
+}
+
+// CEncodeAudioThread
+CEncodeAudioThread::CEncodeAudioThread(CircularQueue<AVFrame*>& encodeFrameQueue, CircularQueue<AVPacket*>& pushPacketQueue,
+                                       QWaitCondition& encodeWaitCondition, QMutex& encodeMutex, QWaitCondition& pushWaitCondition, QMutex& pushMutex,
+                                       const int nEncodeStreamIndex, QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairEncodeCtx,
+                                       QObject* parent)
+: QThread(parent), m_encodeFrameQueue(encodeFrameQueue), m_pushPacketQueue(pushPacketQueue), m_nEncodeStreamIndex(nEncodeStreamIndex),
+  m_encodeWaitCondition(encodeWaitCondition), m_encodeMutex(encodeMutex), m_pushWaitCondition(pushWaitCondition), m_pushMutex(pushMutex),
+  m_pairEncodeCtx(std::move(pairEncodeCtx)) {
+}
+
+CEncodeAudioThread::~CEncodeAudioThread() {
+	stop();
+}
+
+void CEncodeAudioThread::pause() {
+	QMutexLocker locker(&m_encodeMutex);
+	m_bPause = true;
+}
+
+void CEncodeAudioThread::resume() {
+	QMutexLocker locker(&m_encodeMutex);
+	m_bPause = false;
+}
+
+void CEncodeAudioThread::stop() {
+	m_bRunning = false;
+	m_encodeWaitCondition.wakeOne();
+	this->wait();
+}
+
+void CEncodeAudioThread::run() {
+	char errBuf[ERRBUFSIZE]{};
+	int nRet{ 0 };
+	int frame_index{ 0 };
+
+	auto logWaring = [nRet, &errBuf](AVPacket* packet, const char* log) {
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_WARNING, log, errBuf);
+		av_packet_unref(packet);
+	};
+	// 获取编码器
+	if (const auto pEncodeCtx = std::get<1>(m_pairEncodeCtx.second)) {
+		// 分配用于存储编码前音频帧的空间
+		auto pFrameAAC = av_frame_alloc();
+		// 创建音频重采样上下文并设置参数
+		auto audio_encode_swrCtx = swr_alloc_set_opts(nullptr, static_cast<int64_t>(pEncodeCtx->channel_layout), AV_SAMPLE_FMT_FLT,
+		                                              pEncodeCtx->sample_rate, static_cast<int64_t>(m_pairEncodeCtx.first->channel_layout),
+		                                              m_pairEncodeCtx.first->sample_fmt, m_pairEncodeCtx.first->sample_rate, 0, nullptr);
+		swr_init(audio_encode_swrCtx);
+		// 分配并初始化推送数据包
+		auto pPushPacket = av_packet_alloc();
+		while (m_bRunning) {
+			if (m_bPause) {
+				continue;
+			}
+			m_encodeMutex.lock();
+			if (m_encodeFrameQueue.isEmpty()) {
+				m_encodeWaitCondition.wakeOne();
+				m_encodeWaitCondition.wait(&m_encodeMutex);
+			}
+			if (const auto pFrame = m_encodeFrameQueue.pop(); Q_LIKELY(pFrame)) {
+				// 处理音频帧
+				const auto& calPts = std::get<0>(m_pairEncodeCtx.second);
+				auto pEncodeFrame = pFrame;
+				// 如果音频格式不是 AV_SAMPLE_FMT_FLTP, 则进行音频重采样
+				if (AV_SAMPLE_FMT_FLTP != m_pairEncodeCtx.first->sample_fmt) {
+					nRet = swr_convert_frame(audio_encode_swrCtx, pFrameAAC, pFrame);
+					if (nRet < 0) {
+						logWaring(pPushPacket, "audio swr_convert_frame fail, %s\n");
+						m_encodeMutex.unlock();
+						continue;
+					}
+					// 克隆重采样后的音频帧
+					pEncodeFrame = av_frame_clone(pFrameAAC);
+				}
+				// 设置音频帧的时间戳
+				pEncodeFrame->pts = calPts.GetAudioPts(frame_index, pEncodeCtx->sample_rate);
+				// 将音频帧发送给编码器
+				nRet = avcodec_send_frame(pEncodeCtx, pEncodeFrame);
+				if (nRet < 0) {
+					logWaring(pPushPacket, "audio avcodec_send_frame fail, %s\n");
+					m_encodeMutex.unlock();
+					continue;
+				}
+				// 接收编码后的音频数据包
+				nRet = avcodec_receive_packet(pEncodeCtx, pPushPacket);
+				if (nRet < 0) {
+					logWaring(pPushPacket, "audio avcodec_receive_packet fail, %s\n");
+					m_encodeMutex.unlock();
+					continue;
+				}
+				// 设置推送包流索引
+				pPushPacket->stream_index = m_nEncodeStreamIndex;
+				m_pushMutex.lock();
+				if (m_pushPacketQueue.isFull()) {
+					m_pushWaitCondition.wait(&m_pushMutex);
+				}
+				// 将克隆后的数据包推送到队列
+				m_pushPacketQueue.push(av_packet_clone(pPushPacket));
+				m_pushWaitCondition.wakeOne();
+				m_pushMutex.unlock();
+				// 释放帧和数据包
+				av_frame_unref(pFrame);
+				av_frame_unref(pEncodeFrame);
+				av_frame_free(&pEncodeFrame);
+				av_packet_unref(pPushPacket);
+				// 递增帧索引
+				frame_index++;
+			}
+			m_encodeMutex.unlock();
+		}
+		// 释放资源
+		av_frame_free(&pFrameAAC);
+		av_packet_free(&pPushPacket);
+		swr_free(&audio_encode_swrCtx);
+	}
+}
+// CEncodeMuteAudioThread
+CEncodeMuteAudioThread::CEncodeMuteAudioThread(CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& encodeWaitCondition, QMutex& encodeMutex,
+                                               QWaitCondition& syncWaitCondition, QMutex& syncMutex, const int nEncodeStreamIndex,
+                                               std::tuple<CCalcPtsDur, AVCodecContext*> pairEncodeCtx, QObject* parent)
+: QThread(parent), m_encodePacketQueue(pushPacketQueue), m_nEncodeStreamIndex(nEncodeStreamIndex), m_encodeWaitCondition(encodeWaitCondition),
+  m_encodeMutex(encodeMutex), m_syncWaitCondition(syncWaitCondition), m_syncMutex(syncMutex), m_pairEncodeCtx(std::move(pairEncodeCtx)) {
+}
+
+CEncodeMuteAudioThread::~CEncodeMuteAudioThread() {
+	stop();
+}
+
+void CEncodeMuteAudioThread::pause() {
+	QMutexLocker locker(&m_encodeMutex);
+	m_bPause = true;
+}
+
+void CEncodeMuteAudioThread::resume() {
+	QMutexLocker locker(&m_encodeMutex);
+	m_bPause = false;
+}
+
+void CEncodeMuteAudioThread::stop() {
+	m_bRunning = false;
+	this->wait();
+}
+
+void CEncodeMuteAudioThread::run() {
+	char errBuf[ERRBUFSIZE]{};
+	int nRet{ 0 };
+	int frame_index{ 0 };
+
+	auto logWaring = [nRet, &errBuf](AVFrame* frame, AVPacket* packet, const char* log) {
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_WARNING, log, errBuf);
+		av_frame_unref(frame);
+		av_packet_unref(packet);
+	};
+	if (const auto pEncodeCtx = std::get<1>(m_pairEncodeCtx)) {
+		// 查找 AAC 编码器
+		const auto out_AudioCodec = avcodec_find_encoder(AV_CODEC_ID_AAC);
+		// 分配输出音频编码器上下文
+		auto* pOutputAudioCodecCtx = avcodec_alloc_context3(nullptr);
+		// 配置输出音频编码器上下文参数
+		pOutputAudioCodecCtx->profile = FF_PROFILE_AAC_LOW;    // 编码协议
+		pOutputAudioCodecCtx->codec_type = AVMEDIA_TYPE_AUDIO; // 音频编码
+		pOutputAudioCodecCtx->sample_fmt = AV_SAMPLE_FMT_FLTP;
+		pOutputAudioCodecCtx->channel_layout = AV_CH_LAYOUT_STEREO;
+		pOutputAudioCodecCtx->channels = 2;
+		pOutputAudioCodecCtx->sample_rate = pEncodeCtx->sample_rate;
+		pOutputAudioCodecCtx->bit_rate = pEncodeCtx->bit_rate;
+
+		// 设置编码器参数
+		AVDictionary* param{ nullptr };
+		av_dict_set(&param, "preset", "superfast", 0);
+		av_dict_set(&param, "tune", "zerolatency", 0);
+		// 打开输出音频编码器
+		nRet = avcodec_open2(pOutputAudioCodecCtx, out_AudioCodec, &param);
+		if (nRet < 0) {
+			av_strerror(nRet, errBuf, ERRBUFSIZE);
+			av_log(nullptr, AV_LOG_ERROR, "Can't open audio encoder %s\n", errBuf);
+			avcodec_free_context(&pOutputAudioCodecCtx);
+			return;
+		}
+		if (pOutputAudioCodecCtx) {
+			// 分配输出音频编码后的包
+			auto* pEncodePacket = av_packet_alloc();
+			// 分配用于静音的音频帧
+			auto* pMuteFrame = av_frame_alloc();
+			pMuteFrame->sample_rate = pEncodeCtx->sample_rate;
+			pMuteFrame->channel_layout = pEncodeCtx->channel_layout;
+			pMuteFrame->nb_samples = 1024; // 默认的sample大小
+			pMuteFrame->channels = 2;
+			pMuteFrame->format = pEncodeCtx->sample_fmt;
+			// 获取静音音频帧的数据缓冲区
+			nRet = av_frame_get_buffer(pMuteFrame, 0);
+			if (nRet < 0) {
+				av_frame_free(&pMuteFrame);
+				return;
+			}
+			// 将静音音频帧的数据设置为静音
+			av_samples_set_silence(pMuteFrame->data, 0, pMuteFrame->nb_samples, pMuteFrame->channels, pEncodeCtx->sample_fmt);
+			const auto& calPts = std::get<0>(m_pairEncodeCtx);
+			while (m_bRunning) {
+				if (m_bPause) {
+					continue;
+				}
+				QMutexLocker locker(&m_syncMutex);
+				// 等待推送线程的信号，即等待音频推送线程通知可以开始编码下一帧静音音频
+				m_syncWaitCondition.wait(&m_syncMutex);
+				// 循环编码两帧音频音频
+				for (int i = 0; i < 2; i++) {
+					// 克隆静音音频帧
+					auto* pCopyFrame = av_frame_clone(pMuteFrame);
+					pCopyFrame->pts = calPts.GetAudioPts(frame_index, pEncodeCtx->sample_rate);
+					// 发送静音音频帧进行编码
+					nRet = avcodec_send_frame(pOutputAudioCodecCtx, pCopyFrame);
+					if (nRet < 0) {
+						logWaring(pCopyFrame, pEncodePacket, "audio avcodec_send_frame fail, %s\n");
+						continue;
+					}
+					nRet = avcodec_receive_packet(pOutputAudioCodecCtx, pEncodePacket);
+					if (nRet < 0) {
+						logWaring(pCopyFrame, pEncodePacket, "audio avcodec_receive_packet fail, %s\n");
+						continue;
+					}
+					// 设置音频包的流索引
+					pEncodePacket->stream_index = m_nEncodeStreamIndex;
+					m_encodeMutex.lock();
+					if (m_encodePacketQueue.isFull()) {
+						m_encodeWaitCondition.wait(&m_encodeMutex);
+					}
+					// 将克隆后的数据包推送到队列
+					m_encodePacketQueue.push(av_packet_clone(pEncodePacket));
+					m_encodeWaitCondition.wakeOne();
+					// 释放资源
+					av_frame_unref(pCopyFrame);
+					av_frame_free(&pCopyFrame);
+					av_packet_unref(pEncodePacket);
+					frame_index++;
+					m_encodeMutex.unlock();
+				}
+			}
+			// 释放剩余资源
+			av_frame_free(&pMuteFrame);
+			av_packet_free(&pEncodePacket);
+			avcodec_close(pOutputAudioCodecCtx);
+			avcodec_free_context(&pOutputAudioCodecCtx);
+		}
+	}
+}
+
+// CPushThread
+CPushThread::CPushThread(AVFormatContext* pOutputFormatCtx, CircularQueue<AVPacket*>& videoPacketQueue, CircularQueue<AVPacket*>& audioPacketQueue,
+                         QWaitCondition& videoWaitCondition, QMutex& videoMutex, QWaitCondition& audioWaitCondition, QMutex& audioMutex,
+                         const bool bPushVideo, const bool bPushAudio, QObject* parent)
+: QThread(parent), m_videoPacketQueue(videoPacketQueue), m_audioPacketQueue(audioPacketQueue), m_bPushVideo(bPushVideo),
+  m_bPushAudio(bPushAudio), m_videoWaitCondition(videoWaitCondition), m_videoMutex(videoMutex), m_audioWaitCondition(audioWaitCondition),
+  m_audioMutex(audioMutex), m_pOutputFormatCtx(pOutputFormatCtx) {
+}
+
+CPushThread::~CPushThread() {
+	stop();
+}
+
+void CPushThread::pause() {
+	QMutexLocker videoLocker(&m_videoMutex);
+	QMutexLocker audioLocker(&m_audioMutex);
+	m_bPause = true;
+}
+
+void CPushThread::resume() {
+	QMutexLocker videoLocker(&m_videoMutex);
+	QMutexLocker audioLocker(&m_audioMutex);
+	m_bPause = false;
+}
+
+void CPushThread::stop() {
+	m_bRunning = false;
+	m_videoWaitCondition.wakeAll();
+	m_audioWaitCondition.wakeAll();
+	this->wait();
+}
+
+void CPushThread::run() {
+	char errBuf[ERRBUFSIZE]{};
+	auto logWaring = [&errBuf](const int nRet, AVPacket* packet, const char* log) {
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_WARNING, log, errBuf);
+		av_packet_unref(packet);
+		av_packet_free(&packet);
+	};
+	while (m_bRunning) {
+		if (m_bPause) {
+			continue;
+		}
+		int nVideoPts{ 0 };
+		if (m_bPushVideo) {
+			QMutexLocker locker(&m_videoMutex);
+			if (m_videoPacketQueue.isEmpty()) {
+				m_videoWaitCondition.wakeOne();
+				m_videoWaitCondition.wait(&m_videoMutex);
+			}
+			auto pVideoPacket = m_videoPacketQueue.pop();
+			if (pVideoPacket && pVideoPacket->pts >= 0) {
+				nVideoPts = static_cast<int>(pVideoPacket->pts);
+				if (const int nRet = av_interleaved_write_frame(m_pOutputFormatCtx, pVideoPacket); nRet < 0) {
+					logWaring(nRet, pVideoPacket, "video push error, %s\n");
+					continue;
+				}
+				av_packet_unref(pVideoPacket);
+				av_packet_free(&pVideoPacket);
+			}
+		}
+		if (m_bPushAudio) {
+			QMutexLocker locker(&m_audioMutex);
+			if (m_audioPacketQueue.isEmpty()) {
+				m_audioWaitCondition.wakeOne();
+				m_audioWaitCondition.wait(&m_audioMutex);
+			}
+			auto pAudioPacket = m_audioPacketQueue.pop();
+			while (pAudioPacket && pAudioPacket->buf && pAudioPacket->pts >= 0 && (!m_bPushVideo || pAudioPacket->pts <= nVideoPts)) {
+				if (const int nRet = av_interleaved_write_frame(m_pOutputFormatCtx, pAudioPacket); nRet < 0) {
+					logWaring(nRet, pAudioPacket, "audio push error, %s\n");
+					if (!m_audioPacketQueue.isEmpty()) {
+						if (m_audioPacketQueue.first()->pts < nVideoPts) {
+							pAudioPacket = m_audioPacketQueue.pop();
+						}
+					}
+					continue;
+				}
+				av_packet_unref(pAudioPacket);
+				av_packet_free(&pAudioPacket);
+				if (!m_audioPacketQueue.isEmpty()) {
+					if (!m_bPushVideo || m_audioPacketQueue.first()->pts, nVideoPts) {
+						pAudioPacket = m_audioPacketQueue.pop();
+					}
+				}
+			}
+		}
+	}
+}
+
+// CRecvThread
+CRecvThread::CRecvThread(QString strPath, QObject* parent)
+: QThread(parent), m_strPath(std::move(strPath)) {
+	setAutoDelete(false);
+	m_bRunning = true;
+}
+
+CRecvThread::~CRecvThread() = default;
+
+void CRecvThread::stop() {
+	m_bRunning = false;
+	this->wait();
+}
+
+QString CRecvThread::path() const {
+	return m_strPath;
+}
+
+QPair<AVCodecParameters*, AVCodecParameters*> CRecvThread::getContext() const {
+	return qMakePair(m_pVideoCodecPara, m_pAudioCodecPara);
+}
+
+void CRecvThread::run() {
+	int nRet{ -1 };
+	char errBuf[ERRBUFSIZE];
+	// 查找视频流和音频流
+	// 保存媒体文件的格式相关信息
+	nRet = avformat_open_input(&m_pFormatCtx, m_strPath.toStdString().c_str(), nullptr, nullptr);
+	if (nRet < 0) {
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_ERROR, "Can't open input, %s\n", errBuf);
+		return;
+	}
+	// 查找媒体文件中的流信息
+	nRet = avformat_find_stream_info(m_pFormatCtx, nullptr);
+	if (nRet < 0) {
+		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_log(nullptr, AV_LOG_ERROR, "Can't find stream info, %s\n", errBuf);
+		avformat_close_input(&m_pFormatCtx);
+		return;
+	}
+	// 打印格式信息
+	av_dump_format(m_pFormatCtx, 0, m_strPath.toStdString().c_str(), 0);
+	// 查找视频和音频流索引
+	const int nVideoIndex = av_find_best_stream(m_pFormatCtx, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
+	const int nAudioIndex = av_find_best_stream(m_pFormatCtx, AVMEDIA_TYPE_AUDIO, -1, -1, nullptr, 0);
+	if (nVideoIndex == -1 && nAudioIndex == -1) {
+		av_log(nullptr, AV_LOG_ERROR, "Can't find video and audio stream.\n");
+		avformat_close_input(&m_pFormatCtx);
+		return;
+	}
+	// 复制视频和音频编解码参数
+	if (AVERROR_STREAM_NOT_FOUND != nVideoIndex) {
+		m_pVideoCodecPara = avcodec_parameters_alloc();
+		avcodec_parameters_copy(m_pVideoCodecPara, m_pFormatCtx->streams[nVideoIndex]->codecpar);
+	}
+	if (AVERROR_STREAM_NOT_FOUND != nAudioIndex) {
+		m_pAudioCodecPara = avcodec_parameters_alloc();
+		avcodec_parameters_copy(m_pAudioCodecPara, m_pFormatCtx->streams[nAudioIndex]->codecpar);
+	}
+	avformat_close_input(&m_pFormatCtx);
 }

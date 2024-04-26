@@ -5,10 +5,15 @@ if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif ()
 
+set(ffmpeg_libs_DIR ${CMAKE_SOURCE_DIR}/ffmpeg-5.0.1/Windows/lib)
+set(ffmpeg_headers_DIR ${CMAKE_SOURCE_DIR}/ffmpeg-5.0.1/Windows/include)
+
 # 添加头文件路径到编译器的头文件搜索路径下，多个路径以空格分隔
 include_directories(${ffmpeg_headers_DIR})
 include_directories(..)
 aux_source_directory(. SRC_LIST)
+
+link_directories(${ffmpeg_libs_DIR})
 
 add_library(${TARGET_NAME} SHARED ${SRC_LIST})
 
@@ -17,9 +22,8 @@ target_link_libraries(${TARGET_NAME}
         avcodec avdevice avfilter avformat avutil postproc swresample swscale
 )
 
-link_directories(${ffmpeg_libs_DIR})
 
-target_compile_definitions(${TARGET_NAME} PRIVATE SPLASHSCREEN_LIB)
+target_compile_definitions(${TARGET_NAME} PRIVATE CODEC_P_LIB)
 
 install(TARGETS ${TARGET_NAME}
         RUNTIME DESTINATION bin

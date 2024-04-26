@@ -16,9 +16,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(ffmpeg_libs_DIR ${CMAKE_SOURCE_DIR}/ffmpeg-5.0.1/Windows/lib)
-set(ffmpeg_headers_DIR ${CMAKE_SOURCE_DIR}/ffmpeg-5.0.1/Windows/include)
-
 # 从环境变量中获取 Qt 路径，查找 qmake
 if (WIN32 OR UNIX)
     set(QT_DIR $ENV{QTDIR})
