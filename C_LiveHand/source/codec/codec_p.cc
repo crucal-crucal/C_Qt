@@ -201,20 +201,18 @@ void CCodecThread::seek(const quint64& nDuration) {
 					av_log(nullptr, AV_LOG_WARNING, "seek audio fail, avformat_seek_file return %d\n", nRet);
 				}
 			} else if (m_pEncodeMuteThread) {
-				//while (!m_audioPacketQueue.isEmpty())
-				//{
-				//    AVPacket* pkt = m_audioPacketQueue.pop();
-				//    av_packet_unref(pkt);
-				//    av_packet_free(&pkt);
-				//}
-				//m_audioPacketQueue.clear();
-				//while (!m_audioPushPacketQueue.isEmpty())
-				//{
-				//    AVPacket* pkt = m_audioPushPacketQueue.pop();
-				//    av_packet_unref(pkt);
-				//    av_packet_free(&pkt);
-				//}
-				//m_audioPushPacketQueue.clear();
+				while (!m_audioPacketQueue.isEmpty()) {
+					AVPacket* pkt = m_audioPacketQueue.pop();
+					av_packet_unref(pkt);
+					av_packet_free(&pkt);
+				}
+				m_audioPacketQueue.clear();
+				while (!m_audioPushPacketQueue.isEmpty()) {
+					AVPacket* pkt = m_audioPushPacketQueue.pop();
+					av_packet_unref(pkt);
+					av_packet_free(&pkt);
+				}
+				m_audioPushPacketQueue.clear();
 			}
 		}
 	}
