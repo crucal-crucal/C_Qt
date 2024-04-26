@@ -10,7 +10,6 @@
 #include <QApplication>
 
 #include "global/cdefine.h"
-#include "ccalcptsdur.h"
 
 extern "C" {
 #include "libavcodec/avcodec.h"

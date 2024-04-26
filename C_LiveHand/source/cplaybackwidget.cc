@@ -24,21 +24,21 @@ void CPlayBackWidget::openFile(const QString& strFile, const bool bLoop, const b
 	}
 
 	//rtmp://172.16.160.34/live/hpx  udp://233.233.233.233:5200
-	m_pCodecThread->open(strFile, m_pLbDisplay->size(), CPushStreamInfo{}, CCodecThread::OpenMode::OpenMode_Play, bLoop);
-	CPushStreamInfo stStream;
+	// m_pCodecThread->open(strFile, m_pLbDisplay->size(), CPushStreamInfo{}, CCodecThread::OpenMode::OpenMode_Play, bLoop);
+	// CPushStreamInfo stStream;
 	// stStream.eStream = CPushStreamInfo::Video;
 	// stStream.eStream = CPushStreamInfo::Audio;
-	stStream.strAddress = "srt://127.0.0.1:22071?mode=listener";
-	stStream.strAddress = "udp://127.0.0.1:5200";
-	stStream.strAddress = "rtmp://192.168.190.130:1935/live/test1";
-	stStream.nWidth = 1920;
-	stStream.nHeight = 1080;
-	stStream.nAudioSampleRate = 44100;
-	stStream.nFrameRateNum = 1;
-	stStream.nFrameRateDen = 50;
+	// stStream.strAddress = "srt://127.0.0.1:22071?mode=listener";
+	// stStream.strAddress = "udp://127.0.0.1:5200";
+	// stStream.strAddress = "rtmp://192.168.190.130:1935/live/test1";
+	// stStream.nWidth = 1920;
+	// stStream.nHeight = 1080;
+	// stStream.nAudioSampleRate = 44100;
+	// stStream.nFrameRateNum = 1;
+	// stStream.nFrameRateDen = 50;
 
 	// 打开媒体文件或流
-	// m_pCodecThread->open(strFile, m_pLbDisplay->size(), CPushStreamInfo(), CCodecThread::OpenMode::OpenMode_Play, bLoop, bPicture);
+	m_pCodecThread->open(strFile, m_pLbDisplay->size(), CPushStreamInfo(), CCodecThread::OpenMode::OpenMode_Play, bLoop, bPicture);
 	// 处理所有当前事件，确保 open 函数执行完成
 	qApp->processEvents(QEventLoop::EventLoopExec);
 	//m_pCodecThread->open(strFile, m_pLbDisplay->size(), stStream,
@@ -89,26 +89,30 @@ void CPlayBackWidget::onNotifyAudioPara(const quint64& nSampleRate, const quint6
 	format.setSampleRate(static_cast<int>(nSampleRate));
 	format.setSampleSize(16);
 	format.setSampleType(QAudioFormat::SignedInt);
+	format.setChannelCount(static_cast<int>(nChannels));
 	format.setByteOrder(QAudioFormat::LittleEndian);
 
-	if (const QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice()); !info.isFormatSupported(format)) {
+	QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice()); //选择默认输出设备
+
+	if (!info.isFormatSupported(format)) {
 		format = info.nearestFormat(format);
 	}
 	if (m_pAudioOutput) {
 		m_pAudioOutput->stop();
 		SAFE_DELETE(m_pAudioOutput);
-		m_pAudioOutput = nullptr;
-	} else {
+		m_pAudioDevice = nullptr;
+	}
+	if (!m_pAudioOutput) {
 		m_pAudioOutput = new QAudioOutput(QAudioDeviceInfo::defaultOutputDevice(), format, this);
 		m_pAudioOutput->setVolume(100);
 		m_pAudioDevice = m_pAudioOutput->start();
 	}
 	if (m_nTimerId != -1) {
-		this->killTimer(m_nTimerId);
+		killTimer(m_nTimerId);
 		m_nTimerId = -1;
 	}
 	m_audioByteBuffer.clear();
-	m_nTimerId = this->startTimer(20);
+	m_nTimerId = startTimer(20);
 }
 
 void CPlayBackWidget::onNotifyCountDown(const quint64& nCountDown) const {
