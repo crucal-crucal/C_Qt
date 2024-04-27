@@ -14,19 +14,20 @@ CLiveHand::CLiveHand(const WINDOWLANAGUAGE Lanaguage, const WINDOWTHEMESTYLE The
 	m_pProcessName = setting.value("process/name").toString();
 	m_strTitle = QString("%1 Watchman").arg(m_pProcessName);
 
+	this->setResizeEnable(false);
 	createCtrl();
 	customLayout();
 	init();
 	initConnection();
 	initData();
-	this->resize(800, 600);
+	this->resize(600, 600);
 }
 
 CLiveHand::~CLiveHand() {
 	destroy();
 }
 
-void CLiveHand::readConfig() {
+void CLiveHand::readConfig() const {
 	QString strSavePath = qApp->applicationDirPath() + "/config/clips.xml";
 	if (QFile::exists(strSavePath)) {
 		QFile file(strSavePath);
@@ -63,7 +64,7 @@ void CLiveHand::readConfig() {
 	}
 }
 
-void CLiveHand::saveConfig() {
+void CLiveHand::saveConfig() const {
 	QDomDocument doc{};
 	QDomElement infoElement = doc.createElement("ClipInfo");
 	for (int i = 0; i < m_pFillerPieceTable->rowCount(); i++) {
@@ -95,7 +96,7 @@ void CLiveHand::saveConfig() {
 	}
 }
 
-void CLiveHand::appendItem(const QString& strFile, bool bLock, bool bCurrent) {
+void CLiveHand::appendItem(const QString& strFile, bool bLock, bool bCurrent) const {
 	auto* item = new QTableWidgetItem(strFile);
 	item->setText(strFile);
 	item->setToolTip(strFile);
@@ -122,7 +123,7 @@ void CLiveHand::appendItem(const QString& strFile, bool bLock, bool bCurrent) {
 	}
 }
 
-void CLiveHand::removeItem(QTableWidgetItem* item) {
+void CLiveHand::removeItem(const QTableWidgetItem* item) const {
 	if (item->data(Qt::UserRole + 3).value<bool>()) {
 		if (m_pFillerPieceTable->rowCount() > 0) {
 			m_pFillerPieceTable->item(0, 0)->setData(Qt::UserRole + 3, true);
@@ -261,7 +262,7 @@ void CLiveHand::customLayout() {
 	m_pCentralLayout->addLayout(m_pLyVFillerPieceTotal, 2);
 }
 
-void CLiveHand::init() {
+void CLiveHand::init() const {
 	recoveryStateWithAct();
 	// m_pMenuBar->setFixedWidth(m_language == WINDOWLANAGUAGE::Chinese ? CHINESE_MENUBAR_WIDTH : ENGLISH_MENUBAR_WIDTH);
 	m_pMenuBar->setFixedWidth(ENGLISH_MENUBAR_WIDTH);
@@ -285,14 +286,14 @@ void CLiveHand::initConnection() {
 	connect(m_pPlayWidget, &CPlayBackWidget::notifyPlayClicked, this, &CLiveHand::onNotifyPlayClicked);
 }
 
-void CLiveHand::initData() {
+void CLiveHand::initData() const {
 	readConfig();
 	if (m_pFillerPieceTable->rowCount() > 0) {
 		m_pFillerPieceTable->selectRow(0);
 	}
 }
 
-void CLiveHand::destroy() {
+void CLiveHand::destroy() const {
 	saveConfig();
 }
 
@@ -375,7 +376,7 @@ void CLiveHand::onSystemTrayIconActivated(const QSystemTrayIcon::ActivationReaso
 	}
 }
 
-void CLiveHand::onBtnFillerPieceSwitchClicked(bool bChecked) {
+void CLiveHand::onBtnFillerPieceSwitchClicked(bool bChecked) const {
 	if (bChecked) {
 		m_pLbFillerPieceStatus->setText(tr("status enable"));
 		if (m_pFillerPieceTable->rowCount() == 0) {
@@ -440,7 +441,7 @@ void CLiveHand::onBtnStopFillerPieceClicked() {
 void CLiveHand::onBtnAppendFillerPieceClicked() {
 	auto files = CUVFileDialog::getOpenFileNames(this, tr("Append Path"), "",
 	                                             QString("%1(*.avi *.wmv *.mov *.mp4 *.mpg *.ts);;%2(*.bmp *.png *.jpg *.jpeg)")
-	                                             .arg(tr("Video")).arg(tr("Image")));
+	                                             .arg(tr("Video"), tr("Image")));
 	for (const auto& i : files) {
 		// 加入到垫片列表
 		appendItem(i);
@@ -449,7 +450,7 @@ void CLiveHand::onBtnAppendFillerPieceClicked() {
 	saveConfig();
 }
 
-bool CLiveHand::onItemDoubleClicked(QTableWidgetItem* item) {
+bool CLiveHand::onItemDoubleClicked(const QTableWidgetItem* item) {
 	bool bRet = false;
 	if (QThreadPool::globalInstance()->activeThreadCount() > 0) {
 		UVMessageBox::CUVMessageBox::warning(this, tr("IDS_WARNING"), tr("IDS_PUSING_CAN_NOT_PLAY"), QMessageBox::Ok);
@@ -570,7 +571,7 @@ void CQuitDialog::createCtrl() {
 	m_pLyVTotal = new QVBoxLayout;
 }
 
-void CQuitDialog::layOut() {
+void CQuitDialog::layOut() const {
 	m_pLyHTip->addWidget(m_pLbTip);
 	m_pLyHTip->addStretch();
 

@@ -32,18 +32,18 @@ signals:
 	void ThemeChanged(WINDOWTHEMESTYLE);
 
 private:
-	void readConfig();
-	void saveConfig();
-	void appendItem(const QString& strFile, bool bLock = false, bool bCurrent = false);
-	void removeItem(QTableWidgetItem* item);
+	void readConfig() const;
+	void saveConfig() const;
+	void appendItem(const QString& strFile, bool bLock = false, bool bCurrent = false) const;
+	void removeItem(const QTableWidgetItem* item) const;
 
 private:
 	void createCtrl();
 	void customLayout();
-	void init();
+	void init() const;
 	void initConnection();
-	void initData();
-	void destroy();
+	void initData() const;
+	void destroy() const;
 	void help();
 	void version();
 	/*
@@ -64,10 +64,10 @@ private slots:
 	void onActChineseClicked();
 	void onActEnglishClicked();
 	void onSystemTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
-	void onBtnFillerPieceSwitchClicked(bool bChecked);
+	void onBtnFillerPieceSwitchClicked(bool bChecked) const;
 	void onBtnStopFillerPieceClicked();
 	void onBtnAppendFillerPieceClicked();
-	bool onItemDoubleClicked(QTableWidgetItem* item);
+	bool onItemDoubleClicked(const QTableWidgetItem* item);
 	void onItemSelectChanged();
 	void onTableCustomContextMenuRequested(const QPoint& pos);
 	void onBtnCloseClicked();
@@ -150,7 +150,7 @@ protected:
 
 private:
 	void createCtrl();
-	void layOut();
+	void layOut() const;
 	void destroy();
 
 private:
