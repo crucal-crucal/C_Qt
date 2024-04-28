@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QLabel>
 #include <QVBoxLayout>
@@ -14,7 +14,7 @@ class CPlayBackWidget final : public QWidget {
 	Q_OBJECT
 
 public:
-	// ²¥·ÅÆ÷×´Ì¬
+	// æ’­æ”¾å™¨çŠ¶æ€
 	enum State {
 		Play,
 		Pause,
@@ -32,8 +32,8 @@ public:
 	void resume();
 
 public slots:
-	void onNotifyAudio(const QByteArray& data);            // ÒôÆµÊı¾İ
-	void onNotifyClipInfo(const quint64& nDuration) const; // Ã½Ìå×ÜÊ±³¤
+	void onNotifyAudio(const QByteArray& data);            // éŸ³é¢‘æ•°æ®
+	void onNotifyClipInfo(const quint64& nDuration) const; // åª’ä½“æ€»æ—¶é•¿
 	void onNotifyAudioPara(const quint64& nSampleRate, const quint64& nChannels);
 	void onNotifyCountDown(const quint64& nCountDown) const;
 	void onNotifyImage(const QPixmap& pixmap) const;
@@ -81,7 +81,7 @@ private:
 private:
 	QAudioOutput* m_pAudioOutput{ nullptr };
 	QIODevice* m_pAudioDevice{ nullptr };
-	QByteArray m_audioByteBuffer; //ÒôÆµ»º³å
+	QByteArray m_audioByteBuffer; //éŸ³é¢‘ç¼“å†²
 
 	CCodecThread* m_pCodecThread{ nullptr };
 	State m_eState{ Stop };
@@ -96,17 +96,17 @@ public:
 	explicit CAspectRatioItem(QWidget* parent, int nWidthAspect, int nHeightAspect);
 	~CAspectRatioItem() override;
 
-	// ÉèÖÃ¿í¸ß±È
+	// è®¾ç½®å®½é«˜æ¯”
 	void setAspectRatio(int nWidthAspect, int nHeightAspect);
-	// ÖØĞ´»ùÀàµÄ setGeometry º¯Êı£¬ÒÔÈ·±£ÔÚÉèÖÃ³ß´çÊ±±£³Ö¿í¸ß±È
+	// é‡å†™åŸºç±»çš„ setGeometry å‡½æ•°ï¼Œä»¥ç¡®ä¿åœ¨è®¾ç½®å°ºå¯¸æ—¶ä¿æŒå®½é«˜æ¯”
 	void setGeometry(const QRect&) override;
-	// ÉèÖÃµ±Ç°¿í¸ß±ÈµÄ¿í²¿·Ö
+	// è®¾ç½®å½“å‰å®½é«˜æ¯”çš„å®½éƒ¨åˆ†
 	[[nodiscard]] int widthAspect() const;
-	// ÉèÖÃµ±Ç°¿í¸ß±ÈµÄ¸ß²¿·Ö
+	// è®¾ç½®å½“å‰å®½é«˜æ¯”çš„é«˜éƒ¨åˆ†
 	[[nodiscard]] int heightAspect() const;
 
 protected:
-	// Î¬³Ö¿í¸ß±È
+	// ç»´æŒå®½é«˜æ¯”
 	void doLayout(const QRect& rect) const;
 
 private:

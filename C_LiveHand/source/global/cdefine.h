@@ -1,67 +1,75 @@
-#pragma once
+ï»¿#pragma once
 
-#include <QString>
+#include <iostream>
+#include <charconv>
+#include <QDir>
+#include <QFile>
+
+#ifdef Q_OS_WIN
+#include <Windows.h>
+#include <tlhelp32.h>
+#endif // Q_OS_WIN
 
 #define  SAFE_DELETE(p) { if (p) { delete p; p = nullptr; } }
 
-// ½ø³Ì×´Ì¬
+// è¿›ç¨‹çŠ¶æ€
 enum eProcessState {
-	eProcessState_Unknown = -1, // Î´Öª
-	eProcessState_Online,       // ÔÚÏß
-	eProcessState_Online_Push,  // ÔÚÏßÍÆËÍ
-	eProcessState_Offline,      // ÀëÏß
+	eProcessState_Unknown = -1, // æœªçŸ¥
+	eProcessState_Online,       // åœ¨çº¿
+	eProcessState_Online_Push,  // åœ¨çº¿æ¨é€
+	eProcessState_Offline,      // ç¦»çº¿
 };
 
-// ÍÆËÍÁ÷ĞÅÏ¢
+// æ¨é€æµä¿¡æ¯
 struct CPushStreamInfo {
-	// ÍÆËÍÁ÷ÀàĞÍ
+	// æ¨é€æµç±»å‹
 	enum PushStream {
 		Video = 0x1,
 		Audio = 0x2
 	};
 
-	QString strAddress{ "" };                        // ÍÆËÍµØÖ·
-	float fVideoBitRate{ 0.0 };                      // ÊÓÆµ±ÈÌØÂÊ
-	PushStream eStream{ PushStream(Video | Audio) }; // ÍÆÁ÷ÀàĞÍ
-	int nWidth{ 0 };                                 // ÊÓÆµ¿í¶È
-	int nHeight{ 0 };                                // ÊÓÆµ¸ß¶È
-	int nFrameRateNum{ 1 };                          // ÊÓÆµÖ¡ÂÊ·Ö×Ó
-	int nFrameRateDen{ 25 };                         // ÊÓÆµÖ¡ÂÊ·ÖÄ¸
-	int nColorDepth{ 24 };                           // ÊÓÆµÑÕÉ«Éî¶È
-	int nAudioBitRate{ 0 };                          // ÒôÆµ±ÈÌØÂÊ
-	int nAudioSampleRate{ 0 };                       // ÒôÆµ²ÉÑùÂÊ
+	QString strAddress{ "" };                        // æ¨é€åœ°å€
+	float fVideoBitRate{ 0.0 };                      // è§†é¢‘æ¯”ç‰¹ç‡
+	PushStream eStream{ PushStream(Video | Audio) }; // æ¨æµç±»å‹
+	int nWidth{ 0 };                                 // è§†é¢‘å®½åº¦
+	int nHeight{ 0 };                                // è§†é¢‘é«˜åº¦
+	int nFrameRateNum{ 1 };                          // è§†é¢‘å¸§ç‡åˆ†å­
+	int nFrameRateDen{ 25 };                         // è§†é¢‘å¸§ç‡åˆ†æ¯
+	int nColorDepth{ 24 };                           // è§†é¢‘é¢œè‰²æ·±åº¦
+	int nAudioBitRate{ 0 };                          // éŸ³é¢‘æ¯”ç‰¹ç‡
+	int nAudioSampleRate{ 0 };                       // éŸ³é¢‘é‡‡æ ·ç‡
 };
 
-constexpr int ERRBUFSIZE = 4096; // ´íÎóĞÅÏ¢´óĞ¡
-// Ñ­»·¶ÓÁĞ
+constexpr int ERRBUFSIZE = 4096; // é”™è¯¯ä¿¡æ¯å¤§å°
+// å¾ªç¯é˜Ÿåˆ—
 template<typename T>
 struct CircularQueue {
 public:
-	// ´´½¨Ö¸¶¨´óĞ¡µÄÑ­»·¶ÓÁĞ
+	// åˆ›å»ºæŒ‡å®šå¤§å°çš„å¾ªç¯é˜Ÿåˆ—
 	explicit CircularQueue(int size);
 	~CircularQueue();
-	// ÅĞ¶ÏÑ­»·¶ÓÁĞÊÇ·ñÒÑÂú
+	// åˆ¤æ–­å¾ªç¯é˜Ÿåˆ—æ˜¯å¦å·²æ»¡
 	bool isFull() const;
-	// ÅĞ¶ÏÑ­»·¶ÓÁĞÊÇ·ñÎª¿Õ
+	// åˆ¤æ–­å¾ªç¯é˜Ÿåˆ—æ˜¯å¦ä¸ºç©º
 	bool isEmpty() const;
-	// ½«ÔªËØÍÆÈëÑ­»·¶ÓÁĞÄ©Î²
+	// å°†å…ƒç´ æ¨å…¥å¾ªç¯é˜Ÿåˆ—æœ«å°¾
 	bool push(T);
-	// µ¯³ö¶ÓÊ×
+	// å¼¹å‡ºé˜Ÿé¦–
 	T pop();
-	// »ñÈ¡¶ÓÊ×
+	// è·å–é˜Ÿé¦–
 	T first();
-	// Çå¿Õ¶ÓÁĞ
+	// æ¸…ç©ºé˜Ÿåˆ—
 	void clear();
 	int size() const;
 
 private:
-	// Ñ­»·¶ÓÁĞ×Ü´óĞ¡
+	// å¾ªç¯é˜Ÿåˆ—æ€»å¤§å°
 	std::atomic_int m_nSize{ 0 };
-	// Ñ­»·¶ÓÁĞÍ·²¿Ë÷Òı
+	// å¾ªç¯é˜Ÿåˆ—å¤´éƒ¨ç´¢å¼•
 	std::atomic_int m_nFront{ 0 };
-	// Ñ­»·¶ÓÁĞÎ²²¿Ë÷Òı
+	// å¾ªç¯é˜Ÿåˆ—å°¾éƒ¨ç´¢å¼•
 	std::atomic_int m_nRear{ 0 };
-	// ´æ´¢Ñ­»·¶ÓÁĞÔªËØµÄÊı×é
+	// å­˜å‚¨å¾ªç¯é˜Ÿåˆ—å…ƒç´ çš„æ•°ç»„
 	T* m_pData{ nullptr };
 };
 

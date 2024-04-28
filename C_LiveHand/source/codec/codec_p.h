@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QThread>
 #include <QRunnable>
@@ -42,37 +42,43 @@ struct AVCodecParameters;
 #define CODEC_P_EXPORT Q_DECL_IMPORT
 #endif
 
+/*
+ * @brief è®¡ç®—éŸ³è§†é¢‘å¸§çš„æ—¶é—´æˆ³å’ŒæŒç»­æ—¶é—´
+ */
 class CODEC_P_EXPORT CCalcPtsDur {
 public:
 	CCalcPtsDur();
 	~CCalcPtsDur();
 
-	// ÉèÖÃÊ±¼ä»ù×¼ºÍÖ¡ÂÊ£¬²¢¼ÆËãÖ¡µÄ³ÖĞøÊ±¼ä
+	// è®¾ç½®æ—¶é—´åŸºå‡†å’Œå¸§ç‡ï¼Œå¹¶è®¡ç®—å¸§çš„æŒç»­æ—¶é—´
 	void SetTimeBase(int iTimeBase, int iFpsNum, int iTimeBen);
-	// ÉèÖÃ¾ø¶Ô»ù×¼Ê±¼ä
-	void SetAbsBaseTime(const __int64& llAbsBaseTime);
-	// ¸ù¾İÖ¡Ë÷Òı¼ÆËãÊÓÆµÖ¡µÄÊ±¼ä´Á
-	[[nodiscard]] __int64 GetVideoPts(__int64 lFrameIndex) const;
-	// ¸ù¾İÖ¡Ë÷Òı¼ÆËãÊÓÆµÖ¡µÄ³ÖĞøÊ±¼ä
-	[[nodiscard]] __int64 GetVideoDur(__int64 lFrameIndex) const;
-	// ¸ù¾İ°üË÷ÒıºÍÒôÆµÑù±¾Êı¼ÆËãÒôÆµÖ¡µÄÊ±¼ä´Á
-	[[nodiscard]] __int64 GetAudioPts(__int64 lPaketIndex, int iAudioSample) const;
-	// ¸ù¾İ°üË÷ÒıºÍÒôÆµÑù±¾Êı¼ÆËãÒôÆµÖ¡µÄ³ÖĞøÊ±¼ä
-	[[nodiscard]] __int64 GetAudioDur(__int64 lPaketIndex, int iAudioSample) const;
-	// Ê±¼ä»ù×¼
+	// è®¾ç½®ç»å¯¹åŸºå‡†æ—¶é—´
+	void SetAbsBaseTime(const int64_t& llAbsBaseTime);
+	// æ ¹æ®å¸§ç´¢å¼•è®¡ç®—è§†é¢‘å¸§çš„æ—¶é—´æˆ³
+	[[nodiscard]] int64_t GetVideoPts(int64_t lFrameIndex) const;
+	// æ ¹æ®å¸§ç´¢å¼•è®¡ç®—è§†é¢‘å¸§çš„æŒç»­æ—¶é—´
+	[[nodiscard]] int GetVideoDur(int64_t lFrameIndex) const;
+	// æ ¹æ®åŒ…ç´¢å¼•å’ŒéŸ³é¢‘æ ·æœ¬æ•°è®¡ç®—éŸ³é¢‘å¸§çš„æ—¶é—´æˆ³
+	[[nodiscard]] int64_t GetAudioPts(int64_t lPaketIndex, int iAudioSample) const;
+	// æ ¹æ®åŒ…ç´¢å¼•å’ŒéŸ³é¢‘æ ·æœ¬æ•°è®¡ç®—éŸ³é¢‘å¸§çš„æŒç»­æ—¶é—´
+	[[nodiscard]] int GetAudioDur(int64_t lPaketIndex, int iAudioSample) const;
+	// æ—¶é—´åŸºå‡†
 	double m_dTimeBase;
-	// Ö¡ÂÊ·Ö×Ó
+	// å¸§ç‡åˆ†å­
 	double m_dFpsBen;
-	// Ö¡ÂÊ·ÖÄ¸
+	// å¸§ç‡åˆ†æ¯
 	double m_dFpsNum;
-	// Ö¡µÄ³ÖĞøÊ±¼ä
+	// å¸§çš„æŒç»­æ—¶é—´
 	double m_dFrameDur;
 
 private:
-	// ¾ø¶Ô»ù×¼Ê±¼ä
-	__int64 m_llAbsBaseTime;
+	// ç»å¯¹åŸºå‡†æ—¶é—´
+	int64_t m_llAbsBaseTime;
 };
 
+/*
+ * @brief éŸ³è§†é¢‘å¤„ç†çº¿ç¨‹ï¼Œæ§åˆ¶ç¼–è§£ç ï¼Œæ¨é€æµ
+ */
 class CODEC_P_EXPORT CCodecThread final : public QThread, public QRunnable {
 	Q_OBJECT
 
@@ -82,9 +88,13 @@ public:
 		OpenMode_Push = 0x2
 	};
 	enum eDecodeMode {
-		eDecodeMode_CPU = 0, // cpu½âÂë
-		eDecodeMode_GPU      // gpu½âÂë
+		eDecodeMode_CPU = 0, // cpuè§£ç 
+		eDecodeMode_GPU      // gpuè§£ç 
 	};
+	/*
+	 * @param: strFile æ–‡ä»¶è·¯å¾„, stStreamInfo æ¨é€æµä¿¡æ¯, szPlay æ’­æ”¾çª—å£å¤§å°,
+	 * pairRecvCodecPara æ¥æ”¶çš„ç¼–ç å‚æ•°, mode æ‰“å¼€æ¨¡å¼, bLoop æ˜¯å¦å¾ªç¯æ’­æ”¾, bPicture æ˜¯å¦åªæ’­æ”¾å›¾ç‰‡
+	 */
 	explicit CCodecThread(QString strFile, CPushStreamInfo stStreamInfo, QSize szPlay,
 	                      QPair<AVCodecParameters*, AVCodecParameters*> pairRecvCodecPara,
 	                      OpenMode mode = OpenMode::OpenMode_Push, bool bLoop = false,
@@ -119,36 +129,36 @@ private:
 	AVFormatContext* m_pFormatCtx{ nullptr };
 
 private:
-	QString m_strFile;                  // Òª´¦ÀíµÄÎÄ¼şÂ·¾¶
-	QSize m_szPlay;                     // ²¥·Å´°¿Ú´óĞ¡
-	CPushStreamInfo m_stPushStreamInfo; // ÍÆËÍÁ÷ĞÅÏ¢
+	QString m_strFile;                  // è¦å¤„ç†çš„æ–‡ä»¶è·¯å¾„
+	QSize m_szPlay;                     // æ’­æ”¾çª—å£å¤§å°
+	CPushStreamInfo m_stPushStreamInfo; // æ¨é€æµä¿¡æ¯
 	bool m_bRunning{ true };
 	bool m_bPause{ false };
 	int m_nVideoIndex{ -1 };
 	int m_nAudioIndex{ -1 };
-	CircularQueue<AVPacket*> m_videoPacketQueue{ 1000 };      // ´æ´¢ÊÓÆµÊı¾İµÄ AVPacket Ö¸Õë¶ÓÁĞ
-	CircularQueue<AVPacket*> m_audioPacketQueue{ 10000 };     // ´æ´¢ÒôÆµÊı¾İµÄ AVPacket Ö¸Õë
-	CircularQueue<AVPacket*> m_videoPushPacketQueue{ 1000 };  // ´æ´¢ÍÆËÍÊÓÆµÊı¾İµÄ AVPacket Ö¸Õë
-	CircularQueue<AVPacket*> m_audioPushPacketQueue{ 10000 }; // ´æ´¢ÍÆËÍÒôÆµÊı¾İµÄ AVPacket Ö¸Õë
+	CircularQueue<AVPacket*> m_videoPacketQueue{ 1000 };      // å­˜å‚¨è§†é¢‘æ•°æ®çš„ AVPacket æŒ‡é’ˆé˜Ÿåˆ—
+	CircularQueue<AVPacket*> m_audioPacketQueue{ 10000 };     // å­˜å‚¨éŸ³é¢‘æ•°æ®çš„ AVPacket æŒ‡é’ˆ
+	CircularQueue<AVPacket*> m_videoPushPacketQueue{ 1000 };  // å­˜å‚¨æ¨é€è§†é¢‘æ•°æ®çš„ AVPacket æŒ‡é’ˆ
+	CircularQueue<AVPacket*> m_audioPushPacketQueue{ 10000 }; // å­˜å‚¨æ¨é€éŸ³é¢‘æ•°æ®çš„ AVPacket æŒ‡é’ˆ
 	QWaitCondition m_videoWaitCondition;
-	QMutex m_videoMutex; // ÊÓÆµÏß³ÌµÄµÈ´ıÌõ¼şºÍ»¥³âËø
+	QMutex m_videoMutex; // è§†é¢‘çº¿ç¨‹çš„ç­‰å¾…æ¡ä»¶å’Œäº’æ–¥é”
 	QWaitCondition m_audioWaitCondition;
-	QMutex m_audioMutex; // ÒôÆµÏß³ÌµÄµÈ´ıÌõ¼şºÍ»¥³âËø
+	QMutex m_audioMutex; // éŸ³é¢‘çº¿ç¨‹çš„ç­‰å¾…æ¡ä»¶å’Œäº’æ–¥é”
 	QWaitCondition m_pushVideoWaitCondition;
-	QMutex m_pushVideoMutex; // ÍÆËÍÊÓÆµÊı¾İÏß³ÌµÄµÈ´ıÌõ¼şºÍ»¥³âËø
+	QMutex m_pushVideoMutex; // æ¨é€è§†é¢‘æ•°æ®çº¿ç¨‹çš„ç­‰å¾…æ¡ä»¶å’Œäº’æ–¥é”
 	QWaitCondition m_pushAudioWaitCondition;
-	QMutex m_pushAudioMutex; // ÍÆËÍÒôÆµÊı¾İÏß³ÌµÄµÈ´ıÌõ¼şºÍ»¥³âËø
+	QMutex m_pushAudioMutex; // æ¨é€éŸ³é¢‘æ•°æ®çº¿ç¨‹çš„ç­‰å¾…æ¡ä»¶å’Œäº’æ–¥é”
 	QWaitCondition m_AVSyncWaitCondition;
-	QMutex m_AVSyncMutex; // ÒôÊÓÆµÍ¬²½Ïß³ÌµÄµÄµÈ´ıÌõ¼şºÍ»¥³âËø
+	QMutex m_AVSyncMutex; // éŸ³è§†é¢‘åŒæ­¥çº¿ç¨‹çš„çš„ç­‰å¾…æ¡ä»¶å’Œäº’æ–¥é”
 
-	CVideoThread* m_pVideoThread{ nullptr }; // ÊÓÆµÏß³Ì
-	CAudioThread* m_pAudioThread{ nullptr }; // ÒôÆµÏß³Ì
-	CEncodeMuteAudioThread* m_pEncodeMuteThread{ nullptr };
-	CPushThread* m_pPushThread{ nullptr };
-	CCodecThread::OpenMode m_eMode{ CCodecThread::OpenMode::OpenMode_Play };
+	CVideoThread* m_pVideoThread{ nullptr };                                 // è§†é¢‘çº¿ç¨‹
+	CAudioThread* m_pAudioThread{ nullptr };                                 // éŸ³é¢‘çº¿ç¨‹
+	CEncodeMuteAudioThread* m_pEncodeMuteThread{ nullptr };                  // é™éŸ³éŸ³é¢‘ç¼–ç çº¿ç¨‹
+	CPushThread* m_pPushThread{ nullptr };                                   // æ¨æµçº¿ç¨‹
+	CCodecThread::OpenMode m_eMode{ CCodecThread::OpenMode::OpenMode_Play }; // æ‰“å¼€æ¨¡å¼ï¼Œæ˜¯æ’­æ”¾è¿˜æ˜¯æ¨æµ
 	bool m_bLoop{ false };
 	bool m_bPicture{ false };
-	eDecodeMode m_eDecodeMode{ eDecodeMode::eDecodeMode_CPU };
+	eDecodeMode m_eDecodeMode{ eDecodeMode::eDecodeMode_CPU }; // è§£ç æ¨¡å¼
 	static FILE* m_pLogFile;
 };
 
@@ -157,21 +167,21 @@ class CODEC_P_EXPORT CVideoThread final : public QThread {
 
 public:
 	/* @Parameter
-	packetQueue ´æ´¢½âÂëÇ°µÄÊı¾İ°ü¶ÓÁĞ
-	pushPacketQueue ´æ´¢½âÂëºóµÄÊı¾İ°ü¶ÓÁĞ
-	waitCondition Ïß³ÌÍ¬²½Ìõ¼ş
-	mutex »¥³âËø
-	videoWaitCondition ÊÓÆµÍ¬²½Ìõ¼ş
-	videoMutex ÊÓÆµ»¥³âËø
-	pFormatCtx ÊäÈëÊÓÆµ¸ñÊ½ÉÏÏÂÎÄ
-	nStreamIndex ÊäÈëÊÓÆµÁ÷Ë÷Òı
-	nEncodeStreamIndex ±àÂëºóÊÓÆµÁ÷Ë÷Òı
-	mapOutputCtx Êä³ö¸ñÊ½ÉÏÏÂÎÄºÍ±à½âÂëÏà¹ØĞÅÏ¢
-	eMode ´ò¿ª¸ñÊ½
-	bSendCountDown ÊÇ·ñ·¢ËÍµ¹¼ÆÊ±ĞÅºÅ
-	bPush ÊÇ·ñÍÆÁ÷
-	szPlay ÊÓÆµ²¥·ÅµÄ³ß´ç
-	eDecodeMode ½âÂëÄ£Ê½
+	packetQueue å­˜å‚¨è§£ç å‰çš„æ•°æ®åŒ…é˜Ÿåˆ—
+	pushPacketQueue å­˜å‚¨è§£ç åçš„æ•°æ®åŒ…é˜Ÿåˆ—
+	waitCondition çº¿ç¨‹åŒæ­¥æ¡ä»¶
+	mutex äº’æ–¥é”
+	videoWaitCondition è§†é¢‘åŒæ­¥æ¡ä»¶
+	videoMutex è§†é¢‘äº’æ–¥é”
+	pFormatCtx è¾“å…¥è§†é¢‘æ ¼å¼ä¸Šä¸‹æ–‡
+	nStreamIndex è¾“å…¥è§†é¢‘æµç´¢å¼•
+	nEncodeStreamIndex ç¼–ç åè§†é¢‘æµç´¢å¼•
+	mapOutputCtx è¾“å‡ºæ ¼å¼ä¸Šä¸‹æ–‡å’Œç¼–è§£ç ç›¸å…³ä¿¡æ¯
+	eMode æ‰“å¼€æ ¼å¼
+	bSendCountDown æ˜¯å¦å‘é€å€’è®¡æ—¶ä¿¡å·
+	bPush æ˜¯å¦æ¨æµ
+	szPlay è§†é¢‘æ’­æ”¾çš„å°ºå¯¸
+	eDecodeMode è§£ç æ¨¡å¼
 	*/
 	explicit CVideoThread(CircularQueue<AVPacket*>& packetQueue, CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& waitCondition,
 	                      QMutex& mutex, QWaitCondition& videoWaitCondition, QMutex& videoMutex, AVFormatContext* pFormatCtx,
@@ -186,15 +196,15 @@ public:
 	void stop();
 
 public:
-	// ÉèÖÃµ±Ç°µÄÊ±¼ä´Á
+	// è®¾ç½®å½“å‰çš„æ—¶é—´æˆ³
 	void setCurrentPts(int64_t nPts);
 
 	static enum AVPixelFormat hw_pix_fmt;
 	static enum AVPixelFormat get_hw_format(AVCodecContext* ctx, const enum AVPixelFormat* pix_fmts);
 signals:
-	// Í¨Öªµ¹¼ÆÊ±
+	// é€šçŸ¥å€’è®¡æ—¶
 	void notifyCountDown(const quint64&);
-	// Í¨ÖªÍ¼Ïñ
+	// é€šçŸ¥å›¾åƒ
 	void notifyImage(const QPixmap&);
 
 private:
@@ -204,34 +214,34 @@ protected:
 	void run() override;
 
 private:
-	AVFormatContext* m_pFormatCtx{ nullptr };                                          // ÊäÈëÊÓÆµÁ÷µÄÉÏÏÂÎÄ
-	AVCodecContext* m_pCodecCtx{ nullptr };                                            // ÊÓÆµ±à½âÂëÆ÷µÄÉÏÏÂÎÄ
-	QSize m_szPlay;                                                                    // ÊÓÆµ²¥·Å³ß´ç
-	QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> m_pairOutputCtx; // Êä³ö¸ñÊ½ÉÏÏÂÎÄºÍ±à½âÂëÏà¹ØĞÅÏ¢
-	int m_nStreamIndex{ -1 };                                                          // ÊäÈëÊÓÆµÁ÷Ë÷Òı
-	int m_nEncodeStreamIndex{ -1 };                                                    // ±àÂëºóÊÓÆµÁ÷Ë÷Òı
-	bool m_bRunning{ true };                                                           // ÊÇ·ñÔÚÔËĞĞ
-	bool m_bPause{ false };                                                            // ÊÇ·ñÔİÍ£
-	bool m_bSendCountDown{ false };                                                    // ÊÇ·ñ·¢ËÍµ¹¼ÆÊ±ĞÅºÅ
-	bool m_bPush{ false };                                                             // ÊÇ·ñÍÆÁ÷
-	bool m_decodeType{ false };                                                        // ½âÂëÀàĞÍ
+	AVFormatContext* m_pFormatCtx{ nullptr };                                          // è¾“å…¥è§†é¢‘æµçš„ä¸Šä¸‹æ–‡
+	AVCodecContext* m_pCodecCtx{ nullptr };                                            // è§†é¢‘ç¼–è§£ç å™¨çš„ä¸Šä¸‹æ–‡
+	QSize m_szPlay;                                                                    // è§†é¢‘æ’­æ”¾å°ºå¯¸
+	QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> m_pairOutputCtx; // è¾“å‡ºæ ¼å¼ä¸Šä¸‹æ–‡å’Œç¼–è§£ç ç›¸å…³ä¿¡æ¯
+	int m_nStreamIndex{ -1 };                                                          // è¾“å…¥è§†é¢‘æµç´¢å¼•
+	int m_nEncodeStreamIndex{ -1 };                                                    // ç¼–ç åè§†é¢‘æµç´¢å¼•
+	bool m_bRunning{ true };                                                           // æ˜¯å¦åœ¨è¿è¡Œ
+	bool m_bPause{ false };                                                            // æ˜¯å¦æš‚åœ
+	bool m_bSendCountDown{ false };                                                    // æ˜¯å¦å‘é€å€’è®¡æ—¶ä¿¡å·
+	bool m_bPush{ false };                                                             // æ˜¯å¦æ¨æµ
+	bool m_decodeType{ false };                                                        // è§£ç ç±»å‹
 
-	CEncodeVideoThread* m_pEncodeThread{ nullptr };    // ÊÓÆµ±àÂëÏß³Ì
-	CVideoPlayThread* m_pPlayThread{ nullptr };        // ÊÓÆµ²¥·ÅÏß³Ì
-	CircularQueue<AVPacket*>& m_packetQueue;           // ´æ´¢½âÂëÇ°µÄÊı¾İ°üÑ­»·¶ÓÁĞ
-	CircularQueue<AVPacket*>& m_pushPacketQueue;       // ´æ´¢½âÂëºóµÄÊı¾İ°üÑ­»·¶ÓÁĞ
-	CircularQueue<AVFrame*> m_decodeFrameQueue{ 100 }; // ´æ´¢½âÂëºóÊÓÆµÖ¡µÄÑ­»·¶ÓÁĞ
-	CircularQueue<AVFrame*> m_playFrameQueue{ 100 };   // ´æ´¢²¥·ÅµÄÊÓÆµÖ¡µÄÑ­»·¶ÓÁĞ
-	QWaitCondition& m_decodeWaitCondition;             // ½âÂëÏß³ÌÌõ¼ş±äÁ¿ºÍ»¥³âËø
+	CEncodeVideoThread* m_pEncodeThread{ nullptr };    // è§†é¢‘ç¼–ç çº¿ç¨‹
+	CVideoPlayThread* m_pPlayThread{ nullptr };        // è§†é¢‘æ’­æ”¾çº¿ç¨‹
+	CircularQueue<AVPacket*>& m_packetQueue;           // å­˜å‚¨è§£ç å‰çš„æ•°æ®åŒ…å¾ªç¯é˜Ÿåˆ—
+	CircularQueue<AVPacket*>& m_pushPacketQueue;       // å­˜å‚¨è§£ç åçš„æ•°æ®åŒ…å¾ªç¯é˜Ÿåˆ—
+	CircularQueue<AVFrame*> m_decodeFrameQueue{ 100 }; // å­˜å‚¨è§£ç åè§†é¢‘å¸§çš„å¾ªç¯é˜Ÿåˆ—
+	CircularQueue<AVFrame*> m_playFrameQueue{ 100 };   // å­˜å‚¨æ’­æ”¾çš„è§†é¢‘å¸§çš„å¾ªç¯é˜Ÿåˆ—
+	QWaitCondition& m_decodeWaitCondition;             // è§£ç çº¿ç¨‹æ¡ä»¶å˜é‡å’Œäº’æ–¥é”
 	QMutex& m_decodeMutex;
-	QWaitCondition m_encodeWaitCondition; // ±àÂëÏß³ÌÌõ¼ş±äÁ¿ºÍ»¥³âËø
+	QWaitCondition m_encodeWaitCondition; // ç¼–ç çº¿ç¨‹æ¡ä»¶å˜é‡å’Œäº’æ–¥é”
 	QMutex m_encodeMutex;
-	QWaitCondition m_playWaitCondition; // ²¥·ÅÏß³ÌÌõ¼ş±äÁ¿ºÍ»¥³âËø
+	QWaitCondition m_playWaitCondition; // æ’­æ”¾çº¿ç¨‹æ¡ä»¶å˜é‡å’Œäº’æ–¥é”
 	QMutex m_playMutex;
-	QWaitCondition& m_pushWaitCondition; // ÍÆÁ÷Ïß³ÌÌõ¼ş±äÁ¿ºÍ»¥³âËø
+	QWaitCondition& m_pushWaitCondition; // æ¨æµçº¿ç¨‹æ¡ä»¶å˜é‡å’Œäº’æ–¥é”
 	QMutex& m_pushMutex;
-	CCodecThread::OpenMode m_eMode{ CCodecThread::OpenMode::OpenMode_Play }; // ´ò¿ªÄ£Ê½£¬ÊÇ²¥·Å»¹ÊÇÍÆÁ÷
-	const CCodecThread::eDecodeMode& m_eDecodeMode;                          // ½âÂëÄ£Ê½
+	CCodecThread::OpenMode m_eMode{ CCodecThread::OpenMode::OpenMode_Play }; // æ‰“å¼€æ¨¡å¼ï¼Œæ˜¯æ’­æ”¾è¿˜æ˜¯æ¨æµ
+	const CCodecThread::eDecodeMode& m_eDecodeMode;                          // è§£ç æ¨¡å¼
 };
 
 class CODEC_P_EXPORT CAudioThread final : public QThread {
@@ -239,19 +249,19 @@ class CODEC_P_EXPORT CAudioThread final : public QThread {
 
 public:
 	/* @Parameter
-	packetQueue ´æ´¢½âÂëÇ°µÄÊı¾İ°ü¶ÓÁĞ
-	pushPacketQueue ´æ´¢½âÂëºóµÄÊı¾İ°ü¶ÓÁĞ
-	waitCondition Ïß³ÌÍ¬²½Ìõ¼ş
-	mutex »¥³âËø
-	audioWaitCondition ÒôÆµÍ¬²½Ìõ¼ş
-	audioMutex ÒôÆµ»¥³âËø
-	pFormatCtx ÊäÈëÒôÆµ¸ñÊ½ÉÏÏÂÎÄ
-	nStreamIndex ÊäÈëÒôÆµÁ÷Ë÷Òı
-	nEncodeStreamIndex ±àÂëºóÒôÆµÁ÷Ë÷Òı
-	pairOutputCtx Êä³ö¸ñÊ½ÉÏÏÂÎÄºÍ±à½âÂëÏà¹ØĞÅÏ¢
-	eMode ´ò¿ª¸ñÊ½
-	bPush ÊÇ·ñÍÆÁ÷
-	decodePara ½âÂë²ÎÊı
+	packetQueue å­˜å‚¨è§£ç å‰çš„æ•°æ®åŒ…é˜Ÿåˆ—
+	pushPacketQueue å­˜å‚¨è§£ç åçš„æ•°æ®åŒ…é˜Ÿåˆ—
+	waitCondition çº¿ç¨‹åŒæ­¥æ¡ä»¶
+	mutex äº’æ–¥é”
+	audioWaitCondition éŸ³é¢‘åŒæ­¥æ¡ä»¶
+	audioMutex éŸ³é¢‘äº’æ–¥é”
+	pFormatCtx è¾“å…¥éŸ³é¢‘æ ¼å¼ä¸Šä¸‹æ–‡
+	nStreamIndex è¾“å…¥éŸ³é¢‘æµç´¢å¼•
+	nEncodeStreamIndex ç¼–ç åéŸ³é¢‘æµç´¢å¼•
+	pairOutputCtx è¾“å‡ºæ ¼å¼ä¸Šä¸‹æ–‡å’Œç¼–è§£ç ç›¸å…³ä¿¡æ¯
+	eMode æ‰“å¼€æ ¼å¼
+	bPush æ˜¯å¦æ¨æµ
+	decodePara è§£ç å‚æ•°
 	*/
 	explicit CAudioThread(CircularQueue<AVPacket*>& packetQueue, CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& waitCondition,
 	                      QMutex& mutex, QWaitCondition& audioWaitCondition, QMutex& audioMutex, AVFormatContext* pFormatCtx,
@@ -271,42 +281,42 @@ private:
 	static void clearQueue(CircularQueue<AVFrame*>& queue);
 
 signals:
-	// Í¨Öªµ¹¼ÆÊ±ĞÅÏ¢
+	// é€šçŸ¥å€’è®¡æ—¶ä¿¡æ¯
 	void notifyCountDown(const quint64&);
-	// Í¨ÖªÒôÆµÊı¾İ
+	// é€šçŸ¥éŸ³é¢‘æ•°æ®
 	void notifyAudio(const QByteArray&);
-	// Í¨ÖªÒôÆµ²ÎÊı
+	// é€šçŸ¥éŸ³é¢‘å‚æ•°
 	void notifyAudioPara(const quint64&, const quint64&);
 
 protected:
 	void run() override;
 
 private:
-	CEncodeAudioThread* m_pEncodeThread{ nullptr };                                    // ±àÂëÒôÆµÏß³Ì
-	CAudioPlayThread* m_pPlayThread{ nullptr };                                        // ²¥·ÅÒôÆµÏß³Ì
-	AVFormatContext* m_pFormatCtx{ nullptr };                                          // ÊäÈëÒôÆµÁ÷µÄ¸ñÊ½ÉÏÏÂÎÄ
-	AVCodecContext* m_pCodecCtx{ nullptr };                                            // ÒôÆµ½âÂëÆ÷ÉÏÏÂÎÄ
-	const AVCodecParameters& m_decodePara;                                             // ½âÂë²ÎÊı
-	QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> m_pairOutputCtx; // Êä³öÒôÆµÁ÷µÄÏà¹ØÉÏÏÂÎÄ
-	int m_nStreamIndex{ -1 };                                                          // ÊäÈëÒôÆµÁ÷Ë÷Òı
-	int m_nEncodeStreamIndex{ -1 };                                                    // ±àÂëÒôÆµÁ÷Ë÷Òı
-	bool m_bRunning{ true };                                                           // Ïß³ÌÊÇ·ñÔËĞĞ
-	bool m_bPause{ false };                                                            // Ïß³ÌÊÇ·ñÔİÍ£
-	bool m_bPush{ false };                                                             // Ïß³ÌÊÇ·ñÍÆÁ÷
+	CEncodeAudioThread* m_pEncodeThread{ nullptr };                                    // ç¼–ç éŸ³é¢‘çº¿ç¨‹
+	CAudioPlayThread* m_pPlayThread{ nullptr };                                        // æ’­æ”¾éŸ³é¢‘çº¿ç¨‹
+	AVFormatContext* m_pFormatCtx{ nullptr };                                          // è¾“å…¥éŸ³é¢‘æµçš„æ ¼å¼ä¸Šä¸‹æ–‡
+	AVCodecContext* m_pCodecCtx{ nullptr };                                            // éŸ³é¢‘è§£ç å™¨ä¸Šä¸‹æ–‡
+	const AVCodecParameters& m_decodePara;                                             // è§£ç å‚æ•°
+	QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> m_pairOutputCtx; // è¾“å‡ºéŸ³é¢‘æµçš„ç›¸å…³ä¸Šä¸‹æ–‡
+	int m_nStreamIndex{ -1 };                                                          // è¾“å…¥éŸ³é¢‘æµç´¢å¼•
+	int m_nEncodeStreamIndex{ -1 };                                                    // ç¼–ç éŸ³é¢‘æµç´¢å¼•
+	bool m_bRunning{ true };                                                           // çº¿ç¨‹æ˜¯å¦è¿è¡Œ
+	bool m_bPause{ false };                                                            // çº¿ç¨‹æ˜¯å¦æš‚åœ
+	bool m_bPush{ false };                                                             // çº¿ç¨‹æ˜¯å¦æ¨æµ
 
-	CircularQueue<AVPacket*>& m_packetQueue;            // ÒôÆµ°ü¶ÓÁĞ
-	CircularQueue<AVPacket*>& m_pushPacketQueue;        // ÒôÆµÍÆËÍ°ü¶ÓÁĞ
-	CircularQueue<AVFrame*> m_decodeFrameQueue{ 1000 }; // ½âÂëÖ¡¶ÓÁĞ
-	CircularQueue<AVFrame*> m_playFrameQueue{ 1000 };   // ²¥·ÅÖ¡¶ÓÁĞ
-	QWaitCondition& m_decodeWaitCondition;              // ½âÂëµÈ´ıÌõ¼şÒÔ¼°½âÂë»¥³âËø
+	CircularQueue<AVPacket*>& m_packetQueue;            // éŸ³é¢‘åŒ…é˜Ÿåˆ—
+	CircularQueue<AVPacket*>& m_pushPacketQueue;        // éŸ³é¢‘æ¨é€åŒ…é˜Ÿåˆ—
+	CircularQueue<AVFrame*> m_decodeFrameQueue{ 1000 }; // è§£ç å¸§é˜Ÿåˆ—
+	CircularQueue<AVFrame*> m_playFrameQueue{ 1000 };   // æ’­æ”¾å¸§é˜Ÿåˆ—
+	QWaitCondition& m_decodeWaitCondition;              // è§£ç ç­‰å¾…æ¡ä»¶ä»¥åŠè§£ç äº’æ–¥é”
 	QMutex& m_decodeMutex;
-	QWaitCondition m_encodeWaitCondition; // ±àÂëµÈ´ıÌõ¼şÒÔ¼°±àÂë»¥³âËø
+	QWaitCondition m_encodeWaitCondition; // ç¼–ç ç­‰å¾…æ¡ä»¶ä»¥åŠç¼–ç äº’æ–¥é”
 	QMutex m_encodeMutex;
-	QWaitCondition m_playWaitCondition; // ²¥·ÅµÈ´ıÌõ¼şÒÔ¼°²¥·Å»¥³âËø
+	QWaitCondition m_playWaitCondition; // æ’­æ”¾ç­‰å¾…æ¡ä»¶ä»¥åŠæ’­æ”¾äº’æ–¥é”
 	QMutex m_playMutex;
-	QWaitCondition& m_pushWaitCondition; // ÍÆÁ÷µÈ´ıÌõ¼şÒÔ¼°ÍÆÁ÷»¥³âËø
+	QWaitCondition& m_pushWaitCondition; // æ¨æµç­‰å¾…æ¡ä»¶ä»¥åŠæ¨æµäº’æ–¥é”
 	QMutex& m_pushMutex;
-	CCodecThread::OpenMode m_eMode{ CCodecThread::OpenMode::OpenMode_Play }; // ÒôÆµ´¦Àí·½Ê½
+	CCodecThread::OpenMode m_eMode{ CCodecThread::OpenMode::OpenMode_Play }; // éŸ³é¢‘å¤„ç†æ–¹å¼
 };
 
 class CODEC_P_EXPORT CVideoPlayThread final : public QThread {
@@ -314,15 +324,15 @@ class CODEC_P_EXPORT CVideoPlayThread final : public QThread {
 
 public:
 	/* @Parameter
-	decodeFrameQueue µÈ´ı²¥·ÅÊÓÆµÖ¡¶ÓÁĞ
-	waitCondition Ïß³ÌÍ¬²½Ìõ¼ş
-	mutex »¥³âËø
-	pCodecCtx ¶ÔÓ¦µÄÊÓÆµ½âÂëÆ÷
-	timeBase ÊÓÆµÖ¡Ê±¼ä»ùÊı
-	bSendCountDown ÊÇ·ñ·¢ËÍµ¹¼ÆÊ±
-	videoThread ÒôÆµÏß³Ì
-	szPlay ²¥·Å´°¿Ú´óĞ¡
-	eDecodeMode ÊÓÆµ½âÂëÄ£Ê½
+	decodeFrameQueue ç­‰å¾…æ’­æ”¾è§†é¢‘å¸§é˜Ÿåˆ—
+	waitCondition çº¿ç¨‹åŒæ­¥æ¡ä»¶
+	mutex äº’æ–¥é”
+	pCodecCtx å¯¹åº”çš„è§†é¢‘è§£ç å™¨
+	timeBase è§†é¢‘å¸§æ—¶é—´åŸºæ•°
+	bSendCountDown æ˜¯å¦å‘é€å€’è®¡æ—¶
+	videoThread éŸ³é¢‘çº¿ç¨‹
+	szPlay æ’­æ”¾çª—å£å¤§å°
+	eDecodeMode è§†é¢‘è§£ç æ¨¡å¼
 	*/
 	explicit CVideoPlayThread(CircularQueue<AVFrame*>& decodeFrameQueue, QWaitCondition& waitCondition, QMutex& mutex,
 	                          AVCodecContext* pCodecCtx, const AVRational& timeBase, bool bSendCountDown, CVideoThread* videoThread, QSize szPlay,
@@ -341,19 +351,19 @@ protected:
 	void run() override;
 
 private:
-	AVCodecContext* m_pCodecCtx{ nullptr };    // ÊÓÆµ½âÂëÆ÷
-	bool m_bRunning{ true };                   // Ïß³ÌÊÇ·ñÔËĞĞ
-	bool m_bPause{ false };                    // ÊÇ·ñÔİÍ£
-	int64_t m_nLastTime{ -1 };                 // ÉÏÒ»´Î²¥·ÅÊ±¼ä
-	int64_t m_nLastPts{ -1 };                  // ÉÏÒ»´Î²¥·ÅÊ±¼ä´Á
-	bool m_bSendCountDown{ false };            // ÊÇ·ñ·¢ËÍµ¹¼ÆÊ±Í¨Öª
-	const AVRational& m_timeBase;              // ÊÓÆµÖ¡Ê±¼ä»ùÊı
-	CVideoThread* m_videoThread{ nullptr };    // ÊÓÆµÏß³Ì
-	CircularQueue<AVFrame*>& m_playFrameQueue; // ÊÓÆµ²¥·ÅÖ¡¶ÓÁĞ
-	QWaitCondition& m_playWaitCondition;       // ÊÓÆµ²¥·ÅµÈ´ıÌõ¼şÒÔ¼°»¥³âËø
+	AVCodecContext* m_pCodecCtx{ nullptr };    // è§†é¢‘è§£ç å™¨
+	bool m_bRunning{ true };                   // çº¿ç¨‹æ˜¯å¦è¿è¡Œ
+	bool m_bPause{ false };                    // æ˜¯å¦æš‚åœ
+	int64_t m_nLastTime{ -1 };                 // ä¸Šä¸€æ¬¡æ’­æ”¾æ—¶é—´
+	int64_t m_nLastPts{ -1 };                  // ä¸Šä¸€æ¬¡æ’­æ”¾æ—¶é—´æˆ³
+	bool m_bSendCountDown{ false };            // æ˜¯å¦å‘é€å€’è®¡æ—¶é€šçŸ¥
+	const AVRational& m_timeBase;              // è§†é¢‘å¸§æ—¶é—´åŸºæ•°
+	CVideoThread* m_videoThread{ nullptr };    // è§†é¢‘çº¿ç¨‹
+	CircularQueue<AVFrame*>& m_playFrameQueue; // è§†é¢‘æ’­æ”¾å¸§é˜Ÿåˆ—
+	QWaitCondition& m_playWaitCondition;       // è§†é¢‘æ’­æ”¾ç­‰å¾…æ¡ä»¶ä»¥åŠäº’æ–¥é”
 	QMutex& m_playMutex;
-	QSize m_szPlay;                                 // ²¥·Å´°¿Ú³ß´ç
-	const CCodecThread::eDecodeMode& m_eDecodeMode; // ÊÓÆµ½âÂëÄ£Ê½
+	QSize m_szPlay;                                 // æ’­æ”¾çª—å£å°ºå¯¸
+	const CCodecThread::eDecodeMode& m_eDecodeMode; // è§†é¢‘è§£ç æ¨¡å¼
 };
 
 class CODEC_P_EXPORT CAudioPlayThread final : public QThread {
@@ -361,12 +371,12 @@ class CODEC_P_EXPORT CAudioPlayThread final : public QThread {
 
 public:
 	/* @Parameter
-	decodeFrameQueue µÈ´ı²¥·ÅÒôÆµÖ¡¶ÓÁĞ
-	waitCondition Ïß³ÌÍ¬²½Ìõ¼ş
-	mutex »¥³âËø
-	pCodecCtx ¶ÔÓ¦µÄÒôÆµ½âÂëÆ÷
-	timeBase ÒôÆµÖ¡Ê±¼ä»ùÊı
-	audioThread ÒôÆµÏß³Ì
+	decodeFrameQueue ç­‰å¾…æ’­æ”¾éŸ³é¢‘å¸§é˜Ÿåˆ—
+	waitCondition çº¿ç¨‹åŒæ­¥æ¡ä»¶
+	mutex äº’æ–¥é”
+	pCodecCtx å¯¹åº”çš„éŸ³é¢‘è§£ç å™¨
+	timeBase éŸ³é¢‘å¸§æ—¶é—´åŸºæ•°
+	audioThread éŸ³é¢‘çº¿ç¨‹
 	*/
 	explicit CAudioPlayThread(CircularQueue<AVFrame*>& decodeFrameQueue, QWaitCondition& waitCondition, QMutex& mutex,
 	                          AVCodecContext* pCodecCtx, const AVRational& timeBase, CAudioThread* audioThread, QObject* parent = nullptr);
@@ -384,15 +394,15 @@ protected:
 	void run() override;
 
 private:
-	AVCodecContext* m_pCodecCtx{ nullptr };    // ÒôÆµ½âÂëÆ÷
-	bool m_bRunning{ true };                   // ÊÇ·ñÔËĞĞ
-	bool m_bPause{ false };                    // ÊÇ·ñÔİÍ£
-	int64_t m_nLastTime{ -1 };                 // ÉÏÒ»´Î²¥·ÅÊ±¼ä
-	int64_t m_nLastPts{ -1 };                  // ÉÏÒ»´Î²¥·ÅÊ±¼ä´Á
-	const AVRational& m_timeBase;              // ÒôÆµÊ±¼ä»ùÊı
-	CAudioThread* m_audioThread{ nullptr };    // ÒôÆµÏß³Ì
-	CircularQueue<AVFrame*>& m_playFrameQueue; // ´ı²¥·ÅÒôÆµÖ¡¶ÓÁĞ
-	QWaitCondition& m_playWaitCondition;       // ÒôÆµ²¥·ÅµÈ´ıÌõ¼şÒÔ¼°»¥³âËø
+	AVCodecContext* m_pCodecCtx{ nullptr };    // éŸ³é¢‘è§£ç å™¨
+	bool m_bRunning{ true };                   // æ˜¯å¦è¿è¡Œ
+	bool m_bPause{ false };                    // æ˜¯å¦æš‚åœ
+	int64_t m_nLastTime{ -1 };                 // ä¸Šä¸€æ¬¡æ’­æ”¾æ—¶é—´
+	int64_t m_nLastPts{ -1 };                  // ä¸Šä¸€æ¬¡æ’­æ”¾æ—¶é—´æˆ³
+	const AVRational& m_timeBase;              // éŸ³é¢‘æ—¶é—´åŸºæ•°
+	CAudioThread* m_audioThread{ nullptr };    // éŸ³é¢‘çº¿ç¨‹
+	CircularQueue<AVFrame*>& m_playFrameQueue; // å¾…æ’­æ”¾éŸ³é¢‘å¸§é˜Ÿåˆ—
+	QWaitCondition& m_playWaitCondition;       // éŸ³é¢‘æ’­æ”¾ç­‰å¾…æ¡ä»¶ä»¥åŠäº’æ–¥é”
 	QMutex& m_playMutex;
 };
 
@@ -401,15 +411,15 @@ class CODEC_P_EXPORT CEncodeVideoThread final : public QThread {
 
 public:
 	/* @Parameter
-	encodeFrameQueue µÈ´ı±àÂëµÄÊÓÆµÖ¡¶ÓÁĞ
-	pushPacketQueue µÈ´ıÍÆËÍµÄÊÓÆµ°ü¶ÓÁĞ
-	encodeWaitCondition ±àÂëÏß³ÌÍ¬²½Ìõ¼ş
-	encodeMutex ±àÂë»¥³âËø
-	pushWaitCondition ÍÆËÍÏß³ÌÍ¬²½Ìõ¼ş
-	pushMutex ÍÆËÍ»¥³âËø
-	nEncodeStreamIndex ÊÓÆµÁ÷Ë÷Òı
-	pairEncodeCtx ±àÂëÆ÷ÉÏÏÂÎÄºÍÏà¹ØĞÅÏ¢µÄ×éºÏ
-	eDecodeMode ±àÂëÄ£Ê½
+	encodeFrameQueue ç­‰å¾…ç¼–ç çš„è§†é¢‘å¸§é˜Ÿåˆ—
+	pushPacketQueue ç­‰å¾…æ¨é€çš„è§†é¢‘åŒ…é˜Ÿåˆ—
+	encodeWaitCondition ç¼–ç çº¿ç¨‹åŒæ­¥æ¡ä»¶
+	encodeMutex ç¼–ç äº’æ–¥é”
+	pushWaitCondition æ¨é€çº¿ç¨‹åŒæ­¥æ¡ä»¶
+	pushMutex æ¨é€äº’æ–¥é”
+	nEncodeStreamIndex è§†é¢‘æµç´¢å¼•
+	pairEncodeCtx ç¼–ç å™¨ä¸Šä¸‹æ–‡å’Œç›¸å…³ä¿¡æ¯çš„ç»„åˆ
+	eDecodeMode ç¼–ç æ¨¡å¼
 	*/
 	explicit CEncodeVideoThread(CircularQueue<AVFrame*>& encodeFrameQueue, CircularQueue<AVPacket*>& pushPacketQueue,
 	                            QWaitCondition& encodeWaitCondition,
@@ -427,17 +437,17 @@ protected:
 	void run() override;
 
 private:
-	CircularQueue<AVFrame*>& m_encodeFrameQueue;                                      // µÈ´ı±àÂëµÄÊÓÆµÖ¡¶ÓÁĞ
-	CircularQueue<AVPacket*>& m_pushPacketQueue;                                      // µÈ´ıÍÆÁ÷µÄÊÓÆµ°ü¶ÓÁĞ
-	int m_nEncodeStreamIndex{ -1 };                                                   // ÊÓÆµÁ÷Ë÷Òı
-	QWaitCondition& m_encodeWaitCondition;                                            // ±àÂëÏß³ÌÍ¬²½Ìõ¼ş
-	QMutex& m_encodeMutex;                                                            // ±àÂë»¥³âËø
-	QWaitCondition& m_pushWaitCondition;                                              // ÍÆÁ÷Ïß³Ì»¥³âÌõ¼ş
-	QMutex& m_pushMutex;                                                              // ÍÆÁ÷»¥³âËø
-	QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> m_pairEncodeCtx; // ±àÂëÆ÷ÒÔ¼°Ïà¹ØµÄĞÅÏ¢
-	bool m_bRunning{ true };                                                          // ÊÇ·ñÔËĞĞ
-	bool m_bPause{ false };                                                           // ÊÇ·ñÔİÍ£
-	const CCodecThread::eDecodeMode& m_eEncodeMode;                                   // ±àÂëÄ£Ê½
+	CircularQueue<AVFrame*>& m_encodeFrameQueue;                                      // ç­‰å¾…ç¼–ç çš„è§†é¢‘å¸§é˜Ÿåˆ—
+	CircularQueue<AVPacket*>& m_pushPacketQueue;                                      // ç­‰å¾…æ¨æµçš„è§†é¢‘åŒ…é˜Ÿåˆ—
+	int m_nEncodeStreamIndex{ -1 };                                                   // è§†é¢‘æµç´¢å¼•
+	QWaitCondition& m_encodeWaitCondition;                                            // ç¼–ç çº¿ç¨‹åŒæ­¥æ¡ä»¶
+	QMutex& m_encodeMutex;                                                            // ç¼–ç äº’æ–¥é”
+	QWaitCondition& m_pushWaitCondition;                                              // æ¨æµçº¿ç¨‹äº’æ–¥æ¡ä»¶
+	QMutex& m_pushMutex;                                                              // æ¨æµäº’æ–¥é”
+	QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> m_pairEncodeCtx; // ç¼–ç å™¨ä»¥åŠç›¸å…³çš„ä¿¡æ¯
+	bool m_bRunning{ true };                                                          // æ˜¯å¦è¿è¡Œ
+	bool m_bPause{ false };                                                           // æ˜¯å¦æš‚åœ
+	const CCodecThread::eDecodeMode& m_eEncodeMode;                                   // ç¼–ç æ¨¡å¼
 };
 
 class CODEC_P_EXPORT CEncodeAudioThread final : public QThread {
@@ -445,14 +455,14 @@ class CODEC_P_EXPORT CEncodeAudioThread final : public QThread {
 
 public:
 	/* @Parameter
-	encodeFrameQueue µÈ´ı±àÂëµÄÒôÆµÖ¡¶ÓÁĞ
-	pushPacketQueue µÈ´ıÍÆËÍµÄÒôÆµ°ü¶ÓÁĞ
-	encodeWaitCondition ±àÂëÏß³ÌÍ¬²½Ìõ¼ş
-	encodeMutex ±àÂë»¥³âËø
-	pushWaitCondition ÍÆËÍÏß³ÌÍ¬²½Ìõ¼ş
-	pushMutex ÍÆËÍ»¥³âËø
-	nEncodeStreamIndex ÒôÆµÁ÷Ë÷Òı
-	pairEncodeCtx ±àÂëÆ÷ÉÏÏÂÎÄºÍÏà¹ØĞÅÏ¢µÄ×éºÏ
+	encodeFrameQueue ç­‰å¾…ç¼–ç çš„éŸ³é¢‘å¸§é˜Ÿåˆ—
+	pushPacketQueue ç­‰å¾…æ¨é€çš„éŸ³é¢‘åŒ…é˜Ÿåˆ—
+	encodeWaitCondition ç¼–ç çº¿ç¨‹åŒæ­¥æ¡ä»¶
+	encodeMutex ç¼–ç äº’æ–¥é”
+	pushWaitCondition æ¨é€çº¿ç¨‹åŒæ­¥æ¡ä»¶
+	pushMutex æ¨é€äº’æ–¥é”
+	nEncodeStreamIndex éŸ³é¢‘æµç´¢å¼•
+	pairEncodeCtx ç¼–ç å™¨ä¸Šä¸‹æ–‡å’Œç›¸å…³ä¿¡æ¯çš„ç»„åˆ
 	*/
 	explicit CEncodeAudioThread(CircularQueue<AVFrame*>& encodeFrameQueue, CircularQueue<AVPacket*>& pushPacketQueue,
 	                            QWaitCondition& encodeWaitCondition, QMutex& encodeMutex, QWaitCondition& pushWaitCondition, QMutex& pushMutex,
@@ -469,16 +479,16 @@ protected:
 	void run() override;
 
 private:
-	CircularQueue<AVFrame*>& m_encodeFrameQueue;                                      // µÈ´ı±àÂëµÄÒôÆµÖ¡¶ÓÁĞ
-	CircularQueue<AVPacket*>& m_pushPacketQueue;                                      // µÈ´ıÍÆËÍµÄÒôÆµ°ü¶ÓÁĞ
-	int m_nEncodeStreamIndex{ -1 };                                                   // ÒôÆµÁ÷Ë÷Òı
-	QWaitCondition& m_encodeWaitCondition;                                            // ±àÂëÏß³ÌÍ¬²½Ìõ¼ş
-	QMutex& m_encodeMutex;                                                            // ±àÂëÏß³Ì»¥³âËø
-	QWaitCondition& m_pushWaitCondition;                                              // ÍÆÁ÷Ïß³ÌÍ¬²½Ìõ¼ş
-	QMutex& m_pushMutex;                                                              // ÍÆÁ÷Ïß³Ì»¥³âËø
-	QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> m_pairEncodeCtx; // ±àÂëÆ÷¼°ÆäÏà¹ØĞÅÏ¢
-	bool m_bRunning{ true };                                                          // ÊÇ·ñÔËĞĞ
-	bool m_bPause{ false };                                                           // ÊÇ·ñÔİÍ£
+	CircularQueue<AVFrame*>& m_encodeFrameQueue;                                      // ç­‰å¾…ç¼–ç çš„éŸ³é¢‘å¸§é˜Ÿåˆ—
+	CircularQueue<AVPacket*>& m_pushPacketQueue;                                      // ç­‰å¾…æ¨é€çš„éŸ³é¢‘åŒ…é˜Ÿåˆ—
+	int m_nEncodeStreamIndex{ -1 };                                                   // éŸ³é¢‘æµç´¢å¼•
+	QWaitCondition& m_encodeWaitCondition;                                            // ç¼–ç çº¿ç¨‹åŒæ­¥æ¡ä»¶
+	QMutex& m_encodeMutex;                                                            // ç¼–ç çº¿ç¨‹äº’æ–¥é”
+	QWaitCondition& m_pushWaitCondition;                                              // æ¨æµçº¿ç¨‹åŒæ­¥æ¡ä»¶
+	QMutex& m_pushMutex;                                                              // æ¨æµçº¿ç¨‹äº’æ–¥é”
+	QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> m_pairEncodeCtx; // ç¼–ç å™¨åŠå…¶ç›¸å…³ä¿¡æ¯
+	bool m_bRunning{ true };                                                          // æ˜¯å¦è¿è¡Œ
+	bool m_bPause{ false };                                                           // æ˜¯å¦æš‚åœ
 };
 
 class CODEC_P_EXPORT CEncodeMuteAudioThread final : public QThread {
@@ -486,13 +496,13 @@ class CODEC_P_EXPORT CEncodeMuteAudioThread final : public QThread {
 
 public:
 	/* @Parameter
-	pushPacketQueue µÈ´ıÍÆËÍµÄÒôÆµ°ü¶ÓÁĞÒıÓÃ
-	encodeWaitCondition ±àÂëÏß³ÌÍ¬²½Ìõ¼şÒıÓÃ
-	encodeMutex ±àÂë»¥³âËøÒıÓÃ
-	syncWaitCondition ÍÆËÍÏß³ÌÍ¬²½Ìõ¼şÒıÓÃ
-	syncMutex ÍÆËÍ»¥³âËøÒıÓÃ
-	nEncodeStreamIndex ÒôÆµÁ÷Ë÷Òı
-	pairEncodeCtx ±àÂëÆ÷ÉÏÏÂÎÄºÍÏà¹ØĞÅÏ¢µÄ×éºÏ
+	pushPacketQueue ç­‰å¾…æ¨é€çš„éŸ³é¢‘åŒ…é˜Ÿåˆ—å¼•ç”¨
+	encodeWaitCondition ç¼–ç çº¿ç¨‹åŒæ­¥æ¡ä»¶å¼•ç”¨
+	encodeMutex ç¼–ç äº’æ–¥é”å¼•ç”¨
+	syncWaitCondition æ¨é€çº¿ç¨‹åŒæ­¥æ¡ä»¶å¼•ç”¨
+	syncMutex æ¨é€äº’æ–¥é”å¼•ç”¨
+	nEncodeStreamIndex éŸ³é¢‘æµç´¢å¼•
+	pairEncodeCtx ç¼–ç å™¨ä¸Šä¸‹æ–‡å’Œç›¸å…³ä¿¡æ¯çš„ç»„åˆ
 	*/
 	explicit CEncodeMuteAudioThread(CircularQueue<AVPacket*>& pushPacketQueue, QWaitCondition& encodeWaitCondition,
 	                                QMutex& encodeMutex, QWaitCondition& syncWaitCondition, QMutex& syncMutex, int nEncodeStreamIndex,
@@ -508,15 +518,15 @@ protected:
 	void run() override;
 
 private:
-	CircularQueue<AVPacket*>& m_encodePacketQueue;            // µÈ´ıÍÆËÍµÄÒôÆµ°ü¶ÓÁĞÒıÓÃ
-	int m_nEncodeStreamIndex{ -1 };                           // ÒôÆµÁ÷Ë÷Òı
-	QWaitCondition& m_encodeWaitCondition;                    // ±àÂëÏß³ÌÍ¬²½Ìõ¼şÒıÓÃ
-	QMutex& m_encodeMutex;                                    // ±àÂë»¥³âËøÒıÓÃ
-	QWaitCondition& m_syncWaitCondition;                      // ÍÆËÍÏß³ÌÍ¬²½Ìõ¼şÒıÓÃ
-	QMutex& m_syncMutex;                                      // ÍÆËÍ»¥³âËøÒıÓÃ
-	std::tuple<CCalcPtsDur, AVCodecContext*> m_pairEncodeCtx; // ±àÂëÆ÷ÉÏÏÂÎÄºÍÏà¹ØĞÅÏ¢
-	bool m_bRunning{ true };                                  // ÊÇ·ñÔËĞĞ
-	bool m_bPause{ false };                                   // ÊÇ·ñÔİÍ£
+	CircularQueue<AVPacket*>& m_encodePacketQueue;            // ç­‰å¾…æ¨é€çš„éŸ³é¢‘åŒ…é˜Ÿåˆ—å¼•ç”¨
+	int m_nEncodeStreamIndex{ -1 };                           // éŸ³é¢‘æµç´¢å¼•
+	QWaitCondition& m_encodeWaitCondition;                    // ç¼–ç çº¿ç¨‹åŒæ­¥æ¡ä»¶å¼•ç”¨
+	QMutex& m_encodeMutex;                                    // ç¼–ç äº’æ–¥é”å¼•ç”¨
+	QWaitCondition& m_syncWaitCondition;                      // æ¨é€çº¿ç¨‹åŒæ­¥æ¡ä»¶å¼•ç”¨
+	QMutex& m_syncMutex;                                      // æ¨é€äº’æ–¥é”å¼•ç”¨
+	std::tuple<CCalcPtsDur, AVCodecContext*> m_pairEncodeCtx; // ç¼–ç å™¨ä¸Šä¸‹æ–‡å’Œç›¸å…³ä¿¡æ¯
+	bool m_bRunning{ true };                                  // æ˜¯å¦è¿è¡Œ
+	bool m_bPause{ false };                                   // æ˜¯å¦æš‚åœ
 };
 
 class CODEC_P_EXPORT CPushThread final : public QThread {
@@ -529,28 +539,28 @@ public:
 	~CPushThread() override;
 
 public:
-	// ÔİÍ£ÍÆËÍ
+	// æš‚åœæ¨é€
 	void pause();
-	// »Ö¸´ÍÆËÍ
+	// æ¢å¤æ¨é€
 	void resume();
-	// Í£Ö¹ÍÆËÍ
+	// åœæ­¢æ¨é€
 	void stop();
 
 protected:
 	void run() override;
 
 private:
-	CircularQueue<AVPacket*>& m_videoPacketQueue;   // ÊÓÆµÊı¾İ¶ÓÁĞ
-	CircularQueue<AVPacket*>& m_audioPacketQueue;   // ÒôÆµÊı¾İ¶ÓÁĞ
-	bool m_bRunning{ true };                        // Ïß³ÌÊÇ·ñÔÚÖ´ĞĞ
-	bool m_bPause{ false };                         // Ïß³ÌÊÇ·ñÔİÍ£
-	bool m_bPushVideo{ true };                      // ÊÇ·ñÍÆËÍÊÓÆµ
-	bool m_bPushAudio{ false };                     // ÊÇ·ñÍÆËÍÒôÆµ
-	QWaitCondition& m_videoWaitCondition;           // ÊÓÆµµÈ´ıÌõ¼ş
-	QMutex& m_videoMutex;                           // ÊÓÆµ»¥³âËø
-	QWaitCondition& m_audioWaitCondition;           // ÒôÆµµÈ´ıÌõ¼ş
-	QMutex& m_audioMutex;                           // ÒôÆµ»¥³âËø
-	AVFormatContext* m_pOutputFormatCtx{ nullptr }; // Êä³ö¸ñÊ½ÉÏÏÂÎÄ
+	CircularQueue<AVPacket*>& m_videoPacketQueue;   // è§†é¢‘æ•°æ®é˜Ÿåˆ—
+	CircularQueue<AVPacket*>& m_audioPacketQueue;   // éŸ³é¢‘æ•°æ®é˜Ÿåˆ—
+	bool m_bRunning{ true };                        // çº¿ç¨‹æ˜¯å¦åœ¨æ‰§è¡Œ
+	bool m_bPause{ false };                         // çº¿ç¨‹æ˜¯å¦æš‚åœ
+	bool m_bPushVideo{ true };                      // æ˜¯å¦æ¨é€è§†é¢‘
+	bool m_bPushAudio{ false };                     // æ˜¯å¦æ¨é€éŸ³é¢‘
+	QWaitCondition& m_videoWaitCondition;           // è§†é¢‘ç­‰å¾…æ¡ä»¶
+	QMutex& m_videoMutex;                           // è§†é¢‘äº’æ–¥é”
+	QWaitCondition& m_audioWaitCondition;           // éŸ³é¢‘ç­‰å¾…æ¡ä»¶
+	QMutex& m_audioMutex;                           // éŸ³é¢‘äº’æ–¥é”
+	AVFormatContext* m_pOutputFormatCtx{ nullptr }; // è¾“å‡ºæ ¼å¼ä¸Šä¸‹æ–‡
 };
 
 class CODEC_P_EXPORT CRecvThread final : public QThread, public QRunnable {

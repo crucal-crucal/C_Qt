@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QActionGroup>
 #include <QMenuBar>
@@ -47,15 +47,15 @@ private:
 	void help();
 	void version();
 	/*
-	 * @note: ÖØÆô³ÌĞò
+	 * @note: é‡å¯ç¨‹åº
 	 */
 	static void restart();
 	/*
-	 * @note: »Ö¸´°´Å¥×´Ì¬
+	 * @note: æ¢å¤æŒ‰é’®çŠ¶æ€
 	 */
 	void recoveryStateWithAct() const;
 	/*
-	 * @note: ÉèÖÃÏµÍ³ÍĞÅÌÍ¼±ê
+	 * @note: è®¾ç½®ç³»ç»Ÿæ‰˜ç›˜å›¾æ ‡
 	 */
 	void setSystemTrayIcon();
 
@@ -115,12 +115,12 @@ private:
 	QHBoxLayout* m_pLyHTitle{ nullptr };
 	QVBoxLayout* m_pCentralLayout{ nullptr };
 
-	WINDOWLANAGUAGE m_language{};                  // ÓïÑÔ
-	WINDOWTHEMESTYLE m_ThemeStyle{};               // Ö÷Ìâ
-	QSystemTrayIcon* m_ptrayIcon{ nullptr };       // ÏµÍ³ÍĞÅÌÍ¼±ê
-	std::unique_ptr<QMenu> m_ptrayMenu{ nullptr }; // ÏµÍ³ÍĞÅÌ²Ëµ¥
-	QAction* m_pActShow{ nullptr };                // ÏÔÊ¾Ö÷½çÃæ°´Å¥
-	QAction* m_pActQuit{ nullptr };                // ÍË³ö°´Å¥
+	WINDOWLANAGUAGE m_language{};                  // è¯­è¨€
+	WINDOWTHEMESTYLE m_ThemeStyle{};               // ä¸»é¢˜
+	QSystemTrayIcon* m_ptrayIcon{ nullptr };       // ç³»ç»Ÿæ‰˜ç›˜å›¾æ ‡
+	std::unique_ptr<QMenu> m_ptrayMenu{ nullptr }; // ç³»ç»Ÿæ‰˜ç›˜èœå•
+	QAction* m_pActShow{ nullptr };                // æ˜¾ç¤ºä¸»ç•Œé¢æŒ‰é’®
+	QAction* m_pActQuit{ nullptr };                // é€€å‡ºæŒ‰é’®
 
 private:
 	QString m_strTitle;

@@ -1,4 +1,4 @@
-#include "codec_p.h"
+ï»¿#include "codec_p.h"
 
 #include <QDateTime>
 #include <qfile.h>
@@ -19,7 +19,7 @@ extern "C" {
 #include "libavutil/pixfmt.h"
 }
 
-// CCalcPtsDur
+//CCalcPtsDur
 inline CCalcPtsDur::CCalcPtsDur() {
 	m_dTimeBase = 0.0;
 	m_dFpsBen = 0.0;
@@ -29,50 +29,51 @@ inline CCalcPtsDur::CCalcPtsDur() {
 	m_llAbsBaseTime = 0;
 }
 
-inline CCalcPtsDur::~CCalcPtsDur() = default;
+inline CCalcPtsDur::~CCalcPtsDur() {
+}
 
-inline void CCalcPtsDur::SetAbsBaseTime(const __int64& llAbsBaseTime) {
+inline void CCalcPtsDur::SetAbsBaseTime(const int64_t& llAbsBaseTime) {
 	m_llAbsBaseTime = llAbsBaseTime;
 }
 
-inline void CCalcPtsDur::SetTimeBase(const int iTimeBase, const int iFpsNum, const int iTimeBen) {
-	m_dTimeBase = static_cast<double>(iTimeBase);
-	m_dFpsBen = static_cast<double>(iTimeBen);
-	m_dFpsNum = static_cast<double>(iFpsNum);
+inline void CCalcPtsDur::SetTimeBase(int iTimeBase, int iFpsNum, int iFpsBen) {
+	m_dTimeBase = (double)iTimeBase;
+	m_dFpsBen = (double)iFpsBen;
+	m_dFpsNum = (double)iFpsNum;
 
+	//	m_dFrameDur = 1000.0 / (m_dFpsNum / m_dFpsBen) * (m_dTimeBase / 1000.0);
 	m_dFrameDur = m_dTimeBase / (m_dFpsNum / m_dFpsBen);
 }
 
-inline __int64 CCalcPtsDur::GetVideoPts(const __int64 lFrameIndex) const {
-	auto lPts = static_cast<__int64>(m_dFrameDur) * lFrameIndex;
+inline int64_t CCalcPtsDur::GetVideoPts(int64_t lFrameIndex) const {
+	int64_t lPts = m_dFrameDur * lFrameIndex;
 	lPts += m_llAbsBaseTime;
-
 	return lPts;
 }
 
-inline __int64 CCalcPtsDur::GetVideoDur(const __int64 lFrameIndex) const {
-	const __int64 lPts0 = static_cast<__int64>(m_dFrameDur) * lFrameIndex;
-	const __int64 lPts1 = static_cast<__int64>(m_dFrameDur) * (lFrameIndex + 1);
+inline int CCalcPtsDur::GetVideoDur(int64_t lFrameIndex) const {
+	int64_t lPts0 = m_dFrameDur * lFrameIndex;
+	int64_t lPts1 = m_dFrameDur * (lFrameIndex + 1);
 	return lPts1 - lPts0;
 }
 
-inline __int64 CCalcPtsDur::GetAudioPts(const __int64 lPaketIndex, const int iAudioSample) const {
-	constexpr __int64 dAACSample = 1024.0;
+inline int64_t CCalcPtsDur::GetAudioPts(int64_t lPaketIndex, int iAudioSample) const {
+	double dAACSample = 1024.0;
 
-	__int64 llPts = lPaketIndex * static_cast<__int64>(m_dTimeBase) * dAACSample / iAudioSample;
+	int64_t llPts = lPaketIndex * m_dTimeBase * dAACSample / (double)iAudioSample;
 	llPts += m_llAbsBaseTime;
 	return llPts;
 }
 
-__int64 CCalcPtsDur::GetAudioDur(const __int64 lPaketIndex, const int iAudioSample) const {
-	const __int64 lPts0 = GetAudioPts(lPaketIndex, iAudioSample);
-	const __int64 lPts1 = GetAudioPts(lPaketIndex + 1, iAudioSample);
+int CCalcPtsDur::GetAudioDur(int64_t lPaketIndex, int iAudioSample) const {
+	int64_t lPts0 = GetAudioPts(lPaketIndex, iAudioSample);
+	int64_t lPts1 = GetAudioPts(lPaketIndex + 1, iAudioSample);
 	return lPts1 - lPts0;
 }
 
-// ¸ù¾İ¸ø¶¨µÄ²ÉÑùÂÊºÍÍ¨µÀÊı£¬Îª ADTS ¸ñÊ½µÄÒôÆµÖ¡²¹³ä ADTS Í·²¿ĞÅÏ¢
-void GetADTS(uint8_t* pBuf, const __int64 nSampleRate, const __int64 nChannels) {
-	// ¸ù¾İ²ÉÑùÂÊÈ·¶¨ ADTS Í·²¿ÖĞµÄ smap Öµ
+// æ ¹æ®ç»™å®šçš„é‡‡æ ·ç‡å’Œé€šé“æ•°ï¼Œä¸º ADTS æ ¼å¼çš„éŸ³é¢‘å¸§è¡¥å…… ADTS å¤´éƒ¨ä¿¡æ¯
+void GetADTS(uint8_t* pBuf, int64_t nSampleRate, int64_t nChannels) {
+	// æ ¹æ®é‡‡æ ·ç‡ç¡®å®š ADTS å¤´éƒ¨ä¸­çš„ smap å€¼
 	int iSmapIndex = 0;
 	if (nSampleRate == 44100)
 		iSmapIndex = 4;
@@ -83,17 +84,17 @@ void GetADTS(uint8_t* pBuf, const __int64 nSampleRate, const __int64 nChannels) 
 	else if (nSampleRate == 64000)
 		iSmapIndex = 2;
 
-	// ¹¹½¨ ADTS Í·²¿ÖĞµÄ audio_specific_config ×Ö¶Î
+	// æ„å»º ADTS å¤´éƒ¨ä¸­çš„ audio_specific_config å­—æ®µ
 	uint16_t audio_specific_config = 0;
 	audio_specific_config |= ((2 << 11) & 0xF800);
 	audio_specific_config |= ((iSmapIndex << 7) & 0x0780);
 	audio_specific_config |= ((nChannels << 3) & 0x78);
 	audio_specific_config |= 0 & 0x07;
 
-	// ½« audio_specific_config Ğ´Èë ADTS Í·²¿µÄÇ°Á½¸ö×Ö½Ú
+	// å°† audio_specific_config å†™å…¥ ADTS å¤´éƒ¨çš„å‰ä¸¤ä¸ªå­—èŠ‚
 	pBuf[0] = (audio_specific_config >> 8) & 0xFF;
 	pBuf[1] = audio_specific_config & 0xFF;
-	// ºóĞøÈı¸ö×Ö½ÚÉèÖÃÎª³£Á¿Öµ
+	// åç»­ä¸‰ä¸ªå­—èŠ‚è®¾ç½®ä¸ºå¸¸é‡å€¼
 	pBuf[2] = 0x56;
 	pBuf[3] = 0xe5;
 	pBuf[4] = 0x00;
@@ -108,11 +109,11 @@ CCodecThread::CCodecThread(QString strFile, CPushStreamInfo stStreamInfo, const 
 : QThread(parent), m_pairRecvCodecPara(pairRecvCodecPara), m_strFile(std::move(strFile)), m_szPlay(szPlay),
   m_stPushStreamInfo(std::move(stStreamInfo)),
   m_eMode(mode), m_bLoop(bLoop), m_bPicture(bPicture) {
-	// ÉèÖÃÈÕÖ¾¼¶±ğÎª×îÏêÏ¸µÄÈÕÖ¾ĞÅÏ¢
+	// è®¾ç½®æ—¥å¿—çº§åˆ«ä¸ºæœ€è¯¦ç»†çš„æ—¥å¿—ä¿¡æ¯
 	av_log_set_level(AV_LOG_TRACE);
-	// ÉèÖÃ»Øµ÷º¯Êı£¬Ğ´ÈëÈÕÖ¾ĞÅÏ¢
+	// è®¾ç½®å›è°ƒå‡½æ•°ï¼Œå†™å…¥æ—¥å¿—ä¿¡æ¯
 	av_log_set_callback(LogCallBack);
-	// Ïß³Ì½áÊøºó×Ô¶¯É¾³ı
+	// çº¿ç¨‹ç»“æŸåè‡ªåŠ¨åˆ é™¤
 	setAutoDelete(true);
 }
 
@@ -143,21 +144,21 @@ void CCodecThread::open(const QString& strFile, const QSize& szPlay, const CPush
 
 void CCodecThread::seek(const quint64& nDuration) {
 	if (m_pFormatCtx) {
-		// Ê¹ÓÃ QMutexLocker È·±£Ïß³Ì°²È«µØ²Ù×÷ÒôÆµºÍÊÓÆµÏà¹Ø×ÊÔ´
+		// ä½¿ç”¨ QMutexLocker ç¡®ä¿çº¿ç¨‹å®‰å…¨åœ°æ“ä½œéŸ³é¢‘å’Œè§†é¢‘ç›¸å…³èµ„æº
 		QMutexLocker videoLocker(&m_videoMutex);
 		QMutexLocker audioLocker(&m_audioMutex);
-		// ´¦ÀíÊÓÆµ¶¨Î»
+		// å¤„ç†è§†é¢‘å®šä½
 		if (m_pVideoThread) {
-			// ¶¨Î»ÊÓÆµÁ÷
-			int nRet = avformat_seek_file(m_pFormatCtx, m_nVideoIndex, m_pFormatCtx->streams[m_nVideoIndex]->start_time,
-			                              static_cast<int64_t>(static_cast<double>(nDuration) / av_q2d(
-				                              m_pFormatCtx->streams[m_nVideoIndex]->time_base)),
-			                              m_pFormatCtx->streams[m_nVideoIndex]->duration, AVSEEK_FLAG_BACKWARD | AVSEEK_FLAG_FRAME);
-			if (nRet >= 0) {
-				// ÉèÖÃÊÓÆµÏß³Ìµ±Ç°µÄ PTS
+			// å®šä½è§†é¢‘æµ
+			if (const int nRet = avformat_seek_file(m_pFormatCtx, m_nVideoIndex, m_pFormatCtx->streams[m_nVideoIndex]->start_time,
+			                                        static_cast<int64_t>(static_cast<double>(nDuration) / av_q2d(
+				                                        m_pFormatCtx->streams[m_nVideoIndex]->time_base)),
+			                                        m_pFormatCtx->streams[m_nVideoIndex]->duration,
+			                                        AVSEEK_FLAG_BACKWARD | AVSEEK_FLAG_FRAME); nRet >= 0) {
+				// è®¾ç½®è§†é¢‘çº¿ç¨‹å½“å‰çš„ PTS
 				m_pVideoThread->setCurrentPts(static_cast<int64_t>(static_cast<double>(nDuration) / av_q2d(
 					m_pFormatCtx->streams[m_nVideoIndex]->time_base)));
-				// Çå¿ÕÊÓÆµ¶ÓÁĞÖĞµÄÊı¾İ
+				// æ¸…ç©ºè§†é¢‘é˜Ÿåˆ—ä¸­çš„æ•°æ®
 				while (!m_videoPacketQueue.isEmpty()) {
 					AVPacket* pkt = m_videoPacketQueue.pop();
 					av_packet_unref(pkt);
@@ -174,15 +175,15 @@ void CCodecThread::seek(const quint64& nDuration) {
 				av_log(nullptr, AV_LOG_WARNING, "seek video fail, avformat_seek_file return %d\n", nRet);
 			}
 		}
-		// ´¦ÀíÒôÆµ¶¨Î»
+		// å¤„ç†éŸ³é¢‘å®šä½
 		if (m_pAudioThread) {
 			if (m_nAudioIndex >= 0) {
-				// ¶¨Î»ÒôÆµÁ÷
-				int nRet = avformat_seek_file(m_pFormatCtx, m_nAudioIndex, m_pFormatCtx->streams[m_nAudioIndex]->start_time,
-				                              static_cast<int64_t>(static_cast<double>(nDuration) / av_q2d(
-					                              m_pFormatCtx->streams[m_nVideoIndex]->time_base)),
-				                              m_pFormatCtx->streams[m_nAudioIndex]->duration, AVSEEK_FLAG_BACKWARD | AVSEEK_FLAG_FRAME);
-				if (nRet >= 0) {
+				// å®šä½éŸ³é¢‘æµ
+				if (const int nRet = avformat_seek_file(m_pFormatCtx, m_nAudioIndex, m_pFormatCtx->streams[m_nAudioIndex]->start_time,
+				                                        static_cast<int64_t>(static_cast<double>(nDuration) / av_q2d(
+					                                        m_pFormatCtx->streams[m_nVideoIndex]->time_base)),
+				                                        m_pFormatCtx->streams[m_nAudioIndex]->duration,
+				                                        AVSEEK_FLAG_BACKWARD | AVSEEK_FLAG_FRAME); nRet >= 0) {
 					m_pAudioThread->setCurrentPts(static_cast<int64_t>(static_cast<double>(nDuration) / av_q2d(
 						m_pFormatCtx->streams[m_nVideoIndex]->time_base)));
 					while (!m_audioPacketQueue.isEmpty()) {
@@ -232,14 +233,14 @@ void CCodecThread::pause() {
 }
 
 void CCodecThread::resume() {
-	// Ïß³Ì¼ÌĞøÖ´ĞĞ
+	// çº¿ç¨‹ç»§ç»­æ‰§è¡Œ
 	m_bRunning = true;
-	// Ïß³Ì²»ÔÙÔİÍ£
+	// çº¿ç¨‹ä¸å†æš‚åœ
 	m_bPause = false;
-	// »½ĞÑÒôÆµÏß³ÌºÍÊÓÆµÏß³Ì£¬Ê¹Æä´ÓÔİÍ£×´Ì¬ÖĞ»Ö¸´
+	// å”¤é†’éŸ³é¢‘çº¿ç¨‹å’Œè§†é¢‘çº¿ç¨‹ï¼Œä½¿å…¶ä»æš‚åœçŠ¶æ€ä¸­æ¢å¤
 	m_audioWaitCondition.wakeOne();
 	m_videoWaitCondition.wakeOne();
-	// Èç¹ûÏß³Ì´æÔÚ£¬»Ö¸´Ïß³ÌµÄÖ´ĞĞ
+	// å¦‚æœçº¿ç¨‹å­˜åœ¨ï¼Œæ¢å¤çº¿ç¨‹çš„æ‰§è¡Œ
 	if (m_pAudioThread) {
 		m_pAudioThread->resume();
 	}
@@ -261,17 +262,18 @@ void CCodecThread::stop() {
 }
 
 void CCodecThread::run() {
-	char errBuf[ERRBUFSIZE]{};
-	//²éÕÒÊÓÆµÁ÷ºÍÒôÆµÁ÷
-	int nRet = avformat_open_input(&m_pFormatCtx, m_strFile.toStdString().c_str(), nullptr, nullptr);
+	int nRet = -1;
+	char errBuf[4096]{};
+	//æŸ¥æ‰¾è§†é¢‘æµå’ŒéŸ³é¢‘æµ
+	nRet = avformat_open_input(&m_pFormatCtx, m_strFile.toStdString().c_str(), nullptr, nullptr);
 	if (nRet < 0) {
-		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_strerror(nRet, errBuf, 4096);
 		av_log(nullptr, AV_LOG_ERROR, "Can't open input, %s\n", errBuf);
 		return;
 	}
 	nRet = avformat_find_stream_info(m_pFormatCtx, nullptr);
 	if (nRet < 0) {
-		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_strerror(nRet, errBuf, 4096);
 		av_log(nullptr, AV_LOG_ERROR, "Can't find stream info, %s\n", errBuf);
 		avformat_close_input(&m_pFormatCtx);
 		return;
@@ -289,12 +291,12 @@ void CCodecThread::run() {
 	int nAudioEncodeIndex = -1;
 	QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*, AVCodecContext*>> pairPushFormat{};
 	if (CCodecThread::OpenMode::OpenMode_Push & m_eMode) {
-		// ½âÎöÍÆÁ÷µØÖ·µÄ scheme
+		// è§£ææ¨æµåœ°å€çš„ scheme
 		QUrl url(m_stPushStreamInfo.strAddress);
 		AVFormatContext* pOutputFormatCtx = nullptr;
 		CCalcPtsDur calPts{};
 		QString strFileFormat = url.scheme();
-		// ¸ù¾İ scheme ÉèÖÃÊä³ö¸ñÊ½
+		// æ ¹æ® scheme è®¾ç½®è¾“å‡ºæ ¼å¼
 		int nTimeBase = 90000;
 		if (0 == url.scheme().compare("udp", Qt::CaseInsensitive)) {
 			strFileFormat = "mpegts";
@@ -307,15 +309,15 @@ void CCodecThread::run() {
 			strFileFormat = "flv";
 			nTimeBase = 1000;
 		}
-		// ÉèÖÃÊ±¼ä´Á¼ÆËã¶ÔÏóµÄÊ±¼ä»ù×¼ºÍÖ¡ÂÊ
+		// è®¾ç½®æ—¶é—´æˆ³è®¡ç®—å¯¹è±¡çš„æ—¶é—´åŸºå‡†å’Œå¸§ç‡
 		calPts.SetTimeBase(nTimeBase, m_stPushStreamInfo.nFrameRateDen > 0 ? m_stPushStreamInfo.nFrameRateDen : 25,
 		                   m_stPushStreamInfo.nFrameRateNum > 0 ? m_stPushStreamInfo.nFrameRateNum : 1);
 
-		// ·ÖÅäÊä³öÉÏÏÂÎÄ²¢ÉèÖÃÏà¹Ø²ÎÊı
+		// åˆ†é…è¾“å‡ºä¸Šä¸‹æ–‡å¹¶è®¾ç½®ç›¸å…³å‚æ•°
 		nRet = avformat_alloc_output_context2(&pOutputFormatCtx, nullptr, strFileFormat.toStdString().c_str(),
 		                                      m_stPushStreamInfo.strAddress.toStdString().c_str());
 		if (nRet < 0) {
-			av_strerror(nRet, errBuf, ERRBUFSIZE);
+			av_strerror(nRet, errBuf, 4096);
 			av_log(nullptr, AV_LOG_ERROR, "Can't alloc output ctx, %s\n", errBuf);
 			avformat_close_input(&m_pFormatCtx);
 			return;
@@ -323,51 +325,53 @@ void CCodecThread::run() {
 
 		//video
 		AVCodecContext* pOutputVideoCodecCtx = nullptr;
-		if (CPushStreamInfo::Video & m_stPushStreamInfo.eStream) {
-			// ²éÕÒH.264ÊÓÆµ±àÂëÆ÷
+		if (CPushStreamInfo::Video & m_stPushStreamInfo
+			.
+			eStream
+		) {
+			// æŸ¥æ‰¾H.264è§†é¢‘ç¼–ç å™¨
 			const AVCodec* out_VideoCodec = avcodec_find_encoder(AV_CODEC_ID_H264);
 
-			// ·ÖÅäºÍ³õÊ¼»¯Êä³öÊÓÆµ±àÂëÆ÷ÉÏÏÂÎÄ
+			// åˆ†é…å’Œåˆå§‹åŒ–è¾“å‡ºè§†é¢‘ç¼–ç å™¨ä¸Šä¸‹æ–‡
 			pOutputVideoCodecCtx = avcodec_alloc_context3(nullptr);
 			if (m_pairRecvCodecPara.first && m_pairRecvCodecPara.first->width > 0 && m_pairRecvCodecPara.first->height > 0) {
-				// ´æÔÚÊäÈëÁ÷²ÎÊı£¬½«Æä¿½±´µ½Êä³öÊÓÆµ±àÂëÆ÷µÄÉÏÏÂÎÄÖĞ
+				// å­˜åœ¨è¾“å…¥æµå‚æ•°ï¼Œå°†å…¶æ‹·è´åˆ°è¾“å‡ºè§†é¢‘ç¼–ç å™¨çš„ä¸Šä¸‹æ–‡ä¸­
 				avcodec_parameters_to_context(pOutputVideoCodecCtx, m_pairRecvCodecPara.first);
 				avcodec_parameters_free(&m_pairRecvCodecPara.first);
 				//av_opt_set_dict(pOutputVideoCodecCtx, &m_pRectFormatCtx->streams[nVideoIndex]->metadata);
 			} else {
 				pOutputVideoCodecCtx->pix_fmt = AV_PIX_FMT_YUV420P;
-				//±àÂëÊÓÆµ¿í¶È
+				//ç¼–ç è§†é¢‘å®½åº¦
 				pOutputVideoCodecCtx->width = m_stPushStreamInfo.nWidth > 0 ? m_stPushStreamInfo.nWidth :
 					                              m_pFormatCtx->streams[m_nVideoIndex]->codecpar->width;
-				//±àÂëÊÓÆµ¸ß¶È
+				//ç¼–ç è§†é¢‘é«˜åº¦
 				pOutputVideoCodecCtx->height = m_stPushStreamInfo.nHeight > 0 ? m_stPushStreamInfo.nHeight :
 					                               m_pFormatCtx->streams[m_nVideoIndex]->codecpar->height;
-				//Æ½¾ùÂëÂÊ
-				pOutputVideoCodecCtx->bit_rate = m_stPushStreamInfo.fVideoBitRate > 0 ? static_cast<int64_t>(m_stPushStreamInfo.fVideoBitRate)
-					                                 : 2000000; //±äĞ¡ÂëÂÊ»­ÖÊ²»ÇåÎú
-				//Ö¸¶¨Í¼ÏñÖĞÃ¿¸öÏñËØµÄÑÕÉ«Êı¾İµÄ¸ñÊ½
-				//IÖ¡¼ä¸ô  50Ö¡Ò»¸öIÖ¡
+				//å¹³å‡ç ç‡
+				pOutputVideoCodecCtx->bit_rate = m_stPushStreamInfo.fVideoBitRate > 0 ? m_stPushStreamInfo.fVideoBitRate : 2000000; //å˜å°ç ç‡ç”»è´¨ä¸æ¸…æ™°
+				//æŒ‡å®šå›¾åƒä¸­æ¯ä¸ªåƒç´ çš„é¢œè‰²æ•°æ®çš„æ ¼å¼
+				//Iå¸§é—´éš”  50å¸§ä¸€ä¸ªIå¸§
 				pOutputVideoCodecCtx->gop_size = 50;
 
 				pOutputVideoCodecCtx->thread_count = 4;
-				//Á½¸ö·ÇbÖ¡Ö®¼äbÖ¡×î´óÊı
+				//ä¸¤ä¸ªébå¸§ä¹‹é—´bå¸§æœ€å¤§æ•°
 				pOutputVideoCodecCtx->max_b_frames = 0;
 			}
 
 			if (pOutputFormatCtx->oformat->flags & AVFMT_GLOBALHEADER) {
 				pOutputVideoCodecCtx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 			}
-			//×îĞ¡Á¿»¯Òò×Ó ½¨ÒéÖµ 10~30
-			pOutputVideoCodecCtx->qmin = 10; //²âÊÔ½á¹û£ºµ±QMINÉı¸ß»òqmax½µµÍ£¬¶ÔÊÓÒôÆµÖÊÁ¿ºÍ´óĞ¡²úÉúÃ÷ÏÔÓ°Ïì
-			//×î´óÁ¿»¯Òò×Ó
-			pOutputVideoCodecCtx->qmax = 51; //²âÊÔ½á¹û£ºµ¥´¿¼õÉÙqmaxÖµÔö´óÌå»ı£¬µ«²¢²»ÄÜÌá¸ß»­ÖÊ£¬»¹ÓëÆäËûÒòËØÓĞ¹Ø
-			//ÔË¶¯¹À¼ÆµÄ×î´óËÑË÷·¶Î§¡£¸úÔË¶¯²¹³¥ÓĞ¹Ø£¬ÖµÔ½´ó£¬²¹³¥²Î¿¼·¶Î§Ô½¹ã£¬Ô½¾«È·£¬±àÂëĞ§ÂÊÏÂ½µ¡£
+			//æœ€å°é‡åŒ–å› å­ å»ºè®®å€¼ 10~30
+			pOutputVideoCodecCtx->qmin = 10; //æµ‹è¯•ç»“æœï¼šå½“QMINå‡é«˜æˆ–qmaxé™ä½ï¼Œå¯¹è§†éŸ³é¢‘è´¨é‡å’Œå¤§å°äº§ç”Ÿæ˜æ˜¾å½±å“
+			//æœ€å¤§é‡åŒ–å› å­
+			pOutputVideoCodecCtx->qmax = 51; //æµ‹è¯•ç»“æœï¼šå•çº¯å‡å°‘qmaxå€¼å¢å¤§ä½“ç§¯ï¼Œä½†å¹¶ä¸èƒ½æé«˜ç”»è´¨ï¼Œè¿˜ä¸å…¶ä»–å› ç´ æœ‰å…³
+			//è¿åŠ¨ä¼°è®¡çš„æœ€å¤§æœç´¢èŒƒå›´ã€‚è·Ÿè¿åŠ¨è¡¥å¿æœ‰å…³ï¼Œå€¼è¶Šå¤§ï¼Œè¡¥å¿å‚è€ƒèŒƒå›´è¶Šå¹¿ï¼Œè¶Šç²¾ç¡®ï¼Œç¼–ç æ•ˆç‡ä¸‹é™ã€‚
 			pOutputVideoCodecCtx->me_range = 16;
-			//Ö¡¼ä×î´óÁ¿»¯Òò×Ó
+			//å¸§é—´æœ€å¤§é‡åŒ–å› å­
 			pOutputVideoCodecCtx->max_qdiff = 4;
-			//Ñ¹Ëõ±ä»¯µÄÄÑÒ×³Ì¶È¡£ÖµÔ½´ó£¬Ô½ÄÑÑ¹Ëõ±ä»»£¬Ñ¹ËõÂÊÔ½¸ß£¬ÖÊÁ¿ËğÊ§½Ï´ó
+			//å‹ç¼©å˜åŒ–çš„éš¾æ˜“ç¨‹åº¦ã€‚å€¼è¶Šå¤§ï¼Œè¶Šéš¾å‹ç¼©å˜æ¢ï¼Œå‹ç¼©ç‡è¶Šé«˜ï¼Œè´¨é‡æŸå¤±è¾ƒå¤§
 			pOutputVideoCodecCtx->qcompress = 0.4;
-			//±àÂëÊÓÆµÖ¡ÂÊ  25
+			//ç¼–ç è§†é¢‘å¸§ç‡  25
 			pOutputVideoCodecCtx->time_base.num = m_stPushStreamInfo.nFrameRateNum > 0 ?
 				                                      m_stPushStreamInfo.nFrameRateNum : m_pFormatCtx->streams[m_nVideoIndex]->r_frame_rate.num;
 			pOutputVideoCodecCtx->time_base.den = m_stPushStreamInfo.nFrameRateDen > 0 ?
@@ -375,15 +379,15 @@ void CCodecThread::run() {
 
 			//            pOutputVideoCodecCtx->level = 31;
 			/*
-			presetÓĞultrafast£¬superfast£¬veryfast£¬faster£¬fast£¬medium£¬slow£¬slower£¬veryslow£¬placeboÕâ10¸ö¼¶±ğ£¬Ã¿¸ö¼¶±ğµÄpreset¶ÔÓ¦Ò»×é±àÂë²ÎÊı£¬²»Í¬¼¶±ğµÄpreset¶ÔÓ¦µÄ±àÂë²ÎÊı¼¯²»Ò»ÖÂ¡£preset¼¶±ğÔ½¸ß£¬±àÂëËÙ¶ÈÔ½Âı£¬½âÂëºóµÄÖÊÁ¿Ò²Ô½¸ß£»¼¶±ğÔ½µÍ£¬ËÙ¶ÈÒ²Ô½¿ì£¬½âÂëºóµÄÍ¼ÏñÖÊÁ¿Ò²¾ÍÔ½²î£¬´Ó×óµ½ÓÒ£¬±àÂëËÙ¶ÈÔ½À´Ô½Âı£¬±àÂëÖÊÁ¿Ô½À´Ô½ºÃ
+			presetæœ‰ultrafastï¼Œsuperfastï¼Œveryfastï¼Œfasterï¼Œfastï¼Œmediumï¼Œslowï¼Œslowerï¼Œveryslowï¼Œplaceboè¿™10ä¸ªçº§åˆ«ï¼Œæ¯ä¸ªçº§åˆ«çš„presetå¯¹åº”ä¸€ç»„ç¼–ç å‚æ•°ï¼Œä¸åŒçº§åˆ«çš„presetå¯¹åº”çš„ç¼–ç å‚æ•°é›†ä¸ä¸€è‡´ã€‚presetçº§åˆ«è¶Šé«˜ï¼Œç¼–ç é€Ÿåº¦è¶Šæ…¢ï¼Œè§£ç åçš„è´¨é‡ä¹Ÿè¶Šé«˜ï¼›çº§åˆ«è¶Šä½ï¼Œé€Ÿåº¦ä¹Ÿè¶Šå¿«ï¼Œè§£ç åçš„å›¾åƒè´¨é‡ä¹Ÿå°±è¶Šå·®ï¼Œä»å·¦åˆ°å³ï¼Œç¼–ç é€Ÿåº¦è¶Šæ¥è¶Šæ…¢ï¼Œç¼–ç è´¨é‡è¶Šæ¥è¶Šå¥½
 			*/
-			AVDictionary* param = nullptr;
+			AVDictionary* param = 0;
 			av_dict_set(&param, "preset", "superfast", 0);
 			av_dict_set(&param, "tune", "zerolatency", 0);
 			//av_dict_set(&param, "profile", "baseline", 0);
 			nRet = avcodec_open2(pOutputVideoCodecCtx, out_VideoCodec, &param);
 			if (nRet < 0) {
-				av_strerror(nRet, errBuf, ERRBUFSIZE);
+				av_strerror(nRet, errBuf, 4096);
 				av_log(nullptr, AV_LOG_ERROR, "Can't open video encoder\n");
 				avcodec_free_context(&pOutputVideoCodecCtx);
 				avformat_free_context(pOutputFormatCtx);
@@ -400,7 +404,7 @@ void CCodecThread::run() {
 			//}
 			//memcpy(pOutputVideoCodecCtx->extradata, sps_pps, 23);
 
-			// ´´½¨Êä³öÁ÷ÊÓÆµ
+			// åˆ›å»ºè¾“å‡ºæµè§†é¢‘
 			AVStream* out_VideoStream = avformat_new_stream(pOutputFormatCtx, nullptr);
 			if (!out_VideoStream) {
 				av_log(nullptr, AV_LOG_ERROR, "Can't create video streeam\n");
@@ -409,9 +413,9 @@ void CCodecThread::run() {
 				avformat_close_input(&m_pFormatCtx);
 				return;
 			}
-			// ´æ´¢ÊÓÆµÁ÷µÄË÷Òı
+			// å­˜å‚¨è§†é¢‘æµçš„ç´¢å¼•
 			nVideoEncodeIndex = out_VideoStream->index;
-			// ½«ÊÓÆµ±àÂëÆ÷ÉÏÏÂÎÄµÄ²ÎÊı¿½±´µ½Êä³öÊÓÆµÁ÷µÄ±àÂë²ÎÊıÖĞ
+			// å°†è§†é¢‘ç¼–ç å™¨ä¸Šä¸‹æ–‡çš„å‚æ•°æ‹·è´åˆ°è¾“å‡ºè§†é¢‘æµçš„ç¼–ç å‚æ•°ä¸­
 			avcodec_parameters_from_context(out_VideoStream->codecpar, pOutputVideoCodecCtx);
 			out_VideoStream->codecpar->codec_tag = 0;
 
@@ -433,8 +437,11 @@ void CCodecThread::run() {
 
 		//audio
 		AVCodecContext* pOutputAudioCodecCtx = nullptr;
-		if (CPushStreamInfo::Audio & m_stPushStreamInfo.eStream) {
-			// ²éÕÒ AAC ÒôÆµ±àÂëÆ÷
+		if (CPushStreamInfo::Audio & m_stPushStreamInfo
+			.
+			eStream
+		) {
+			// æŸ¥æ‰¾ AAC éŸ³é¢‘ç¼–ç å™¨
 			const AVCodec* out_AudioCodec = avcodec_find_encoder(AV_CODEC_ID_AAC);
 			pOutputAudioCodecCtx = avcodec_alloc_context3(out_AudioCodec);
 			if (m_pairRecvCodecPara.second && m_pairRecvCodecPara.second->sample_rate > 0 && m_pairRecvCodecPara.second->channels > 0) {
@@ -444,40 +451,40 @@ void CCodecThread::run() {
 			} else {
 				//avcodec_parameters_to_context(pOutputAudioCodecCtx, m_pFormatCtx->streams[m_nAudioIndex]->codecpar);
 				//av_opt_set_dict(pOutputAudioCodecCtx, &m_pFormatCtx->streams[m_nAudioIndex]->metadata);
-				pOutputAudioCodecCtx->profile = (strFileFormat == "mpegts") ? FF_PROFILE_MPEG2_AAC_HE : FF_PROFILE_AAC_MAIN; // ±àÂëĞ­Òé
-				pOutputAudioCodecCtx->codec_type = AVMEDIA_TYPE_AUDIO; // ÒôÆµ±àÂë
-				pOutputAudioCodecCtx->sample_fmt = AV_SAMPLE_FMT_FLTP; // Ö¸¶¨ÒôÆµ²ÉÑù¸ñÊ½Îª¸¡µãÊı
-				pOutputAudioCodecCtx->channel_layout = AV_CH_LAYOUT_STEREO; // ÉèÖÃÒôÆµÍ¨µÀ²¼¾ÖÎªÁ¢ÌåÉù
-				pOutputAudioCodecCtx->channels = 2; // Ë«Í¨µÀ
-				pOutputAudioCodecCtx->sample_rate = m_stPushStreamInfo.nAudioSampleRate > 0 ? m_stPushStreamInfo.nAudioSampleRate : 44100; // ÉèÖÃ²ÉÑùÆµÂÊ
-				pOutputAudioCodecCtx->bit_rate = m_stPushStreamInfo.nAudioBitRate > 0 ? m_stPushStreamInfo.nAudioBitRate * 1024 : 327680; // ÉèÖÃ²ÉÑù±ÈÌØÂÊ
+				pOutputAudioCodecCtx->profile = (strFileFormat == "mpegts") ? FF_PROFILE_MPEG2_AAC_HE : FF_PROFILE_AAC_MAIN; // ç¼–ç åè®®
+				pOutputAudioCodecCtx->codec_type = AVMEDIA_TYPE_AUDIO; // éŸ³é¢‘ç¼–ç 
+				pOutputAudioCodecCtx->sample_fmt = AV_SAMPLE_FMT_FLTP; // æŒ‡å®šéŸ³é¢‘é‡‡æ ·æ ¼å¼ä¸ºæµ®ç‚¹æ•°
+				pOutputAudioCodecCtx->channel_layout = AV_CH_LAYOUT_STEREO; // è®¾ç½®éŸ³é¢‘é€šé“å¸ƒå±€ä¸ºç«‹ä½“å£°
+				pOutputAudioCodecCtx->channels = 2; // åŒé€šé“
+				pOutputAudioCodecCtx->sample_rate = m_stPushStreamInfo.nAudioSampleRate > 0 ? m_stPushStreamInfo.nAudioSampleRate : 44100; // è®¾ç½®é‡‡æ ·é¢‘ç‡
+				pOutputAudioCodecCtx->bit_rate = m_stPushStreamInfo.nAudioBitRate > 0 ? m_stPushStreamInfo.nAudioBitRate * 1024 : 327680; // è®¾ç½®é‡‡æ ·æ¯”ç‰¹ç‡
 				//                             if (pOutputFormatCtx->oformat->flags & AVFMT_GLOBALHEADER)
 				//                             {
 				//                                 pOutputAudioCodecCtx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 				//                             }
 
-				pOutputAudioCodecCtx->extradata_size = 5;                               // ÉèÖÃÒôÆµ±àÂëÆ÷µÄ¶îÍâÊı¾İ´óĞ¡Îª5¸ö×Ö½Ú
-				pOutputAudioCodecCtx->extradata = static_cast<uint8_t*>(av_mallocz(5)); // ·ÖÅä5¸ö×Ö½Ú¶îÍâ¿Õ¼ä
-				// Éú³É AAC µÄ ADTS Í·ĞÅÏ¢
+				pOutputAudioCodecCtx->extradata_size = 5;                  // è®¾ç½®éŸ³é¢‘ç¼–ç å™¨çš„é¢å¤–æ•°æ®å¤§å°ä¸º5ä¸ªå­—èŠ‚
+				pOutputAudioCodecCtx->extradata = (uint8_t*)av_mallocz(5); // åˆ†é…5ä¸ªå­—èŠ‚é¢å¤–ç©ºé—´
+				// ç”Ÿæˆ AAC çš„ ADTS å¤´ä¿¡æ¯
 				GetADTS(pOutputAudioCodecCtx->extradata, pOutputAudioCodecCtx->sample_rate, pOutputAudioCodecCtx->channels);
 			}
-			// ´´½¨×Öµä£¬´æ´¢ÒôÆµ±àÂëÆ÷µÄÅäÖÃ²ÎÊı
-			AVDictionary* param = nullptr;
-			// ÉèÖÃÒôÆµ±àÂëÆ÷µÄÔ¤ÉèÖµ£¬Ô¤ÉèÖµÓ°Ïì±àÂëËÙ¶ÈºÍÖÊÁ¿Ö®Ç°µÄÈ¨ºâ
+			// åˆ›å»ºå­—å…¸ï¼Œå­˜å‚¨éŸ³é¢‘ç¼–ç å™¨çš„é…ç½®å‚æ•°
+			AVDictionary* param = 0;
+			// è®¾ç½®éŸ³é¢‘ç¼–ç å™¨çš„é¢„è®¾å€¼ï¼Œé¢„è®¾å€¼å½±å“ç¼–ç é€Ÿåº¦å’Œè´¨é‡ä¹‹å‰çš„æƒè¡¡
 			av_dict_set(&param, "preset", "superfast", 0);
-			// ÉèÖÃÒôÆµ±àÂëÆ÷µÄµ÷Õû²ÎÊı£¬ÓÅ»¯±àÂëÆ÷ÒÔ¼õĞ¡ÑÓ³Ù
+			// è®¾ç½®éŸ³é¢‘ç¼–ç å™¨çš„è°ƒæ•´å‚æ•°ï¼Œä¼˜åŒ–ç¼–ç å™¨ä»¥å‡å°å»¶è¿Ÿ
 			av_dict_set(&param, "tune", "zerolatency", 0);
-			// ´ò¿ªÒôÆµ±àÂëÆ÷
+			// æ‰“å¼€éŸ³é¢‘ç¼–ç å™¨
 			nRet = avcodec_open2(pOutputAudioCodecCtx, out_AudioCodec, &param);
 			if (nRet < 0) {
-				av_strerror(nRet, errBuf, ERRBUFSIZE);
+				av_strerror(nRet, errBuf, 4096);
 				av_log(nullptr, AV_LOG_ERROR, "Can't open audio encoder\n");
 				avcodec_free_context(&pOutputAudioCodecCtx);
 				avformat_free_context(pOutputFormatCtx);
 				avformat_close_input(&m_pFormatCtx);
 				return;
 			}
-			// ´´½¨ÒôÆµÁ÷£¬²¢½«ÆäÌí¼Óµ½Êä³ö¸ñÊ½ÉÏÏÂÎÄÖĞ
+			// åˆ›å»ºéŸ³é¢‘æµï¼Œå¹¶å°†å…¶æ·»åŠ åˆ°è¾“å‡ºæ ¼å¼ä¸Šä¸‹æ–‡ä¸­
 			AVStream* out_AudioStream = avformat_new_stream(pOutputFormatCtx, nullptr);
 			if (!out_AudioStream) {
 				av_log(nullptr, AV_LOG_ERROR, "Can't create audio stream\n");
@@ -486,11 +493,11 @@ void CCodecThread::run() {
 				avformat_close_input(&m_pFormatCtx);
 				return;
 			}
-			// ´æ´¢ÒôÆµÁ÷µÄË÷Òı
+			// å­˜å‚¨éŸ³é¢‘æµçš„ç´¢å¼•
 			nAudioEncodeIndex = out_AudioStream->index;
-			// ½«ÒôÆµ±àÂëÆ÷µÄ²ÎÊı¸´ÖÆµ½ÒôÆµÁ÷µÄ²ÎÊıÖĞ
-			avcodec_parameters_from_context(out_AudioStream->codecpar, pOutputAudioCodecCtx);
-			// ²»Ê¹ÓÃ±êÇ©
+			// å°†éŸ³é¢‘ç¼–ç å™¨çš„å‚æ•°å¤åˆ¶åˆ°éŸ³é¢‘æµçš„å‚æ•°ä¸­
+			nRet = avcodec_parameters_from_context(out_AudioStream->codecpar, pOutputAudioCodecCtx);
+			// ä¸ä½¿ç”¨æ ‡ç­¾
 			out_AudioStream->codecpar->codec_tag = 0;
 
 			//            out_AudioStream->codecpar->codec_type = AVMEDIA_TYPE_AUDIO;
@@ -505,18 +512,13 @@ void CCodecThread::run() {
 			//            avcodec_parameters_copy(out_AudioStream->codecpar, m_pFormatCtx->streams[m_nAudioIndex]->codecpar);
 		}
 
-		// ¸ù¾İÎÄ¼ş¸ñÊ½ÅĞ¶ÏÍÆÁ÷ÀàĞÍ
+		// æ ¹æ®æ–‡ä»¶æ ¼å¼åˆ¤æ–­æ¨æµç±»å‹
 		int nPushStreamType = 0;
 		AVDictionary* avdic = nullptr;
-		if (strFileFormat == "flv") {
+		if (strFileFormat == "flv")
 			nPushStreamType = 0;
-		} else if (strFileFormat == "mpegts") {
+		else if (strFileFormat == "mpegts")
 			nPushStreamType = 1;
-		} else if (strFileFormat == "mp4") {
-			nPushStreamType = 2;
-		} else {
-			nPushStreamType = 3;
-		}
 		if (nPushStreamType == 0) {
 			//            		av_dict_set(&avdic, "rtmp_live", "1", 0);
 			//            		av_dict_set(&avdic, "live", "1", 0);
@@ -531,10 +533,10 @@ void CCodecThread::run() {
 			av_dict_set(&avdic, "linger", "1", 0);
 		}
 
-		// ´ò¿ªÊä³öÁ÷µÄ I/O ÉÏÏÂÎÄ£¬´«µİÖ®Ç°ÉèÖÃºÃµÄÒôÆµ±àÂëÆ÷ÅäÖÃ²ÎÊı
+		// æ‰“å¼€è¾“å‡ºæµçš„ I/O ä¸Šä¸‹æ–‡ï¼Œä¼ é€’ä¹‹å‰è®¾ç½®å¥½çš„éŸ³é¢‘ç¼–ç å™¨é…ç½®å‚æ•°
 		nRet = avio_open2(&pOutputFormatCtx->pb, m_stPushStreamInfo.strAddress.toStdString().c_str(), AVIO_FLAG_WRITE, nullptr, &avdic);
 		if (nRet < 0) {
-			av_strerror(nRet, errBuf, ERRBUFSIZE);
+			av_strerror(nRet, errBuf, 4096);
 			av_log(nullptr, AV_LOG_ERROR, "Can't open io, %s\n", errBuf);
 			if (pOutputVideoCodecCtx) {
 				avcodec_free_context(&pOutputVideoCodecCtx);
@@ -547,58 +549,58 @@ void CCodecThread::run() {
 			return;
 		}
 
-		// Ğ´ÈëÊä³öÁ÷µÄÍ·²¿ĞÅÏ¢£¬³õÊ¼»¯Êä³öÁ÷²¢Ğ´Èë°üº¬±ØÒªĞÅÏ¢µÄÍ·²¿
+		// å†™å…¥è¾“å‡ºæµçš„å¤´éƒ¨ä¿¡æ¯ï¼Œåˆå§‹åŒ–è¾“å‡ºæµå¹¶å†™å…¥åŒ…å«å¿…è¦ä¿¡æ¯çš„å¤´éƒ¨
 		nRet = avformat_write_header(pOutputFormatCtx, nullptr);
 		if (nRet < 0) {
 			avio_closep(&pOutputFormatCtx->pb);
 			avformat_free_context(pOutputFormatCtx);
 			avformat_close_input(&m_pFormatCtx);
-			av_strerror(nRet, errBuf, ERRBUFSIZE);
+			av_strerror(nRet, errBuf, 4096);
 			av_log(nullptr, AV_LOG_ERROR, "Can't write header, %s\n", errBuf);
 			return;
 		}
-		// ½«ÍÆÁ÷ËùĞèµÄ¸ñÊ½ÉÏÏÂÎÄ£¬Ê±¼ä»ù×¼£¬ÒÔ¼°ÊÓÆµºÍÒôÆµ±àÂëÆ÷ÉÏÏÂÎÄ±£´æ
+		// å°†æ¨æµæ‰€éœ€çš„æ ¼å¼ä¸Šä¸‹æ–‡ï¼Œæ—¶é—´åŸºå‡†ï¼Œä»¥åŠè§†é¢‘å’ŒéŸ³é¢‘ç¼–ç å™¨ä¸Šä¸‹æ–‡ä¿å­˜
 		pairPushFormat = qMakePair(pOutputFormatCtx, std::make_tuple(calPts, pOutputVideoCodecCtx, pOutputAudioCodecCtx));
 
-		// Æô¶¯ÍÆÁ÷Ïß³Ì
+		// å¯åŠ¨æ¨æµçº¿ç¨‹
 		m_pPushThread = new CPushThread(pOutputFormatCtx, m_videoPushPacketQueue, m_audioPushPacketQueue,
 		                                m_pushVideoWaitCondition, m_pushVideoMutex, m_pushAudioWaitCondition, m_pushAudioMutex,
 		                                CPushStreamInfo::Video & m_stPushStreamInfo.eStream, CPushStreamInfo::Audio & m_stPushStreamInfo.eStream);
 		m_pPushThread->start();
 	}
-	// Èç¹û´æÔÚÊÓÆµÁ÷
+	// å¦‚æœå­˜åœ¨è§†é¢‘æµ
 	if (m_nVideoIndex >= 0) {
-		// ÉèÖÃ½âÂëÄ£Ê½
+		// è®¾ç½®è§£ç æ¨¡å¼
 		m_eDecodeMode = m_bPicture ? eDecodeMode::eDecodeMode_CPU : eDecodeMode::eDecodeMode_GPU;
-		// ´´½¨°üº¬ AVFormatContext ºÍÏà¹ØĞÅÏ¢Ôª×éµÄpair¶ÔÏó
+		// åˆ›å»ºåŒ…å« AVFormatContext å’Œç›¸å…³ä¿¡æ¯å…ƒç»„çš„pairå¯¹è±¡
 		QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairVideoFormat;
 		pairVideoFormat = qMakePair(pairPushFormat.first, std::make_tuple(std::get<0>(pairPushFormat.second), std::get<1>(pairPushFormat.second)));
-		// ´´½¨ÊÓÆµÏß³Ì
+		// åˆ›å»ºè§†é¢‘çº¿ç¨‹
 		m_pVideoThread = new CVideoThread(m_videoPacketQueue, m_videoPushPacketQueue, m_videoWaitCondition,
 		                                  m_videoMutex, m_pushVideoWaitCondition, m_pushVideoMutex, m_pFormatCtx, m_nVideoIndex, nVideoEncodeIndex,
 		                                  pairVideoFormat,
 		                                  m_eMode, m_nAudioIndex < 0, CPushStreamInfo::Video & m_stPushStreamInfo.eStream, m_szPlay,
 		                                  m_eDecodeMode);
-		// Á¬½ÓĞÅºÅ
+		// è¿æ¥ä¿¡å·
 		connect(m_pVideoThread, &CVideoThread::notifyImage, this, &CCodecThread::notifyImage);
 		connect(m_pVideoThread, &CVideoThread::notifyCountDown, this, &CCodecThread::notifyCountDown);
-		// ¿ªÆôÏß³Ì
+		// å¼€å¯çº¿ç¨‹
 		m_pVideoThread->start();
 	}
-	// Èç¹û´æÔÚÒôÆµÁ÷»òÕßÊÇÍÆÁ÷Ä£Ê½²¢ÇÒÒôÆµÁ÷ÊÇ¿ªÆôµÄ
+	// å¦‚æœå­˜åœ¨éŸ³é¢‘æµæˆ–è€…æ˜¯æ¨æµæ¨¡å¼å¹¶ä¸”éŸ³é¢‘æµæ˜¯å¼€å¯çš„
 	if (m_nAudioIndex >= 0 || (CCodecThread::OpenMode::OpenMode_Push & m_eMode && CPushStreamInfo::Audio & m_stPushStreamInfo.eStream)) {
-		// ´´½¨´æ´¢½âÂë²ÎÊıµÄ AVCodecParameters ¶ÔÏó
+		// åˆ›å»ºå­˜å‚¨è§£ç å‚æ•°çš„ AVCodecParameters å¯¹è±¡
 		AVCodecParameters decodePara;
-		// Èç¹ûÃ»ÓĞÒôÆµÁ÷£¬ÇÒÊÇÍÆÁ÷Ä£Ê½²¢ÇÒÒôÆµÁ÷ÊÇ¿ªÆôµÄ
+		// å¦‚æœæ²¡æœ‰éŸ³é¢‘æµï¼Œä¸”æ˜¯æ¨æµæ¨¡å¼å¹¶ä¸”éŸ³é¢‘æµæ˜¯å¼€å¯çš„
 		if (m_nAudioIndex < 0 && CCodecThread::OpenMode::OpenMode_Push & m_eMode && CPushStreamInfo::Audio & m_stPushStreamInfo.eStream) {
-			// ´´½¨Ò»¸ö°üº¬ÒôÆµ±àÂë²ÎÊıµÄÔª×é
+			// åˆ›å»ºä¸€ä¸ªåŒ…å«éŸ³é¢‘ç¼–ç å‚æ•°çš„å…ƒç»„
 			std::tuple<CCalcPtsDur, AVCodecContext*> pairEncodeCtx = std::make_tuple(std::get<0>(pairPushFormat.second),
 			                                                                         std::get<2>(pairPushFormat.second));
-			// ´´½¨¾²ÒôÒôÆµ±àÂëÏß³Ì
+			// åˆ›å»ºé™éŸ³éŸ³é¢‘ç¼–ç çº¿ç¨‹
 			m_pEncodeMuteThread = new CEncodeMuteAudioThread(m_audioPacketQueue, m_audioWaitCondition, m_audioMutex, m_AVSyncWaitCondition,
 			                                                 m_AVSyncMutex, nAudioEncodeIndex, pairEncodeCtx);
 			m_pEncodeMuteThread->start();
-			// ´ÓÍÆËÍ¸ñÊ½µÄÒôÆµÉÏÏÂÎÄÖĞ»ñÈ¡½âÂë²ÎÊı£¬²¢ÉèÖÃAACµÄprofile
+			// ä»æ¨é€æ ¼å¼çš„éŸ³é¢‘ä¸Šä¸‹æ–‡ä¸­è·å–è§£ç å‚æ•°ï¼Œå¹¶è®¾ç½®AACçš„profile
 			avcodec_parameters_from_context(&decodePara, std::get<2>(pairPushFormat.second));
 			decodePara.profile = FF_PROFILE_AAC_LOW;
 			memset(decodePara.extradata, 0, decodePara.extradata_size);
@@ -606,7 +608,7 @@ void CCodecThread::run() {
 		}
 		QPair<AVFormatContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairAudioFormat;
 		pairAudioFormat = qMakePair(pairPushFormat.first, std::make_tuple(std::get<0>(pairPushFormat.second), std::get<2>(pairPushFormat.second)));
-		// ´´½¨ÒôÆµÏß³Ì
+		// åˆ›å»ºéŸ³é¢‘çº¿ç¨‹
 		m_pAudioThread = new CAudioThread(m_audioPacketQueue, m_audioPushPacketQueue, m_audioWaitCondition,
 		                                  m_audioMutex, m_pushAudioWaitCondition, m_pushAudioMutex, m_pFormatCtx, m_nAudioIndex, nAudioEncodeIndex,
 		                                  pairAudioFormat,
@@ -614,22 +616,23 @@ void CCodecThread::run() {
 		connect(m_pAudioThread, &CAudioThread::notifyAudio, this, &CCodecThread::notifyAudio);
 		connect(m_pAudioThread, &CAudioThread::notifyCountDown, this, &CCodecThread::notifyCountDown);
 		connect(m_pAudioThread, &CAudioThread::notifyAudioPara, this, &CCodecThread::notifyAudioPara);
-		// Æô¶¯ÒôÆµÏß³Ì
+		// å¯åŠ¨éŸ³é¢‘çº¿ç¨‹
 		m_pAudioThread->start();
 	}
-	// Èç¹ûÃ½ÌåÎÄ¼şµÄÊ±³¤´óÓÚµÈÓÚ0£¬Í¨¹ıĞÅºÅ´«µİµæÆ¬µÄÊ±³¤£¬µ¥Î»£ºÃë£¬·ñÔò´«µİ0
+	// å¦‚æœåª’ä½“æ–‡ä»¶çš„æ—¶é•¿å¤§äºç­‰äº0ï¼Œé€šè¿‡ä¿¡å·ä¼ é€’å«ç‰‡çš„æ—¶é•¿ï¼Œå•ä½ï¼šç§’ï¼Œå¦åˆ™ä¼ é€’0
 	if (m_pFormatCtx->duration >= 0) {
 		emit notifyClipInfo(m_pFormatCtx->duration / AV_TIME_BASE);
 	} else {
 		emit notifyClipInfo(0);
 	}
-	//ÊÓÆµ×¼±¸¶ÁÈ¡
+	//è§†é¢‘å‡†å¤‡è¯»å–
 	AVPacket* packet = av_packet_alloc();
+	av_init_packet(packet);
 
-	//¶ÁÈ¡Êı¾İ°ü
+	//è¯»å–æ•°æ®åŒ…
 Loop:
 	while (m_bRunning && av_read_frame(m_pFormatCtx, packet) >= 0) {
-		// Èç¹û´¦ÓÚÔİÍ£×´Ì¬£¬µÈ´ı±àÂëÏß³Ì»½ĞÑ
+		// å¦‚æœå¤„äºæš‚åœçŠ¶æ€ï¼Œç­‰å¾…ç¼–ç çº¿ç¨‹å”¤é†’
 		if (m_bPause) {
 			if (m_nVideoIndex >= 0) {
 				QMutexLocker videoLocker(&m_videoMutex);
@@ -641,9 +644,9 @@ Loop:
 			av_packet_unref(packet);
 			continue;
 		}
-		// µ±Ç°Êı¾İ°üÊôÓÚÊÓÆµÁ÷
+		// å½“å‰æ•°æ®åŒ…å±äºè§†é¢‘æµ
 		if (m_nVideoIndex == packet->stream_index) {
-			// Èç¹ûÊÇÍ¼ÏñÄ£Ê½£¬Ñ­»·½«¿ËÂ¡µÄÊı¾İ°üÍÆËÍµ½ÊÓÆµ¶ÓÁĞÖĞ£¬²¢»½ĞÑÏà¹ØÏß³Ì
+			// å¦‚æœæ˜¯å›¾åƒæ¨¡å¼ï¼Œå¾ªç¯å°†å…‹éš†çš„æ•°æ®åŒ…æ¨é€åˆ°è§†é¢‘é˜Ÿåˆ—ä¸­ï¼Œå¹¶å”¤é†’ç›¸å…³çº¿ç¨‹
 			if (m_bPicture) {
 				while (m_bRunning) {
 					AVPacket* pkt = av_packet_clone(packet);
@@ -656,7 +659,7 @@ Loop:
 					m_AVSyncWaitCondition.wakeOne();
 				}
 			}
-			// ·ñÔò½«¿ËÂ¡µÄÊı¾İ°üÍÆËÍµ½ÊÓÆµ¶ÓÁĞ£¬²¢»½ĞÑÏà¹ØÏß³Ì
+			// å¦åˆ™å°†å…‹éš†çš„æ•°æ®åŒ…æ¨é€åˆ°è§†é¢‘é˜Ÿåˆ—ï¼Œå¹¶å”¤é†’ç›¸å…³çº¿ç¨‹
 			else {
 				AVPacket* pkt = av_packet_clone(packet);
 				QMutexLocker locker(&m_videoMutex);
@@ -668,9 +671,9 @@ Loop:
 				m_videoWaitCondition.wakeOne();
 			}
 		}
-		// µ±Ç°Êı¾İ°üÊôÓÚÒôÆµÁ÷
+		// å½“å‰æ•°æ®åŒ…å±äºéŸ³é¢‘æµ
 		else if (m_nAudioIndex == packet->stream_index) {
-			// ½«¿ËÂ¡µÄÊı¾İ°üÍÆËÍµ½ÒôÆµ¶ÓÁĞ£¬²¢»½ĞÑÏà¹ØÏß³Ì
+			// å°†å…‹éš†çš„æ•°æ®åŒ…æ¨é€åˆ°éŸ³é¢‘é˜Ÿåˆ—ï¼Œå¹¶å”¤é†’ç›¸å…³çº¿ç¨‹
 			AVPacket* pkt = av_packet_clone(packet);
 			QMutexLocker locker(&m_audioMutex);
 			if (m_audioPacketQueue.isFull()) {
@@ -679,20 +682,20 @@ Loop:
 			m_audioPacketQueue.push(pkt);
 			m_audioWaitCondition.wakeOne();
 		}
-		// ÊÍ·Åµ±Ç°Êı¾İ°ü
+		// é‡Šæ”¾å½“å‰æ•°æ®åŒ…
 		av_packet_unref(packet);
 	}
-	// Èç¹û´¦ÓÚÔËĞĞ×´Ì¬²¢ÇÒÆôÓÃÁËÑ­»·²¥·Å
+	// å¦‚æœå¤„äºè¿è¡ŒçŠ¶æ€å¹¶ä¸”å¯ç”¨äº†å¾ªç¯æ’­æ”¾
 	if (m_bRunning && m_bLoop) {
-		// ÔİÍ££¬¶¨Î»µ½ÆğÊ¼Ê±¼ä£¬»Ö¸´²¥·Å
+		// æš‚åœï¼Œå®šä½åˆ°èµ·å§‹æ—¶é—´ï¼Œæ¢å¤æ’­æ”¾
 		pause();
 		seek(m_pFormatCtx->start_time);
 		resume();
 		goto Loop;
 	}
-	// ÇåÀíÄÚ´æ
+	// æ¸…ç†å†…å­˜
 	clearMemory();
-	// Èç¹û´æÔÚÍÆËÍ¸ñÊ½µÄÉÏÏÂÎÄ£¬Ğ´ÈëÎ²²¿£¬¹Ø±ÕIO£¬ÊÍ·ÅÊÓÆµºÍÒôÆµ±àÂëÉÏÏÂÎÄ
+	// å¦‚æœå­˜åœ¨æ¨é€æ ¼å¼çš„ä¸Šä¸‹æ–‡ï¼Œå†™å…¥å°¾éƒ¨ï¼Œå…³é—­IOï¼Œé‡Šæ”¾è§†é¢‘å’ŒéŸ³é¢‘ç¼–ç ä¸Šä¸‹æ–‡
 	if (pairPushFormat.first) {
 		av_write_trailer(pairPushFormat.first);
 		avio_close(pairPushFormat.first->pb);
@@ -706,7 +709,7 @@ Loop:
 		}
 		avformat_free_context(pairPushFormat.first);
 	}
-	// ÊÍ·ÅÊı¾İ°üºÍÃ½Ìå¸ñÊ½ÉÏÏÂÎÄ
+	// é‡Šæ”¾æ•°æ®åŒ…å’Œåª’ä½“æ ¼å¼ä¸Šä¸‹æ–‡
 	av_packet_free(&packet);
 	avformat_close_input(&m_pFormatCtx);
 }
@@ -717,12 +720,12 @@ void CCodecThread::LogCallBack(void* avcl, int level, const char* fmt, va_list v
 		[[maybe_unused]] auto err = fopen_s(&m_pLogFile, strLogPath.toStdString().c_str(), "w+");
 	}
 	if (m_pLogFile) {
-		// ¹¹½¨Ê±¼ä´Á¸ñÊ½
+		// æ„å»ºæ—¶é—´æˆ³æ ¼å¼
 		char timeFmt[1024]{};
 		sprintf_s(timeFmt, "%s     %s", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.z").toStdString().c_str(), fmt);
-		// ½«¸ñÊ½»¯ºóµÄÈÕÖ¾ĞÅÏ¢Ğ´ÈëÎÄ¼ş
+		// å°†æ ¼å¼åŒ–åçš„æ—¥å¿—ä¿¡æ¯å†™å…¥æ–‡ä»¶
 		vfprintf(m_pLogFile, timeFmt, vl);
-		// Ë¢ĞÂ»º³åÇø
+		// åˆ·æ–°ç¼“å†²åŒº
 		fflush(m_pLogFile);
 	}
 }
@@ -819,7 +822,7 @@ void CVideoThread::resume() {
 
 void CVideoThread::stop() {
 	m_bRunning = false;
-	// »½ĞÑËùÓĞÏß³Ì
+	// å”¤é†’æ‰€æœ‰çº¿ç¨‹
 	m_encodeWaitCondition.wakeAll();
 	m_playWaitCondition.wakeAll();
 	if (m_pEncodeThread) {
@@ -832,13 +835,13 @@ void CVideoThread::stop() {
 		m_pPlayThread->stop();
 		SAFE_DELETE(m_pPlayThread);
 	}
-	// µÈ´ıÏß³ÌÖ´ĞĞÍê±Ï
+	// ç­‰å¾…çº¿ç¨‹æ‰§è¡Œå®Œæ¯•
 	this->wait();
 	clearQueue(m_decodeFrameQueue);
 	clearQueue(m_playFrameQueue);
 }
 
-void CVideoThread::setCurrentPts(int64_t nPts) {
+void CVideoThread::setCurrentPts(const int64_t nPts) {
 	if (m_pPlayThread) {
 		m_pPlayThread->setCurrentPts(nPts);
 	}
@@ -848,7 +851,7 @@ void CVideoThread::setCurrentPts(int64_t nPts) {
 
 enum AVPixelFormat CVideoThread::hw_pix_fmt = AV_PIX_FMT_NONE;
 
-// È·¶¨±àÂëÆ÷ÉÏÏÂÎÄÓ¦Ê¹ÓÃµÄÓ²¼ş¼ÓËÙÏñËØÄ£Ê½
+// ç¡®å®šç¼–ç å™¨ä¸Šä¸‹æ–‡åº”ä½¿ç”¨çš„ç¡¬ä»¶åŠ é€Ÿåƒç´ æ¨¡å¼
 AVPixelFormat CVideoThread::get_hw_format([[maybe_unused]] AVCodecContext* ctx, const AVPixelFormat* pix_fmts) {
 	for (const enum AVPixelFormat* p = pix_fmts; *p != -1; ++p) {
 		if (*p == hw_pix_fmt) {
@@ -870,23 +873,23 @@ void CVideoThread::clearQueue(CircularQueue<AVFrame*>& queue) {
 
 void CVideoThread::run() {
 	int nRet = -1;
-	char errBuf[ERRBUFSIZE]{};
+	char errBuf[4096]{};
 	m_pCodecCtx = avcodec_alloc_context3(nullptr);
 	const AVCodec* pVideoCodec = nullptr;
 	AVBufferRef* hw_device_ctx = nullptr;
 
 	auto codec = [&]() {
-		// ½«ÊÓÆµÁ÷µÄ²ÎÊı¿½±´µ½½âÂëÆ÷ÉÏÏÂÎÄ
+		// å°†è§†é¢‘æµçš„å‚æ•°æ‹·è´åˆ°è§£ç å™¨ä¸Šä¸‹æ–‡
 		avcodec_parameters_to_context(m_pCodecCtx, m_pFormatCtx->streams[m_nStreamIndex]->codecpar);
-		// ¸ù¾İ½âÂëÆ÷µÄ id ÕÒµ½¶ÔÓ¦µÄÊÓÆµ½âÂëÆ÷
+		// æ ¹æ®è§£ç å™¨çš„ id æ‰¾åˆ°å¯¹åº”çš„è§†é¢‘è§£ç å™¨
 		pVideoCodec = avcodec_find_decoder(m_pCodecCtx->codec_id);
 	};
-	// GPU½âÂë
+	// GPUè§£ç 
 	if (m_eDecodeMode == CCodecThread::eDecodeMode::eDecodeMode_GPU) {
 #ifdef Q_OS_WIN
-		// Ñ¡ÔñÊÓÆµÁ÷ÖĞµÄ×î¼Ñ½âÂëÆ÷
+		// é€‰æ‹©è§†é¢‘æµä¸­çš„æœ€ä½³è§£ç å™¨
 		av_find_best_stream(m_pFormatCtx, AVMEDIA_TYPE_VIDEO, -1, -1, &pVideoCodec, 0);
-		// ±éÀú½âÂëÆ÷µÄÓ²¼şÅäÖÃ£¬ÕÒµ½ÓëÖ¸¶¨Ó²¼şÉè±¸ÀàĞÍÆ¥ÅäµÄ½âÂëÆ÷ÅäÖÃ
+		// éå†è§£ç å™¨çš„ç¡¬ä»¶é…ç½®ï¼Œæ‰¾åˆ°ä¸æŒ‡å®šç¡¬ä»¶è®¾å¤‡ç±»å‹åŒ¹é…çš„è§£ç å™¨é…ç½®
 		enum AVHWDeviceType type = AV_HWDEVICE_TYPE_DXVA2;
 		for (int i = 0;; i++) {
 			const AVCodecHWConfig* config = avcodec_get_hw_config(pVideoCodec, i);
@@ -897,14 +900,14 @@ void CVideoThread::run() {
 			}
 			if (config->methods & AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX &&
 				config->device_type == type) {
-				// ÉèÖÃ½âÂëÆ÷µÄÏñËØ¸ñÊ½
+				// è®¾ç½®è§£ç å™¨çš„åƒç´ æ ¼å¼
 				hw_pix_fmt = config->pix_fmt;
 				break;
 			}
 		}
-		// ½«ÊÓÆµÁ÷µÄ²ÎÊı¿½±´µ½½âÂëÉÏÏÂÎÄ
+		// å°†è§†é¢‘æµçš„å‚æ•°æ‹·è´åˆ°è§£ç ä¸Šä¸‹æ–‡
 		avcodec_parameters_to_context(m_pCodecCtx, m_pFormatCtx->streams[m_nStreamIndex]->codecpar);
-		// ÉèÖÃ½âÂëÆ÷µÄ»Øµ÷º¯ÊıÎª get_hw_format
+		// è®¾ç½®è§£ç å™¨çš„å›è°ƒå‡½æ•°ä¸º get_hw_format
 		m_pCodecCtx->get_format = get_hw_format;
 		if (av_hwdevice_ctx_create(&hw_device_ctx, type,
 		                           nullptr, nullptr, 0) < 0) {
@@ -912,141 +915,144 @@ void CVideoThread::run() {
 			return;
 		}
 
-		// ½«Ó²½âÂëÉè±¸ÉÏÏÂÎÄ°ó¶¨µ½½âÂëÆ÷ÉÏÏÂÎÄ
+		// å°†ç¡¬è§£ç è®¾å¤‡ä¸Šä¸‹æ–‡ç»‘å®šåˆ°è§£ç å™¨ä¸Šä¸‹æ–‡
 		m_pCodecCtx->hw_device_ctx = av_buffer_ref(hw_device_ctx);
 #else
-		codec();
+        codec();
 #endif
 	} else {
 		codec();
 	}
-	// ´ò¿ª½âÂëÆ÷ m_pCodecCtx£¬½«½âÂëÆ÷ÓëÆäÉÏÏÂÎÄ¹ØÁª
+	// æ‰“å¼€è§£ç å™¨ m_pCodecCtxï¼Œå°†è§£ç å™¨ä¸å…¶ä¸Šä¸‹æ–‡å…³è”
 	nRet = avcodec_open2(m_pCodecCtx, pVideoCodec, nullptr);
 	if (nRet < 0) {
-		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_strerror(nRet, errBuf, 4096);
 		av_log(nullptr, AV_LOG_ERROR, "Can't open decoder, %s\n", errBuf);
 		avcodec_free_context(&m_pCodecCtx);
 		return;
 	}
 	AVFrame* pFrame = nullptr;
-	// ·ÖÅä pFrame ½á¹¹
+	// åˆ†é… pFrame ç»“æ„
 	pFrame = av_frame_alloc();
-	// Èç¹ûÊÇÍÆÁ÷²¢ÇÒĞèÒªÍÆÁ÷
+	// å¦‚æœæ˜¯æ¨æµå¹¶ä¸”éœ€è¦æ¨æµ
 	if (CCodecThread::OpenMode::OpenMode_Push & m_eMode && m_bPush) {
-		QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairEncodeCtx = qMakePair(m_pCodecCtx, m_pairOutputCtx.second);
-		// ´´½¨±àÂëÏß³Ì£¬ÓÃÓÚ½«½âÂëºóµÄÖ¡ÍÆËÍµ½±àÂëÆ÷²¢´ò°ü³ÉÍÆÁ÷ËùĞèµÄÊı¾İ°ü
+		QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairEncodeCtx;
+		pairEncodeCtx = qMakePair(m_pCodecCtx, m_pairOutputCtx.second);
+		// åˆ›å»ºç¼–ç çº¿ç¨‹ï¼Œç”¨äºå°†è§£ç åçš„å¸§æ¨é€åˆ°ç¼–ç å™¨å¹¶æ‰“åŒ…æˆæ¨æµæ‰€éœ€çš„æ•°æ®åŒ…
 		m_pEncodeThread = new CEncodeVideoThread(m_decodeFrameQueue, m_pushPacketQueue, m_encodeWaitCondition, m_encodeMutex,
 		                                         m_pushWaitCondition, m_pushMutex, m_nEncodeStreamIndex, pairEncodeCtx, m_eDecodeMode);
 		m_pEncodeThread->start();
 	}
-	// Èç¹ûÊÇ²¥·ÅÄ£Ê½
+	// å¦‚æœæ˜¯æ’­æ”¾æ¨¡å¼
 	if (CCodecThread::OpenMode::OpenMode_Play & m_eMode) {
-		// ´´½¨²¥·ÅÏß³Ì£¬¸ÃÏß³ÌÓÃÓÚ½«½âÂëºóµÄÖ¡½øĞĞ²¥·Å»òÏÔÊ¾
+		// åˆ›å»ºæ’­æ”¾çº¿ç¨‹ï¼Œè¯¥çº¿ç¨‹ç”¨äºå°†è§£ç åçš„å¸§è¿›è¡Œæ’­æ”¾æˆ–æ˜¾ç¤º
 		m_pPlayThread = new CVideoPlayThread(m_playFrameQueue, m_playWaitCondition, m_playMutex, m_pCodecCtx,
 		                                     m_pFormatCtx->streams[m_nStreamIndex]->time_base, m_bSendCountDown, this, m_szPlay, m_eDecodeMode);
 		m_pPlayThread->start();
 	}
-	// sw_frame ´æ´¢´Ó GPU µ½ CPU µÄÊı¾İ
+	// sw_frame å­˜å‚¨ä» GPU åˆ° CPU çš„æ•°æ®
 	AVFrame* sw_frame = av_frame_alloc();
-	// tmp_frame ÓÃÓÚÔÚ GPU ½âÂëÊ±ÅĞ¶ÏÊÇ·ñĞèÒª½øĞĞÊı¾İ×ªÒÆ
+	// tmp_frame ç”¨äºåœ¨ GPU è§£ç æ—¶åˆ¤æ–­æ˜¯å¦éœ€è¦è¿›è¡Œæ•°æ®è½¬ç§»
 	AVFrame* tmp_frame = nullptr;
 	while (m_bRunning) {
 		if (m_bPause) {
 			continue;
 		}
-		// ¼ÇÂ¼µ±Ç°Ê±¼ä£¬·½±ãºóĞøÍ³¼Æ½âÂëºÄÊ±
+		// è®°å½•å½“å‰æ—¶é—´ï¼Œæ–¹ä¾¿åç»­ç»Ÿè®¡è§£ç è€—æ—¶
 		QElapsedTimer ti;
 		ti.start();
-		// Ê¹ÓÃ»¥³âËø¶Ô½âÂëÏà¹ØµÄ²Ù×÷½øĞĞ±£»¤
+		// ä½¿ç”¨äº’æ–¥é”å¯¹è§£ç ç›¸å…³çš„æ“ä½œè¿›è¡Œä¿æŠ¤
 		m_decodeMutex.lock();
-		// Èç¹û½âÂë¶ÓÁĞÎª¿Õ£¬»½ĞÑµÈ´ıÌõ¼ş£¬²¢µÈ´ıĞÂµÄÊı¾İ°ü
+		// å¦‚æœè§£ç é˜Ÿåˆ—ä¸ºç©ºï¼Œå”¤é†’ç­‰å¾…æ¡ä»¶ï¼Œå¹¶ç­‰å¾…æ–°çš„æ•°æ®åŒ…
 		if (m_packetQueue.isEmpty()) {
 			m_decodeWaitCondition.wakeOne();
 			m_decodeWaitCondition.wait(&m_decodeMutex);
 		}
-		// ´Ó½âÂë¶ÓÁĞÖĞÈ¡³öÒ»¸öÊı¾İ°ü
+		// ä»è§£ç é˜Ÿåˆ—ä¸­å–å‡ºä¸€ä¸ªæ•°æ®åŒ…
 		AVPacket* packet = m_packetQueue.pop();
 		if (Q_LIKELY(packet)) {
-			// ½«Êı¾İ°üËÍÈë½âÂëÆ÷
+			// å°†æ•°æ®åŒ…é€å…¥è§£ç å™¨
 			nRet = avcodec_send_packet(m_pCodecCtx, packet);
 			if (nRet < 0) {
-				av_strerror(nRet, errBuf, ERRBUFSIZE);
+				av_strerror(nRet, errBuf, 4096);
 				av_log(nullptr, AV_LOG_ERROR, "Can't send video packet, %s\n", errBuf);
 				av_packet_unref(packet);
 				av_packet_free(&packet);
 				m_decodeMutex.unlock();
 				continue;
 			}
-			// Í¨¹ı avcodec_receive_frame Ñ­»·»ñÈ¡½âÂëºóµÄÊÓÆµÖ¡
+			// é€šè¿‡ avcodec_receive_frame å¾ªç¯è·å–è§£ç åçš„è§†é¢‘å¸§
 			while (avcodec_receive_frame(m_pCodecCtx, pFrame) >= 0) {
-				// Èç¹û½âÂëÆ÷Êä³öµÄÖ¡¸ñÊ½ÊÇ GPU ´¦ÀíµÄ·½Ê½£¬Ôò³¢ÊÔ½«Êı¾İ´Ó GPU ×ªÒÆµ½ CPU
+				// å¦‚æœè§£ç å™¨è¾“å‡ºçš„å¸§æ ¼å¼æ˜¯ GPU å¤„ç†çš„æ–¹å¼ï¼Œåˆ™å°è¯•å°†æ•°æ®ä» GPU è½¬ç§»åˆ° CPU
 				if (pFrame->format == hw_pix_fmt) {
 					/* retrieve data from GPU to CPU */
 					if (av_hwframe_transfer_data(sw_frame, pFrame, 0) < 0) {
-						av_strerror(nRet, errBuf, ERRBUFSIZE);
+						av_strerror(nRet, errBuf, 4096);
 						av_log(nullptr, AV_LOG_ERROR, "Error transferring the data to system memory, %s\n", errBuf);
 						av_packet_unref(packet);
 						av_packet_free(&packet);
 						m_decodeMutex.unlock();
 						continue;
 					}
-					// ½« tmp_frame Ö¸Ïò sw_frame
+					// å°† tmp_frame æŒ‡å‘ sw_frame
 					tmp_frame = sw_frame;
 					tmp_frame->pts = pFrame->pts;
 					tmp_frame->pkt_dts = pFrame->pkt_dts;
 				}
-				// ½« tmp_frame Ö¸Ïò sw_frame
+				// å°† tmp_frame æŒ‡å‘ sw_frame
 				else
 					tmp_frame = pFrame;
 
-				// ÅĞ¶ÏÊÇ·ñÍÆÁ÷
+				// åˆ¤æ–­æ˜¯å¦æ¨æµ
 				if (CCodecThread::OpenMode::OpenMode_Push & m_eMode && m_bPush) {
-					// Ê¹ÓÃ»¥³âËø m_encodeMutex ¶ÔÍÆËÍ¶ÓÁĞ½øĞĞ±£»¤
-					// ²¢ÔÚ¶ÓÁĞÂúÊ±µÈ´ıÌõ¼ş
+					// ä½¿ç”¨äº’æ–¥é” m_encodeMutex å¯¹æ¨é€é˜Ÿåˆ—è¿›è¡Œä¿æŠ¤
+					// å¹¶åœ¨é˜Ÿåˆ—æ»¡æ—¶ç­‰å¾…æ¡ä»¶
 					m_encodeMutex.lock();
 					if (m_decodeFrameQueue.isFull()) {
 						m_encodeWaitCondition.wait(&m_encodeMutex);
 					}
-					if (AVFrame* pCopyFrame = av_frame_clone(tmp_frame)) {
+					AVFrame* pCopyFrame = av_frame_clone(tmp_frame);
+					if (pCopyFrame) {
 						m_decodeFrameQueue.push(pCopyFrame);
 						m_encodeWaitCondition.wakeOne();
 					}
 					m_encodeMutex.unlock();
 				}
-				// ÅĞ¶ÏÊÇ·ñ²¥·Å
+				// åˆ¤æ–­æ˜¯å¦æ’­æ”¾
 				if (CCodecThread::OpenMode::OpenMode_Play & m_eMode) {
-					// Ê¹ÓÃ»¥³âËø m_playMutex ¶ÔÍÆËÍ¶ÓÁĞ½øĞĞ±£»¤
-					// ²¢ÔÚ¶ÓÁĞÂúÊ±µÈ´ıÌõ¼ş
+					// ä½¿ç”¨äº’æ–¥é” m_playMutex å¯¹æ¨é€é˜Ÿåˆ—è¿›è¡Œä¿æŠ¤
+					// å¹¶åœ¨é˜Ÿåˆ—æ»¡æ—¶ç­‰å¾…æ¡ä»¶
 					m_playMutex.lock();
 					if (m_playFrameQueue.isFull()) {
 						m_playWaitCondition.wait(&m_playMutex);
 					}
-					if (AVFrame* pCopyFrame = av_frame_clone(tmp_frame)) {
+					AVFrame* pCopyFrame = av_frame_clone(tmp_frame);
+					if (pCopyFrame) {
 						m_playFrameQueue.push(pCopyFrame);
 						m_playWaitCondition.wakeOne();
 					}
 					m_playMutex.unlock();
 				}
 			}
-			// ÊÍ·Å½âÂëÊ¹ÓÃµÄ×ÊÔ´£¬°üÀ¨Êı¾İ°ü£¬½âÂëºóµÄÖ¡
+			// é‡Šæ”¾è§£ç ä½¿ç”¨çš„èµ„æºï¼ŒåŒ…æ‹¬æ•°æ®åŒ…ï¼Œè§£ç åçš„å¸§
 			av_packet_unref(packet);
 			av_packet_free(&packet);
 			av_frame_unref(pFrame);
 		}
-		// ½âËø½âÂë»¥³âËø
+		// è§£é”è§£ç äº’æ–¥é”
 		m_decodeMutex.unlock();
 	}
-	// ÊÍ·ÅÍ¨¹ı av_frame_alloc ·ÖÅäµÄ½âÂëºóµÄÖ¡½á¹¹Ìå pFrame
+	// é‡Šæ”¾é€šè¿‡ av_frame_alloc åˆ†é…çš„è§£ç åçš„å¸§ç»“æ„ä½“ pFrame
 	av_frame_free(&pFrame);
-	// ÊÍ·Å GPU µ½ CPU ×ªÒÆµÄÖ¡½á¹¹Ìå sw_frame
+	// é‡Šæ”¾ GPU åˆ° CPU è½¬ç§»çš„å¸§ç»“æ„ä½“ sw_frame
 	av_frame_free(&sw_frame);
-	// ÅĞ¶ÏÊÇ·ñ´æÔÚÓ²¼şÉè±¸ÉÏÏÂÎÄ
+	// åˆ¤æ–­æ˜¯å¦å­˜åœ¨ç¡¬ä»¶è®¾å¤‡ä¸Šä¸‹æ–‡
 	if (hw_device_ctx) {
 		av_buffer_unref(&hw_device_ctx);
 	}
-	// ¹Ø±Õ½âÂëÆ÷
+	// å…³é—­è§£ç å™¨
 	avcodec_close(m_pCodecCtx);
-	// ÊÍ·Å½âÂëÆ÷
+	// é‡Šæ”¾è§£ç å™¨
 	avcodec_free_context(&m_pCodecCtx);
 }
 
@@ -1126,33 +1132,35 @@ void CAudioThread::clearQueue(CircularQueue<AVFrame*>& queue) {
 }
 
 void CAudioThread::run() {
-	char errBuf[ERRBUFSIZE]{};
-	// ·ÖÅä²¢³õÊ¼»¯ÒôÆµ½âÂëÆ÷
+	int nRet = -1;
+	char errBuf[4096]{};
+	// åˆ†é…å¹¶åˆå§‹åŒ–éŸ³é¢‘è§£ç å™¨
 	m_pCodecCtx = avcodec_alloc_context3(nullptr);
-	// Èç¹ûÊÇÍÆÁ÷²¢ÇÒÎŞÍÆÁ÷Ë÷Òı
+	// å¦‚æœæ˜¯æ¨æµå¹¶ä¸”æ— æ¨æµç´¢å¼•
 	if (m_bPush && m_nStreamIndex < 0) {
-		// Ê¹ÓÃ´«ÈëµÄ½âÂë²ÎÊı
+		// ä½¿ç”¨ä¼ å…¥çš„è§£ç å‚æ•°
 		avcodec_parameters_to_context(m_pCodecCtx, &m_decodePara);
 	} else {
-		// Ê¹ÓÃÁ÷µÄ½âÂë²ÎÊı
+		// ä½¿ç”¨æµçš„è§£ç å‚æ•°
 		avcodec_parameters_to_context(m_pCodecCtx, m_pFormatCtx->streams[m_nStreamIndex]->codecpar);
 	}
 
-	// Í¨¹ı id ÕÒµ½ÒôÆµ½âÂëÆ÷
+	// é€šè¿‡ id æ‰¾åˆ°éŸ³é¢‘è§£ç å™¨
 	const AVCodec* pAudioCodec = avcodec_find_decoder(m_pCodecCtx->codec_id);
-	// ´ò¿ªÒôÆµ½âÂëÆ÷
-	int nRet = avcodec_open2(m_pCodecCtx, pAudioCodec, nullptr);
+	// æ‰“å¼€éŸ³é¢‘è§£ç å™¨
+	nRet = avcodec_open2(m_pCodecCtx, pAudioCodec, nullptr);
 	if (nRet < 0) {
-		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_strerror(nRet, errBuf, 4096);
 		av_log(nullptr, AV_LOG_ERROR, "Can't open audio decoder, %s\n", errBuf);
 		avcodec_free_context(&m_pCodecCtx);
 		return;
 	}
-	// ·¢ËÍÒôÆµ²ÎÊıÍ¨Öª
+	// å‘é€éŸ³é¢‘å‚æ•°é€šçŸ¥
 	emit notifyAudioPara(m_pCodecCtx->sample_rate, m_pCodecCtx->channels);
-	// ÅĞ¶ÏÎªÍÆËÍ»¹ÊÇ²¥·Å£¬²¢ÇÒ´´½¨Æä¶ÔÓ¦µÄÏß³Ì
+	// åˆ¤æ–­ä¸ºæ¨é€è¿˜æ˜¯æ’­æ”¾ï¼Œå¹¶ä¸”åˆ›å»ºå…¶å¯¹åº”çš„çº¿ç¨‹
 	if (CCodecThread::OpenMode::OpenMode_Push & m_eMode && m_bPush) {
-		QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairEncodeCtx = qMakePair(m_pCodecCtx, m_pairOutputCtx.second);
+		QPair<AVCodecContext*, std::tuple<CCalcPtsDur, AVCodecContext*>> pairEncodeCtx;
+		pairEncodeCtx = qMakePair(m_pCodecCtx, m_pairOutputCtx.second);
 		m_pEncodeThread = new CEncodeAudioThread(m_decodeFrameQueue, m_pushPacketQueue, m_encodeWaitCondition, m_encodeMutex,
 		                                         m_pushWaitCondition, m_pushMutex, m_nEncodeStreamIndex, pairEncodeCtx);
 
@@ -1171,33 +1179,34 @@ void CAudioThread::run() {
 			continue;
 		}
 		m_decodeMutex.lock();
-		// Èç¹ûÒôÆµ°ü¶ÓÁĞÎª¿Õ£¬»½ĞÑ²¢µÈ´ı
+		// å¦‚æœéŸ³é¢‘åŒ…é˜Ÿåˆ—ä¸ºç©ºï¼Œå”¤é†’å¹¶ç­‰å¾…
 		if (m_packetQueue.isEmpty()) {
 			m_decodeWaitCondition.wakeOne();
 			m_decodeWaitCondition.wait(&m_decodeMutex);
 		}
-		// ´ÓÒôÆµ°ü¶ÓÁĞÖĞ»ñÈ¡Ò»¸öÒôÆµ°ü
+		// ä»éŸ³é¢‘åŒ…é˜Ÿåˆ—ä¸­è·å–ä¸€ä¸ªéŸ³é¢‘åŒ…
 		AVPacket* packet = m_packetQueue.pop();
 		if (Q_LIKELY(packet)) {
-			// Í¨¹ı avcodec_send_packet ·¢ËÍÒôÆµ°ü½øĞĞ½âÂë
+			// é€šè¿‡ avcodec_send_packet å‘é€éŸ³é¢‘åŒ…è¿›è¡Œè§£ç 
 			nRet = avcodec_send_packet(m_pCodecCtx, packet);
 			if (nRet < 0) {
-				av_strerror(nRet, errBuf, ERRBUFSIZE);
+				av_strerror(nRet, errBuf, 4096);
 				av_log(nullptr, AV_LOG_ERROR, "Can't send audio packet, %s\n", errBuf);
 				av_packet_unref(packet);
 				av_packet_free(&packet);
 				m_decodeMutex.unlock();
 				continue;
 			}
-			// ½ÓÊÕ½âÂëºóµÄÒôÆµÖ¡
+			// æ¥æ”¶è§£ç åçš„éŸ³é¢‘å¸§
 			while (avcodec_receive_frame(m_pCodecCtx, pFrame) >= 0) {
-				// ÅĞ¶ÏÊÇÍÆËÍ»¹ÊÇ²¥·ÅÄ£Ê½£¬²¢½«½âÂëºóµÄÒôÆµÖ¡·ÅÈëÏàÓ¦µÄ¶ÓÁĞµ±ÖĞ
+				// åˆ¤æ–­æ˜¯æ¨é€è¿˜æ˜¯æ’­æ”¾æ¨¡å¼ï¼Œå¹¶å°†è§£ç åçš„éŸ³é¢‘å¸§æ”¾å…¥ç›¸åº”çš„é˜Ÿåˆ—å½“ä¸­
 				if (CCodecThread::OpenMode::OpenMode_Push & m_eMode && m_bPush) {
 					m_encodeMutex.lock();
 					if (m_decodeFrameQueue.isFull()) {
 						m_encodeWaitCondition.wait(&m_encodeMutex);
 					}
-					if (AVFrame* pCopyFrame = av_frame_clone(pFrame)) {
+					AVFrame* pCopyFrame = av_frame_clone(pFrame);
+					if (pCopyFrame) {
 						m_decodeFrameQueue.push(pCopyFrame);
 						m_encodeWaitCondition.wakeOne();
 					}
@@ -1208,25 +1217,26 @@ void CAudioThread::run() {
 					if (m_playFrameQueue.isFull()) {
 						m_playWaitCondition.wait(&m_playMutex);
 					}
-					if (AVFrame* pCopyFrame = av_frame_clone(pFrame)) {
+					AVFrame* pCopyFrame = av_frame_clone(pFrame);
+					if (pCopyFrame) {
 						m_playFrameQueue.push(pCopyFrame);
 						m_playWaitCondition.wakeOne();
 					}
 					m_playMutex.unlock();
 				}
 			}
-			// ÊÍ·ÅÒôÆµ°üºÍÊı¾İÖ¡
+			// é‡Šæ”¾éŸ³é¢‘åŒ…å’Œæ•°æ®å¸§
 			av_packet_unref(packet);
 			av_packet_free(&packet);
 			av_frame_unref(pFrame);
 		}
 		m_decodeMutex.unlock();
 	}
-	// ÊÍ·Å×îºóÒ»¸öÒôÆµÖ¡
+	// é‡Šæ”¾æœ€åä¸€ä¸ªéŸ³é¢‘å¸§
 	av_frame_free(&pFrame);
-	// ¹Ø±ÕÒôÆµ½âÂëÆ÷
+	// å…³é—­éŸ³é¢‘è§£ç å™¨
 	avcodec_close(m_pCodecCtx);
-	// ÊÍ·ÅÒôÆµ½âÂëÆ÷
+	// é‡Šæ”¾éŸ³é¢‘è§£ç å™¨
 	avcodec_free_context(&m_pCodecCtx);
 }
 
@@ -1265,12 +1275,12 @@ void CVideoPlayThread::setCurrentPts(const int64_t nPts) {
 }
 
 void CVideoPlayThread::run() {
-	// ·ÖÅäÓÃÓÚ´æ´¢ RGB ¸ñÊ½Ö¡µÄ AVFrame
+	// åˆ†é…ç”¨äºå­˜å‚¨ RGB æ ¼å¼å¸§çš„ AVFrame
 	AVFrame* pFrameRGB = nullptr;
 	pFrameRGB = av_frame_alloc();
-	// ·ÖÅä RGB Í¼ÏñµÄÊı¾İ»º³åÇø
-	[[maybe_unused]] int iSize = av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, m_szPlay.width(), m_szPlay.height(), AV_PIX_FMT_RGB32, 1);
-	// ´´½¨ÓÃÓÚÍ¼Ïñ×ª»»µÄ SwsContext£¨Í¼Ïñ×ª»»Æ÷
+	// åˆ†é… RGB å›¾åƒçš„æ•°æ®ç¼“å†²åŒº
+	int iSize = av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, m_szPlay.width(), m_szPlay.height(), AV_PIX_FMT_RGB32, 1);
+	// åˆ›å»ºç”¨äºå›¾åƒè½¬æ¢çš„ SwsContextï¼ˆå›¾åƒè½¬æ¢å™¨
 #ifdef Q_OS_LINUX
     enum AVPixelFormat srcFormat = m_pCodecCtx->pix_fmt;
 #else
@@ -1278,56 +1288,55 @@ void CVideoPlayThread::run() {
 #endif
 	struct SwsContext* img_decode_convert_ctx = sws_getContext(m_pCodecCtx->width, m_pCodecCtx->height, srcFormat, m_szPlay.width(),
 	                                                           m_szPlay.height(), AV_PIX_FMT_RGB32, SWS_BICUBIC, nullptr, nullptr, nullptr);
-	// ³õÊ¼»¯²¥·ÅÊ±¼ä´Á
+	// åˆå§‹åŒ–æ’­æ”¾æ—¶é—´æˆ³
 	m_nLastTime = av_gettime();
 	m_nLastPts = 0;
-	// Ñ­»·²¥·ÅÊÓÆµÖ¡
+	// å¾ªç¯æ’­æ”¾è§†é¢‘å¸§
 	while (m_bRunning) {
-		// Èç¹ûÔİÍ££¬Ôò¼ÌĞø½øĞĞÏÂÒ»ÂÖÑ­»·
+		// å¦‚æœæš‚åœï¼Œåˆ™ç»§ç»­è¿›è¡Œä¸‹ä¸€è½®å¾ªç¯
 		if (m_bPause) {
 			continue;
 		}
-		// ÉÏËø£¬·ÃÎÊ²¥·Å¶ÓÁĞ
+		// ä¸Šé”ï¼Œè®¿é—®æ’­æ”¾é˜Ÿåˆ—
 		m_playMutex.lock();
-		// Èç¹û²¥·Å¶ÓÁĞÎª¿Õ£¬»½ĞÑ²¢µÈ´ı
+		// å¦‚æœæ’­æ”¾é˜Ÿåˆ—ä¸ºç©ºï¼Œå”¤é†’å¹¶ç­‰å¾…
 		if (m_playFrameQueue.isEmpty()) {
 			m_playWaitCondition.wakeOne();
 			m_playWaitCondition.wait(&m_playMutex);
 		}
-		// ´Ó²¥·ÅÖ¡¶ÓÁĞÖĞÈ¡³öÒ»Ö¡
+		// ä»æ’­æ”¾å¸§é˜Ÿåˆ—ä¸­å–å‡ºä¸€å¸§
 		AVFrame* pFrame = m_playFrameQueue.pop();
 		if (Q_LIKELY(pFrame)) {
-			// ·¢ËÍµ¹¼ÆÊ±Í¨Öª
+			// å‘é€å€’è®¡æ—¶é€šçŸ¥
 			if (m_bSendCountDown) {
-				int64_t nCurrentTimeStamp = pFrame->pts * static_cast<int64_t>(av_q2d(m_timeBase));
+				int64_t nCurrentTimeStamp = pFrame->pts * av_q2d(m_timeBase);
 				emit m_videoThread->notifyCountDown(nCurrentTimeStamp);
 			}
-			// ¼ÆËãÊ±¼äÆ«ÒÆ
-			auto nTimeStampOffset = static_cast<int64_t>(static_cast<double>(pFrame->pts - m_nLastPts) * AV_TIME_BASE * av_q2d(m_timeBase));
-			// ½«Êı¾İÖ¡×ª»»Îª RGB ¸ñÊ½
-			[[maybe_unused]] int nH = sws_scale(img_decode_convert_ctx, pFrame->data, pFrame->linesize, 0, pFrame->height, pFrameRGB->data,
-			                                    pFrameRGB->linesize);
-			// ´´½¨QImage¶ÔÏó£¬ÓÃÓÚÏÔÊ¾
-			QImage tmpImg(static_cast<const uchar*>(pFrameRGB->data[0]), m_szPlay.width(), m_szPlay.height(), QImage::Format_RGB32);
+			// è®¡ç®—æ—¶é—´åç§»
+			int64_t nTimeStampOffset = (pFrame->pts - m_nLastPts) * AV_TIME_BASE * av_q2d(m_timeBase);
+			// å°†æ•°æ®å¸§è½¬æ¢ä¸º RGB æ ¼å¼
+			int nH = sws_scale(img_decode_convert_ctx, pFrame->data, pFrame->linesize, 0, pFrame->height, pFrameRGB->data, pFrameRGB->linesize);
+			// åˆ›å»ºQImageå¯¹è±¡ï¼Œç”¨äºæ˜¾ç¤º
+			QImage tmpImg((const uchar*)pFrameRGB->data[0], m_szPlay.width(), m_szPlay.height(), QImage::Format_RGB32);
 			tmpImg.detach();
-			// Ê×ÏÈ·¢ËÍ¸ø CLXVideoThread£¬ÔÙÓÉ CLXVideoThread ·¢ËÍ¸ø CLXPlaybackWidget ³ÊÏÖ³öÀ´
+			// é¦–å…ˆå‘é€ç»™ CLXVideoThreadï¼Œå†ç”± CLXVideoThread å‘é€ç»™ CLXPlaybackWidget å‘ˆç°å‡ºæ¥
 			emit m_videoThread->notifyImage(QPixmap::fromImage(tmpImg));
-			// ¼ÆËãÊ±¼äÆ«ÒÆ²¢ĞİÃß
+			// è®¡ç®—æ—¶é—´åç§»å¹¶ä¼‘çœ 
 			int64_t nTimeOffset = nTimeStampOffset - av_gettime() + m_nLastTime;
 			if (nTimeOffset > 0) {
 				av_usleep(nTimeOffset);
 			}
-			// ÊÍ·ÅÖ¡Êı¾İ
+			// é‡Šæ”¾å¸§æ•°æ®
 			av_frame_unref(pFrame);
 			av_frame_free(&pFrame);
 		}
 		m_playMutex.unlock();
 	}
-	// ÊÍ·Å RGB Í¼ÏñÊı¾İ»º³åÇø
+	// é‡Šæ”¾ RGB å›¾åƒæ•°æ®ç¼“å†²åŒº
 	av_freep(&pFrameRGB->data[0]);
-	// ÊÍ·Å RGB Ö¡
+	// é‡Šæ”¾ RGB å¸§
 	av_frame_free(&pFrameRGB);
-	// ÊÍ·ÅÍ¼Ïñ×ª»»Æ÷
+	// é‡Šæ”¾å›¾åƒè½¬æ¢å™¨
 	sws_freeContext(img_decode_convert_ctx);
 }
 
@@ -1368,70 +1377,67 @@ void CAudioPlayThread::setCurrentPts(const int64_t nPts) {
 }
 
 void CAudioPlayThread::run() {
-	//ÒôÆµ×¼±¸¶ÁÈ¡
+	//éŸ³é¢‘å‡†å¤‡è¯»å–
 	int out_channel_nb = 0;
 	out_channel_nb = av_get_channel_layout_nb_channels(m_pCodecCtx->channel_layout);
-	// ·ÖÅäÓÃÓÚ´æ´¢×ª»»ºóÒôÆµÊı¾İµÄ»º³åÇø
-	auto audio_decode_buffer = static_cast<uint8_t*>(av_malloc(m_pCodecCtx->channels * m_pCodecCtx->sample_rate));
-	// ´´½¨ÒôÆµ×ª»»Æ÷ audio_decode_swrCtx
-	struct SwrContext* audio_decode_swrCtx = swr_alloc_set_opts(nullptr, static_cast<int64_t>(m_pCodecCtx->channel_layout), AV_SAMPLE_FMT_S16,
-	                                                            m_pCodecCtx->sample_rate,
-	                                                            static_cast<int64_t>(m_pCodecCtx->channel_layout), m_pCodecCtx->sample_fmt,
-	                                                            m_pCodecCtx->sample_rate, 0,
+	// åˆ†é…ç”¨äºå­˜å‚¨è½¬æ¢åéŸ³é¢‘æ•°æ®çš„ç¼“å†²åŒº
+	uint8_t* audio_decode_buffer = (uint8_t*)av_malloc(m_pCodecCtx->channels * m_pCodecCtx->sample_rate);
+	// åˆ›å»ºéŸ³é¢‘è½¬æ¢å™¨ audio_decode_swrCtx
+	struct SwrContext* audio_decode_swrCtx = swr_alloc_set_opts(nullptr, m_pCodecCtx->channel_layout, AV_SAMPLE_FMT_S16, m_pCodecCtx->sample_rate,
+	                                                            m_pCodecCtx->channel_layout, m_pCodecCtx->sample_fmt, m_pCodecCtx->sample_rate, 0,
 	                                                            nullptr);
-	// ³õÊ¼»¯ÒôÆµ×ª»»Æ÷
+	// åˆå§‹åŒ–éŸ³é¢‘è½¬æ¢å™¨
 	swr_init(audio_decode_swrCtx);
-	// ³õÊ¼»¯²¥·ÅÊ±¼ä´Á
+	// åˆå§‹åŒ–æ’­æ”¾æ—¶é—´æˆ³
 	m_nLastTime = av_gettime();
 	m_nLastPts = 0;
-	// Ñ­»·²¥·ÅÒôÆµÖ¡
+	// å¾ªç¯æ’­æ”¾éŸ³é¢‘å¸§
 	while (m_bRunning) {
 		if (m_bPause) {
 			continue;
 		}
-		// ÉÏËø£¬·ÃÎÊ²¥·ÅÖ¡¶ÓÁĞ
+		// ä¸Šé”ï¼Œè®¿é—®æ’­æ”¾å¸§é˜Ÿåˆ—
 		m_playMutex.lock();
-		// Èç¹û²¥·ÅÖ¡¶ÓÁĞÎª¿Õ£¬»½ĞÑ²¢µÈ´ı
+		// å¦‚æœæ’­æ”¾å¸§é˜Ÿåˆ—ä¸ºç©ºï¼Œå”¤é†’å¹¶ç­‰å¾…
 		if (m_playFrameQueue.isEmpty()) {
 			m_playWaitCondition.wakeOne();
 			m_playWaitCondition.wait(&m_playMutex);
 		}
 		int64_t nTimeStampOffset = 0;
-		// ´Ó²¥·Å¶ÓÁĞÖĞÈ¡³öÒ»Ö¡
+		// ä»æ’­æ”¾é˜Ÿåˆ—ä¸­å–å‡ºä¸€å¸§
 		AVFrame* pFrame = m_playFrameQueue.pop();
-		// Èç¹ûÖ¡´æÔÚ
+		// å¦‚æœå¸§å­˜åœ¨
 		if (Q_LIKELY(pFrame)) {
-			// ·¢ËÍµ¹¼ÆÊ±Í¨Öª
-			auto nCurrentTimeStamp = static_cast<int64_t>(static_cast<double>(pFrame->pts) * av_q2d(m_timeBase));
+			// å‘é€å€’è®¡æ—¶é€šçŸ¥
+			int64_t nCurrentTimeStamp = pFrame->pts * av_q2d(m_timeBase);
 			emit m_audioThread->notifyCountDown(nCurrentTimeStamp);
-			// ¼ÆËãÊ±¼ä´ÁÆ«ÒÆ
-			nTimeStampOffset = static_cast<int64_t>(static_cast<double>(pFrame->pts - m_nLastPts) * AV_TIME_BASE * av_q2d(m_timeBase));
-			// Ö´ĞĞÒôÆµ×ª»»
-			swr_convert(audio_decode_swrCtx, &audio_decode_buffer, m_pCodecCtx->channels * m_pCodecCtx->sample_rate,
-			            const_cast<const uint8_t**>(pFrame->data),
+			// è®¡ç®—æ—¶é—´æˆ³åç§»
+			nTimeStampOffset = (pFrame->pts - m_nLastPts) * AV_TIME_BASE * av_q2d(m_timeBase);
+			// æ‰§è¡ŒéŸ³é¢‘è½¬æ¢
+			swr_convert(audio_decode_swrCtx, &audio_decode_buffer, m_pCodecCtx->channels * m_pCodecCtx->sample_rate, (const uint8_t**)pFrame->data,
 			            pFrame->nb_samples);
-			// ¼ÆËãÊä³öÒôÆµÊı¾İ´óĞ¡
+			// è®¡ç®—è¾“å‡ºéŸ³é¢‘æ•°æ®å¤§å°
 			int out_audio_buffer_size = av_samples_get_buffer_size(nullptr, out_channel_nb, pFrame->nb_samples, AV_SAMPLE_FMT_S16, 1);
-			// ½«ÒôÆµÊı¾İ×ª»»Îª QByteArray ²¢·¢ËÍ¸øÖ÷Ïß³Ì
-			QByteArray data(reinterpret_cast<const char*>(audio_decode_buffer), out_audio_buffer_size);
-			// Ê×ÏÈ·¢ËÍ¸ø CLXCodecThread Ïß³Ì£¬ÔÙÓÉ CLXCodecThread Ïß³Ì·¢ËÍ¸ø CLXPlaybackWidget£¬½«ÒôÆµÊı¾İĞ´Èë m_audioByteBuffer£¬ÔÙĞ´Èë m_pAudioDevice£¬
-			// ÓÉ m_pAudioDevice = m_pAudioOutput->start(); Æô¶¯²¥·Å
+			// å°†éŸ³é¢‘æ•°æ®è½¬æ¢ä¸º QByteArray å¹¶å‘é€ç»™ä¸»çº¿ç¨‹
+			QByteArray data((const char*)audio_decode_buffer, out_audio_buffer_size);
+			// é¦–å…ˆå‘é€ç»™ CLXCodecThread çº¿ç¨‹ï¼Œå†ç”± CLXCodecThread çº¿ç¨‹å‘é€ç»™ CLXPlaybackWidgetï¼Œå°†éŸ³é¢‘æ•°æ®å†™å…¥ m_audioByteBufferï¼Œå†å†™å…¥ m_pAudioDeviceï¼Œ
+			// ç”± m_pAudioDevice = m_pAudioOutput->start(); å¯åŠ¨æ’­æ”¾
 			emit m_audioThread->notifyAudio(data);
-			// ÊÍ·ÅÖ¡Êı¾İ
+			// é‡Šæ”¾å¸§æ•°æ®
 			av_frame_unref(pFrame);
 			av_frame_free(&pFrame);
 		}
-		// ½âËø
+		// è§£é”
 		m_playMutex.unlock();
-		// ¼ÆËãÊ±¼äÆ«ÒÆ²¢ĞİÃß£¬È·±£°´ÕÕÒôÆµµÄÊ±¼ä´Á½øĞĞ²¥·Å
+		// è®¡ç®—æ—¶é—´åç§»å¹¶ä¼‘çœ ï¼Œç¡®ä¿æŒ‰ç…§éŸ³é¢‘çš„æ—¶é—´æˆ³è¿›è¡Œæ’­æ”¾
 		int64_t nTimeOffset = nTimeStampOffset - av_gettime() + m_nLastTime;
 		if (nTimeOffset > 0) {
 			av_usleep(nTimeOffset);
 		}
 	}
-	// ÊÍ·ÅÒôÆµ»º³åÇø
+	// é‡Šæ”¾éŸ³é¢‘ç¼“å†²åŒº
 	av_freep(&audio_decode_buffer);
-	// ÊÍ·ÅÒôÆµ×ª»»Æ÷
+	// é‡Šæ”¾éŸ³é¢‘è½¬æ¢å™¨
 	swr_free(&audio_decode_swrCtx);
 }
 
@@ -1466,21 +1472,21 @@ void CEncodeVideoThread::stop() {
 }
 
 void CEncodeVideoThread::run() {
-	char errBuf[ERRBUFSIZE]{};
-	// »ñÈ¡±àÂëÆ÷
-	if (AVCodecContext* pEncodeCtx = std::get<1>(m_pairEncodeCtx.second)) {
-		int nRet = 0;
-		int frame_index = 0;
-		// ·ÖÅäÓÃÓÚ´æ´¢ YUV420P ¸ñÊ½Ö¡µÄAVFrame
+	char errBuf[4096]{};
+	int nRet = 0;
+	int frame_index = 0;
+	// è·å–ç¼–ç å™¨
+	AVCodecContext* pEncodeCtx = std::get<1>(m_pairEncodeCtx.second);
+	if (pEncodeCtx) {
+		// åˆ†é…ç”¨äºå­˜å‚¨ YUV420P æ ¼å¼å¸§çš„AVFrame
 		AVFrame* pFrameYUV420P;
 		pFrameYUV420P = av_frame_alloc();
 		//av_image_alloc(pFrameYUV420P->data, pFrameYUV420P->linesize, pEncodeCtx->width, pEncodeCtx->height, AV_PIX_FMT_YUV420P, 1);
-		// ·ÖÅäÓÃÓÚÍ¼Ïñ×ª»»µÄ»º³åÇø
-		auto video_convert_buffer = static_cast<uint8_t*>(av_malloc(
-			av_image_get_buffer_size(AV_PIX_FMT_YUV420P, pEncodeCtx->width, pEncodeCtx->height, 1)));
+		// åˆ†é…ç”¨äºå›¾åƒè½¬æ¢çš„ç¼“å†²åŒº
+		uint8_t* video_convert_buffer = (uint8_t*)av_malloc(av_image_get_buffer_size(AV_PIX_FMT_YUV420P, pEncodeCtx->width, pEncodeCtx->height, 1));
 		av_image_fill_arrays(pFrameYUV420P->data, pFrameYUV420P->linesize, video_convert_buffer, AV_PIX_FMT_YUV420P, pEncodeCtx->width,
 		                     pEncodeCtx->height, 1);
-		// ´´½¨Í¼Ïñ×ª»»Æ÷
+		// åˆ›å»ºå›¾åƒè½¬æ¢å™¨
 #ifdef Q_OS_WIN
 		struct SwsContext* img_encode_convert_ctx = sws_getContext(m_pairEncodeCtx.first->width, m_pairEncodeCtx.first->height,
 		                                                           m_eEncodeMode == CCodecThread::eDecodeMode::eDecodeMode_CPU
@@ -1492,97 +1498,98 @@ void CEncodeVideoThread::run() {
                 pEncodeCtx->width, pEncodeCtx->height, AV_PIX_FMT_YUV420P,
                 SWS_ACCURATE_RND | SWS_FAST_BILINEAR, nullptr, nullptr, nullptr);
 #endif
-		// ÉèÖÃAVFrameµÄ¸ñÊ½Îª YUV420P
+		// è®¾ç½®AVFrameçš„æ ¼å¼ä¸º YUV420P
 		pFrameYUV420P->format = AV_PIX_FMT_YUV420P;
 
-		// ·ÖÅäÓÃÓÚ´æ´¢±àÂëºóÊı¾İµÄ AVPacket
+		// åˆ†é…ç”¨äºå­˜å‚¨ç¼–ç åæ•°æ®çš„ AVPacket
 		AVPacket* pPushPacket = av_packet_alloc();
+		av_init_packet(pPushPacket);
 
-		// ÔÚÏß³ÌÔËĞĞÆÚ¼äÑ­»·Ö´ĞĞ
+		// åœ¨çº¿ç¨‹è¿è¡ŒæœŸé—´å¾ªç¯æ‰§è¡Œ
 		while (m_bRunning) {
-			// Èç¹ûÏß³Ì±»ÔİÍ££¬Ôò¼ÌĞøÏÂÒ»ÂÖÑ­»·
+			// å¦‚æœçº¿ç¨‹è¢«æš‚åœï¼Œåˆ™ç»§ç»­ä¸‹ä¸€è½®å¾ªç¯
 			if (m_bPause) {
 				continue;
 			}
-			// ÉÏËø·ÃÎÊ±àÂëÖ¡¶ÓÁĞ
+			// ä¸Šé”è®¿é—®ç¼–ç å¸§é˜Ÿåˆ—
 			m_encodeMutex.lock();
-			// Èç¹û±àÂëÖ¡¶ÓÁĞÎª¿Õ£¬»½ĞÑ²¢µÈ´ı
+			// å¦‚æœç¼–ç å¸§é˜Ÿåˆ—ä¸ºç©ºï¼Œå”¤é†’å¹¶ç­‰å¾…
 			if (m_encodeFrameQueue.isEmpty()) {
 				m_encodeWaitCondition.wakeOne();
 				m_encodeWaitCondition.wait(&m_encodeMutex);
 			}
-			// ´Ó±àÂëÖ¡¶ÓÁĞÖĞÈ¡³öÒ»Ö¡
+			// ä»ç¼–ç å¸§é˜Ÿåˆ—ä¸­å–å‡ºä¸€å¸§
 			AVFrame* pFrame = m_encodeFrameQueue.pop();
-			// Èç¹ûÖ¡ÓĞĞ§
+			// å¦‚æœå¸§æœ‰æ•ˆ
 			if (Q_LIKELY(pFrame)) {
-				// »ñÈ¡¼ÆËã PTS µÄ¶ÔÏó
+				// è·å–è®¡ç®— PTS çš„å¯¹è±¡
 				const CCalcPtsDur& calPts = std::get<0>(m_pairEncodeCtx.second);
-				// Ä¬ÈÏÊ¹ÓÃÔ­Ê¼Ö¡½øĞĞ±àÂë
+				// é»˜è®¤ä½¿ç”¨åŸå§‹å¸§è¿›è¡Œç¼–ç 
 				AVFrame* pEncodeFrame = pFrame;
-				// Èç¹û±àÂëÆ÷²»Ö§³Ö NV12 ¸ñÊ½£¬»òÕßÖ¡µÄ·Ö±æÂÊ²»·ûºÏÒªÇó£¬½øĞĞ¸ñÊ½×ª»»
+				// å¦‚æœç¼–ç å™¨ä¸æ”¯æŒ NV12 æ ¼å¼ï¼Œæˆ–è€…å¸§çš„åˆ†è¾¨ç‡ä¸ç¬¦åˆè¦æ±‚ï¼Œè¿›è¡Œæ ¼å¼è½¬æ¢
 				if (AV_PIX_FMT_YUV420P != m_pairEncodeCtx.first->pix_fmt || m_pairEncodeCtx.first->width != pEncodeCtx->width ||
 					m_pairEncodeCtx.first->height != pEncodeCtx->height) {
-					// ½øĞĞÍ¼Ïñ×ª»»
+					// è¿›è¡Œå›¾åƒè½¬æ¢
 					nRet = sws_scale(img_encode_convert_ctx, pFrame->data, pFrame->linesize, 0, m_pairEncodeCtx.first->height, pFrameYUV420P->data,
 					                 pFrameYUV420P->linesize);
-					// Èç¹û×ª»»Ê§°Ü£¬¼ÇÂ¼¾¯¸æ²¢¼ÌĞøÏÂÒ»ÂÖÑ­»·
+					// å¦‚æœè½¬æ¢å¤±è´¥ï¼Œè®°å½•è­¦å‘Šå¹¶ç»§ç»­ä¸‹ä¸€è½®å¾ªç¯
 					if (nRet < 0) {
-						av_strerror(nRet, errBuf, ERRBUFSIZE);
+						av_strerror(nRet, errBuf, 4096);
 						av_log(nullptr, AV_LOG_WARNING, "video sws_scale yuv420p fail, %s\n", errBuf);
 						av_packet_unref(pPushPacket);
 						m_encodeMutex.unlock();
 						continue;
 					}
-					// ÉèÖÃ YUV420P Ö¡µÄ¿íºÍ¸ß
+					// è®¾ç½® YUV420P å¸§çš„å®½å’Œé«˜
 					pFrameYUV420P->width = pEncodeCtx->width;
 					pFrameYUV420P->height = pEncodeCtx->height;
-					// Ê¹ÓÃ×ª»»ºóµÄÖ¡½øĞĞ±àÂë
+					// ä½¿ç”¨è½¬æ¢åçš„å¸§è¿›è¡Œç¼–ç 
 					pEncodeFrame = av_frame_clone(pFrameYUV420P);
 				}
-				// ÉèÖÃÖ¡µÄ PTS ²¢·¢ËÍ¸ø±àÂëÆ÷
+				// è®¾ç½®å¸§çš„ PTS å¹¶å‘é€ç»™ç¼–ç å™¨
 				pEncodeFrame->pts = calPts.GetVideoPts(frame_index);
 				nRet = avcodec_send_frame(pEncodeCtx, pEncodeFrame);
-				// Èç¹û·¢ËÍÊ§°Ü£¬¼ÇÂ¼¾¯¸æ²¢¼ÌĞøÏÂÒ»ÂÖÑ­»·
+				// å¦‚æœå‘é€å¤±è´¥ï¼Œè®°å½•è­¦å‘Šå¹¶ç»§ç»­ä¸‹ä¸€è½®å¾ªç¯
 				if (nRet < 0) {
-					av_strerror(nRet, errBuf, ERRBUFSIZE);
+					av_strerror(nRet, errBuf, 4096);
 					av_log(nullptr, AV_LOG_WARNING, "video avcodec_send_frame fail, %s\n", errBuf);
 					av_packet_unref(pPushPacket);
 					m_encodeMutex.unlock();
 					continue;
 				}
-				// ½ÓÊÕ±àÂëºóµÄÊı¾İ°ü
+				// æ¥æ”¶ç¼–ç åçš„æ•°æ®åŒ…
 				nRet = avcodec_receive_packet(pEncodeCtx, pPushPacket);
 				if (nRet < 0) {
-					av_strerror(nRet, errBuf, ERRBUFSIZE);
+					av_strerror(nRet, errBuf, 4096);
 					av_log(nullptr, AV_LOG_WARNING, "video avcodec_receive_packet fail, %s\n", errBuf);
 					av_packet_unref(pPushPacket);
 					m_encodeMutex.unlock();
 					continue;
 				}
-				// ÉèÖÃÍÆËÍ°üÁ÷Ë÷Òı
+				// è®¾ç½®æ¨é€åŒ…æµç´¢å¼•
 				pPushPacket->stream_index = m_nEncodeStreamIndex;
 				m_pushMutex.lock();
-				// Èç¹ûÍÆËÍ¶ÓÁĞÒÑÂú£¬µÈ´ı
+				// å¦‚æœæ¨é€é˜Ÿåˆ—å·²æ»¡ï¼Œç­‰å¾…
 				if (m_pushPacketQueue.isFull()) {
 					m_pushWaitCondition.wait(&m_pushMutex);
 				}
-				// ½«Êı¾İ°ü¿ËÂ¡Ò»·İ²¢ÍÆËÍ
+				// å°†æ•°æ®åŒ…å…‹éš†ä¸€ä»½å¹¶æ¨é€
 				m_pushPacketQueue.push(av_packet_clone(pPushPacket));
 				m_pushWaitCondition.wakeOne();
 				m_pushMutex.unlock();
-				// ÊÍ·ÅÔ­Ê¼Ö¡µÄ×ÊÔ´
+				// é‡Šæ”¾åŸå§‹å¸§çš„èµ„æº
 				av_frame_unref(pFrame);
-				// ÊÍ·Å±àÂëÖ¡µÄ×ÊÔ´
+				// é‡Šæ”¾ç¼–ç å¸§çš„èµ„æº
 				av_frame_unref(pEncodeFrame);
 				av_frame_free(&pEncodeFrame);
-				// ÊÍ·ÅÍÆËÍ°üµÄ×ÊÔ´
+				// é‡Šæ”¾æ¨é€åŒ…çš„èµ„æº
 				av_packet_unref(pPushPacket);
-				// Ö¡Ë÷ÒıµİÔö
+				// å¸§ç´¢å¼•é€’å¢
 				frame_index++;
 			}
 			m_encodeMutex.unlock();
 		}
-		// ÊÍ·Å×ÊÔ´
+		// é‡Šæ”¾èµ„æº
 		av_frame_free(&pFrameYUV420P);
 		av_packet_free(&pPushPacket);
 		av_freep(&video_convert_buffer);
@@ -1621,23 +1628,23 @@ void CEncodeAudioThread::stop() {
 }
 
 void CEncodeAudioThread::run() {
-	char errBuf[ERRBUFSIZE]{}; // ´æ´¢´íÎóĞÅÏ¢»º³åÇø
-	// »ñÈ¡±àÂëÆ÷
-	if (AVCodecContext* pEncodeCtx = std::get<1>(m_pairEncodeCtx.second)) {
-		int frame_index = 0;
-		int nRet = 0;
-		// ·ÖÅäÓÃÓÚ´æ´¢±àÂëÇ°ÒôÆµÖ¡µÄ¿Õ¼ä
+	char errBuf[4096]{}; // å­˜å‚¨é”™è¯¯ä¿¡æ¯ç¼“å†²åŒº
+	int nRet = 0;
+	int frame_index = 0;
+	// è·å–ç¼–ç å™¨
+	AVCodecContext* pEncodeCtx = std::get<1>(m_pairEncodeCtx.second);
+	if (pEncodeCtx) {
+		// åˆ†é…ç”¨äºå­˜å‚¨ç¼–ç å‰éŸ³é¢‘å¸§çš„ç©ºé—´
 		AVFrame* pFrameAAC;
 		pFrameAAC = av_frame_alloc();
-		// ´´½¨ÒôÆµÖØ²ÉÑùÉÏÏÂÎÄ²¢ÉèÖÃ²ÎÊı
-		struct SwrContext* audio_encode_swrCtx = swr_alloc_set_opts(nullptr, static_cast<int64_t>(pEncodeCtx->channel_layout), AV_SAMPLE_FMT_FLT,
-		                                                            pEncodeCtx->sample_rate,
-		                                                            static_cast<int64_t>(m_pairEncodeCtx.first->channel_layout),
-		                                                            m_pairEncodeCtx.first->sample_fmt,
+		// åˆ›å»ºéŸ³é¢‘é‡é‡‡æ ·ä¸Šä¸‹æ–‡å¹¶è®¾ç½®å‚æ•°
+		struct SwrContext* audio_encode_swrCtx = swr_alloc_set_opts(nullptr, pEncodeCtx->channel_layout, AV_SAMPLE_FMT_FLT, pEncodeCtx->sample_rate,
+		                                                            m_pairEncodeCtx.first->channel_layout, m_pairEncodeCtx.first->sample_fmt,
 		                                                            m_pairEncodeCtx.first->sample_rate, 0, nullptr);
 		swr_init(audio_encode_swrCtx);
-		// ·ÖÅä²¢³õÊ¼»¯ÍÆËÍÊı¾İ°ü
+		// åˆ†é…å¹¶åˆå§‹åŒ–æ¨é€æ•°æ®åŒ…
 		AVPacket* pPushPacket = av_packet_alloc();
+		av_init_packet(pPushPacket);
 		while (m_bRunning) {
 			if (m_bPause) {
 				continue;
@@ -1647,70 +1654,70 @@ void CEncodeAudioThread::run() {
 				m_encodeWaitCondition.wakeOne();
 				m_encodeWaitCondition.wait(&m_encodeMutex);
 			}
-			// »ñÈ¡ÒôÆµÖ¡¶ÓÁĞÖĞµÄÒ»Ö¡
+			// è·å–éŸ³é¢‘å¸§é˜Ÿåˆ—ä¸­çš„ä¸€å¸§
 			AVFrame* pFrame = m_encodeFrameQueue.pop();
 			if (Q_LIKELY(pFrame)) {
-				// ´¦ÀíÒôÆµÖ¡
+				// å¤„ç†éŸ³é¢‘å¸§
 				const CCalcPtsDur& calPts = std::get<0>(m_pairEncodeCtx.second);
 				AVFrame* pEncodeFrame = pFrame;
-				// Èç¹ûÒôÆµ¸ñÊ½²»ÊÇ AV_SAMPLE_FMT_FLTP£¬Ôò½øĞĞÒôÆµÖØ²ÉÑù
+				// å¦‚æœéŸ³é¢‘æ ¼å¼ä¸æ˜¯ AV_SAMPLE_FMT_FLTPï¼Œåˆ™è¿›è¡ŒéŸ³é¢‘é‡é‡‡æ ·
 				if (AV_SAMPLE_FMT_FLTP != m_pairEncodeCtx.first->sample_fmt) {
-					// ÖØ²ÉÑùÊ§°Ü£¬¼ÇÂ¼´íÎóĞÅÏ¢²¢ÊÍ·Å×ÊÔ´
+					// é‡é‡‡æ ·å¤±è´¥ï¼Œè®°å½•é”™è¯¯ä¿¡æ¯å¹¶é‡Šæ”¾èµ„æº
 					nRet = swr_convert_frame(audio_encode_swrCtx, pFrameAAC, pFrame);
 					if (nRet < 0) {
-						av_strerror(nRet, errBuf, ERRBUFSIZE);
+						av_strerror(nRet, errBuf, 4096);
 						av_log(nullptr, AV_LOG_WARNING, "audio swr_convert fail, %s\n", errBuf);
 						av_packet_unref(pPushPacket);
 						m_encodeMutex.unlock();
 						continue;
 					}
-					// ¿ËÂ¡ÖØ²ÉÑùºóµÄÒôÆµÖ¡
+					// å…‹éš†é‡é‡‡æ ·åçš„éŸ³é¢‘å¸§
 					pEncodeFrame = av_frame_clone(pFrameAAC);
 				}
-				// ÉèÖÃÒôÆµÖ¡µÄÊ±¼ä´Á
+				// è®¾ç½®éŸ³é¢‘å¸§çš„æ—¶é—´æˆ³
 				pEncodeFrame->pts = calPts.GetAudioPts(frame_index, pEncodeCtx->sample_rate);
-				// ½«ÒôÆµÖ¡·¢ËÍ¸ø±àÂëÆ÷
+				// å°†éŸ³é¢‘å¸§å‘é€ç»™ç¼–ç å™¨
 				nRet = avcodec_send_frame(pEncodeCtx, pEncodeFrame);
 				if (nRet < 0) {
-					// ·¢ËÍÊ§°Ü£¬¼ÇÂ¼´íÎóĞÅÏ¢²¢ÊÍ·Å×ÊÔ´
-					av_strerror(nRet, errBuf, ERRBUFSIZE);
+					// å‘é€å¤±è´¥ï¼Œè®°å½•é”™è¯¯ä¿¡æ¯å¹¶é‡Šæ”¾èµ„æº
+					av_strerror(nRet, errBuf, 4096);
 					av_log(nullptr, AV_LOG_WARNING, "audio avcodec_receive_packet fail, %s\n", errBuf);
 					av_packet_unref(pPushPacket);
 					m_encodeMutex.unlock();
 					continue;
 				}
-				// ½ÓÊÕ±àÂëºóµÄÒôÆµÊı¾İ°ü
+				// æ¥æ”¶ç¼–ç åçš„éŸ³é¢‘æ•°æ®åŒ…
 				nRet = avcodec_receive_packet(pEncodeCtx, pPushPacket);
 				if (nRet < 0) {
-					// ½ÓÊÕÊ§°Ü£¬¼ÇÂ¼´íÎóĞÅÏ¢²¢ÊÍ·Å×ÊÔ´
-					av_strerror(nRet, errBuf, ERRBUFSIZE);
+					// æ¥æ”¶å¤±è´¥ï¼Œè®°å½•é”™è¯¯ä¿¡æ¯å¹¶é‡Šæ”¾èµ„æº
+					av_strerror(nRet, errBuf, 4096);
 					av_log(nullptr, AV_LOG_WARNING, "audio avcodec_receive_packet fail, %s\n", errBuf);
 					av_packet_unref(pPushPacket);
 					m_encodeMutex.unlock();
 					continue;
 				}
-				// ÉèÖÃÍÆËÍ°üÁ÷Ë÷Òı
+				// è®¾ç½®æ¨é€åŒ…æµç´¢å¼•
 				pPushPacket->stream_index = m_nEncodeStreamIndex;
 				m_pushMutex.lock();
 				if (m_pushPacketQueue.isFull()) {
-					// ¶ÓÁĞÂú£¬µÈ´ı²¢»½ĞÑ
+					// é˜Ÿåˆ—æ»¡ï¼Œç­‰å¾…å¹¶å”¤é†’
 					m_pushWaitCondition.wait(&m_pushMutex);
 				}
-				// ½«¿ËÂ¡ºóµÄÊı¾İ°üÍÆËÍµ½¶ÓÁĞ
+				// å°†å…‹éš†åçš„æ•°æ®åŒ…æ¨é€åˆ°é˜Ÿåˆ—
 				m_pushPacketQueue.push(av_packet_clone(pPushPacket));
 				m_pushWaitCondition.wakeOne();
 				m_pushMutex.unlock();
-				// ÊÍ·ÅÖ¡ºÍÊı¾İ°ü
+				// é‡Šæ”¾å¸§å’Œæ•°æ®åŒ…
 				av_frame_unref(pFrame);
 				av_frame_unref(pEncodeFrame);
 				av_frame_free(&pEncodeFrame);
 				av_packet_unref(pPushPacket);
-				// µİÔöÖ¡Ë÷Òı
+				// é€’å¢å¸§ç´¢å¼•
 				frame_index++;
 			}
 			m_encodeMutex.unlock();
 		}
-		// ÊÍ·Å×ÊÔ´
+		// é‡Šæ”¾èµ„æº
 		av_frame_free(&pFrameAAC);
 		av_packet_free(&pPushPacket);
 		swr_free(&audio_encode_swrCtx);
@@ -1744,114 +1751,116 @@ void CEncodeMuteAudioThread::stop() {
 }
 
 void CEncodeMuteAudioThread::run() {
-	char errBuf[ERRBUFSIZE]{}; // ´íÎóĞÅÏ¢»º³åÇø
-	// »ñÈ¡ÊäÈë±àÂëÆ÷
-	if (AVCodecContext* pEncodeCtx = std::get<1>(m_pairEncodeCtx)) {
-		int nRet = 0;
-		// ²éÕÒ AAC ±àÂëÆ÷
+	char errBuf[4096]{}; // é”™è¯¯ä¿¡æ¯ç¼“å†²åŒº
+	int nRet = 0;
+	int frame_index = 0;
+	// è·å–è¾“å…¥ç¼–ç å™¨
+	AVCodecContext* pEncodeCtx = std::get<1>(m_pairEncodeCtx);
+	if (pEncodeCtx) {
+		// æŸ¥æ‰¾ AAC ç¼–ç å™¨
 		const AVCodec* out_AudioCodec = avcodec_find_encoder(AV_CODEC_ID_AAC);
-		// ·ÖÅäÊä³öÒôÆµ±àÂëÆ÷ÉÏÏÂÎÄ
+		// åˆ†é…è¾“å‡ºéŸ³é¢‘ç¼–ç å™¨ä¸Šä¸‹æ–‡
 		AVCodecContext* pOutputAudioCodecCtx = avcodec_alloc_context3(nullptr);
-		// ÅäÖÃÊä³öÒôÆµ±àÂëÆ÷ÉÏÏÂÎÄ²ÎÊı
-		pOutputAudioCodecCtx->profile = FF_PROFILE_AAC_LOW;    // ±àÂëĞ­Òé
-		pOutputAudioCodecCtx->codec_type = AVMEDIA_TYPE_AUDIO; // ÒôÆµ±àÂë
+		// é…ç½®è¾“å‡ºéŸ³é¢‘ç¼–ç å™¨ä¸Šä¸‹æ–‡å‚æ•°
+		pOutputAudioCodecCtx->profile = FF_PROFILE_AAC_LOW;    // ç¼–ç åè®®
+		pOutputAudioCodecCtx->codec_type = AVMEDIA_TYPE_AUDIO; // éŸ³é¢‘ç¼–ç 
 		pOutputAudioCodecCtx->sample_fmt = AV_SAMPLE_FMT_FLTP;
 		pOutputAudioCodecCtx->channel_layout = AV_CH_LAYOUT_STEREO;
 		pOutputAudioCodecCtx->channels = 2;
 		pOutputAudioCodecCtx->sample_rate = pEncodeCtx->sample_rate;
 		pOutputAudioCodecCtx->bit_rate = pEncodeCtx->bit_rate;
 
-		// ÉèÖÃ±àÂëÆ÷²ÎÊı
-		AVDictionary* param = nullptr;
+		// è®¾ç½®ç¼–ç å™¨å‚æ•°
+		AVDictionary* param = 0;
 		av_dict_set(&param, "preset", "superfast", 0);
 		av_dict_set(&param, "tune", "zerolatency", 0);
-		// ´ò¿ªÊä³öÒôÆµ±àÂëÆ÷
+		// æ‰“å¼€è¾“å‡ºéŸ³é¢‘ç¼–ç å™¨
 		nRet = avcodec_open2(pOutputAudioCodecCtx, out_AudioCodec, &param);
 		if (nRet < 0) {
-			av_strerror(nRet, errBuf, ERRBUFSIZE);
+			av_strerror(nRet, errBuf, 4096);
 			av_log(nullptr, AV_LOG_ERROR, "Can't open audio encoder\n");
 			avcodec_free_context(&pOutputAudioCodecCtx);
 			return;
 		}
-		// ÅĞ¶ÏÊä³öÒôÆµ±àÂëÆ÷ÉÏÏÂÎÄÊÇ·ñ´æÔÚ
+		// åˆ¤æ–­è¾“å‡ºéŸ³é¢‘ç¼–ç å™¨ä¸Šä¸‹æ–‡æ˜¯å¦å­˜åœ¨
 		if (pOutputAudioCodecCtx) {
-			int frame_index = 0;
-			// ·ÖÅäÊä³öÒôÆµ±àÂëºóµÄ°ü
+			// åˆ†é…è¾“å‡ºéŸ³é¢‘ç¼–ç åçš„åŒ…
 			AVPacket* pEncodePacket = av_packet_alloc();
-			// ·ÖÅäÓÃÓÚ¾²ÒôµÄÒôÆµÖ¡
+			av_init_packet(pEncodePacket);
+			// åˆ†é…ç”¨äºé™éŸ³çš„éŸ³é¢‘å¸§
 			AVFrame* pMuteFrame = av_frame_alloc();
 			pMuteFrame->sample_rate = pEncodeCtx->sample_rate;
 			pMuteFrame->channel_layout = pEncodeCtx->channel_layout;
-			pMuteFrame->nb_samples = 1024; /*Ä¬ÈÏµÄsample´óĞ¡:1024*/
+			pMuteFrame->nb_samples = 1024; /*é»˜è®¤çš„sampleå¤§å°:1024*/
 			pMuteFrame->channels = 2;
 			pMuteFrame->format = pEncodeCtx->sample_fmt;
-			// »ñÈ¡¾²ÒôÒôÆµÖ¡µÄÊı¾İ»º³åÇø
+			// è·å–é™éŸ³éŸ³é¢‘å¸§çš„æ•°æ®ç¼“å†²åŒº
 			nRet = av_frame_get_buffer(pMuteFrame, 0);
 			if (nRet < 0) {
 				av_frame_free(&pMuteFrame);
 				return;
 			}
-			// ½«¾²ÒôÒôÆµÖ¡µÄÊı¾İÉèÖÃÎª¾²Òô
+			// å°†é™éŸ³éŸ³é¢‘å¸§çš„æ•°æ®è®¾ç½®ä¸ºé™éŸ³
 			av_samples_set_silence(pMuteFrame->data, 0, pMuteFrame->nb_samples, pMuteFrame->channels, pEncodeCtx->sample_fmt);
-			// »ñÈ¡¼ÆËãÊ±¼ä´ÁºÍÊ±³¤µÄ¶ÔÏó
+			// è·å–è®¡ç®—æ—¶é—´æˆ³å’Œæ—¶é•¿çš„å¯¹è±¡
 			const CCalcPtsDur& calPts = std::get<0>(m_pairEncodeCtx);
-			// ±àÂë¾²ÒôÒôÆµÖ¡
+			// ç¼–ç é™éŸ³éŸ³é¢‘å¸§
 			while (m_bRunning) {
-				// Èç¹û´¦ÓÚÔİÍ£×´Ì¬£¬¼ÌĞøÏÂÒ»ÂÖÑ­»·
+				// å¦‚æœå¤„äºæš‚åœçŠ¶æ€ï¼Œç»§ç»­ä¸‹ä¸€è½®å¾ªç¯
 				if (m_bPause) {
 					continue;
 				}
-				// Ê¹ÓÃ»¥³âËøËø×¡ÍÆËÍÏß³ÌµÄ»¥³âËø
+				// ä½¿ç”¨äº’æ–¥é”é”ä½æ¨é€çº¿ç¨‹çš„äº’æ–¥é”
 				QMutexLocker locker(&m_syncMutex);
-				// µÈ´ıÍÆËÍÏß³ÌµÄĞÅºÅ£¬¼´µÈ´ıÒôÆµÍÆËÍÏß³ÌÍ¨Öª¿ÉÒÔ¿ªÊ¼±àÂëÏÂÒ»Ö¡¾²ÒôÒôÆµ
+				// ç­‰å¾…æ¨é€çº¿ç¨‹çš„ä¿¡å·ï¼Œå³ç­‰å¾…éŸ³é¢‘æ¨é€çº¿ç¨‹é€šçŸ¥å¯ä»¥å¼€å§‹ç¼–ç ä¸‹ä¸€å¸§é™éŸ³éŸ³é¢‘
 				m_syncWaitCondition.wait(&m_syncMutex);
-				// Ñ­»·±àÂëÁ½Ö¡¾²ÒôÒôÆµ
+				// å¾ªç¯ç¼–ç ä¸¤å¸§é™éŸ³éŸ³é¢‘
 				for (int i = 0; i < 2; ++i) {
-					// ¿ËÂ¡¾²ÒôÒôÆµÖ¡
+					// å…‹éš†é™éŸ³éŸ³é¢‘å¸§
 					AVFrame* pCopyFrame = av_frame_clone(pMuteFrame);
-					// ÉèÖÃ¾²ÒôÒôÆµÊ±¼ä´Á
+					// è®¾ç½®é™éŸ³éŸ³é¢‘æ—¶é—´æˆ³
 					pCopyFrame->pts = calPts.GetAudioPts(frame_index, pEncodeCtx->sample_rate);
-					// ·¢ËÍ¾²ÒôÒôÆµÖ¡½øĞĞ±àÂë
+					// å‘é€é™éŸ³éŸ³é¢‘å¸§è¿›è¡Œç¼–ç 
 					nRet = avcodec_send_frame(pOutputAudioCodecCtx, pCopyFrame);
 					if (nRet < 0) {
-						av_strerror(nRet, errBuf, ERRBUFSIZE);
+						av_strerror(nRet, errBuf, 4096);
 						av_log(nullptr, AV_LOG_WARNING, "audio avcodec_receive_packet fail, %s\n", errBuf);
 						av_frame_unref(pCopyFrame);
 						av_packet_unref(pEncodePacket);
 						continue;
 					}
-					// ½ÓÊÕ±àÂëºóµÄÒôÆµ°ü
+					// æ¥æ”¶ç¼–ç åçš„éŸ³é¢‘åŒ…
 					nRet = avcodec_receive_packet(pOutputAudioCodecCtx, pEncodePacket);
 					if (nRet < 0) {
-						av_strerror(nRet, errBuf, ERRBUFSIZE);
+						av_strerror(nRet, errBuf, 4096);
 						av_log(nullptr, AV_LOG_WARNING, "audio avcodec_receive_packet fail, %s\n", errBuf);
 						av_frame_unref(pCopyFrame);
 						av_packet_unref(pEncodePacket);
 						continue;
 					}
-					// ÉèÖÃÒôÆµ°üµÄÁ÷Ë÷Òı
+					// è®¾ç½®éŸ³é¢‘åŒ…çš„æµç´¢å¼•
 					pEncodePacket->stream_index = m_nEncodeStreamIndex;
-					// Ê¹ÓÃ»¥³âËøËø×¡±àÂë¶ÓÁĞµÄ»¥³âËø
+					// ä½¿ç”¨äº’æ–¥é”é”ä½ç¼–ç é˜Ÿåˆ—çš„äº’æ–¥é”
 					m_encodeMutex.lock();
-					// Èç¹û¶ÓÁĞÒÑÂú£¬µÈ´ı±àÂë¶ÓÁĞµÄĞÅºÅ
+					// å¦‚æœé˜Ÿåˆ—å·²æ»¡ï¼Œç­‰å¾…ç¼–ç é˜Ÿåˆ—çš„ä¿¡å·
 					if (m_encodePacketQueue.isFull()) {
 						m_encodeWaitCondition.wait(&m_encodeMutex);
 					}
-					// ½«±àÂëºóµÄÒôÆµ°üÍÆÈë±àÂë¶ÓÁĞ
+					// å°†ç¼–ç åçš„éŸ³é¢‘åŒ…æ¨å…¥ç¼–ç é˜Ÿåˆ—
 					m_encodePacketQueue.push(av_packet_clone(pEncodePacket));
-					// Í¨Öª±àÂëÏß³Ì¿ÉÒÔ¿ªÊ¼±àÂëÏÂÒ»Ö¡
+					// é€šçŸ¥ç¼–ç çº¿ç¨‹å¯ä»¥å¼€å§‹ç¼–ç ä¸‹ä¸€å¸§
 					m_encodeWaitCondition.wakeOne();
-					// ÊÍ·Å¾²ÒôÒôÆµÖ¡µÄ×ÊÔ´
+					// é‡Šæ”¾é™éŸ³éŸ³é¢‘å¸§çš„èµ„æº
 					av_frame_unref(pCopyFrame);
 					av_frame_free(&pCopyFrame);
-					// ÊÍ·Å±àÂëºóµÄÒôÆµ°ü×ÊÔ´
+					// é‡Šæ”¾ç¼–ç åçš„éŸ³é¢‘åŒ…èµ„æº
 					av_packet_unref(pEncodePacket);
-					// µİÔöÖ¡Ë÷Òı
+					// é€’å¢å¸§ç´¢å¼•
 					frame_index++;
 					m_encodeMutex.unlock();
 				}
 			}
-			// ÊÍ·Å×ÊÔ´
+			// é‡Šæ”¾èµ„æº
 			av_frame_free(&pMuteFrame);
 			av_packet_free(&pEncodePacket);
 			avcodec_close(pOutputAudioCodecCtx);
@@ -1896,7 +1905,7 @@ void CPushThread::run() {
 	//QFile file(qApp->applicationDirPath() + "PTS_logger.txt");
 	//file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Truncate);
 	//QTextStream textStream(&file);
-	char errBuf[ERRBUFSIZE]{};
+	char errBuf[4096]{};
 	while (m_bRunning) {
 		if (m_bPause) {
 			continue;
@@ -1908,18 +1917,18 @@ void CPushThread::run() {
 				m_videoWaitCondition.wakeOne();
 				m_videoWaitCondition.wait(&m_videoMutex);
 			}
-			// È¡³öÊÓÆµ¶ÓÁĞÍ·µÄÊı¾İ°ü
+			// å–å‡ºè§†é¢‘é˜Ÿåˆ—å¤´çš„æ•°æ®åŒ…
 			AVPacket* pVideoPacket = m_videoPacketQueue.pop();
 			if (pVideoPacket && pVideoPacket->pts >= 0) {
 				//QString curTime = "\nvideo:\t" + QDateTime::fromMSecsSinceEpoch(QDateTime::currentMSecsSinceEpoch()).toString("yyyy-MM-dd hh:mm:ss.zzz");
 				//textStream << curTime << "\n\r";
 				//OutputDebugStringA(curTime.toStdString().c_str());
 				//qDebug() << "video" << pVideoPacket->pts;
-				nVideoPts = static_cast<int>(pVideoPacket->pts);
-				// ½«ÊÓÆµÊı¾İ°üĞ´ÈëÊä³öÉÏÏÂÎÄ
+				nVideoPts = pVideoPacket->pts;
+				// å°†è§†é¢‘æ•°æ®åŒ…å†™å…¥è¾“å‡ºä¸Šä¸‹æ–‡
 				int nRet = av_interleaved_write_frame(m_pOutputFormatCtx, pVideoPacket);
 				if (nRet < 0) {
-					av_strerror(nRet, errBuf, ERRBUFSIZE);
+					av_strerror(nRet, errBuf, 4096);
 					av_log(nullptr, AV_LOG_WARNING, "video push error, %s\n", errBuf);
 					av_packet_unref(pVideoPacket);
 					av_packet_free(&pVideoPacket);
@@ -1935,21 +1944,21 @@ void CPushThread::run() {
 				m_audioWaitCondition.wakeOne();
 				m_audioWaitCondition.wait(&m_audioMutex);
 			}
-			// ´ÓÒôÆµ¶ÓÁĞÍ·²¿È¡³öÊı¾İ°ü
+			// ä»éŸ³é¢‘é˜Ÿåˆ—å¤´éƒ¨å–å‡ºæ•°æ®åŒ…
 			AVPacket* pAudioPacket = m_audioPacketQueue.pop();
 			while (pAudioPacket && pAudioPacket->buf && pAudioPacket->pts >= 0 && (!m_bPushVideo || pAudioPacket->pts <= nVideoPts)) {
 				//QString curTime = "\naudio:\t" + QDateTime::fromMSecsSinceEpoch(QDateTime::currentMSecsSinceEpoch()).toString("yyyy-MM-dd hh:mm:ss.zzz");
 				//textStream << curTime << "\n\r";
 				//OutputDebugStringA(curTime.toStdString().c_str());
 				//qDebug() << "audio" << pAudioPacket->pts;
-				// Ğ´ÈëÊä³öÉÏÏÂÎÄ
+				// å†™å…¥è¾“å‡ºä¸Šä¸‹æ–‡
 				int nRet = av_interleaved_write_frame(m_pOutputFormatCtx, pAudioPacket);
 				if (nRet < 0) {
-					av_strerror(nRet, errBuf, ERRBUFSIZE);
+					av_strerror(nRet, errBuf, 4096);
 					av_log(nullptr, AV_LOG_WARNING, "audio push error, %s\n", errBuf);
 					av_packet_unref(pAudioPacket);
 					av_packet_free(&pAudioPacket);
-					// Èç¹û¶ÓÁĞ·Ç¿Õ£¬ÇÒÏÂÒ»¸öÒôÆµÊı¾İ°üµÄ PTS Ğ¡ÓÚÊÓÆµÊı¾İ°üµÄ PTS£¬¼ÌĞø¶ÁÈ¡ÏÂÒ»¸ö
+					// å¦‚æœé˜Ÿåˆ—éç©ºï¼Œä¸”ä¸‹ä¸€ä¸ªéŸ³é¢‘æ•°æ®åŒ…çš„ PTS å°äºè§†é¢‘æ•°æ®åŒ…çš„ PTSï¼Œç»§ç»­è¯»å–ä¸‹ä¸€ä¸ª
 					if (!m_audioPacketQueue.isEmpty()) {
 						if (m_audioPacketQueue.first()->pts < nVideoPts) {
 							pAudioPacket = m_audioPacketQueue.pop();
@@ -1959,7 +1968,7 @@ void CPushThread::run() {
 				}
 				av_packet_unref(pAudioPacket);
 				av_packet_free(&pAudioPacket);
-				// Èç¹û¶ÓÁĞ·Ç¿Õ£¬ÇÒÏÂÒ»¸öÒôÆµÊı¾İ°üµÄ PTS Ğ¡ÓÚÊÓÆµÊı¾İ°üµÄ PTS£¬¼ÌĞø¶ÁÈ¡ÏÂÒ»¸ö
+				// å¦‚æœé˜Ÿåˆ—éç©ºï¼Œä¸”ä¸‹ä¸€ä¸ªéŸ³é¢‘æ•°æ®åŒ…çš„ PTS å°äºè§†é¢‘æ•°æ®åŒ…çš„ PTSï¼Œç»§ç»­è¯»å–ä¸‹ä¸€ä¸ª
 				if (!m_audioPacketQueue.isEmpty()) {
 					if (!m_bPushVideo || m_audioPacketQueue.first()->pts < nVideoPts) {
 						pAudioPacket = m_audioPacketQueue.pop();
@@ -1994,37 +2003,37 @@ QPair<AVCodecParameters*, AVCodecParameters*> CRecvThread::getContext() const {
 
 void CRecvThread::run() {
 	int nRet = -1;
-	char errBuf[ERRBUFSIZE]{};
-	//²éÕÒÊÓÆµÁ÷ºÍÒôÆµÁ÷
-	// ±£´æÃ½ÌåÎÄ¼şµÄ¸ñÊ½Ïà¹ØĞÅÏ¢
+	char errBuf[4096]{};
+	//æŸ¥æ‰¾è§†é¢‘æµå’ŒéŸ³é¢‘æµ
+	// ä¿å­˜åª’ä½“æ–‡ä»¶çš„æ ¼å¼ç›¸å…³ä¿¡æ¯
 	nRet = avformat_open_input(&m_pFormatCtx, m_strPath.toStdString().c_str(), nullptr, nullptr);
-	// ´ò¿ªÊ§°Ü£¬¼ÇÂ¼´íÎóĞÅÏ¢£¬·µ»Ø
+	// æ‰“å¼€å¤±è´¥ï¼Œè®°å½•é”™è¯¯ä¿¡æ¯ï¼Œè¿”å›
 	if (nRet < 0) {
-		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_strerror(nRet, errBuf, 4096);
 		av_log(nullptr, AV_LOG_ERROR, "Can't open input, %s\n", errBuf);
 		return;
 	}
-	// ²éÕÒÃ½ÌåÎÄ¼şÖĞµÄÁ÷ĞÅÏ¢
+	// æŸ¥æ‰¾åª’ä½“æ–‡ä»¶ä¸­çš„æµä¿¡æ¯
 	nRet = avformat_find_stream_info(m_pFormatCtx, nullptr);
-	// ´ò¿ªÊ§°Ü£¬¼ÇÂ¼´íÎóĞÅÏ¢£¬¹Ø±ÕÊäÈëÎÄ¼ş£¬·µ»Ø
+	// æ‰“å¼€å¤±è´¥ï¼Œè®°å½•é”™è¯¯ä¿¡æ¯ï¼Œå…³é—­è¾“å…¥æ–‡ä»¶ï¼Œè¿”å›
 	if (nRet < 0) {
-		av_strerror(nRet, errBuf, ERRBUFSIZE);
+		av_strerror(nRet, errBuf, 4096);
 		av_log(nullptr, AV_LOG_ERROR, "Can't find stream info, %s\n", errBuf);
 		avformat_close_input(&m_pFormatCtx);
 		return;
 	}
-	// ´òÓ¡¸ñÊ½ĞÅÏ¢
+	// æ‰“å°æ ¼å¼ä¿¡æ¯
 	av_dump_format(m_pFormatCtx, 0, m_strPath.toStdString().c_str(), 0);
-	// ²éÕÒÊÓÆµºÍÒôÆµÁ÷Ë÷Òı
+	// æŸ¥æ‰¾è§†é¢‘å’ŒéŸ³é¢‘æµç´¢å¼•
 	int nVideoIndex = av_find_best_stream(m_pFormatCtx, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
 	int nAudioIndex = av_find_best_stream(m_pFormatCtx, AVMEDIA_TYPE_AUDIO, -1, -1, nullptr, 0);
-	// ´ò¿ªÊ§°Ü£¬¼ÇÂ¼´íÎóĞÅÏ¢£¬¹Ø±ÕÊäÈëÎÄ¼ş£¬·µ»Ø
+	// æ‰“å¼€å¤±è´¥ï¼Œè®°å½•é”™è¯¯ä¿¡æ¯ï¼Œå…³é—­è¾“å…¥æ–‡ä»¶ï¼Œè¿”å›
 	if (-1 == nVideoIndex && -1 == nAudioIndex) {
 		av_log(nullptr, AV_LOG_ERROR, "Can't find video and audio stream, %s\n");
 		avformat_close_input(&m_pFormatCtx);
 		return;
 	}
-	// ¸´ÖÆÊÓÆµºÍÒôÆµ±à½âÂë²ÎÊı
+	// å¤åˆ¶è§†é¢‘å’ŒéŸ³é¢‘ç¼–è§£ç å‚æ•°
 	if (AVERROR_STREAM_NOT_FOUND != nVideoIndex) {
 		m_pVideoCodecPara = avcodec_parameters_alloc();
 		avcodec_parameters_copy(m_pVideoCodecPara, m_pFormatCtx->streams[nVideoIndex]->codecpar);

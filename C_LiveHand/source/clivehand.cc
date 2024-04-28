@@ -1,4 +1,4 @@
-#include "clivehand.h"
+ï»¿#include "clivehand.h"
 
 #include <QSettings>
 #include <QDomElement>
@@ -41,7 +41,7 @@ void CLiveHand::readConfig() const {
 					while (!clipEle.isNull()) {
 						QString strPath = clipEle.attribute("path");
 						appendItem(strPath);
-						clipEle = clipEle.nextSiblingElement("Clop");
+						clipEle = clipEle.nextSiblingElement("Clip");
 					}
 				}
 				if (auto item = m_pFillerPieceTable->item(nCurPending, 0)) {
@@ -170,7 +170,7 @@ void CLiveHand::createCtrl() {
 	m_pActEnglish->setCheckable(true);
 
 	m_menuLanguage->addActions(m_pActGroupLanguage->actions());
-	m_pActGroupLanguage->setExclusive(true); // ÉèÖÃ»¥³â
+	m_pActGroupLanguage->setExclusive(true); // è®¾ç½®äº’æ–¥
 
 	m_pLbHostStatus = new QLabel(tr("Status Unknown"), m_pCentralWidget);
 	m_pLbFillerPieceStatus = new QLabel(tr("Status_Enable"), m_pCentralWidget);
@@ -363,12 +363,12 @@ void CLiveHand::onActEnglishClicked() {
 
 void CLiveHand::onSystemTrayIconActivated(const QSystemTrayIcon::ActivationReason reason) {
 	if (reason == QSystemTrayIcon::DoubleClick) {
-		// Ë«»÷ÏÔÊ¾
-		this->isMinimized() ? this->showNormal() : this->showMinimized(); // ½«Ö÷´°¿ÚÏÔÊ¾³öÀ´
-		this->activateWindow();                                           // ¼¤»îÖ÷´°¿Ú£¬È·±£ËüÎ»ÓÚ¶¥²¿
+		// åŒå‡»æ˜¾ç¤º
+		this->isMinimized() ? this->showNormal() : this->showMinimized(); // å°†ä¸»çª—å£æ˜¾ç¤ºå‡ºæ¥
+		this->activateWindow();                                           // æ¿€æ´»ä¸»çª—å£ï¼Œç¡®ä¿å®ƒä½äºé¡¶éƒ¨
 	} else if (reason == QSystemTrayIcon::Context) {
-		// ÓÒ¼ü²Ëµ¥
-		// µ÷ÕûÏÔÊ¾Ê¼ÖÕÔÚÊó±êÖ®ÉÏ
+		// å³é”®èœå•
+		// è°ƒæ•´æ˜¾ç¤ºå§‹ç»ˆåœ¨é¼ æ ‡ä¹‹ä¸Š
 		const auto pos = QCursor::pos();
 		const int offsetY = m_ptrayMenu->sizeHint().height();
 		m_ptrayMenu->move(pos.x(), pos.y() - offsetY);
@@ -394,9 +394,9 @@ void CLiveHand::onBtnFillerPieceSwitchClicked(bool bChecked) const {
 }
 
 void CLiveHand::onBtnStopFillerPieceClicked() {
-	// ¼ì²éÈ«¾ÖÏß³Ì³ØÖĞÊÇ·ñÓĞ»î¶¯µÄÏß³Ì
+	// æ£€æŸ¥å…¨å±€çº¿ç¨‹æ± ä¸­æ˜¯å¦æœ‰æ´»åŠ¨çš„çº¿ç¨‹
 	if (QThreadPool::globalInstance()->activeThreadCount() > 0) {
-		// Èç¹ûÓĞ½ÓÊÕÏß³ÌÔÚÆäÖĞ£¬Í£Ö¹²¢É¾³ıÕâĞ©Ïß³Ì
+		// å¦‚æœæœ‰æ¥æ”¶çº¿ç¨‹åœ¨å…¶ä¸­ï¼Œåœæ­¢å¹¶åˆ é™¤è¿™äº›çº¿ç¨‹
 		if (m_recvThreadPool.activeThreadCount() > 0) {
 			for (auto i : m_recvThreadPool.children()) {
 				if (auto* thread = qobject_cast<CRecvThread*>(i)) {
@@ -405,21 +405,21 @@ void CLiveHand::onBtnStopFillerPieceClicked() {
 				}
 			}
 		}
-		// Í£Ö¹Ö÷Ïß³ÌÖĞµÄ±à½âÂëÏß³Ì
+		// åœæ­¢ä¸»çº¿ç¨‹ä¸­çš„ç¼–è§£ç çº¿ç¨‹
 		for (auto i : children()) {
 			if (auto* thread = qobject_cast<CCodecThread*>(i)) {
 				thread->stop();
 			}
 		}
-		// Çå¿Õµ±Ç°µæÆ¬¼ô¼­µÄÂ·¾¶£¬½ûÓÃÍ£Ö¹°´Å¥
+		// æ¸…ç©ºå½“å‰å«ç‰‡å‰ªè¾‘çš„è·¯å¾„ï¼Œç¦ç”¨åœæ­¢æŒ‰é’®
 		m_strCurrentFillerPieceClip = "";
 		m_pBtnFillerPieceStop->setEnabled(false);
-		// ±éÀúµæÆ¬±í£¬ÕÒµ½ÕıÔÚ´¦ÀíµÄµæÆ¬£¬½«Æä±³¾°ÑÕÉ«ÉèÖÃÎªÍ¸Ã÷
+		// éå†å«ç‰‡è¡¨ï¼Œæ‰¾åˆ°æ­£åœ¨å¤„ç†çš„å«ç‰‡ï¼Œå°†å…¶èƒŒæ™¯é¢œè‰²è®¾ç½®ä¸ºé€æ˜
 		for (int i = 0; i < m_pFillerPieceTable->rowCount(); i++) {
 			if (QTableWidgetItem* item = m_pFillerPieceTable->item(i, 0)) {
 				if (item->data(Qt::UserRole + 2).value<bool>()) {
 					item->setBackground(Qt::transparent);
-					// »Ö¸´ÏàÁÚÏîµÄ±³¾°É«
+					// æ¢å¤ç›¸é‚»é¡¹çš„èƒŒæ™¯è‰²
 					if (QTableWidgetItem* siblingItem = m_pFillerPieceTable->item(item->row(), 1)) {
 						siblingItem->setBackground(Qt::transparent);
 					}
@@ -431,9 +431,9 @@ void CLiveHand::onBtnStopFillerPieceClicked() {
 				}
 			}
 		}
-		// µÈ´ıÈ«¾ÖÏß³Ì³ØÖĞµÄÈÎÎñÍê³É
+		// ç­‰å¾…å…¨å±€çº¿ç¨‹æ± ä¸­çš„ä»»åŠ¡å®Œæˆ
 		QThreadPool::globalInstance()->waitForDone();
-		// Í¨Öª²¥·Å×é¼ş£¬±à½âÂëÍê³É
+		// é€šçŸ¥æ’­æ”¾ç»„ä»¶ï¼Œç¼–è§£ç å®Œæˆ
 		m_pPlayWidget->onCodecFinished();
 	}
 }
@@ -443,10 +443,10 @@ void CLiveHand::onBtnAppendFillerPieceClicked() {
 	                                             QString("%1(*.avi *.wmv *.mov *.mp4 *.mpg *.ts);;%2(*.bmp *.png *.jpg *.jpeg)")
 	                                             .arg(tr("Video"), tr("Image")));
 	for (const auto& i : files) {
-		// ¼ÓÈëµ½µæÆ¬ÁĞ±í
+		// åŠ å…¥åˆ°å«ç‰‡åˆ—è¡¨
 		appendItem(i);
 	}
-	// ±£´æµ½ÅäÖÃÎÄ¼ş
+	// ä¿å­˜åˆ°é…ç½®æ–‡ä»¶
 	saveConfig();
 }
 
@@ -486,7 +486,7 @@ bool CLiveHand::onItemDoubleClicked(const QTableWidgetItem* item) {
 			clipItem->setData(Qt::UserRole + 2, true);
 			bRet = true;
 		} else {
-			// ÎÄ¼ş²»´æÔÚ
+			// æ–‡ä»¶ä¸å­˜åœ¨
 			if (QMessageBox::AcceptRole == UVMessageBox::CUVMessageBox::warning(this, tr("IDS_WARNING"), tr("IDS_FILE_NOT_EXISTS"),
 			                                                                    QMessageBox::Ok | QMessageBox::Cancel)) {
 				removeItem(item);
@@ -499,9 +499,71 @@ bool CLiveHand::onItemDoubleClicked(const QTableWidgetItem* item) {
 }
 
 void CLiveHand::onItemSelectChanged() {
+	int nSelected = m_pFillerPieceTable->selectedItems().size();
+	if (nSelected == 3) {
+		int nRow = m_pFillerPieceTable->currentRow();
+		if (QTableWidgetItem* item = m_pFillerPieceTable->item(nRow, 0)) {
+			QString strClip = item->text();
+			m_pPlayWidget->enablePlay(true);
+		}
+	} else {
+		m_pPlayWidget->enablePlay(false);
+	}
 }
 
 void CLiveHand::onTableCustomContextMenuRequested(const QPoint& pos) {
+	if (QTableWidgetItem* item = m_pFillerPieceTable->itemAt(pos)) {
+		QMenu menu(m_pFillerPieceTable);
+		menu.addAction(tr("IDS_CURRENT_CLIP"), [&]() {
+			QString strFile = item->text();
+			if (QFile::exists(strFile)) {
+				for (int i = 0; i < m_pFillerPieceTable->rowCount(); i++) {
+					if (QTableWidgetItem* item = m_pFillerPieceTable->item(i, 0)) {
+						if (item->data(Qt::UserRole + 3).value<bool>()) {
+							item->setData(Qt::UserRole + 3, false);
+							m_pFillerPieceTable->item(item->row(), 2)->setIcon(QIcon());
+							m_pFillerPieceTable->item(item->row(), 2)->setToolTip("");
+							break;
+						}
+					}
+				}
+				item->setData(Qt::UserRole + 3, true);
+				m_pFillerPieceTable->item(item->row(), 2)->setIcon(QIcon(":/resource/blue_dot.png"));
+				m_pFillerPieceTable->item(item->row(), 2)->setToolTip(tr("IDS_PENDING_FILLERPIECE"));
+			} else {
+				if (QMessageBox::AcceptRole == UVMessageBox::CUVMessageBox::warning(this, tr("IDS_WARNING"), tr("IDS_FILE_NOT_EXISTS"),
+				                                                                    QMessageBox::Ok | QMessageBox::Cancel)) {
+					removeItem(item);
+					saveConfig();
+				}
+			}
+		});
+		if (!m_pFillerPieceTable->item(item->row(), 0)->data(Qt::UserRole + 1).value<bool>()) {
+			menu.addAction(tr("IDS_DELETE"), [&]() {
+				if (QMessageBox::AcceptRole == UVMessageBox::CUVMessageBox::warning(this, tr("IDS_WARNING"), tr("IDS_DELETE_CONFIRM"),
+				                                                                    QMessageBox::Ok | QMessageBox::Cancel)) {
+					bool bContain = false;
+					for (int i = m_pFillerPieceTable->rowCount() - 1; i >= 0; --i) {
+						QTableWidgetItem* pTmpItem = m_pFillerPieceTable->item(i, 0);
+						if (pTmpItem->isSelected() && !pTmpItem->data(Qt::UserRole + 1).value<bool>()) {
+							if (m_strCurrentFillerPieceClip != pTmpItem->text()) {
+								removeItem(pTmpItem);
+							} else {
+								bContain = true;
+							}
+						}
+					}
+					saveConfig();
+					if (bContain) {
+						UVMessageBox::CUVMessageBox::warning(this, tr("IDS_WARNING"),
+						                                     QString("%1%2").arg(m_strCurrentFillerPieceClip).arg(tr("IDS_CANNOT_DELETE")),
+						                                     QMessageBox::Ok);
+					}
+				}
+			});
+		}
+		menu.exec(m_pFillerPieceTable->mapToGlobal(pos));
+	}
 }
 
 void CLiveHand::onBtnCloseClicked() {
@@ -517,21 +579,175 @@ void CLiveHand::onBtnCloseClicked() {
 }
 
 void CLiveHand::onSysTrayCloseTriggered() {
+	if (QMessageBox::AcceptRole == UVMessageBox::CUVMessageBox::warning(this, tr("IDS_INFORMATION"),
+	                                                                    tr("IDS_CLOSE_COMFIRM"), QMessageBox::Ok | QMessageBox::Cancel)) {
+		qApp->quit();
+	}
 }
 
 void CLiveHand::onBtnMinClicked() {
+	showMinimized();
 }
 
 void CLiveHand::onSystemTrayActived(QSystemTrayIcon::ActivationReason reason) {
+	if (QSystemTrayIcon::Trigger == reason) {
+		showNormal();
+	}
 }
 
 void CLiveHand::onNotifyPlayStateChanged(CPlayBackWidget::State eState) {
+	switch (eState) {
+		case CPlayBackWidget::Play: {
+		}
+		break;
+		case CPlayBackWidget::Pause:
+			break;
+		case CPlayBackWidget::Stop: {
+			m_strCurrentFillerPieceClip = "";
+			m_pBtnFillerPieceStop->setEnabled(false);
+			for (int i = 0; i < m_pFillerPieceTable->rowCount(); i++) {
+				if (QTableWidgetItem* item = m_pFillerPieceTable->item(i, 0)) {
+					if (item->data(Qt::UserRole + 2).value<bool>()) {
+						item->setBackground(Qt::transparent);
+						if (QTableWidgetItem* siblingItem = m_pFillerPieceTable->item(item->row(), 1)) {
+							siblingItem->setBackground(Qt::transparent);
+						}
+						if (QTableWidgetItem* siblingItem = m_pFillerPieceTable->item(item->row(), 2)) {
+							siblingItem->setBackground(Qt::transparent);
+						}
+						item->setData(Qt::UserRole + 2, false);
+						break;
+					}
+				}
+			}
+		}
+		break;
+		default:
+			break;
+	}
 }
 
 void CLiveHand::onNotifyPlayClicked(bool bChecked) {
+	if (bChecked) {
+		int nRow = m_pFillerPieceTable->currentRow();
+		if (nRow >= 0) {
+			if (QTableWidgetItem* item = m_pFillerPieceTable->item(nRow, 0)) {
+				if (!onItemDoubleClicked(item)) {
+					m_pPlayWidget->setPlayState(false);
+				}
+			}
+		} else {
+			UVMessageBox::CUVMessageBox::warning(this, tr("IDS_WARNING"), tr("IDS_FILE_NOT_SELECT"), QMessageBox::Ok);
+		}
+	}
 }
 
 void CLiveHand::onNotifyProcessState(eProcessState state, QVector<CPushStreamInfo> vecStreamInfo) {
+	switch (state) {
+		case eProcessState_Unknown:
+			m_pLbHostStatus->setText(tr("IDS_STATUS_UNKNOWN"));
+			break;
+		case eProcessState_Online: {
+			m_pLbHostStatus->setText(tr("IDS_STATUS_ONLINE"));
+			m_pLbFillerPieceStatus->setText(tr("IDS_STATUS_ENABLE"));
+			if (m_recvThreadPool.activeThreadCount() > 0) {
+				for (auto i : m_recvThreadPool.children()) {
+					if (CRecvThread* thread = qobject_cast<CRecvThread*>(i)) {
+						thread->stop();
+						delete thread;
+					}
+				}
+			}
+			if (QThreadPool::globalInstance()->activeThreadCount() > 0) {
+				for (auto i : children()) {
+					if (CCodecThread* thread = qobject_cast<CCodecThread*>(i)) {
+						thread->stop();
+					}
+				}
+				QThreadPool::globalInstance()->waitForDone();
+				m_pPlayWidget->onCodecFinished();
+			}
+		}
+		break;
+		case eProcessState_Online_Push: {
+			m_pLbHostStatus->setText(tr("IDS_STATUS_ONLINE_PUSH"));
+			if (m_pBtnFillerPieceSwitch->isChecked() && !vecStreamInfo.isEmpty()) {
+				for (auto i : vecStreamInfo) {
+					bool bExist = false;
+					for (auto j : m_recvThreadPool.children()) {
+						if (CRecvThread* recvThread = qobject_cast<CRecvThread*>(j)) {
+							if (recvThread->path() == i.strAddress) {
+								bExist = true;
+								break;
+							}
+						}
+					}
+					if (!bExist) {
+						CRecvThread* recvThread = new CRecvThread(i.strAddress, &m_recvThreadPool);
+						m_recvThreadPool.start(recvThread);
+					}
+				}
+			}
+		}
+		break;
+		case eProcessState_Offline: {
+			m_pLbHostStatus->setText(tr("IDS_STATUS_OFFLINE"));
+			for (int i = 0; i < m_pFillerPieceTable->rowCount(); i++) {
+				if (QTableWidgetItem* item = m_pFillerPieceTable->item(i, 0)) {
+					if (item->data(Qt::UserRole + 3).value<bool>()) {
+						QString strClip = item->text();
+						if (QThreadPool::globalInstance()->activeThreadCount() <= 0 && m_pBtnFillerPieceSwitch->isChecked() && !vecStreamInfo.
+							isEmpty() && QFile::exists(strClip)) {
+							if (CPlayBackWidget::State::Stop != m_pPlayWidget->state()) {
+								m_pPlayWidget->stop();
+							}
+							bool bJustOne = false;
+							for (auto& i : vecStreamInfo) {
+								for (auto j : m_recvThreadPool.children()) {
+									if (CRecvThread* recvThread = qobject_cast<CRecvThread*>(j)) {
+										if (recvThread->path() == i.strAddress) {
+											CCodecThread* pushThread = new CCodecThread(
+												strClip, i, m_pPlayWidget->playSize(), recvThread->getContext(), static_cast<CCodecThread::OpenMode>
+												(CCodecThread::OpenMode::OpenMode_Play | CCodecThread::OpenMode::OpenMode_Push), true,
+												!QImage(strClip).isNull(), this);
+											if (!bJustOne) {
+												connect(pushThread, &CCodecThread::notifyImage, m_pPlayWidget, &CPlayBackWidget::onNotifyImage);
+												connect(pushThread, &CCodecThread::notifyClipInfo, m_pPlayWidget,
+												        &CPlayBackWidget::onNotifyClipInfo);
+												connect(pushThread, &CCodecThread::notifyCountDown, m_pPlayWidget,
+												        &CPlayBackWidget::onNotifyCountDown);
+												connect(pushThread, &CCodecThread::started, this, [&] { m_pBtnFillerPieceStop->setEnabled(true); });
+												connect(pushThread, &CCodecThread::finished, m_pPlayWidget, &CPlayBackWidget::onCodecFinished);
+												bJustOne = true;
+											}
+											QThreadPool::globalInstance()->start(pushThread);
+											delete recvThread;
+											break;
+										}
+									}
+								}
+							}
+							m_pLbFillerPieceStatus->setText(tr("IDS_STATUS_ENABLE_REPLACE"));
+							m_strCurrentFillerPieceClip = strClip;
+							m_pBtnFillerPieceStop->setEnabled(true);
+							item->setBackgroundColor(QColor(200, 150, 30));
+							if (QTableWidgetItem* siblingItem = m_pFillerPieceTable->item(item->row(), 1)) {
+								siblingItem->setBackgroundColor(QColor(200, 150, 30));
+							}
+							if (QTableWidgetItem* siblingItem = m_pFillerPieceTable->item(item->row(), 2)) {
+								siblingItem->setBackgroundColor(QColor(200, 150, 30));
+							}
+							item->setData(Qt::UserRole + 2, true);
+						}
+						break;
+					}
+				}
+			}
+		}
+		break;
+		default:
+			break;
+	}
 }
 
 // CQuitDialog

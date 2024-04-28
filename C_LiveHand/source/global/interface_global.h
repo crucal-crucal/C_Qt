@@ -1,41 +1,41 @@
-#pragma once
+ï»¿#pragma once
 
 /*
- * @breif ÖØÆô´úÂë
+ * @breif é‡å¯ä»£ç 
  */
 constexpr static int RETCODE_RESTART = 773;
 /*
- * @breif ´°¿ÚÓïÑÔ
- * ´æ´¢ÓÚÅäÖÃÎÄ¼şÖĞ
+ * @breif çª—å£è¯­è¨€
+ * å­˜å‚¨äºé…ç½®æ–‡ä»¶ä¸­
  */
 enum class WINDOWLANAGUAGE {
 	Chinese,
 	English
 };
 /*
- * @breif Ö÷ÌâÑùÊ½
+ * @breif ä¸»é¢˜æ ·å¼
  */
 enum class WINDOWTHEMESTYLE {
 	DARK,
 	LIGHT
 };
 /*
- * @breif ÅäÖÃÎÄ¼ş
+ * @breif é…ç½®æ–‡ä»¶
  */
 static const std::string configDir = "config";
 static const std::string configName = configDir + "/config.ini";
 /*
- * @breif ÈÕÖ¾ÎÄ¼şÃû³Æ
+ * @breif æ—¥å¿—æ–‡ä»¶åç§°
  */
 constexpr static auto logDir = "log";
 constexpr static auto logFileName = "user.log";
 /*
- * @breif QMenuBar¿í¶È
+ * @breif QMenuBarå®½åº¦
  */
 constexpr static auto ENGLISH_MENUBAR_WIDTH = 120;
 constexpr static auto CHINESE_MENUBAR_WIDTH = 90;
 /*
- * @breif ´°¿ÚÏÔÊ¾ÓïÑÔ, Ä¬ÈÏÖĞÎÄ; ½ø¶ÈÌõÑùÊ½, Ä¬ÈÏ¿é×´; Ö÷ÌâÑùÊ½, Ä¬ÈÏÁÁÉ«
+ * @breif çª—å£æ˜¾ç¤ºè¯­è¨€, é»˜è®¤ä¸­æ–‡; è¿›åº¦æ¡æ ·å¼, é»˜è®¤å—çŠ¶; ä¸»é¢˜æ ·å¼, é»˜è®¤äº®è‰²
  */
 static auto windowLanguage = WINDOWLANAGUAGE::Chinese;
 static auto windowThemeStyle = WINDOWTHEMESTYLE::LIGHT;
@@ -44,7 +44,7 @@ static auto windowThemeStyle = WINDOWTHEMESTYLE::LIGHT;
  */
 constexpr static auto AppID = "crucal_app_id";
 /*
- * @breif ×ÊÔ´ÎÄ¼şÂ·¾¶
+ * @breif èµ„æºæ–‡ä»¶è·¯å¾„
  */
 constexpr static auto qssFilePathLight = "/style/C_testffmpeg_light.qss";
 constexpr static auto qssFilePathDark = "/style/C_testffmpeg_dark.qss";
@@ -52,11 +52,11 @@ constexpr static auto rccFilePath = "/resource/C_testffmpeg.rcc";
 constexpr static auto translationFilePath_CN = "/translation/C_testffmpeg_cn.qm";
 constexpr static auto translationFilePath_EN = "/translation/C_testffmpeg_en.qm";
 /*
- * @breif ³ÌĞòÆô¶¯´«µİ²ÎÊı
+ * @breif ç¨‹åºå¯åŠ¨ä¼ é€’å‚æ•°
  */
 static std::string App_arg_dir{};
 /*
- * @breif ÅäÖÃÎÄ¼şÄÚÈİ
+ * @breif é…ç½®æ–‡ä»¶å†…å®¹
  */
 struct ConfigData {
  WINDOWLANAGUAGE lanaguage{};

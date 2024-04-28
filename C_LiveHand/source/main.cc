@@ -1,4 +1,4 @@
-#include <filesystem>
+ï»¿#include <filesystem>
 #include <fstream>
 #include <QApplication>
 #include <QProcess>
@@ -22,8 +22,8 @@ QSharedMemory g_sharedMemory{ nullptr };
 SplashScreen* g_splashScreen{ nullptr };
 
 /*
- * @note: ¼ÓÔØ¡¢Ğ¶ÔØ×ÊÔ´ÎÄ¼ş£¬¼ÓÔØÑùÊ½±í£¬¼ÓÔØ¡¢Ğ¶ÔØ·­ÒëÎÄ¼ş
- * @return: ·µ»Øtrue±íÊ¾¼ÓÔØ³É¹¦£¬·µ»Øfalse±íÊ¾¼ÓÔØÊ§°Ü
+ * @note: åŠ è½½ã€å¸è½½èµ„æºæ–‡ä»¶ï¼ŒåŠ è½½æ ·å¼è¡¨ï¼ŒåŠ è½½ã€å¸è½½ç¿»è¯‘æ–‡ä»¶
+ * @return: è¿”å›trueè¡¨ç¤ºåŠ è½½æˆåŠŸï¼Œè¿”å›falseè¡¨ç¤ºåŠ è½½å¤±è´¥
  */
 bool loadResources(const QString& strPath);
 bool unloadResources(const QString& strPath);
@@ -31,7 +31,7 @@ bool loadStyle(QApplication& app, const QString& filePath);
 bool loadTranslations(QApplication& app, const QString& filePath);
 void unLoadTranslations();
 /*
- * @note: ÅäÖÃÎÄ¼ş²Ù×÷
+ * @note: é…ç½®æ–‡ä»¶æ“ä½œ
  */
 void initializeConfigFile();
 ConfigData readConf();
@@ -39,24 +39,24 @@ void readConf(std::vector<std::string>& lines);
 void writeConf(const std::vector<std::string>& lines);
 void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWTHEMESTYLE newThemeStyle);
 /*
- * @note: Linux Í¨¹ıÏµÍ³ÃüÁîÅĞ¶ÏÊÇ·ñÎªÉîÉ«Ö÷Ìâ
+ * @note: Linux é€šè¿‡ç³»ç»Ÿå‘½ä»¤åˆ¤æ–­æ˜¯å¦ä¸ºæ·±è‰²ä¸»é¢˜
  */
 #ifdef Q_OS_LINUX
-std::string exec(const char* cmd); // Ö´ĞĞÏµÍ³ÃüÁî²¢·µ»ØÆäÊä³ö
-bool isDarkTheme();                // ¼ì²éµ±Ç°Ö÷ÌâÄ£Ê½
+std::string exec(const char* cmd); // æ‰§è¡Œç³»ç»Ÿå‘½ä»¤å¹¶è¿”å›å…¶è¾“å‡º
+bool isDarkTheme();                // æ£€æŸ¥å½“å‰ä¸»é¢˜æ¨¡å¼
 #endif
 /*
- * @note: µÚÒ»´ÎÆô¶¯³ÌĞò£¬Ä¬ÈÏÊ¹ÓÃÏµÍ³ÑÕÉ«
+ * @note: ç¬¬ä¸€æ¬¡å¯åŠ¨ç¨‹åºï¼Œé»˜è®¤ä½¿ç”¨ç³»ç»Ÿé¢œè‰²
  */
 void checkWindowThemeStyle();
 /*
- * @note: ³ÌĞòÎ¨Ò»ĞÔ¼ì²é, ÀûÓÃ¹²ÏíÄÚ´æ»úÖÆ£¬ÉèÖÃÒ»¸öÎ¨Ò»µÄKey£¬³¢ÊÔ½«¹²ÏíÄÚ´æ¸½¼Óµ½µ±Ç°½ø³Ì£¬Èç¹û¹²ÏíÄÚ´æ´æÔÚ£¬ÔòËµÃ÷³ÌĞòÒÑ´æÔÚ£¬·µ»Øfalse£»Èç¹û¹²ÏíÄÚ´æ²»´æÔÚ£¬ÔòËµÃ÷³ÌĞòÎ¨Ò»£¬·µ»Øtrue
- * @param: ¹²ÏíÄÚ´æ
- * @return: ·µ»Øtrue±íÊ¾³ÌĞòÎ¨Ò», ·µ»Øfalse±íÊ¾³ÌĞòÒÑ´æÔÚ
+ * @note: ç¨‹åºå”¯ä¸€æ€§æ£€æŸ¥, åˆ©ç”¨å…±äº«å†…å­˜æœºåˆ¶ï¼Œè®¾ç½®ä¸€ä¸ªå”¯ä¸€çš„Keyï¼Œå°è¯•å°†å…±äº«å†…å­˜é™„åŠ åˆ°å½“å‰è¿›ç¨‹ï¼Œå¦‚æœå…±äº«å†…å­˜å­˜åœ¨ï¼Œåˆ™è¯´æ˜ç¨‹åºå·²å­˜åœ¨ï¼Œè¿”å›falseï¼›å¦‚æœå…±äº«å†…å­˜ä¸å­˜åœ¨ï¼Œåˆ™è¯´æ˜ç¨‹åºå”¯ä¸€ï¼Œè¿”å›true
+ * @param: å…±äº«å†…å­˜
+ * @return: è¿”å›trueè¡¨ç¤ºç¨‹åºå”¯ä¸€, è¿”å›falseè¡¨ç¤ºç¨‹åºå·²å­˜åœ¨
  */
 inline bool checkSingleInstance(QSharedMemory& shared_memory);
 /*
- * @note: ´´½¨³ÌĞòÆô¶¯Ò³Ãæ
+ * @note: åˆ›å»ºç¨‹åºå¯åŠ¨é¡µé¢
  */
 SplashScreen* createSplashScreen(const QPixmap& pixmap, int w = 400, int h = 400, Qt::AspectRatioMode mode = Qt::IgnoreAspectRatio);
 
@@ -68,39 +68,39 @@ int main(int argc, char* argv[]) {
 	QApplication app(argc, argv);
 	checkWindowThemeStyle();
 	const QFileInfo appFile(QApplication::applicationFilePath());
-	// ½«Â·¾¶ÇĞ»»µ½ÉÏ¼¶Ä¿Â¼
+	// å°†è·¯å¾„åˆ‡æ¢åˆ°ä¸Šçº§ç›®å½•
 	const QString appParPath = appFile.absolutePath();
 	const QString strStyle_light = appParPath + QString::fromLatin1(qssFilePathLight);
 	const QString strStyle_dark = appParPath + QString::fromLatin1(qssFilePathDark);
 	const QString strRcc = appParPath + QString::fromLatin1(rccFilePath);
 	const QString strtrans_cn = appParPath + QString::fromLatin1(translationFilePath_CN);
 	const QString strtrans_en = appParPath + QString::fromLatin1(translationFilePath_EN);
-	// ¼ÓÔØrcc
+	// åŠ è½½rcc
 	Logger::instance().logInfo(loadResources(strRcc) ? "Load Resource Success!" : "Load Resource Failed!");
 	g_splashScreen = createSplashScreen(QPixmap(":/icon/start.png"));
-	// ³õÊ¼»¯ÅäÖÃÎÄ¼ş
+	// åˆå§‹åŒ–é…ç½®æ–‡ä»¶
 	initializeConfigFile();
 	auto [language, themeStyle] = readConf();
 	windowLanguage = language;
 	windowThemeStyle = themeStyle;
-	// ¼ÓÔØÑùÊ½±í
+	// åŠ è½½æ ·å¼è¡¨
 	QString str = (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark;
 	g_splashScreen->showMessage(loadStyle(app, str) ? "Load Style Success!" : "Load Style Failed!", Qt::AlignBottom);
 	QThread::sleep(1);
-	// ¼ÓÔØ·­Òë & ¼ÓÔØLabel´óĞ¡
+	// åŠ è½½ç¿»è¯‘ & åŠ è½½Labelå¤§å°
 	str = (windowLanguage == WINDOWLANAGUAGE::Chinese) ? strtrans_cn : strtrans_en;
 	g_splashScreen->showMessage(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!", Qt::AlignBottom);
 	QThread::sleep(1);
 
 	CLiveHand w;
-	// ÊÍ·Å×ÊÔ´
+	// é‡Šæ”¾èµ„æº
 	QObject::connect(&w, &CLiveHand::destroyed, [&]() {
 		unloadResources(strRcc);
 		unLoadTranslations();
 		g_sharedMemory.detach();
 		g_splashScreen->deleteLater();
 	});
-	// ³ÌĞòÎ¨Ò»ĞÔ¼ì²é
+	// ç¨‹åºå”¯ä¸€æ€§æ£€æŸ¥
 	if (!checkSingleInstance(g_sharedMemory)) {
 		w.getTrayIcon()->showMessage(QObject::tr("InfoMation"),
 									 QObject::tr("The program already exists, do not start again!"),
@@ -112,7 +112,7 @@ int main(int argc, char* argv[]) {
 	w.show();
 	const int nRet = QApplication::exec();
 	if (nRet == RETCODE_RESTART) {
-		// ´«Èë qApp->applicationFilePath()£¬Æô¶¯×Ô¼º
+		// ä¼ å…¥ qApp->applicationFilePath()ï¼Œå¯åŠ¨è‡ªå·±
 		QProcess::startDetached(qApp->applicationFilePath(), QStringList());
 		return 0;
 	}
@@ -172,7 +172,7 @@ void unLoadTranslations() {
 void initializeConfigFile() {
 	const int language = static_cast<int>(windowLanguage);
 	const int themeStyle = static_cast<int>(windowThemeStyle);
-	// ¼ì²éconfigÎÄ¼ş¼ĞÊÇ·ñ´æÔÚ£¬Èç¹û²»´æÔÚÔò´´½¨
+	// æ£€æŸ¥configæ–‡ä»¶å¤¹æ˜¯å¦å­˜åœ¨ï¼Œå¦‚æœä¸å­˜åœ¨åˆ™åˆ›å»º
 	if (!std::filesystem::exists(configDir)) {
 		if (!std::filesystem::create_directory(configDir)) {
 			Logger::instance().logError("Error: Unable to create directory " + QString::fromStdString(configDir));
@@ -183,9 +183,9 @@ void initializeConfigFile() {
 	}
 
 	if (const std::ifstream configFile(configName); !configFile) {
-		// ÅäÖÃÎÄ¼ş²»´æÔÚ
+		// é…ç½®æ–‡ä»¶ä¸å­˜åœ¨
 		if (std::ofstream outputFile(configName); outputFile) {
-			// Ğ´ÈëÓïÑÔºÍ½ø¶ÈÌõÑùÊ½
+			// å†™å…¥è¯­è¨€å’Œè¿›åº¦æ¡æ ·å¼
 			outputFile << "Language: " << language << "\n";
 			outputFile << "ThemeStyle: " << themeStyle;
 			outputFile.close();
@@ -201,19 +201,19 @@ void initializeConfigFile() {
 }
 
 ConfigData readConf() {
-	auto language = windowLanguage;     // Ä¬ÈÏÓïÑÔ
-	auto themeStyle = windowThemeStyle; // Ä¬ÈÏÖ÷ÌâÑùÊ½
+	auto language = windowLanguage;     // é»˜è®¤è¯­è¨€
+	auto themeStyle = windowThemeStyle; // é»˜è®¤ä¸»é¢˜æ ·å¼
 
 	if (std::ifstream configFile(configName); configFile) {
 		std::string line;
 		while (std::getline(configFile, line)) {
 			if (line.find("Language:") != std::string::npos) {
-				// ¶ÁÈ¡ÏÔÊ¾ÓïÑÔ
+				// è¯»å–æ˜¾ç¤ºè¯­è¨€
 				std::string languageValue = line.substr(line.find(':') + 1);
 				int languageint = std::stoi(languageValue);
 				language = static_cast<WINDOWLANAGUAGE>(languageint);
 			} else if (line.find("ThemeStyle:") != std::string::npos) {
-				// Ö÷ÌâÑùÊ½
+				// ä¸»é¢˜æ ·å¼
 				std::string themeValue = line.substr(line.find(':') + 1);
 				int themeInt = std::stoi(themeValue);
 				themeStyle = static_cast<WINDOWTHEMESTYLE>(themeInt);
@@ -224,7 +224,7 @@ ConfigData readConf() {
 }
 
 void readConf(std::vector<std::string>& lines) {
-	// ¶ÁÈ¡Õû¸öÎÄ¼şÄÚÈİµ½ÄÚ´æÖĞ
+	// è¯»å–æ•´ä¸ªæ–‡ä»¶å†…å®¹åˆ°å†…å­˜ä¸­
 	if (std::ifstream configFile(configName); configFile) {
 		std::string line;
 		while (std::getline(configFile, line)) {
@@ -253,19 +253,19 @@ void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWTHEMESTYLE newThemeStyle) {
 
 	std::vector<std::string> lines;
 	readConf(lines);
-	// ²éÕÒ²¢ĞŞ¸Ä "Language:", "ProgressbarStyle:", "ThemeStyle:"
+	// æŸ¥æ‰¾å¹¶ä¿®æ”¹ "Language:", "ProgressbarStyle:", "ThemeStyle:"
 	bool Found = true;
 	for (std::string& line : lines) {
 		if (line.find("Language:") != std::string::npos) {
-			line = "Language: " + std::to_string(newLanguageInt); // ĞŞ¸ÄÓïÑÔÖµ
+			line = "Language: " + std::to_string(newLanguageInt); // ä¿®æ”¹è¯­è¨€å€¼
 		} else if (line.find("ThemeStyle:") != std::string::npos) {
-			line = "ThemeStyle: " + std::to_string(newThemeStyleInt); // ĞŞ¸ÄÖ÷ÌâÖµ
+			line = "ThemeStyle: " + std::to_string(newThemeStyleInt); // ä¿®æ”¹ä¸»é¢˜å€¼
 		} else {
 			Found = false;
 			break;
 		}
 	}
-	// Èç¹ûÕÒµ½ÁËÓïÑÔºÍÑùÊ½ĞĞ£¬ÔòĞ´»Øµ½ÎÄ¼şÖĞ
+	// å¦‚æœæ‰¾åˆ°äº†è¯­è¨€å’Œæ ·å¼è¡Œï¼Œåˆ™å†™å›åˆ°æ–‡ä»¶ä¸­
 	if (Found) {
 		writeConf(lines);
 	} else {
@@ -282,7 +282,7 @@ std::string exec(const char* cmd) {
 		throw std::runtime_error("popen() failed!");
 	}
 	while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-		// ½«bufferÖĞµÄÄÚÈİ´ÓÎ²²¿²åÈëµ½resultÖĞ
+		// å°†bufferä¸­çš„å†…å®¹ä»å°¾éƒ¨æ’å…¥åˆ°resultä¸­
 		std::copy(buffer.begin(), buffer.end(), std::back_inserter(result));
 	}
 	return result;

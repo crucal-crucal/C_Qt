@@ -1,4 +1,4 @@
-set(TARGET_NAME CLiveHand)
+﻿set(TARGET_NAME CLiveHand)
 
 include_directories(.)
 include_directories(${ffmpeg_headers_DIR})
@@ -6,12 +6,14 @@ include_directories(${ffmpeg_headers_DIR})
 set(header
         clivehand.h
         CPlayBackWidget.h
+        CObserverProcess.h
 )
 
 set(source
         main.cc
         clivehand.cc
         CPlayBackWidget.cc
+        CObserverProcess.cc
 )
 
 link_directories(${ffmpeg_libs_DIR})

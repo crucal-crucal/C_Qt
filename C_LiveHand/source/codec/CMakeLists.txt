@@ -5,7 +5,7 @@ if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif ()
 
-# 添加头文件路径到编译器的头文件搜索路径下，多个路径以空格分隔
+# 娣诲姞澶存枃浠惰矾寰勫埌缂栬瘧鍣ㄧ殑澶存枃浠舵悳绱㈣矾寰勪笅锛屽涓矾寰勪互绌烘牸鍒嗛殧
 include_directories(${ffmpeg_headers_DIR})
 include_directories(..)
 aux_source_directory(. SRC_LIST)

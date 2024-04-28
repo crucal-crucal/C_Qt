@@ -1,4 +1,4 @@
-#include "cplaybackwidget.h"
+ï»¿#include "cplaybackwidget.h"
 
 #include "codec/codec_p.h"
 #include "global/cdefine.h"
@@ -25,21 +25,23 @@ void CPlayBackWidget::openFile(const QString& strFile, const bool bLoop, const b
 
 	//rtmp://172.16.160.34/live/hpx  udp://233.233.233.233:5200
 	// m_pCodecThread->open(strFile, m_pLbDisplay->size(), CPushStreamInfo{}, CCodecThread::OpenMode::OpenMode_Play, bLoop);
-	// CPushStreamInfo stStream;
+	CPushStreamInfo stStream;
 	// stStream.eStream = CPushStreamInfo::Video;
 	// stStream.eStream = CPushStreamInfo::Audio;
 	// stStream.strAddress = "srt://127.0.0.1:22071?mode=listener";
 	// stStream.strAddress = "udp://127.0.0.1:5200";
-	// stStream.strAddress = "rtmp://192.168.190.130:1935/live/test1";
-	// stStream.nWidth = 1920;
-	// stStream.nHeight = 1080;
-	// stStream.nAudioSampleRate = 44100;
-	// stStream.nFrameRateNum = 1;
-	// stStream.nFrameRateDen = 50;
+	// stStream.strAddress = "rtmp://172.20.4.129:1935/live/test1";
+	stStream.strAddress = "rtmp://172.20.4.129:1935/livedfs/ssl";
+	stStream.nWidth = 1920;
+	stStream.nHeight = 1080;
+	stStream.nAudioSampleRate = 44100;
+	stStream.nFrameRateNum = 1;
+	stStream.nFrameRateDen = 50;
 
-	// ´ò¿ªÃ½ÌåÎÄ¼þ»òÁ÷
-	m_pCodecThread->open(strFile, m_pLbDisplay->size(), CPushStreamInfo(), CCodecThread::OpenMode::OpenMode_Play, bLoop, bPicture);
-	// ´¦ÀíËùÓÐµ±Ç°ÊÂ¼þ£¬È·±£ open º¯ÊýÖ´ÐÐÍê³É
+	// æ‰“å¼€åª’ä½“æ–‡ä»¶æˆ–æµ
+	m_pCodecThread->open(strFile, m_pLbDisplay->size(), stStream,
+	                     CCodecThread::OpenMode(CCodecThread::OpenMode::OpenMode_Play | CCodecThread::OpenMode::OpenMode_Push), bLoop, bPicture);
+	// å¤„ç†æ‰€æœ‰å½“å‰äº‹ä»¶ï¼Œç¡®ä¿ open å‡½æ•°æ‰§è¡Œå®Œæˆ
 	qApp->processEvents(QEventLoop::EventLoopExec);
 	//m_pCodecThread->open(strFile, m_pLbDisplay->size(), stStream,
 	//    /*, "udp://127.0.0.1:5200","srt://127.0.0.1:22071?mode=listener"*/CLXCodecThread::OpenMode(CLXCodecThread::OpenMode::OpenMode_Play |
@@ -92,7 +94,7 @@ void CPlayBackWidget::onNotifyAudioPara(const quint64& nSampleRate, const quint6
 	format.setChannelCount(static_cast<int>(nChannels));
 	format.setByteOrder(QAudioFormat::LittleEndian);
 
-	QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice()); //Ñ¡ÔñÄ¬ÈÏÊä³öÉè±¸
+	QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice()); //é€‰æ‹©é»˜è®¤è¾“å‡ºè®¾å¤‡
 
 	if (!info.isFormatSupported(format)) {
 		format = info.nearestFormat(format);
@@ -284,7 +286,7 @@ CAspectRatioItem::CAspectRatioItem(QWidget* parent, const int nWidthAspect, cons
 CAspectRatioItem::~CAspectRatioItem() = default;
 
 void CAspectRatioItem::setAspectRatio(const int nWidthAspect, const int nHeightAspect) {
-	// ÉèÖÃ¿í¸ß±È, ²¢Í¨Öª¸¸×é¼þµÄ²¼¾ÖÎÞÐ§, ÒÔ±ãÖØÐÂ¼ÆËã²¼¾Ö
+	// è®¾ç½®å®½é«˜æ¯”, å¹¶é€šçŸ¥çˆ¶ç»„ä»¶çš„å¸ƒå±€æ— æ•ˆ, ä»¥ä¾¿é‡æ–°è®¡ç®—å¸ƒå±€
 	m_nWidthAspect = nWidthAspect;
 	m_nHeightAspect = nHeightAspect;
 	if (this->widget()->parentWidget()) {
