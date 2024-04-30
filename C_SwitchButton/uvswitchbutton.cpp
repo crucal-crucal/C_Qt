@@ -44,14 +44,14 @@ void CUVSwitchButton::drawText(QPainter* painter) const {
 	// 绘制文本
 	if (m_showText) {
 		painter->setPen(m_checked ? QPen(m_textColorOn) : QPen(m_textColorOff));
-		painter->drawText(getTextRect(m_textPostion, m_checked), Qt::AlignCenter, m_textOn);
+		painter->drawText(getTextRect(m_textPostion, m_checked), Qt::AlignCenter, m_checked ? m_textOn : m_textOff);
 	}
 
 	painter->restore();
 }
 
 int CUVSwitchButton::getTextWidth() const {
-	if (!m_showText) {
+	if (m_showText) {
 		return std::max(fontMetrics().boundingRect(m_textOn).width(), fontMetrics().boundingRect(m_textOff).width()) + m_spaceText;
 	}
 	return 0;
@@ -70,7 +70,7 @@ QRect CUVSwitchButton::getBackgroundRect() const {
 
 QPainterPath CUVSwitchButton::getBackgroundPath(const QRect& rect) const {
 	const int side = qMin(width(), height());
-	const int rightRectX = (m_textPostion == TextPosition::Left) ? rect.x() - side + getTextWidth() : rect.width() - side;
+	const int rightRectX = (m_textPostion == TextPosition::Left) ? rect.width() - side + getTextWidth() : rect.width() - side;
 
 	QPainterPath path1, path2, path3;
 	// 左侧半圆
@@ -174,6 +174,7 @@ void CUVSwitchButton::updateValue() {
 
 	update();
 }
+
 void CUVSwitchButton::init() {
 	m_spaceSlider = 2;
 	m_radius = 5;
@@ -250,6 +251,7 @@ void CUVSwitchButton::setSpaceSlider(const int space) {
 		update();
 	}
 }
+
 void CUVSwitchButton::setSpaceText(const int space) {
 	if (m_spaceText != space) {
 		m_spaceText = space;
@@ -265,13 +267,21 @@ void CUVSwitchButton::setRadius(const int radius) {
 }
 
 void CUVSwitchButton::setChecked(const bool checked) {
-	emit statusChanged(checked);
-	if (m_checked != checked) {
-		m_checked = checked;
-		m_startX = m_checked ? width() - height() : m_startX;
-		m_endX = m_checked ? m_endX : width() - height();
-		update();
+	m_checked = checked;
+	emit statusChanged(m_checked);
+
+	auto [endX, step] = getEndXandStep(m_textPostion);
+	m_step = step;
+	// 计算滑块X轴终点坐标
+	if (m_checked) {
+		m_endX = endX;
+		m_startX = m_endX;
+	} else {
+		m_endX = 0;
+		m_startX = m_endX;
 	}
+
+	update();
 }
 
 void CUVSwitchButton::setShowText(const bool show) {
