@@ -2,11 +2,11 @@
 // Created by crucal on 2024-03-17.
 //
 
-#include "framelessdialog_p.h"
+#include "framelessdialog_p.hpp"
 
 framelessdialog_p::framelessdialog_p(QWidget* parent) : FramelessDialog(parent) {
 	createCtrl();
-	layout();
+	layoutcustom();
 	initConnection();
 	initStyle();
 	resize(600, 300);
@@ -30,13 +30,13 @@ void framelessdialog_p::createCtrl() {
 
 	m_pCenterWidget = new QWidget(this);
 
-	m_pHBoxLayTitle = new QHBoxLayout;
+	m_pHBoxLayTitle  = new QHBoxLayout;
 	m_pVBoxLayCenter = new QVBoxLayout;
 
 	this->setLayout(m_pVBoxLayCenter);
 }
 
-void framelessdialog_p::layout() {
+void framelessdialog_p::layoutcustom() const {
 	m_pHBoxLayTitle->setMargin(0);
 	m_pHBoxLayTitle->setSpacing(10);
 	m_pHBoxLayTitle->addWidget(m_pLbTitleText);
@@ -54,23 +54,23 @@ void framelessdialog_p::layout() {
 }
 
 void framelessdialog_p::initConnection() {
-	connect(this, &framelessdialog_p::titleDblClick, this, &framelessdialog_p::on_btnMax_clicked);
-	connect(this, &framelessdialog_p::windowStateChange, this, [&](bool bl) {
+	connect(this, &framelessdialog_p::titleDblClick, this, &framelessdialog_p::onBtnMaxClicked);
+	connect(this, &framelessdialog_p::windowStateChange, this, [&](const bool bl) {
 		m_pBtnMax->setText(bl ? tr("Normal") : tr("Max"));
 	});
-	connect(m_pBtnMin, &QPushButton::clicked, this, &framelessdialog_p::on_btnMin_clicked);
-	connect(m_pBtnMax, &QPushButton::clicked, this, &framelessdialog_p::on_btnMax_clicked);
-	connect(m_pBtnClose, &QPushButton::clicked, this, &framelessdialog_p::on_btnClose_clicked);
+	connect(m_pBtnMin, &QPushButton::clicked, this, &framelessdialog_p::onBtnMinClicked);
+	connect(m_pBtnMax, &QPushButton::clicked, this, &framelessdialog_p::onBtnMaxClicked);
+	connect(m_pBtnClose, &QPushButton::clicked, this, &framelessdialog_p::onBtnCloseClicked);
 }
 
-void framelessdialog_p::on_btnMin_clicked() {
+void framelessdialog_p::onBtnMinClicked() {
 #ifdef Q_OS_MACOS
 	this->setWindowFlags(this->windowFlags() & ~Qt::FramelessWindowHint);
 #endif
 	this->showMinimized();
 }
 
-void framelessdialog_p::on_btnMax_clicked() {
+void framelessdialog_p::onBtnMaxClicked() {
 	if (this->isFullScreen()) {
 		this->showNormal();
 		m_pBtnMax->setText(tr("Max"));
@@ -80,11 +80,11 @@ void framelessdialog_p::on_btnMax_clicked() {
 	}
 }
 
-void framelessdialog_p::on_btnClose_clicked() {
+void framelessdialog_p::onBtnCloseClicked() {
 	this->close();
 }
 
-void framelessdialog_p::initStyle() {
+void framelessdialog_p::initStyle() const {
 	m_pCenterWidget->setStyleSheet("background-color: black;");
 	m_pLbTitle->setStyleSheet("background-color: grey; color: white;");
 }

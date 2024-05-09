@@ -1,18 +1,20 @@
-#include "uvmessagebox.h"
+#include "uvmessagebox.hpp"
 
+#include <QPointer>
 #include <utility>
 
 CUVMessageBase::CUVMessageBase(QWidget* parent, QString title, QString text, QString okButtonText, QString cancelButtonText,
-							   QString iconPath, bool showWarn, bool showOKBtn, bool showCancelBtn)
-	: QDialog(parent), m_title(std::move(title)), m_text(std::move(text)), m_okButtonText(std::move(okButtonText)),
-	  m_cancelButtonText(std::move(cancelButtonText)), m_iconPath(std::move(iconPath)), m_showWarn(showWarn), m_showOKBtn(showOKBtn), m_showCancelBtn(showCancelBtn) {
+                               QString iconPath, const bool showWarn, const bool showOKBtn, const bool showCancelBtn)
+: QDialog(parent), m_title(std::move(title)), m_text(std::move(text)), m_okButtonText(std::move(okButtonText)),
+  m_cancelButtonText(std::move(cancelButtonText)), m_iconPath(std::move(iconPath)), m_showWarn(showWarn), m_showOKBtn(showOKBtn),
+  m_showCancelBtn(showCancelBtn) {
 	setObjectName("CUVDeleteBase");
 	setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinMaxButtonsHint | Qt::Dialog);
 	setAttribute(Qt::WA_DeleteOnClose);
 	createCtrl();
 	layOut();
 	initConnection();
-	QSize newSize = !m_iconPath.isEmpty() ? QSize(450, 292) : QSize(300, 100);
+	const QSize newSize = !m_iconPath.isEmpty() ? QSize(450, 292) : QSize(300, 100);
 	resize(newSize);
 }
 
@@ -50,8 +52,8 @@ void CUVMessageBase::createCtrl() {
 	m_pCbWarn->setVisible(m_showWarn);
 
 	m_pCenterVLayout = new QVBoxLayout;
-	m_pTitleHLayout = new QHBoxLayout;
-	m_pBtnHLayout = new QHBoxLayout;
+	m_pTitleHLayout  = new QHBoxLayout;
+	m_pBtnHLayout    = new QHBoxLayout;
 }
 
 void CUVMessageBase::layOut() {
@@ -95,7 +97,7 @@ void CUVMessageBase::initConnection() {
 	connect(m_pBtnClose, &QPushButton::clicked, this, &CUVMessageBase::close);
 	connect(m_pBtnOk, &QPushButton::clicked, this, &CUVMessageBase::onBtnOkClicked);
 	connect(m_pBtnCancel, &QPushButton::clicked, this, &CUVMessageBase::close);
-	connect(m_pCbWarn, &QCheckBox::stateChanged, this, [&](int state) {
+	connect(m_pCbWarn, &QCheckBox::stateChanged, this, [&](const int state) {
 		emit checkBoxState(state);
 	});
 }
@@ -103,7 +105,7 @@ void CUVMessageBase::initConnection() {
 void CUVMessageBase::mousePressEvent(QMouseEvent* event) {
 	if (m_bMoveEnable && event->button() == Qt::LeftButton && m_rtTitle.contains(event->pos())) {
 		m_PressTitlePoint = event->pos();
-		m_bPressTitle = true;
+		m_bPressTitle     = true;
 	}
 	QDialog::mousePressEvent(event);
 }
@@ -132,7 +134,7 @@ void CUVMessageBase::keyPressEvent(QKeyEvent* event) {
 	if (!m_bEscEnable && Qt::Key_Escape == event->key()) {
 		return;
 	} else if (!m_bEnterEnable && (Qt::Key_Return == event->key() || Qt::Key_Enter == event->key())) {
-		auto key = Qt::Key(event->key());
+		[[maybe_unused]] auto key = static_cast<Qt::Key>(event->key());
 		emit okClicked();
 		return;
 	} else {
@@ -156,25 +158,25 @@ void CUVMessageBase::setCancelButtonText(const QString& cancelButtonText) const 
 	m_pBtnCancel->setText(cancelButtonText);
 }
 
-void CUVMessageBase::setIcon(const QString& iconPath, bool fill) {
+void CUVMessageBase::setIcon(const QString& iconPath, const bool fill) {
 	m_pixmap.load(iconPath);
 	m_pLbIcon->setPixmap(m_pixmap);
 	m_pLbIcon->setScaledContents(fill);
 }
 
-void CUVMessageBase::setShowWarn(bool showWarn) const {
+void CUVMessageBase::setShowWarn(const bool showWarn) const {
 	m_pCbWarn->setVisible(showWarn);
 }
 
-void CUVMessageBase::setMoveEnable(bool bEnable) {
+void CUVMessageBase::setMoveEnable(const bool bEnable) {
 	m_bMoveEnable = bEnable;
 }
 
-void CUVMessageBase::setEscEnable(bool bEnable) {
+void CUVMessageBase::setEscEnable(const bool bEnable) {
 	m_bEscEnable = bEnable;
 }
 
-void CUVMessageBase::setEnterEnable(bool bEnable) {
+void CUVMessageBase::setEnterEnable(const bool bEnable) {
 	m_bEnterEnable = bEnable;
 }
 
@@ -191,18 +193,19 @@ CUVMessageBox::CUVMessageBox(QWidget* parent) : QObject(parent) {
 
 CUVMessageBox::~CUVMessageBox() = default;
 
-CUVMessageBase::E_BUTTON_STATUS CUVMessageBox::showMessage(QWidget* parent, const QString& title, const QString& text, bool showWarn,
-														   bool showOkBtn, bool showCancelBtn, const QString& iconPath, const QString& okButtonText,
-														   const QString& cancelButtonText) {
+CUVMessageBase::E_BUTTON_STATUS CUVMessageBox::showMessage(QWidget* parent, const QString& title, const QString& text, const bool showWarn,
+                                                           const bool showOkBtn, const bool showCancelBtn, const QString& iconPath,
+                                                           const QString& okButtonText, const QString& cancelButtonText) {
 	auto res = CUVMessageBase::E_BUTTON_STATUS::CANCEL;
 	if (!showAgain && showWarn) {
 		return CUVMessageBase::E_BUTTON_STATUS::OK;
 	}
-	QPointer<CUVMessageBase> ptr = new CUVMessageBase(parent, title, text, okButtonText, cancelButtonText, iconPath, showWarn, showOkBtn, showCancelBtn);
-	connect(ptr, &CUVMessageBase::okClicked, [&]() {
+	const QPointer<CUVMessageBase> ptr = new CUVMessageBase(parent, title, text, okButtonText, cancelButtonText, iconPath, showWarn, showOkBtn,
+	                                                        showCancelBtn);
+	connect(ptr.data(), &CUVMessageBase::okClicked, [&]() {
 		res = CUVMessageBase::E_BUTTON_STATUS::OK;
 	});
-	connect(ptr, &CUVMessageBase::checkBoxState, [&](int state) {
+	connect(ptr.data(), &CUVMessageBase::checkBoxState, [&](const int state) {
 		showAgain = state != Qt::CheckState::Checked;
 	});
 	ptr->exec();
@@ -225,20 +228,21 @@ CUVMessageBase::E_BUTTON_STATUS CUVMessageBox::waring(QWidget* parent, const QSt
 	return showMessage(parent, title, text, false, true, false, "", okButtonText, "");
 }
 
-CUVMessageBase::E_BUTTON_STATUS CUVMessageBox::question(QWidget* parent, const QString& title, const QString& text, const QString& okButtonText, const QString& cancelButtonText) {
+CUVMessageBase::E_BUTTON_STATUS CUVMessageBox::question(QWidget* parent, const QString& title, const QString& text, const QString& okButtonText,
+                                                        const QString& cancelButtonText) {
 	return showMessage(parent, title, text, false, true, true, "", okButtonText, cancelButtonText);
 }
 
 // CUVCountdownMessageBox
-CUVCountdownMessageBox::CUVCountdownMessageBox(QWidget* parent, const QString& title, const QString& text, const QString& okButtonText, const QString& cancelButtonText,
-											   const QString& iconPath, bool showWarn, bool showOKBtn, bool showCancelBtn)
-	: CUVMessageBase(parent, title, text, okButtonText, cancelButtonText, iconPath, showWarn, showOKBtn, showCancelBtn) {
-
+CUVCountdownMessageBox::CUVCountdownMessageBox(QWidget* parent, const QString& title, const QString& text, const QString& okButtonText,
+                                               const QString& cancelButtonText,
+                                               const QString& iconPath, const bool showWarn, const bool showOKBtn, const bool showCancelBtn)
+: CUVMessageBase(parent, title, text, okButtonText, cancelButtonText, iconPath, showWarn, showOKBtn, showCancelBtn) {
 }
 
 CUVCountdownMessageBox::~CUVCountdownMessageBox() = default;
 
-int CUVCountdownMessageBox::exec(int nSecond) {
+int CUVCountdownMessageBox::exec(const int nSecond) {
 	nCountdown = nSecond;
 	this->startTimer(1000);
 	return CUVMessageBase::exec();

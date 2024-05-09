@@ -9,11 +9,12 @@
 #endif
 
 class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
-  Q_OBJECT
-  public:
-	explicit FramelessMainWindow(QWidget* parent = 0);
+	Q_OBJECT
 
-  protected:
+public:
+	explicit FramelessMainWindow(QWidget* parent = nullptr);
+
+protected:
 	//窗体显示的时候触发
 	void showEvent(QShowEvent* event) override;
 
@@ -36,7 +37,7 @@ class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
 #endif
 #endif
 
-  private:
+private:
 	//边距+可移动+可拉伸
 	int padding;
 	bool moveEnable;
@@ -60,7 +61,7 @@ class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
 	//存储窗体默认的属性
 	Qt::WindowFlags flags;
 
-  public Q_SLOTS:
+public Q_SLOTS:
 	//设置边距+可拖动+可拉伸
 	void setPadding(int _padding);
 	void setMoveEnable(bool _moveEnable);
@@ -69,8 +70,7 @@ class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
 	//设置标题栏控件
 	void setTitleBar(QWidget* _titleBar);
 
-  Q_SIGNALS:
+Q_SIGNALS:
 	void titleDblClick();
 	void windowStateChange(bool max);
 };
-

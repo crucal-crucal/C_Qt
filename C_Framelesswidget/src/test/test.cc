@@ -6,7 +6,7 @@
 
 test::test(QWidget* parent) : QMainWindow(parent) {
 	createCtrl();
-	layout();
+	layoutcustom();
 	initConnection();
 
 	resize(800, 600);
@@ -30,28 +30,41 @@ void test::createCtrl() {
 	m_pBtnMessageBox_2 = new QPushButton(this);
 	m_pBtnMessageBox_2->setText(tr("MessageBox_2"));
 
-	m_pFramelsssDialog = new framelessdialog_p(this);
-	m_pFramelsssDialog->setVisible(false);
-	m_pFramelsssWidget = new framelesswidget_p();
-	m_pFramelsssWidget->setVisible(false);
-	m_pFramelsssMainwindow = new framelessmainwindow_p(this);
-	m_pFramelsssMainwindow->setVisible(false);
+	m_pBtnFramelesshelper = new QPushButton(this);
+	m_pBtnFramelesshelper->setText(tr("Framelesshelper"));
+	m_pBtnFramelesshelper->setCheckable(true);
+
+	m_pFramelessDialog = new framelessdialog_p(this);
+	m_pFramelessDialog->setVisible(false);
+	m_pFramelessWidget = new framelesswidget_p();
+	m_pFramelessWidget->setVisible(false);
+	m_pFramelessMainwindow = new framelessmainwindow_p(this);
+	m_pFramelessMainwindow->setVisible(false);
+
+	m_pFramelessHelperWidget = new QMainWindow(this);
+	m_pFramelessHelperWidget->setVisible(false);
+	m_pFramelessHelperWidget->setStyleSheet("background-color: rgb(0, 0, 0);");
+	m_pFramelessHelperWidget->resize(400, 400);
+
+	m_pFramelsssHelper = new QxFrameless::FramelessHelper(m_pFramelessHelperWidget);
+	// m_pFramelsssHelper->addWidget(m_pFramelsssHelperWidget);
 
 	m_pCenterWidget = new QWidget(this);
 
-	m_pHLayout = new QHBoxLayout;
+	m_pHLayout       = new QHBoxLayout;
 	m_pCenterVLayout = new QVBoxLayout;
 
 	this->setCentralWidget(m_pCenterWidget);
 }
 
-void test::layout() {
+void test::layoutcustom() const {
 	m_pHLayout->addStretch();
 	m_pHLayout->addWidget(m_pBtnDialog);
 	m_pHLayout->addWidget(m_pBtnWidget);
 	m_pHLayout->addWidget(m_pBtnMainWindow);
 	m_pHLayout->addWidget(m_pBtnMessageBox_1);
 	m_pHLayout->addWidget(m_pBtnMessageBox_2);
+	m_pHLayout->addWidget(m_pBtnFramelesshelper);
 
 	m_pCenterVLayout->addLayout(m_pHLayout);
 	m_pCenterVLayout->addStretch();
@@ -61,13 +74,13 @@ void test::layout() {
 
 void test::initConnection() {
 	connect(m_pBtnWidget, &QPushButton::clicked, [=]() {
-		m_pFramelsssWidget->show();
+		m_pFramelessWidget->show();
 	});
 	connect(m_pBtnDialog, &QPushButton::clicked, [=]() {
-		m_pFramelsssDialog->show();
+		m_pFramelessDialog->show();
 	});
 	connect(m_pBtnMainWindow, &QPushButton::clicked, [=]() {
-		m_pFramelsssMainwindow->show();
+		m_pFramelessMainwindow->show();
 	});
 	connect(m_pBtnMessageBox_1, &QPushButton::clicked, [=]() {
 		UVMessageBox::CUVMessageBox::information(this, "information", "MessageBox_1");
@@ -75,5 +88,7 @@ void test::initConnection() {
 	connect(m_pBtnMessageBox_2, &QPushButton::clicked, [=]() {
 		CUVMessageBox::infomation(this, "information", "MessageBox_2");
 	});
+	connect(m_pBtnFramelesshelper, &QPushButton::clicked, [=](const bool checked) {
+		m_pFramelessHelperWidget->setVisible(checked);
+	});
 }
-

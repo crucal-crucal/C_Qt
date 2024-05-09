@@ -2,11 +2,11 @@
 // Created by crucal on 2024-03-17.
 //
 
-#include "framelessmainwindow_p.h"
+#include "framelessmainwindow_p.hpp"
 
 framelessmainwindow_p::framelessmainwindow_p(QWidget* parent) : FramelessMainWindow(parent) {
 	createCtrl();
-	layout();
+	layoutcustom();
 	initConnection();
 	initStyle();
 	resize(600, 300);
@@ -30,13 +30,13 @@ void framelessmainwindow_p::createCtrl() {
 
 	m_pCenterWidget = new QWidget(this);
 
-	m_pHBoxLayTitle = new QHBoxLayout;
+	m_pHBoxLayTitle  = new QHBoxLayout;
 	m_pVBoxLayCenter = new QVBoxLayout;
 
 	this->setCentralWidget(m_pCenterWidget);
 }
 
-void framelessmainwindow_p::layout() {
+void framelessmainwindow_p::layoutcustom() const {
 	m_pHBoxLayTitle->setMargin(0);
 	m_pHBoxLayTitle->setSpacing(10);
 	m_pHBoxLayTitle->addWidget(m_pLbTitleText);
@@ -56,28 +56,28 @@ void framelessmainwindow_p::layout() {
 }
 
 void framelessmainwindow_p::initConnection() {
-	connect(this, &framelessmainwindow_p::titleDblClick, this, &framelessmainwindow_p::on_btnMax_clicked);
-	connect(this, &framelessmainwindow_p::windowStateChange, this, [&](bool bl) {
+	connect(this, &framelessmainwindow_p::titleDblClick, this, &framelessmainwindow_p::onBtnMaxClicked);
+	connect(this, &framelessmainwindow_p::windowStateChange, this, [&](const bool bl) {
 		m_pBtnMax->setText(bl ? tr("Normal") : tr("Max"));
 	});
-	connect(m_pBtnMin, &QPushButton::clicked, this, &framelessmainwindow_p::on_btnMin_clicked);
-	connect(m_pBtnMax, &QPushButton::clicked, this, &framelessmainwindow_p::on_btnMax_clicked);
-	connect(m_pBtnClose, &QPushButton::clicked, this, &framelessmainwindow_p::on_btnClose_clicked);
+	connect(m_pBtnMin, &QPushButton::clicked, this, &framelessmainwindow_p::onBtnMinClicked);
+	connect(m_pBtnMax, &QPushButton::clicked, this, &framelessmainwindow_p::onBtnMaxClicked);
+	connect(m_pBtnClose, &QPushButton::clicked, this, &framelessmainwindow_p::onBtnCloseClicked);
 }
 
-void framelessmainwindow_p::initStyle() {
+void framelessmainwindow_p::initStyle() const {
 	m_pCenterWidget->setStyleSheet("background-color: black;");
 	m_pLbTitle->setStyleSheet("background-color: grey; color: white;");
 }
 
-void framelessmainwindow_p::on_btnMin_clicked() {
+void framelessmainwindow_p::onBtnMinClicked() {
 #ifdef Q_OS_MACOS
 	this->setWindowFlags(this->windowFlags() & ~Qt::FramelessWindowHint);
 #endif
 	this->showMinimized();
 }
 
-void framelessmainwindow_p::on_btnMax_clicked() {
+void framelessmainwindow_p::onBtnMaxClicked() {
 	if (this->isFullScreen()) {
 		this->showNormal();
 		m_pBtnMax->setText(tr("Max"));
@@ -87,6 +87,6 @@ void framelessmainwindow_p::on_btnMax_clicked() {
 	}
 }
 
-void framelessmainwindow_p::on_btnClose_clicked() {
+void framelessmainwindow_p::onBtnCloseClicked() {
 	this->close();
 }

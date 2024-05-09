@@ -29,23 +29,26 @@ class QHBoxLayout;
 class QPushButton;
 class QPainter;
 class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
-  Q_OBJECT
+	Q_OBJECT
 	Q_DISABLE_COPY(CUVBaseDialog)
-  public:
+
+public:
 	enum TitleButtonRole {
 		NoButtonRole = 0x00000000,
-		CloseRole = 0x000001,
-		MaxRole = 0x000002,
-		MinRole = 0x000004,
-		SettingRole = 0x000008,
-		HelpRole = 0x000010,
+		CloseRole    = 0x000001,
+		MaxRole      = 0x000002,
+		MinRole      = 0x000004,
+		SettingRole  = 0x000008,
+		HelpRole     = 0x000010,
 	};
 	Q_DECLARE_FLAGS(TitleButtonRoles, TitleButtonRole)
 	Q_FLAG(TitleButtonRoles)
-  public:
+
+public:
 	explicit CUVBaseDialog(QWidget* parent = nullptr);
 	~CUVBaseDialog() override;
-  public:
+
+public:
 	void setTitle(QString strTitle);
 	[[nodiscard]] QRect getTilteRect() const;
 	[[nodiscard]] QList<QAbstractButton*> getTitleButton() const;
@@ -59,10 +62,11 @@ class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
 
 	void setTitleBtnRole(TitleButtonRoles emTitleButtonRoles);
 	void setDialogBtnRole(QDialogButtonBox::StandardButtons emBtns = (QDialogButtonBox::Ok | QDialogButtonBox::Cancel));
-	void setContent(QWidget* pContentWidget);
-	void setContent(QLayout* pLayout);
-	QPushButton* button(QDialogButtonBox::StandardButton emBtn);
-  protected:
+	void setContent(QWidget* pContentWidget) const;
+	void setContent(QLayout* pLayout) const;
+	QPushButton* button(QDialogButtonBox::StandardButton emBtn) const;
+
+protected:
 	void paintEvent(QPaintEvent* event) override;
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 	void mousePressEvent(QMouseEvent* event) override;
@@ -70,34 +74,39 @@ class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
 	void mouseMoveEvent(QMouseEvent* event) override;
 	void keyPressEvent(QKeyEvent* event) override;
 	void resizeEvent(QResizeEvent* event) override;
-  protected slots:
+
+protected slots:
 	virtual void apply();
 	virtual void closeDialog();
-  protected:
+
+protected:
 	void addTitleButton(QAbstractButton* pButton, TitleButtonRole emButtonRole);
 	QPushButton* addTitleButton(TitleButtonRole emButtonRole);
 	QPushButton* insertTitleButton(int nIndex, TitleButtonRole emButtonRole);
 	void insertTitleButton(QAbstractButton* pButton, int nIndex, TitleButtonRole emButtonRole);
-  private slots:
+
+private slots:
 	void switchSize();
-  private:
-	QDialogButtonBox* m_pDialogBtnBox{nullptr};
-	QVBoxLayout* m_plyVTotal{nullptr};
-	QHBoxLayout* m_plyHTitle{nullptr};
-	QHBoxLayout* m_plyHContent{nullptr};
-  private:
+
+private:
+	QDialogButtonBox* m_pDialogBtnBox{ nullptr };
+	QVBoxLayout* m_plyVTotal{ nullptr };
+	QHBoxLayout* m_plyHTitle{ nullptr };
+	QHBoxLayout* m_plyHContent{ nullptr };
+
+private:
 	QString m_strTitle;
 	QString m_strIconPath;
 	QPixmap m_icon;
 	QPoint m_PressTitlePoint;
 	QRect m_rtTitle;
-	bool m_bPressTitle{false};
-	bool m_bResizeable{false};
-	bool m_bIconScaled{false};
-	bool m_bEscEnable{false};
-	bool m_bMoveEnable{true};
-	bool m_bTitleVisible{true};
-	bool m_bShadowVisible{true};
-	bool m_bEnterEnable{true};
+	bool m_bPressTitle{ false };
+	bool m_bResizeable{ false };
+	bool m_bIconScaled{ false };
+	bool m_bEscEnable{ false };
+	bool m_bMoveEnable{ true };
+	bool m_bTitleVisible{ true };
+	bool m_bShadowVisible{ true };
+	bool m_bEnterEnable{ true };
 	QHash<TitleButtonRole, QAbstractButton*> m_hashTitleButtons;
 };

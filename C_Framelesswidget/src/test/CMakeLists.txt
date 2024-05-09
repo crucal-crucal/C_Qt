@@ -5,9 +5,9 @@ include_directories(..)
 set(test_SOURCES
         test.h
         test.cc
-        framelesswidget_p.h
-        framelessdialog_p.h
-        framelessmainwindow_p.h
+        framelesswidget_p.hpp
+        framelessdialog_p.hpp
+        framelessmainwindow_p.hpp
         framelesswidget_p.cc
         framelessdialog_p.cc
         framelessmainwindow_p.cc
@@ -15,7 +15,7 @@ set(test_SOURCES
 
 add_executable(${TARGET_NAME}
         WIN32
-        main.cpp
+        main.cc
         ${test_SOURCES}
 )
 
@@ -26,6 +26,7 @@ target_link_libraries(${TARGET_NAME}
         framelesswidget
         framelessMessageBox_1
         framelessMessageBox_2
+        UVFramelessHelper
 )
 
 install(TARGETS ${TARGET_NAME}
