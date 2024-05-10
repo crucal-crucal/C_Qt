@@ -1,9 +1,10 @@
 ﻿#pragma once
 
 #include <QDebug>
-#include <QFile>
+#include <QDir>
 #include <QMutexLocker>
 #include <QObject>
+#include <global/cglobal.h>
 #include <QtWidgets/QApplication>
 
 #ifdef LOGGER_REDIRECTION_LIB
@@ -19,7 +20,7 @@ class LOGGER_REDIRECTIONEXPORT LoggerRedirection final : public QObject {
 public:
 	static LoggerRedirection* getInstance();
 
-	void install(const QString& logDirpath = QApplication::applicationDirPath() + "/log"); // 安装信息处理函数
+	void install(const QString& logDirpath = QApplication::applicationDirPath() + QDir::separator() + logDir); // 安装信息处理函数
 	static void uninstall();                                                               // 卸载信息处理函数
 	void deletelog() const;                                                                // 删除过期日志
 

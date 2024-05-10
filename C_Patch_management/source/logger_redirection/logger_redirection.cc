@@ -3,7 +3,6 @@
 #include <QDateTime>
 #include <QDir>
 #include <QMutexLocker>
-#include <global/cglobal.h>
 
 LoggerRedirection* LoggerRedirection::m_instance = nullptr;
 QMutex LoggerRedirection::m_mutex;
