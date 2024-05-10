@@ -45,4 +45,7 @@ find_package(${Qt}
         REQUIRED
 )
 
+# Qt Release版本中如果需要定位到日志文件，需要添加此宏
+add_definitions(-DQT_MESSAGELOGCONTEXT)
+
 add_subdirectory(source)

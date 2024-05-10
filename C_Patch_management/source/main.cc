@@ -17,6 +17,7 @@
 #include "patch.h"
 #include "global/cglobal.h"
 #include "logger/logger.h"
+#include "logger_redirection/logger_redirection.hpp"
 #include "splashscreen/SplashScreen.h"
 
 QTranslator* g_translator{ nullptr };
@@ -75,6 +76,7 @@ int main(int argc, char* argv[]) {
 	createCommandLineParser(app);
 	checkWindowThemeStyle();
 
+	LoggerRedirection::getInstance()->install(QApplication::applicationDirPath() + "/log");
 	const QFileInfo appFile(QApplication::applicationFilePath());
 	// 将路径切换到上级目录
 	QDir dir(appFile.absolutePath());
@@ -138,7 +140,7 @@ int main(int argc, char* argv[]) {
 	const int nRet = QApplication::exec();
 	if (nRet == RETCODE_RESTART) {
 		// 传入 qApp->applicationFilePath()，启动自己
-		QProcess::startDetached(qApp->applicationFilePath(), QStringList());
+		QProcess::startDetached(qApp->applicationFilePath(), QStringList()); // NOLINT
 		return 0;
 	}
 	return nRet;
@@ -368,7 +370,7 @@ void createCommandLineParser(const QApplication& app) {
 	}
 }
 
-SplashScreen* createSplashScreen(const QPixmap& pixmap, int w, int h, Qt::AspectRatioMode mode) {
+SplashScreen* createSplashScreen(const QPixmap& pixmap, const int w, const int h, const Qt::AspectRatioMode mode) {
 	auto* splash = new SplashScreen(pixmap.scaled(w, h, mode));
 	splash->show();
 	QApplication::processEvents();

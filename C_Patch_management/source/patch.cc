@@ -1,9 +1,9 @@
 ﻿#include "patch.h"
 
+#include <cmath>
 #include <QDateTime>
 #include <QTextCodec>
 #include <QThreadPool>
-#include <cmath>
 
 #include "logger/logger.h"
 
@@ -45,6 +45,7 @@ void CPatch::showInTextEdit() const {
 		QFile file(fileName);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			Logger::instance().logError(tr("open error ") + file.errorString());
+			qCritical() << tr("open error ") + file.errorString();
 			return;
 		}
 
@@ -62,9 +63,11 @@ void CPatch::showInTextEdit() const {
 			m_pTePreviewTxt->setTextCursor(cursor);
 		} catch (const std::exception& e) {
 			Logger::instance().logError(tr("Exception:") + QString::fromLocal8Bit(e.what()));
+			qCritical() << tr("Exception:") + QString::fromLocal8Bit(e.what());
 		}
 	} else {
 		Logger::instance().logWarning(tr("No .txt files found in the specified directory."));
+		qCritical() << tr("No .txt files found in the specified directory.");
 	}
 }
 
@@ -97,7 +100,7 @@ void CPatch::onBtnGenerateClicked() {
 
 	const QString outDirName = "output" + QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss");
 	m_outDirName = outDirName;
-	m_output = qApp->applicationDirPath() + QDir::separator() + outDirName;
+	m_output = qApp->applicationDirPath() + QDir::separator() + outDirName; // NOLINT
 
 	std::reverse(filePaths.begin(), filePaths.end());
 	QStringList filesToMerge{};
@@ -129,6 +132,7 @@ void CPatch::onBtnGenerateClicked() {
 
 		const QString msg = tr("Merge directories from ") + begin + tr(" To ") + end + tr(" for ") + outDirName;
 		Logger::instance().logInfo(msg);
+		qInfo() << msg;
 
 		updatePage(begin, end, outDirName);
 	} else {
@@ -697,7 +701,7 @@ bool CPatch::splitFileListByThread(const std::map<QString, QStringList>& mp, std
 }
 
 void CPatch::restart() {
-	qApp->exit(RETCODE_RESTART);
+	qApp->exit(RETCODE_RESTART); // NOLINT
 }
 
 void CPatch::recoveryStateWithAct() const {

@@ -40,6 +40,10 @@ static const std::string configName = configDir + "/config.ini";
 constexpr static auto logDir = "log";
 constexpr static auto logFileName = "user.log";
 /*
+ * @breif 单个log文件最大值
+ */
+constexpr static auto LOG_MAXSIZE = 5 * 1024 * 1024;
+/*
  * @breif Label宽度, QMenuBar宽度
  */
 constexpr static auto ENGLISH_LABEL_WIDTH = 110;

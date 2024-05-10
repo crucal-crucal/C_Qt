@@ -17,6 +17,7 @@ target_link_libraries(${TARGET_NAME}
         framelessMessageBox
         mergedir_p
         SplashScreen
+        logger_redirection
 )
 
 add_subdirectory(framelessmainwindow)
@@ -24,6 +25,7 @@ add_subdirectory(framelessMessageBox)
 add_subdirectory(logger)
 add_subdirectory(mergedir)
 add_subdirectory(splashscreen)
+add_subdirectory(logger_redirection)
 
 install(TARGETS ${TARGET_NAME}
         RUNTIME DESTINATION bin
