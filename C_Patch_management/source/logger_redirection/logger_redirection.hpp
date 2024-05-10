@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QMutexLocker>
 #include <QObject>
+#include <QtWidgets/QApplication>
 
 #ifdef LOGGER_REDIRECTION_LIB
 #define LOGGER_REDIRECTIONEXPORT Q_DECL_EXPORT
@@ -18,9 +19,9 @@ class LOGGER_REDIRECTIONEXPORT LoggerRedirection final : public QObject {
 public:
 	static LoggerRedirection* getInstance();
 
-	void install(const QString& logDirpath); // 安装信息处理函数
-	static void uninstall();                 // 卸载信息处理函数
-	void deletelog() const;                  // 删除过期日志
+	void install(const QString& logDirpath = QApplication::applicationDirPath() + "/log"); // 安装信息处理函数
+	static void uninstall();                                                               // 卸载信息处理函数
+	void deletelog() const;                                                                // 删除过期日志
 
 protected:
 	// 此函数用于注册
