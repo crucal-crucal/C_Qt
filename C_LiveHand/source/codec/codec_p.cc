@@ -434,10 +434,7 @@ void CCodecThread::run() {
 
 		//audio
 		AVCodecContext* pOutputAudioCodecCtx = nullptr;
-		if (CPushStreamInfo::Audio & m_stPushStreamInfo
-			.
-			eStream
-		) {
+		if (CPushStreamInfo::Audio & m_stPushStreamInfo.eStream) {
 			// 查找 AAC 音频编码器
 			const AVCodec* out_AudioCodec = avcodec_find_encoder(AV_CODEC_ID_AAC);
 			pOutputAudioCodecCtx = avcodec_alloc_context3(out_AudioCodec);
