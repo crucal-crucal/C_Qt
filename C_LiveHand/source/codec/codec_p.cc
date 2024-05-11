@@ -325,10 +325,7 @@ void CCodecThread::run() {
 
 		//video
 		AVCodecContext* pOutputVideoCodecCtx = nullptr;
-		if (CPushStreamInfo::Video & m_stPushStreamInfo
-			.
-			eStream
-		) {
+		if (CPushStreamInfo::Video & m_stPushStreamInfo.eStream) {
 			// 查找H.264视频编码器
 			const AVCodec* out_VideoCodec = avcodec_find_encoder(AV_CODEC_ID_H264);
 
@@ -381,7 +378,7 @@ void CCodecThread::run() {
 			/*
 			preset有ultrafast，superfast，veryfast，faster，fast，medium，slow，slower，veryslow，placebo这10个级别，每个级别的preset对应一组编码参数，不同级别的preset对应的编码参数集不一致。preset级别越高，编码速度越慢，解码后的质量也越高；级别越低，速度也越快，解码后的图像质量也就越差，从左到右，编码速度越来越慢，编码质量越来越好
 			*/
-			AVDictionary* param = 0;
+			AVDictionary* param = nullptr;
 			av_dict_set(&param, "preset", "superfast", 0);
 			av_dict_set(&param, "tune", "zerolatency", 0);
 			//av_dict_set(&param, "profile", "baseline", 0);

@@ -1,13 +1,11 @@
 ﻿#pragma once
 
-#include <iostream>
 #include <charconv>
+#include <iostream>
 #include <QDir>
-#include <QFile>
 
 #ifdef Q_OS_WIN
 #include <Windows.h>
-#include <tlhelp32.h>
 #endif // Q_OS_WIN
 
 #define  SAFE_DELETE(p) { if (p) { delete p; p = nullptr; } }
@@ -28,16 +26,16 @@ struct CPushStreamInfo {
 		Audio = 0x2
 	};
 
-	QString strAddress{ "" };                        // 推送地址
-	float fVideoBitRate{ 0.0 };                      // 视频比特率
-	PushStream eStream{ PushStream(Video | Audio) }; // 推流类型
-	int nWidth{ 0 };                                 // 视频宽度
-	int nHeight{ 0 };                                // 视频高度
-	int nFrameRateNum{ 1 };                          // 视频帧率分子
-	int nFrameRateDen{ 25 };                         // 视频帧率分母
-	int nColorDepth{ 24 };                           // 视频颜色深度
-	int nAudioBitRate{ 0 };                          // 音频比特率
-	int nAudioSampleRate{ 0 };                       // 音频采样率
+	QString strAddress{ "" };                                     // 推送地址
+	float fVideoBitRate{ 0.0 };                                   // 视频比特率
+	PushStream eStream{ static_cast<PushStream>(Video | Audio) }; // 推流类型
+	int nWidth{ 0 };                                              // 视频宽度
+	int nHeight{ 0 };                                             // 视频高度
+	int nFrameRateNum{ 1 };                                       // 视频帧率分子
+	int nFrameRateDen{ 25 };                                      // 视频帧率分母
+	int nColorDepth{ 24 };                                        // 视频颜色深度
+	int nAudioBitRate{ 0 };                                       // 音频比特率
+	int nAudioSampleRate{ 0 };                                    // 音频采样率
 };
 
 constexpr int ERRBUFSIZE = 4096; // 错误信息大小

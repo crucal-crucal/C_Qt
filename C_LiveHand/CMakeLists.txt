@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.5)
 
-project(C_Testffmpeg VERSION 1.0 LANGUAGES CXX)
+project(C_LiveHand VERSION 1.0 LANGUAGES CXX)
 
 set(OUTPUT_DIR ${CMAKE_SOURCE_DIR}/bin/)
 #set(CMAKE_BUILD_TYPE Release)
