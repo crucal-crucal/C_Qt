@@ -26,6 +26,7 @@ add_subdirectory(logger)
 add_subdirectory(mergedir)
 add_subdirectory(splashscreen)
 add_subdirectory(logger_redirection)
+add_subdirectory(logger_p)
 
 install(TARGETS ${TARGET_NAME}
         RUNTIME DESTINATION bin
