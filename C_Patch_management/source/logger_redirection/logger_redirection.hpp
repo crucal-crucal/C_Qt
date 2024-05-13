@@ -4,23 +4,17 @@
 #include <QDir>
 #include <QMutexLocker>
 #include <QObject>
-#include <global/cglobal.h>
 #include <QtWidgets/QApplication>
-
-#ifdef LOGGER_REDIRECTION_LIB
-#define LOGGER_REDIRECTIONEXPORT Q_DECL_EXPORT
-#else
-#define LOGGER_REDIRECTIONEXPORT Q_DECL_IMPORT
-#endif
+#include "logglobal.hpp"
 
 /*
  * @brief: 用于重定向qDebug, qWarning, qInfo等函数的输出，将输出信息保存到日志文件
  */
-class LOGGER_REDIRECTIONEXPORT LoggerRedirection final : public QObject {
+class LOGGER_REDIRECTION_EXPORT LoggerRedirection final : public QObject {
 public:
 	static LoggerRedirection* getInstance();
 
-	void install(const QString& logDirpath = QApplication::applicationDirPath() + QDir::separator() + logDir); // 安装信息处理函数
+	void install(const QString& logDirpath = QApplication::applicationDirPath() + QDir::separator() + logDirectory); // 安装信息处理函数
 	static void uninstall();                                                               // 卸载信息处理函数
 	void deletelog() const;                                                                // 删除过期日志
 

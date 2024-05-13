@@ -20,14 +20,11 @@ void LoggerRedirection::install(const QString& logDirpath) {
 	if (const QDir dir(logDirpath); !dir.exists() && !dir.mkpath(".")) {
 		qDebug() << QString("create log dir success: %1").arg(logDirpath);
 	}
-
 	// 打开日志输出文件（不存在则创建并打开
 	this->openTheLogFile();
 	// 安装消息处理函数
 	// 此句执行后，qDebug,qInfo等才会输出到文件
 	qInstallMessageHandler(customMessageHandler);
-
-	qInfo() << "____________________________ log output device create success ____________________________";
 }
 
 void LoggerRedirection::uninstall() {
