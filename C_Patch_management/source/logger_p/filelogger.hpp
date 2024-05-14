@@ -13,13 +13,12 @@ namespace Logger_p {
  * <p>
  * 配置示例:
  * <code><pre>
- * fileName = logs/QtWebApp.log
+ * fileName = ../logs/QtWebApp.log
  * maxSize = 1000000
  * maxBackups = 10
  * bufferSize = 0
  * minLevel = WARNING
  * msgformat = {timestamp} {typeNr} {type}
- * thread = {thread} : {message}
  * timestampFormat=dd.MM.  yyyy hh:mm:ss.zzz
  * </pre></code>
  * - 可能的日志级别为:ALL/DEBUG=0, WARN/WARNING=1, ERROR/CRITICAL=2, FATAL=3, INFO=4
@@ -60,11 +59,11 @@ protected:
 	void timerEvent(QTimerEvent* event) override;
 
 private:
-	QString m_fileName{};          // 日志文件名
-	qlonglong m_maxSize{};         // 文件的最大大小(以字节为单位), 0 =无限
-	int m_maxBackups{};            // 备份文件的最大数量, 0 = 无限
-	QSettings* m_settings{};       // 配置设置
-	QFile* m_file{};               // 日志文件, 0 = 禁用
+	QString m_fileName{};         // 日志文件名
+	qlonglong m_maxSize{};        // 文件的最大大小(以字节为单位), 0 =无限
+	int m_maxBackups{};           // 备份文件的最大数量, 0 = 无限
+	QSettings* m_settings{};      // 配置设置
+	QFile* m_file{};              // 日志文件, 0 = 禁用
 	QBasicTimer m_refreshTimer{}; // 刷新配置设置的定时器
 	QBasicTimer m_flushTimer{};   // 刷新文件I/O缓冲区的定时器
 	/*
@@ -76,7 +75,7 @@ private:
 	 */
 	void close();
 	/*
-	 * @note: Rotate 文件并删除一些备份，如果有太多
+	 * @note: 转换文件名, 限制数量在 maxBackups 内
 	 */
 	void rotate() const;
 	/*

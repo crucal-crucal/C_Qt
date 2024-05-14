@@ -223,12 +223,12 @@ QString initializeConfigFile(const LoggerConfigData& loggerConfigData) {
 			QTextStream output(&configFile);
 			output << "[" << QString::fromStdWString(loggerConfigData.group) << "]" << "\n";
 			output << "fileName=" << QString::fromStdWString(loggerConfigData.fileName) << "\n";
-			output << "minLevel=" << QString::fromStdWString(loggerConfigData.minLevel) << "\n";
-			output << "bufferSize=" << QString::number(loggerConfigData.bufferSize) << "\n";
 			output << "maxSize=" << QString::number(loggerConfigData.maxSize) << "\n";
 			output << "maxBackups=" << QString::number(loggerConfigData.maxBackups) << "\n";
-			output << "timestampFormat=" << QString::fromStdString(loggerConfigData.timestampFormat) << "\n";
+			output << "bufferSize=" << QString::number(loggerConfigData.bufferSize) << "\n";
+			output << "minLevel=" << QString::fromStdWString(loggerConfigData.minLevel) << "\n";
 			output << "msgFormat=" << QString::fromStdString(loggerConfigData.msgFormat) << "\n";
+			output << "timestampFormat=" << QString::fromStdString(loggerConfigData.timestampFormat) << "\n";
 			output << "[interface]\n";
 			output << "Language: " << language << "\n";
 			output << "ProgressbarStyle: " << progressBarStyle << "\n";

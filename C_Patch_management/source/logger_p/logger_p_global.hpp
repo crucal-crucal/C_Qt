@@ -26,12 +26,12 @@ using ui64 = unsigned long long;
 struct LoggerConfigData {
 	std::wstring group{};
 	std::wstring fileName{};
-	std::wstring minLevel{};
-	ui64 bufferSize{};
 	ui64 maxSize{};
 	int maxBackups{};
-	std::string timestampFormat{};
+	ui64 bufferSize{};
+	std::wstring minLevel{};
 	std::string msgFormat{};
+	std::string timestampFormat{};
 
 	LoggerConfigData();
 	LoggerConfigData& operator=(const LoggerConfigData& other);
@@ -48,12 +48,12 @@ inline LoggerConfigData& LoggerConfigData::operator=(const LoggerConfigData& oth
 	}
 	this->group = other.group;
 	this->fileName = other.fileName;
-	this->minLevel = other.minLevel;
-	this->bufferSize = other.bufferSize;
 	this->maxSize = other.maxSize;
 	this->maxBackups = other.maxBackups;
-	this->timestampFormat = other.timestampFormat;
+	this->bufferSize = other.bufferSize;
+	this->minLevel = other.minLevel;
 	this->msgFormat = other.msgFormat;
+	this->timestampFormat = other.timestampFormat;
 
 	return *this;
 }
@@ -61,10 +61,10 @@ inline LoggerConfigData& LoggerConfigData::operator=(const LoggerConfigData& oth
 inline void LoggerConfigData::reset() {
 	group = L"logging";
 	fileName = L"../log/stdout.log";
-	minLevel = L"DEBUG";
-	bufferSize = 100;
 	maxSize = 1000000;
 	maxBackups = 10;
-	timestampFormat = "dd.MM.yyyy hh:mm:ss.zzz";
+	bufferSize = 100;
+	minLevel = L"DEBUG";
 	msgFormat = "{timestamp} {typeNr} {type} {thread} {message}\\n  in {file} line {line} function {function}";
+	timestampFormat = "dd.MM.yyyy hh:mm:ss.zzz";
 }
