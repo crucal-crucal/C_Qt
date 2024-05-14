@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include <QDateTime>
-#include <qglobal.h>
 #include <QHash>
 #include "logger_p_global.hpp"
 

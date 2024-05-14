@@ -5,7 +5,6 @@
 #include <QSettings>
 
 #include "logger.hpp"
-#include "logger_p_global.hpp"
 
 namespace Logger_p {
 /*

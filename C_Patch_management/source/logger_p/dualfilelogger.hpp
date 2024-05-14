@@ -4,7 +4,6 @@
 
 #include "filelogger.hpp"
 #include "logger.hpp"
-#include "logger_p_global.hpp"
 
 namespace Logger_p {
 /*
