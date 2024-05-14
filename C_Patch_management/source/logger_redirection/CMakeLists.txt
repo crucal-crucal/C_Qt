@@ -1,4 +1,4 @@
-set(TARGET_NAME logger_redirection)
+﻿set(TARGET_NAME logger_redirection)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

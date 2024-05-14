@@ -1,4 +1,4 @@
-#include "logger.hpp"
+ï»¿#include "logger.hpp"
 
 #include <QDateTime>
 #include <QObject>
@@ -154,9 +154,9 @@ void Logger_p::Logger::write(const LogMessage* logMessage) {
 }
 
 void Logger_p::Logger::msgHandler(const QtMsgType type, const QString& message, const QString& file, const QString& function, const int line) {
-	// ·ÀÖ¹¶à¸öÏß³ÌÍ¬Ê±µ÷ÓÃÕâ¸ö·½·¨, µ«ÊÇÔÊĞíµİ¹éµ÷ÓÃ£¬ÕâÊÇ·ÀÖ¹ËÀËøËù±ØĞèµÄ
+	// é˜²æ­¢å¤šä¸ªçº¿ç¨‹åŒæ—¶è°ƒç”¨è¿™ä¸ªæ–¹æ³•, ä½†æ˜¯å…è®¸é€’å½’è°ƒç”¨ï¼Œè¿™æ˜¯é˜²æ­¢æ­»é”æ‰€å¿…éœ€çš„
 	recursiveMutex.lock();
-	// µ±µİ¹éµ÷ÓÃ´Ë·½·¨Ê±ÍË»Øµ½ stderr
+	// å½“é€’å½’è°ƒç”¨æ­¤æ–¹æ³•æ—¶é€€å›åˆ° stderr
 	if (defaultLogger && nonRecursiveMutex.tryLock()) {
 		defaultLogger->log(type, message, file, function, line);
 		nonRecursiveMutex.unlock();
@@ -165,7 +165,7 @@ void Logger_p::Logger::msgHandler(const QtMsgType type, const QString& message, 
 		fflush(stderr);
 	}
 
-	// ¼ÇÂ¼Ò»¸öÖÂÃüÏûÏ¢ºóÖĞÖ¹³ÌĞò
+	// è®°å½•ä¸€ä¸ªè‡´å‘½æ¶ˆæ¯åä¸­æ­¢ç¨‹åº
 	if (type == QtFatalMsg) {
 		abort();
 	}

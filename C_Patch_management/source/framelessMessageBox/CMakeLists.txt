@@ -1,4 +1,4 @@
-#set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/application)
+﻿#set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/application)
 set(TARGET_NAME framelessMessageBox)
 
 if (WIN32)

@@ -1,4 +1,4 @@
-#include "filelogger.hpp"
+﻿#include "filelogger.hpp"
 
 #include <QDebug>
 #include <QDir>

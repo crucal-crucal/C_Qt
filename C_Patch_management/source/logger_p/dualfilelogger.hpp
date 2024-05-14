@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QSettings>
 
@@ -8,8 +8,8 @@
 
 namespace Logger_p {
 /*
- * @brief Í¬Ê±½«ÈÕÖ¾ÏûÏ¢Ğ´ÈëÁ½¸öÈÕÖ¾ÎÄ¼ş
- * @see FileLogger ÏêÏ¸ÈÕÖ¾ÃèÊö
+ * @brief åŒæ—¶å°†æ—¥å¿—æ¶ˆæ¯å†™å…¥ä¸¤ä¸ªæ—¥å¿—æ–‡ä»¶
+ * @see FileLogger è¯¦ç»†æ—¥å¿—æè¿°
  */
 class LOGGER_P_EXPORT DualFileLogger final : public Logger {
 	Q_OBJECT
@@ -17,31 +17,31 @@ class LOGGER_P_EXPORT DualFileLogger final : public Logger {
 
 public:
 	/*
-	 * @note: ÔÚÔËĞĞÆÚ¼ä²»ÄÜ¸ü¸Ä£¬Ëù¼°½¨ÒéÌá¹©µ¥¶ÀµÄQSettingsÊµÀı£¬¸ÃÊµÀı²»±»³ÌĞòµÄÆäËû²¿·ÖÊ¹ÓÃ
-	 * FileLogger ²»½Ó¹ÜQSettingsÊµÀıµÄËùÓĞÈ¨£¬Òò´Ëµ÷ÓÃÕßÓ¦¸ÃÔÚ¹Ø»úÊ±Ïú»ÙËü
-	 * @param: firstSettings µÚÒ»¸öÈÕÖ¾ÎÄ¼şÅäÖÃ
-	 * @param: secondSettings µÚ¶ş¸öÈÕÖ¾ÎÄ¼şÅäÖÃ
-	 * @param: refreshInterval Ë¢ĞÂ¼ä¸ô£¬µ¥Î»ºÁÃë, 0 = ½ûÓÃ
+	 * @note: åœ¨è¿è¡ŒæœŸé—´ä¸èƒ½æ›´æ”¹ï¼Œæ‰€åŠå»ºè®®æä¾›å•ç‹¬çš„QSettingså®ä¾‹ï¼Œè¯¥å®ä¾‹ä¸è¢«ç¨‹åºçš„å…¶ä»–éƒ¨åˆ†ä½¿ç”¨
+	 * FileLogger ä¸æ¥ç®¡QSettingså®ä¾‹çš„æ‰€æœ‰æƒï¼Œå› æ­¤è°ƒç”¨è€…åº”è¯¥åœ¨å…³æœºæ—¶é”€æ¯å®ƒ
+	 * @param: firstSettings ç¬¬ä¸€ä¸ªæ—¥å¿—æ–‡ä»¶é…ç½®
+	 * @param: secondSettings ç¬¬äºŒä¸ªæ—¥å¿—æ–‡ä»¶é…ç½®
+	 * @param: refreshInterval åˆ·æ–°é—´éš”ï¼Œå•ä½æ¯«ç§’, 0 = ç¦ç”¨
 	 */
 	explicit DualFileLogger(QSettings* firstSettings, QSettings* secondSettings, int refreshInterval = 10000, QObject* parent = nullptr);
 	~DualFileLogger() override;
 
 	/*
-	 * @note: Èç¹û type >= minLevel, ×°ÊÎ²¢¼ÇÂ¼ÏûÏ¢
-	 * Õâ¸ö·½·¨ÊÇÏß³Ì°²È«µÄ
-	 * @param: type ÏûÏ¢ÀàĞÍ
-	 * @param: message ÏûÏ¢ÄÚÈİ
-	 * @param: file ÎÄ¼şÃû
-	 * @param: function º¯ÊıÃû
-	 * @param: line ĞĞºÅ
-	 * @see LogMessage ÏêÏ¸ÈÕÖ¾ÃèÊö
+	 * @note: å¦‚æœ type >= minLevel, è£…é¥°å¹¶è®°å½•æ¶ˆæ¯
+	 * è¿™ä¸ªæ–¹æ³•æ˜¯çº¿ç¨‹å®‰å…¨çš„
+	 * @param: type æ¶ˆæ¯ç±»å‹
+	 * @param: message æ¶ˆæ¯å†…å®¹
+	 * @param: file æ–‡ä»¶å
+	 * @param: function å‡½æ•°å
+	 * @param: line è¡Œå·
+	 * @see LogMessage è¯¦ç»†æ—¥å¿—æè¿°
 	 */
 	void log(QtMsgType type, const QString& message, const QString& file, const QString& function, int line) override;
 	/*
-	 * @note: Çå³ıÈÕÖ¾ÎÄ¼ş
-	 * Õâ¸ö·½·¨ÊÇÏß³Ì°²È«µÄ
-	 * @param: buffer ÊÇ·ñÇå³ı»ØËİ»º³åÇø
-	 * @param: variables ÊÇ·ñÇå³ıÈÕÖ¾±äÁ¿
+	 * @note: æ¸…é™¤æ—¥å¿—æ–‡ä»¶
+	 * è¿™ä¸ªæ–¹æ³•æ˜¯çº¿ç¨‹å®‰å…¨çš„
+	 * @param: buffer æ˜¯å¦æ¸…é™¤å›æº¯ç¼“å†²åŒº
+	 * @param: variables æ˜¯å¦æ¸…é™¤æ—¥å¿—å˜é‡
 	 */
 	void clear(bool buffer, bool variables) override;
 

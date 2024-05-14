@@ -1,4 +1,4 @@
-#include "logmessage.hpp"
+﻿#include "logmessage.hpp"
 
 #include <QThread>
 #include <utility>

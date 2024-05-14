@@ -1,4 +1,4 @@
-#include "uvfiledialog.h"
+﻿#include "uvfiledialog.h"
 
 #include <QSettings>
 #include <QListView>

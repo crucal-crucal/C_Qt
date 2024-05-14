@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QMutex>
 #include <QObject>
@@ -8,16 +8,16 @@
 
 namespace Logger_p {
 /*
- * ×°ÊÎÈÕÖ¾ÏûÏ¢²¢½«ÆäĞ´Èë¿ØÖÆÌ¨, stderr
- * ×°ÊÎÆ÷Ê¹ÓÃÔ¤¶¨ÒåµÄ msgFormat ×Ö·û´®À´·á¸»ÈÕÖ¾ÏûÏ¢
- * ¸½¼ÓĞÅÏ¢(ÈçÊ±¼ä´Á)¡£
- * msgFormat×Ö·û´®ºÍÏûÏ¢ÎÄ±¾¿ÉÄÜ°üº¬¶îÍâµÄ, ¸ñÊ½Îª<i>{name}</i>µÄ±äÁ¿ÃûÓÉÖµÌî³ä, È¡×Ô¾²Ì¬Ïß³Ì±¾µØ×Öµä¡£
- * ÈÕÖ¾¼ÇÂ¼Æ÷¿ÉÒÔÔÚÏß³Ì±¾µØÊÕ¼¯¿ÉÅäÖÃÊıÁ¿µÄÏûÏ¢, FIFO»º³åÇø¡£ÑÏÖØĞÔ >= minLevelµÄÈÕÖ¾ÏûÏ¢»áË¢ĞÂ»º³åÇø¡£
- * ÕâÑùĞÅÏ¢¾Í±»Ğ´³öÀ´ÁË¡£ÓĞÒ»¸öÀıÍâ: INFO ÏûÏ¢±»ÊÓÎªDEBUGÏûÏ¢(¼¶±ğ0)¡£
- * Ê¾Àı:Èç¹ûÆôÓÃ»º³åÇø²¢Ê¹ÓÃ minLevel = 2£¬ÔòÓ¦ÓÃ³ÌĞòµÈ´ı£¬Ö±µ½·¢Éú´íÎó¡£È»ºóÁ¬Í¬´íÎóĞÅÏ¢Ò»ÆğĞ´³öÀ´
- * Ê¹ÓÃÍ¬Ò»Ïß³ÌµÄËùÓĞ»º³åµÄµÍ¼¶ÏûÏ¢¡£µ«Ö»Òª²»´íÎó·¢ÉúÁË£¬Ê²Ã´Ò²²»»áĞ´³ö¡£
- * Èç¹û»º³åÇø±»½ûÓÃ£¬ÄÇÃ´Ö»ÓĞÑÏÖØĞÔ >= minLevelµÄÏûÏ¢»áĞ´³ö¡£
- * @see: ²Î¼û LogMessage »ñÈ¡ÏûÏ¢×°ÊÎµÄÃèÊö¡£
+ * è£…é¥°æ—¥å¿—æ¶ˆæ¯å¹¶å°†å…¶å†™å…¥æ§åˆ¶å°, stderr
+ * è£…é¥°å™¨ä½¿ç”¨é¢„å®šä¹‰çš„ msgFormat å­—ç¬¦ä¸²æ¥ä¸°å¯Œæ—¥å¿—æ¶ˆæ¯
+ * é™„åŠ ä¿¡æ¯(å¦‚æ—¶é—´æˆ³)ã€‚
+ * msgFormatå­—ç¬¦ä¸²å’Œæ¶ˆæ¯æ–‡æœ¬å¯èƒ½åŒ…å«é¢å¤–çš„, æ ¼å¼ä¸º<i>{name}</i>çš„å˜é‡åç”±å€¼å¡«å……, å–è‡ªé™æ€çº¿ç¨‹æœ¬åœ°å­—å…¸ã€‚
+ * æ—¥å¿—è®°å½•å™¨å¯ä»¥åœ¨çº¿ç¨‹æœ¬åœ°æ”¶é›†å¯é…ç½®æ•°é‡çš„æ¶ˆæ¯, FIFOç¼“å†²åŒºã€‚ä¸¥é‡æ€§ >= minLevelçš„æ—¥å¿—æ¶ˆæ¯ä¼šåˆ·æ–°ç¼“å†²åŒºã€‚
+ * è¿™æ ·ä¿¡æ¯å°±è¢«å†™å‡ºæ¥äº†ã€‚æœ‰ä¸€ä¸ªä¾‹å¤–: INFO æ¶ˆæ¯è¢«è§†ä¸ºDEBUGæ¶ˆæ¯(çº§åˆ«0)ã€‚
+ * ç¤ºä¾‹:å¦‚æœå¯ç”¨ç¼“å†²åŒºå¹¶ä½¿ç”¨ minLevel = 2ï¼Œåˆ™åº”ç”¨ç¨‹åºç­‰å¾…ï¼Œç›´åˆ°å‘ç”Ÿé”™è¯¯ã€‚ç„¶åè¿åŒé”™è¯¯ä¿¡æ¯ä¸€èµ·å†™å‡ºæ¥
+ * ä½¿ç”¨åŒä¸€çº¿ç¨‹çš„æ‰€æœ‰ç¼“å†²çš„ä½çº§æ¶ˆæ¯ã€‚ä½†åªè¦ä¸é”™è¯¯å‘ç”Ÿäº†ï¼Œä»€ä¹ˆä¹Ÿä¸ä¼šå†™å‡ºã€‚
+ * å¦‚æœç¼“å†²åŒºè¢«ç¦ç”¨ï¼Œé‚£ä¹ˆåªæœ‰ä¸¥é‡æ€§ >= minLevelçš„æ¶ˆæ¯ä¼šå†™å‡ºã€‚
+ * @see: å‚è§ LogMessage è·å–æ¶ˆæ¯è£…é¥°çš„æè¿°ã€‚
  */
 class LOGGER_P_EXPORT Logger : public QObject {
 	Q_OBJECT
@@ -27,84 +27,84 @@ public:
 	explicit Logger(QObject* parent = nullptr);
 	/*
 	 * log levels: 0 = DEBUG, 1 = WARNING, 2 = CRITICAL, 3 = FATAL, 4 = INFO
-	 * @param msgFormat ÏûÏ¢¸ñÊ½×Ö·û´®
-	 * @param timestampFormat Ê±¼ä´Á¸ñÊ½×Ö·û´®
-	 * @param minLevel ×îµÍÈÕÖ¾¼¶±ğ, Èç¹ûbufferSize = 0, ½ÏµÍ¼¶±ğµÄÏûÏ¢½«±»¶ªÆú, Èç¹ûbufferSize > 0, ½ÏµÍ¼¶±ğµÄÏû¼«±»»º³å£¬ÏàµÈ»ò¸ü¸ß¼¶±ğµÄÏûÏ¢´¥·¢Ğ´Èë»º³åÄÚÈİ
-	 * @param bufferSize »º³åÇø´óĞ¡, 0 = ½ûÓÃ»º³åÇø, ·ñÔòÆôÓÃ
-	 * @see: ²Î¼û LogMessage »ñÈ¡ÏûÏ¢×°ÊÎµÄÃèÊö¡£
+	 * @param msgFormat æ¶ˆæ¯æ ¼å¼å­—ç¬¦ä¸²
+	 * @param timestampFormat æ—¶é—´æˆ³æ ¼å¼å­—ç¬¦ä¸²
+	 * @param minLevel æœ€ä½æ—¥å¿—çº§åˆ«, å¦‚æœbufferSize = 0, è¾ƒä½çº§åˆ«çš„æ¶ˆæ¯å°†è¢«ä¸¢å¼ƒ, å¦‚æœbufferSize > 0, è¾ƒä½çº§åˆ«çš„æ¶ˆæè¢«ç¼“å†²ï¼Œç›¸ç­‰æˆ–æ›´é«˜çº§åˆ«çš„æ¶ˆæ¯è§¦å‘å†™å…¥ç¼“å†²å†…å®¹
+	 * @param bufferSize ç¼“å†²åŒºå¤§å°, 0 = ç¦ç”¨ç¼“å†²åŒº, å¦åˆ™å¯ç”¨
+	 * @see: å‚è§ LogMessage è·å–æ¶ˆæ¯è£…é¥°çš„æè¿°ã€‚
 	 */
 	explicit Logger(QString msgFormat, QString timestampFormat, QtMsgType minLevel, int bufferSize, QObject* parent = nullptr);
 
 	~Logger() override;
 	/*
-	 * @note: Èç¹ûtype >= minLevel, ×°ÊÎ²¢¼ÇÂ¼ÏûÏ¢£¬´Ë·½·¨ÊÇÏß³Ì°²È«µÄ
-	 * @param: type ÏûÏ¢ÀàĞÍ
-	 * @param: message ÏûÏ¢ÎÄ±¾
-	 * @param: file ÎÄ¼şÃû
-	 * @param: function º¯ÊıÃû
-	 * @param: line ĞĞºÅ
-	 * @see: ²Î¼û LogMessage »ñÈ¡ÏûÏ¢×°ÊÎµÄÃèÊö¡£
+	 * @note: å¦‚æœtype >= minLevel, è£…é¥°å¹¶è®°å½•æ¶ˆæ¯ï¼Œæ­¤æ–¹æ³•æ˜¯çº¿ç¨‹å®‰å…¨çš„
+	 * @param: type æ¶ˆæ¯ç±»å‹
+	 * @param: message æ¶ˆæ¯æ–‡æœ¬
+	 * @param: file æ–‡ä»¶å
+	 * @param: function å‡½æ•°å
+	 * @param: line è¡Œå·
+	 * @see: å‚è§ LogMessage è·å–æ¶ˆæ¯è£…é¥°çš„æè¿°ã€‚
 	 */
 	virtual void log(QtMsgType type, const QString& message, const QString& file, const QString& function, int line);
 	/*
-	 * @note: ½«´ËÈÕÖ¾¼ÇÂ¼Æ÷°²×°ÎªÄ¬ÈÏÏûÏ¢´¦Àí³ÌĞò£¬°²×°¹ıºó¾Í¿ÉÊ¹ÓÃ qDebug() µÈºêÀ´¼ÇÂ¼ÈÕÖ¾
+	 * @note: å°†æ­¤æ—¥å¿—è®°å½•å™¨å®‰è£…ä¸ºé»˜è®¤æ¶ˆæ¯å¤„ç†ç¨‹åºï¼Œå®‰è£…è¿‡åå°±å¯ä½¿ç”¨ qDebug() ç­‰å®æ¥è®°å½•æ—¥å¿—
 	 */
 	void installMsgHandler();
 	/*
-	 * @note: ÉèÖÃ¿ÉÓÃÓÚĞŞÊÎÈÕÖ¾ÏûÏ¢µÄÏß³Ì¾Ö²¿±äÁ¿£¬´Ë·½·¨ÊÇÏß³Ì°²È«µÄ
-	 * @param: name ±äÁ¿Ãû
-	 * @param: value ±äÁ¿Öµ
+	 * @note: è®¾ç½®å¯ç”¨äºä¿®é¥°æ—¥å¿—æ¶ˆæ¯çš„çº¿ç¨‹å±€éƒ¨å˜é‡ï¼Œæ­¤æ–¹æ³•æ˜¯çº¿ç¨‹å®‰å…¨çš„
+	 * @param: name å˜é‡å
+	 * @param: value å˜é‡å€¼
 	 */
 	static void set(const QString& name, const QString& value);
 	/*
-	 * @note: Çå³ıµ±Ç°Ïß³ÌµÄÏß³Ì±¾µØÊı¾İ£¬´Ë·½·¨ÊÇÏß³Ì°²È«µÄ
-	 * @param: buffer ÊÇ·ñÇå³ı»ØËİ»º³åÇø
-	 * @param: variables ÊÇ·ñÇå³ıÈÕÖ¾±äÁ¿
+	 * @note: æ¸…é™¤å½“å‰çº¿ç¨‹çš„çº¿ç¨‹æœ¬åœ°æ•°æ®ï¼Œæ­¤æ–¹æ³•æ˜¯çº¿ç¨‹å®‰å…¨çš„
+	 * @param: buffer æ˜¯å¦æ¸…é™¤å›æº¯ç¼“å†²åŒº
+	 * @param: variables æ˜¯å¦æ¸…é™¤æ—¥å¿—å˜é‡
 	 */
 	virtual void clear(bool buffer, bool variables);
 
 protected:
-	QString msgFormat{};       // ÏûÏ¢¸ñÊ½×Ö·û´®
-	QString timestampFormat{}; // Ê±¼ä´Á¸ñÊ½×Ö·û´®
-	QtMsgType minLevel{};      // ×îµÍÈÕÖ¾¼¶±ğ
-	int bufferSize{};          // »º³åÇø´óĞ¡
-	static QMutex mutex;       // ÓÃÓÚÍ¬²½²¢·¢Ïß³ÌµÄ·ÃÎÊ
+	QString msgFormat{};       // æ¶ˆæ¯æ ¼å¼å­—ç¬¦ä¸²
+	QString timestampFormat{}; // æ—¶é—´æˆ³æ ¼å¼å­—ç¬¦ä¸²
+	QtMsgType minLevel{};      // æœ€ä½æ—¥å¿—çº§åˆ«
+	int bufferSize{};          // ç¼“å†²åŒºå¤§å°
+	static QMutex mutex;       // ç”¨äºåŒæ­¥å¹¶å‘çº¿ç¨‹çš„è®¿é—®
 	/*
-	 * @note: ×°ÊÎ²¢±àĞ´Ò»¸öÈÕÖ¾ÏûÏ¢¸ø stderr
+	 * @note: è£…é¥°å¹¶ç¼–å†™ä¸€ä¸ªæ—¥å¿—æ¶ˆæ¯ç»™ stderr
 	 */
 	virtual void write(const LogMessage* logMessage);
 
 private:
-	static Logger* defaultLogger; // Ä¬ÈÏÊ¹ÓÃ msgHandler
+	static Logger* defaultLogger; // é»˜è®¤ä½¿ç”¨ msgHandler
 	/*
-	 * @note: È«¾Ö¾²Ì¬ÈÕÖ¾º¯ÊıµÄÏûÏ¢´¦Àí³ÌĞò, ×ª·¢¶ÔÄ¬ÈÏ¼ÇÂ¼Æ÷µÄµ÷ÓÃ, ´Ë·½·¨ÊÇÏß³Ì°²È«µÄ
-	 * Èç¹û³öÏÖÖÂÃüÏûÏ¢£¬³ÌĞò½«ÖĞÖ¹¡£ÏûÏ¢ÖĞµÄ±äÁ¿½«±»ËüÃÇµÄÖµÌæ»»¡£
-	 * @param: type ÏûÏ¢ÀàĞÍ
-	 * @param: message ÏûÏ¢ÎÄ±¾
-	 * @param: file ÎÄ¼şÃû
-	 * @param: function º¯ÊıÃû
-	 * @param: line ĞĞºÅ
+	 * @note: å…¨å±€é™æ€æ—¥å¿—å‡½æ•°çš„æ¶ˆæ¯å¤„ç†ç¨‹åº, è½¬å‘å¯¹é»˜è®¤è®°å½•å™¨çš„è°ƒç”¨, æ­¤æ–¹æ³•æ˜¯çº¿ç¨‹å®‰å…¨çš„
+	 * å¦‚æœå‡ºç°è‡´å‘½æ¶ˆæ¯ï¼Œç¨‹åºå°†ä¸­æ­¢ã€‚æ¶ˆæ¯ä¸­çš„å˜é‡å°†è¢«å®ƒä»¬çš„å€¼æ›¿æ¢ã€‚
+	 * @param: type æ¶ˆæ¯ç±»å‹
+	 * @param: message æ¶ˆæ¯æ–‡æœ¬
+	 * @param: file æ–‡ä»¶å
+	 * @param: function å‡½æ•°å
+	 * @param: line è¡Œå·
 	 */
 	static void msgHandler(QtMsgType type, const QString& message, const QString& file = "", const QString& function = "", int line = 0);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 	/*
-	 * @note: Qt5µÄ°ü×°Æ÷
-	 * @param: type ÏûÏ¢ÀàĞÍ
-	 * @param: context ÏûÏ¢ÉÏÏÂÎÄ
-	 * @param: message ÏûÏ¢ÎÄ±¾
+	 * @note: Qt5çš„åŒ…è£…å™¨
+	 * @param: type æ¶ˆæ¯ç±»å‹
+	 * @param: context æ¶ˆæ¯ä¸Šä¸‹æ–‡
+	 * @param: message æ¶ˆæ¯æ–‡æœ¬
 	 * @see: msgHandler()
 	 */
 	static void msgHandler5(QtMsgType type, const QMessageLogContext& context, const QString& message);
 #else
 	/*
-	 * @note: Qt4µÄ°ü×°Æ÷
-	 * @param: type ÏûÏ¢ÀàĞÍ
-	 * @param: message ÏûÏ¢ÎÄ±¾
+	 * @note: Qt4çš„åŒ…è£…å™¨
+	 * @param: type æ¶ˆæ¯ç±»å‹
+	 * @param: message æ¶ˆæ¯æ–‡æœ¬
 	 * @see: msgHandler()
 	 */
 	static void msgHandler4(QtMsgType type, const char* message);
 #endif
-	static QThreadStorage<QHash<QString, QString>*> logVars; // ÔÚÈÕÖ¾ÏûÏ¢ÖĞÊ¹ÓÃµÄÏß³Ì¾Ö²¿±äÁ¿
-	QThreadStorage<QList<LogMessage*>*> buffers;             // Ïß³Ì±¾µØ»ØËİ»º³åÇø
+	static QThreadStorage<QHash<QString, QString>*> logVars; // åœ¨æ—¥å¿—æ¶ˆæ¯ä¸­ä½¿ç”¨çš„çº¿ç¨‹å±€éƒ¨å˜é‡
+	QThreadStorage<QList<LogMessage*>*> buffers;             // çº¿ç¨‹æœ¬åœ°å›æº¯ç¼“å†²åŒº
 };
 }

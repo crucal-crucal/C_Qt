@@ -1,4 +1,4 @@
-#include "uvbasedialog.h"
+﻿#include "uvbasedialog.h"
 
 #ifdef Q_OS_WIN
 #include <Windowsx.h>

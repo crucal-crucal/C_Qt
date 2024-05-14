@@ -1,4 +1,4 @@
-#include "dualfilelogger.hpp"
+﻿#include "dualfilelogger.hpp"
 
 Logger_p::DualFileLogger::DualFileLogger(QSettings* firstSettings, QSettings* secondSettings, const int refreshInterval, QObject* parent)
 : Logger(parent) {

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QDateTime>
 #include <qglobal.h>
@@ -7,52 +7,52 @@
 
 namespace Logger_p {
 /*
- * @brief: Ò»ÌõÈÕÖ¾ÏûÏ¢
- * ÒÔÏÂ±äÁ¿¿ÉÒÔÔÚÏûÏ¢ºÍ msgFormat ÖĞÊ¹ÓÃ:
- * - {timestamp} ´´½¨ÈÕÆÚºÍÊ±¼ä
- * - {typeNr} Êı×Ö¸ñÊ½µÄÏûÏ¢ÀàĞÍ(0-3)
- * - {type} ×Ö·û´®¸ñÊ½µÄÏûÏ¢ÀàĞÍ(DEBUG, WARNING, CRITICAL, FATAL)
- * - {thread} Ïß³ÌIDºÅ
- * - {message} ÏûÏ¢ÎÄ±¾
- * - {xxx} ÓÃÓÚÈÎºÎÓÃ»§¶¨ÒåµÄ¼ÇÂ¼Æ÷±äÁ¿
- * - {file} ÎÄ¼şÃû
- * - {function} º¯ÊıÃû
- * - {line} ĞĞºÅ
+ * @brief: ä¸€æ¡æ—¥å¿—æ¶ˆæ¯
+ * ä»¥ä¸‹å˜é‡å¯ä»¥åœ¨æ¶ˆæ¯å’Œ msgFormat ä¸­ä½¿ç”¨:
+ * - {timestamp} åˆ›å»ºæ—¥æœŸå’Œæ—¶é—´
+ * - {typeNr} æ•°å­—æ ¼å¼çš„æ¶ˆæ¯ç±»å‹(0-3)
+ * - {type} å­—ç¬¦ä¸²æ ¼å¼çš„æ¶ˆæ¯ç±»å‹(DEBUG, WARNING, CRITICAL, FATAL)
+ * - {thread} çº¿ç¨‹IDå·
+ * - {message} æ¶ˆæ¯æ–‡æœ¬
+ * - {xxx} ç”¨äºä»»ä½•ç”¨æˆ·å®šä¹‰çš„è®°å½•å™¨å˜é‡
+ * - {file} æ–‡ä»¶å
+ * - {function} å‡½æ•°å
+ * - {line} è¡Œå·
  */
 class LOGGER_P_EXPORT LogMessage {
 	Q_DISABLE_COPY(LogMessage)
 
 public:
 	/*
-	 * @param: type ÏûÏ¢ÀàĞÍ
-	 * @param: message ÏûÏ¢ÎÄ±¾
-	 * @param: logVars ÓÃ»§¶¨ÒåµÄ¼ÇÂ¼Æ÷±äÁ¿£¬ÔÊĞíÎª0
-	 * @param: file ÎÄ¼şÃû
-	 * @param: function º¯ÊıÃû
-	 * @param: line ĞĞºÅ
+	 * @param: type æ¶ˆæ¯ç±»å‹
+	 * @param: message æ¶ˆæ¯æ–‡æœ¬
+	 * @param: logVars ç”¨æˆ·å®šä¹‰çš„è®°å½•å™¨å˜é‡ï¼Œå…è®¸ä¸º0
+	 * @param: file æ–‡ä»¶å
+	 * @param: function å‡½æ•°å
+	 * @param: line è¡Œå·
 	 */
 	LogMessage(QtMsgType type, QString  message, const QHash<QString, QString>* logVars, QString  file,
 	           QString  function, int line);
 	/*
-	 * @note: ½«ÏûÏ¢×ª»»Îª×Ö·û´®
-	 * @param: msgFormat×°ÊÎ¸ñÊ½£¬¿ÉÄÜ°üº¬±äÁ¿ºÍ¾²Ì¬ÎÄ±¾
-	 * @param: timestampFormatÊ±¼ä´Á¸ñÊ½¡£
-	 * @return: ¸ñÊ½»¯ºóµÄ×Ö·û´®
+	 * @note: å°†æ¶ˆæ¯è½¬æ¢ä¸ºå­—ç¬¦ä¸²
+	 * @param: msgFormatè£…é¥°æ ¼å¼ï¼Œå¯èƒ½åŒ…å«å˜é‡å’Œé™æ€æ–‡æœ¬
+	 * @param: timestampFormatæ—¶é—´æˆ³æ ¼å¼ã€‚
+	 * @return: æ ¼å¼åŒ–åçš„å­—ç¬¦ä¸²
 	 */
 	[[nodiscard]] QString toString(const QString& msgFormat, const QString& timestampFormat) const;
 	/*
-	 * @note: »ñÈ¡ÏûÏ¢ÀàĞÍ
+	 * @note: è·å–æ¶ˆæ¯ç±»å‹
 	 */
 	[[nodiscard]] QtMsgType getType() const;
 
 private:
-	QHash<QString, QString> m_logVars{}; // ÓÃ»§¶¨ÒåµÄ¼ÇÂ¼Æ÷±äÁ¿
-	QDateTime m_timestamp{};             // ´´½¨ÈÕÆÚºÍÊ±¼ä
-	QtMsgType m_type{};                  // ÏûÏ¢ÀàĞÍ
-	Qt::HANDLE m_threadId{};             // Ïß³ÌIDºÅ
-	QString m_message{};                 // ÏûÏ¢ÎÄ±¾
-	QString m_file{};                    // ÎÄ¼şÃû
-	QString m_function{};                // º¯ÊıÃû
-	int m_line{};                        // ĞĞºÅ
+	QHash<QString, QString> m_logVars{}; // ç”¨æˆ·å®šä¹‰çš„è®°å½•å™¨å˜é‡
+	QDateTime m_timestamp{};             // åˆ›å»ºæ—¥æœŸå’Œæ—¶é—´
+	QtMsgType m_type{};                  // æ¶ˆæ¯ç±»å‹
+	Qt::HANDLE m_threadId{};             // çº¿ç¨‹IDå·
+	QString m_message{};                 // æ¶ˆæ¯æ–‡æœ¬
+	QString m_file{};                    // æ–‡ä»¶å
+	QString m_function{};                // å‡½æ•°å
+	int m_line{};                        // è¡Œå·
 };
 }
