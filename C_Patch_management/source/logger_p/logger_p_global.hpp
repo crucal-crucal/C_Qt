@@ -14,7 +14,7 @@
 #else
 #define LOGGER_P_EXPORT Q_DECL_IMPORT
 #endif
-#elif Q_OS_UNIX
+#elif defined(Q_OS_UNIX)
 #define LOGGER_P_EXPORT
 #endif
 

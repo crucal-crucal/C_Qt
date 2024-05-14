@@ -3,7 +3,6 @@
 #include <QMutex>
 #include <QObject>
 #include <QThreadStorage>
-#include "logger_p_global.hpp"
 #include "logmessage.hpp"
 
 namespace Logger_p {
