@@ -324,7 +324,6 @@ void changeConf(const QString& configFilePath, WINDOWLANAGUAGE newLanguage, WIND
 
 	std::vector<std::string> lines;
 	readConf(configFilePath, lines);
-	qDebug() << lines.size();
 	std::vector<std::string> newlines;
 	newlines.emplace_back("Language: " + std::to_string(newLanguageInt));
 	newlines.emplace_back("ProgressbarStyle: " + std::to_string(newProgressBarStyleInt));
