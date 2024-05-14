@@ -33,8 +33,7 @@ public:
 	 * @param bufferSize 缓冲区大小, 0 = 禁用缓冲区, 否则启用
 	 * @see: 参见 LogMessage 获取消息装饰的描述。
 	 */
-	explicit Logger(QString msgFormat = "{timestamp} {type} {message}", QString timestampFormat = "dd.MM.yyyy hh:mm:ss.zzz",
-	                QtMsgType minLevel = QtDebugMsg, int bufferSize = 0, QObject* parent = nullptr);
+	explicit Logger(QString msgFormat, QString timestampFormat, QtMsgType minLevel, int bufferSize, QObject* parent = nullptr);
 
 	~Logger() override;
 	/*
@@ -47,7 +46,6 @@ public:
 	 * @see: 参见 LogMessage 获取消息装饰的描述。
 	 */
 	virtual void log(QtMsgType type, const QString& message, const QString& file, const QString& function, int line);
-	void log_p(QtMsgType type, const QString& message, const QString& file = "", const QString& function = "", int line = 0);
 	/*
 	 * @note: 将此日志记录器安装为默认消息处理程序，安装过后就可使用 qDebug() 等宏来记录日志
 	 */
@@ -64,7 +62,6 @@ public:
 	 * @param: variables 是否清除日志变量
 	 */
 	virtual void clear(bool buffer, bool variables);
-	void clear_p(bool buffer = true, bool variables = true);
 
 protected:
 	QString msgFormat{};       // 消息格式字符串

@@ -8,12 +8,63 @@
  * Linux系统采用的是一种"就近原则"来解析符号，即在链接时会优先选择最先找到的符号。因此，如果在同一程序或者库中存在多个同名的符号，默认情况下，链接器会选择最先找到的符号，这些符号都是可见的。
  * 这样设计简化了程序的开发和链接过程，并符合了Unix/Linux系统的设计哲学。
  */
-#if defined(_MSC_VER) || defined(_WIN32) || defined(_WIN64)
+#ifdef Q_OS_WIN
 #ifdef LOGGER_P_LIB
 #define LOGGER_P_EXPORT Q_DECL_EXPORT
 #else
 #define LOGGER_P_EXPORT Q_DECL_IMPORT
 #endif
-#elif defined(__unix__)
+#elif Q_OS_UNIX
 #define LOGGER_P_EXPORT
 #endif
+
+using i64 = long long;
+using ui64 = unsigned long long;
+/*
+ * @breif: 配置文件默认配置
+ */
+struct LoggerConfigData {
+	std::wstring group{};
+	std::wstring fileName{};
+	std::wstring minLevel{};
+	ui64 bufferSize{};
+	ui64 maxSize{};
+	int maxBackups{};
+	std::string timestampFormat{};
+	std::string msgFormat{};
+
+	LoggerConfigData();
+	LoggerConfigData& operator=(const LoggerConfigData& other);
+	void reset();
+};
+
+inline LoggerConfigData::LoggerConfigData() {
+	reset();
+}
+
+inline LoggerConfigData& LoggerConfigData::operator=(const LoggerConfigData& other) {
+	if (this == &other) {
+		return *this;
+	}
+	this->group = other.group;
+	this->fileName = other.fileName;
+	this->minLevel = other.minLevel;
+	this->bufferSize = other.bufferSize;
+	this->maxSize = other.maxSize;
+	this->maxBackups = other.maxBackups;
+	this->timestampFormat = other.timestampFormat;
+	this->msgFormat = other.msgFormat;
+
+	return *this;
+}
+
+inline void LoggerConfigData::reset() {
+	group = L"logging";
+	fileName = L"../log/stdout.log";
+	minLevel = L"DEBUG";
+	bufferSize = 100;
+	maxSize = 1000000;
+	maxBackups = 10;
+	timestampFormat = "dd.MM.yyyy hh:mm:ss.zzz";
+	msgFormat = "{timestamp} {typeNr} {type} {thread} {message}\\n  in {file} line {line} function {function}";
+}

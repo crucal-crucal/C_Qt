@@ -6,7 +6,6 @@
 #include <QObject>
 #include <QProcess>
 #include <QResource>
-#include <QSettings>
 #include <QSharedMemory>
 #include <QTranslator>
 #include <string>
@@ -17,6 +16,7 @@
 #include "patch.h"
 #include "global/cglobal.h"
 #include "logger/logger.h"
+#include "logger_p/filelogger.hpp"
 #include "logger_redirection/logger_redirection.hpp"
 #include "splashscreen/SplashScreen.h"
 
@@ -35,11 +35,11 @@ void unLoadTranslations();
 /*
  * @note: 配置文件操作
  */
-void initializeConfigFile();
-ConfigData readConf();
-void readConf(std::vector<std::string>& lines);
-void writeConf(const std::vector<std::string>& lines);
-void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
+QString initializeConfigFile(const LoggerConfigData& loggerConfigData);
+InterfaceConfigData readConf();
+void readConf(const QString& configFilePath, std::vector<std::string>& lines);
+void writeConf(const QString& configFilePath, const std::vector<std::string>& lines, const std::vector<std::string>& newLines);
+void changeConf(const QString& configFilePath, WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
                 WINDOWTHEMESTYLE newThemeStyle);
 /*
  * @note: Linux 通过系统命令判断是否为深色主题
@@ -73,10 +73,13 @@ int main(int argc, char* argv[]) {
 	QTextCodec::setCodecForLocale(codec);
 #endif
 	QApplication app(argc, argv);
+	const LoggerConfigData loggerConfigData;
+	// 初始化配置文件
+	const QString configFilePath = initializeConfigFile(loggerConfigData);
+	// 初始化命令行参数
 	createCommandLineParser(app);
+	// 获取系统主题颜色
 	checkWindowThemeStyle();
-
-	LoggerRedirection::getInstance()->install(QApplication::applicationDirPath() + "/log");
 	const QFileInfo appFile(QApplication::applicationFilePath());
 	// 将路径切换到上级目录
 	QDir dir(appFile.absolutePath());
@@ -87,12 +90,17 @@ int main(int argc, char* argv[]) {
 	const QString strRcc = appParPath + QString::fromLatin1(rccFilePath);
 	const QString strtrans_cn = appParPath + QString::fromLatin1(translationFilePath_CN);
 	const QString strtrans_en = appParPath + QString::fromLatin1(translationFilePath_EN);
-
 	// 加载rcc
 	Logger::instance().logInfo(loadResources(strRcc) ? "Load Resource Success!" : "Load Resource Failed!");
+	/*
+	 * @note: 加载重定向日志, 写入文件前需要将文件夹创建好, 因为Logger::instance()会创建好log文件夹，所以此处不再创建
+	 */
+	const auto logSettings = new QSettings(configFilePath, QSettings::IniFormat, &app);
+	logSettings->beginGroup(QString::fromStdWString(loggerConfigData.group));
+	const auto logger = new Logger_p::FileLogger(logSettings, 10000, &app);
+	logger->installMsgHandler();
+	// 加载开始界面
 	g_splashScreen = createSplashScreen(QPixmap(":/icon/start.png"));
-	// 初始化配置文件
-	initializeConfigFile();
 	auto [language, progressBarStyle, themeStyle] = readConf();
 	windowLanguage = language;
 	progressbarstyle = progressBarStyle;
@@ -111,13 +119,13 @@ int main(int argc, char* argv[]) {
 	QObject::connect(&w, &CPatch::ConfChanged, [&](const WINDOWLANAGUAGE lang, const WINDOWPROGRESSBARSTYLE prostyle) {
 		windowLanguage = lang;
 		progressbarstyle = prostyle;
-		changeConf(windowLanguage, progressbarstyle, windowThemeStyle);
+		changeConf(configFilePath, windowLanguage, progressbarstyle, windowThemeStyle);
 	});
 	// 修改主题
 	QObject::connect(&w, &CPatch::ThemeChanged, [&](const WINDOWTHEMESTYLE windowthemestyle) {
 		windowThemeStyle = windowthemestyle;
 		loadStyle(app, (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark);
-		changeConf(windowLanguage, progressbarstyle, windowThemeStyle);
+		changeConf(configFilePath, windowLanguage, progressbarstyle, windowThemeStyle);
 	});
 	// 释放资源
 	QObject::connect(&w, &CPatch::destroyed, [&]() {
@@ -196,40 +204,45 @@ void unLoadTranslations() {
 	}
 }
 
-void initializeConfigFile() {
+QString initializeConfigFile(const LoggerConfigData& loggerConfigData) {
 	const int language = static_cast<int>(windowLanguage);
 	const int progressBarStyle = static_cast<int>(progressbarstyle);
 	const int themeStyle = static_cast<int>(windowThemeStyle);
-	// 检查config文件夹是否存在，如果不存在则创建
-	if (!std::filesystem::exists(configDir)) {
-		if (!std::filesystem::create_directory(configDir)) {
-			Logger::instance().logError("Error: Unable to create directory " + QString::fromStdString(configDir));
-			return;
-		}
-		g_splashScreen->showMessage("Directory " + QString::fromStdString(configDir) + " created.", Qt::AlignBottom);
-		QThread::sleep(1);
+
+	const QString appPath = QApplication::applicationDirPath();
+	const QString configDirPath = appPath + QDir::separator() + QString::fromStdString(configDir);
+	if (const QDir configDir(configDirPath); !configDir.exists() && !configDir.mkpath(".")) {
+		qDebug() << "Unable to create directory " << configDirPath;
+		return "";
 	}
 
-	if (const std::ifstream configFile(configName); !configFile) {
-		// 配置文件不存在
-		if (std::ofstream outputFile(configName); outputFile) {
-			// 写入语言和进度条样式
-			outputFile << "Language: " << language << "\n";
-			outputFile << "ProgressbarStyle: " << progressBarStyle << "\n";
-			outputFile << "ThemeStyle: " << themeStyle;
-			outputFile.close();
-			g_splashScreen->showMessage("Config file created.", Qt::AlignBottom);
-			QThread::sleep(1);
+	const QString configFilePath = appPath + QDir::separator() + QString::fromStdString(configName);
+	QFile configFile(configFilePath);
+	if (!configFile.exists()) {
+		if (configFile.open(QFile::WriteOnly | QFile::Text)) {
+			QTextStream output(&configFile);
+			output << "[" << QString::fromStdWString(loggerConfigData.group) << "]" << "\n";
+			output << "fileName=" << QString::fromStdWString(loggerConfigData.fileName) << "\n";
+			output << "minLevel=" << QString::fromStdWString(loggerConfigData.minLevel) << "\n";
+			output << "bufferSize=" << QString::number(loggerConfigData.bufferSize) << "\n";
+			output << "maxSize=" << QString::number(loggerConfigData.maxSize) << "\n";
+			output << "maxBackups=" << QString::number(loggerConfigData.maxBackups) << "\n";
+			output << "timestampFormat=" << QString::fromStdString(loggerConfigData.timestampFormat) << "\n";
+			output << "msgFormat=" << QString::fromStdString(loggerConfigData.msgFormat) << "\n";
+			output << "[interface]\n";
+			output << "Language: " << language << "\n";
+			output << "ProgressbarStyle: " << progressBarStyle << "\n";
+			output << "ThemeStyle: " << themeStyle << "\n";
+			configFile.close();
 		} else {
-			Logger::instance().logError("Error: Unable to create config file.");
+			qDebug() << "Error: Unable to create config file.";
 		}
-	} else {
-		g_splashScreen->showMessage("Config file already exists.", Qt::AlignBottom);
-		QThread::sleep(1);
 	}
+
+	return configFilePath;
 }
 
-ConfigData readConf() {
+InterfaceConfigData readConf() {
 	auto language = windowLanguage;           // 默认语言
 	auto progressBarStyle = progressbarstyle; // 默认进度条样式
 	auto themeStyle = windowThemeStyle;       // 默认主题样式
@@ -258,58 +271,65 @@ ConfigData readConf() {
 	return { language, progressBarStyle, themeStyle };
 }
 
-void readConf(std::vector<std::string>& lines) {
+void readConf(const QString& configFilePath, std::vector<std::string>& lines) {
+	bool bInterfaceSection{ false };
 	// 读取整个文件内容到内存中
-	if (std::ifstream configFile(configName); configFile) {
+	if (std::ifstream configFile(configFilePath.toStdString()); configFile) {
 		std::string line;
 		while (std::getline(configFile, line)) {
-			lines.push_back(line);
+			if (line == "[interface]") {
+				bInterfaceSection = true;
+			} else if (line.empty() || line[0] == '[') {
+				bInterfaceSection = false;
+			}
+
+			if (bInterfaceSection && !line.empty() && line[0] != '[') {
+				lines.emplace_back(line);
+			}
 		}
 		configFile.close();
 	} else {
 		Logger::instance().logError("Error: Unable to open config file for reading.");
 	}
-}
 
-void writeConf(const std::vector<std::string>& lines) {
-	if (std::ofstream outputFile(configName, std::ios::trunc); outputFile) {
-		for (const std::string& line : lines) {
-			outputFile << line << std::endl;
-		}
-		outputFile.close();
-	} else {
-		Logger::instance().logError("Error: Unable to open config file for writing.");
+	for (auto& line : lines) {
+		qDebug() << QString::fromStdString(line);
 	}
 }
 
-void changeConf(WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
+void writeConf(const QString& configFilePath, const std::vector<std::string>& lines, const std::vector<std::string>& newLines) {
+	QFile file(configFilePath);
+	if (file.open(QIODevice::ReadWrite)) {
+		QTextStream stream(&file);
+		QString content = stream.readAll();
+		if (lines.size() != newLines.size()) {
+			qDebug() << "Error: The number of lines in the config file and the number of lines in the new config file do not match.";
+			file.close();
+			return;
+		}
+		for (int i = 0; i < newLines.size(); ++i) {
+			content.replace(QString::fromStdString(lines[i]), QString::fromStdString(newLines[i]));
+		}
+		file.seek(0);
+		stream << content;
+		file.close();
+	}
+}
+
+void changeConf(const QString& configFilePath, WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
                 WINDOWTHEMESTYLE newThemeStyle) {
 	const int newLanguageInt = static_cast<int>(newLanguage);
 	const int newProgressBarStyleInt = static_cast<int>(newprogressBarStyle);
 	const int newThemeStyleInt = static_cast<int>(newThemeStyle);
 
 	std::vector<std::string> lines;
-	readConf(lines);
-	// 查找并修改 "Language:", "ProgressbarStyle:", "ThemeStyle:"
-	bool Found = true;
-	for (std::string& line : lines) {
-		if (line.find("Language:") != std::string::npos) {
-			line = "Language: " + std::to_string(newLanguageInt); // 修改语言值
-		} else if (line.find("ProgressbarStyle:") != std::string::npos) {
-			line = "ProgressbarStyle: " + std::to_string(newProgressBarStyleInt); // 修改样式值
-		} else if (line.find("ThemeStyle:") != std::string::npos) {
-			line = "ThemeStyle: " + std::to_string(newThemeStyleInt); // 修改主题值
-		} else {
-			Found = false;
-			break;
-		}
-	}
-	// 如果找到了语言和样式行，则写回到文件中
-	if (Found) {
-		writeConf(lines);
-	} else {
-		Logger::instance().logError("Error: config line not found in config file.");
-	}
+	readConf(configFilePath, lines);
+	qDebug() << lines.size();
+	std::vector<std::string> newlines;
+	newlines.emplace_back("Language: " + std::to_string(newLanguageInt));
+	newlines.emplace_back("ProgressbarStyle: " + std::to_string(newProgressBarStyleInt));
+	newlines.emplace_back("ThemeStyle: " + std::to_string(newThemeStyleInt));
+	writeConf(configFilePath, lines, newlines);
 }
 
 #ifdef Q_OS_LINUX

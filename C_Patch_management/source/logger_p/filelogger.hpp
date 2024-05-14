@@ -65,8 +65,8 @@ private:
 	int m_maxBackups{};            // 备份文件的最大数量, 0 = 无限
 	QSettings* m_settings{};       // 配置设置
 	QFile* m_file{};               // 日志文件, 0 = 禁用
-	QBasicTimer* m_refreshTimer{}; // 刷新配置设置的定时器
-	QBasicTimer* m_flushTimer{};   // 刷新文件I/O缓冲区的定时器
+	QBasicTimer m_refreshTimer{}; // 刷新配置设置的定时器
+	QBasicTimer m_flushTimer{};   // 刷新文件I/O缓冲区的定时器
 	/*
 	 * @note: 打开输出文件
 	 */

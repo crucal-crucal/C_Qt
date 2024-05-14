@@ -71,26 +71,26 @@ static std::string App_arg_dir{};
 /*
  * @breif 配置文件内容
  */
-struct ConfigData {
+struct InterfaceConfigData {
 	WINDOWLANAGUAGE lanaguage{};
 	WINDOWPROGRESSBARSTYLE progressbarstyle{};
 	WINDOWTHEMESTYLE themeStyle{};
 
-	ConfigData();
-	ConfigData(WINDOWLANAGUAGE lang, WINDOWPROGRESSBARSTYLE style, WINDOWTHEMESTYLE theme);
-	ConfigData& operator=(const ConfigData& other);
+	InterfaceConfigData();
+	InterfaceConfigData(WINDOWLANAGUAGE lang, WINDOWPROGRESSBARSTYLE style, WINDOWTHEMESTYLE theme);
+	InterfaceConfigData& operator=(const InterfaceConfigData& other);
 	void reset();
 };
 
-inline ConfigData::ConfigData() {
+inline InterfaceConfigData::InterfaceConfigData() {
 	reset();
 }
 
-inline ConfigData::ConfigData(WINDOWLANAGUAGE lang, WINDOWPROGRESSBARSTYLE style, WINDOWTHEMESTYLE theme) :
+inline InterfaceConfigData::InterfaceConfigData(WINDOWLANAGUAGE lang, WINDOWPROGRESSBARSTYLE style, WINDOWTHEMESTYLE theme) :
 lanaguage(lang), progressbarstyle(style), themeStyle(theme) {
 }
 
-inline ConfigData& ConfigData::operator=(const ConfigData& other) {
+inline InterfaceConfigData& InterfaceConfigData::operator=(const InterfaceConfigData& other) {
 	if (this == &other) {
 		return *this;
 	}
@@ -100,7 +100,7 @@ inline ConfigData& ConfigData::operator=(const ConfigData& other) {
 	return *this;
 }
 
-inline void ConfigData::reset() {
+inline void InterfaceConfigData::reset() {
 	lanaguage = WINDOWLANAGUAGE::Chinese;
 	progressbarstyle = WINDOWPROGRESSBARSTYLE::BLOCK;
 	themeStyle = WINDOWTHEMESTYLE::LIGHT;

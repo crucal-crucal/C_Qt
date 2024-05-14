@@ -3,6 +3,7 @@
 #include <QDateTime>
 #include <qglobal.h>
 #include <QHash>
+#include "logger_p_global.hpp"
 
 namespace Logger_p {
 /*
@@ -30,21 +31,19 @@ public:
 	 * @param: function 函数名
 	 * @param: line 行号
 	 */
-	LogMessage(QtMsgType type, const QString& message, const QHash<QString, QString>* logVars, const QString& file,
-	           const QString& function, int line);
-
+	LogMessage(QtMsgType type, QString  message, const QHash<QString, QString>* logVars, QString  file,
+	           QString  function, int line);
 	/*
 	 * @note: 将消息转换为字符串
 	 * @param: msgFormat装饰格式，可能包含变量和静态文本
 	 * @param: timestampFormat时间戳格式。
 	 * @return: 格式化后的字符串
 	 */
-	QString toString(const QString& msgFormat, const QString& timestampFormat) const;
-
+	[[nodiscard]] QString toString(const QString& msgFormat, const QString& timestampFormat) const;
 	/*
 	 * @note: 获取消息类型
 	 */
-	QtMsgType getType() const;
+	[[nodiscard]] QtMsgType getType() const;
 
 private:
 	QHash<QString, QString> m_logVars{}; // 用户定义的记录器变量

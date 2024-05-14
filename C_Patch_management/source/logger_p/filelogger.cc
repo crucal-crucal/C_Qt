@@ -1,17 +1,18 @@
 #include "filelogger.hpp"
 
+#include <QDebug>
 #include <QDir>
 #include <QTimerEvent>
 
-Logger_p::FileLogger::FileLogger(QSettings* settings, const int refreshInterval, QObject* parent) {
-	Q_ASSERT(settings == nullptr);
+Logger_p::FileLogger::FileLogger(QSettings* settings, const int refreshInterval, QObject* parent) : Logger(parent) {
+	Q_ASSERT(settings != nullptr);
 	Q_ASSERT(refreshInterval >= 0);
 	this->m_settings = settings;
 	this->m_file = nullptr;
 	if (refreshInterval > 0) {
-		m_refreshTimer->start(refreshInterval, this);
+		m_refreshTimer.start(refreshInterval, this);
 	}
-	m_flushTimer->start(1000, this);
+	m_flushTimer.start(1000, this);
 	refreshSettings();
 }
 Logger_p::FileLogger::~FileLogger() {
@@ -37,9 +38,9 @@ void Logger_p::FileLogger::timerEvent(QTimerEvent* event) {
 		return;
 	}
 
-	if (event->timerId() == m_refreshTimer->timerId()) {
+	if (event->timerId() == m_refreshTimer.timerId()) {
 		refreshSettings();
-	} else if (event->timerId() == m_flushTimer->timerId() && m_file) {
+	} else if (event->timerId() == m_flushTimer.timerId() && m_file) {
 		mutex.lock();
 		m_file->flush();
 		if (m_maxSize > 0 && m_file->size() >= m_maxSize) {
@@ -56,6 +57,7 @@ void Logger_p::FileLogger::open() {
 		qWarning("Name of logFile is empty");
 	} else {
 		m_file = new QFile(m_fileName);
+		qDebug() << "Opening log file:\t" << m_fileName;
 		if (!m_file->open(QFile::WriteOnly | QFile::Append | QFile::Text)) {
 			qWarning("Cannot open log file %s: %s",qPrintable(m_fileName),qPrintable(m_file->errorString()));
 			m_file = nullptr;
@@ -107,11 +109,11 @@ void Logger_p::FileLogger::refreshSettings() {
 		const QFileInfo configFile(m_settings->fileName());
 		m_fileName = QFileInfo(configFile.absolutePath(), m_fileName).absoluteFilePath();
 	}
-	m_maxSize = m_settings->value("maxSize, 0").toLongLong();
-	m_maxBackups = m_settings->value("maxBackups, 0").toInt();
+	m_maxSize = m_settings->value("maxSize", 0).toLongLong();
+	m_maxBackups = m_settings->value("maxBackups", 0).toInt();
 	msgFormat = m_settings->value("msgFormat", "{timestamp} {type} {message}").toString();
 	timestampFormat = m_settings->value("timestampFormat", "yyyy-MM-dd hh:mm:ss.zzz").toString();
-	bufferSize = m_settings->value("bufferSize, 0").toInt();
+	bufferSize = m_settings->value("bufferSize", 0).toInt();
 
 	if (const QByteArray minLevelStr = m_settings->value("minLevel", "ALL").toByteArray(); minLevelStr == "ALL" || minLevelStr == "DEBUG" ||
 		minLevelStr == "0") {

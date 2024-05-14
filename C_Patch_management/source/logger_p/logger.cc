@@ -14,12 +14,14 @@ QThreadStorage<QHash<QString, QString>*> Logger_p::Logger::logVars{};
 
 QMutex Logger_p::Logger::mutex{};
 
-Logger_p::Logger::Logger(QObject* parent) : QObject(parent), msgFormat("{timestamp} {type} {message}"), timestampFormat("dd.MM.yyyy hh:mm:ss.zzz"),
-                                            minLevel(QtDebugMsg) {
+Logger_p::Logger::Logger(QObject* parent)
+: QObject(parent), msgFormat("{timestamp} {type} {message}"), timestampFormat("dd.MM.yyyy hh:mm:ss.zzz"), minLevel(QtDebugMsg) {
 }
 
 Logger_p::Logger::Logger(QString msgFormat, QString timestampFormat, const QtMsgType minLevel, const int bufferSize, QObject* parent)
-: QObject(parent), msgFormat(std::move(msgFormat)), timestampFormat(std::move(timestampFormat)), minLevel(minLevel), bufferSize(bufferSize) {
+: QObject(parent), msgFormat(msgFormat.isEmpty() ? "{timestamp} {type} {message}" : std::move(msgFormat)),
+  timestampFormat(timestampFormat.isEmpty() ? "dd.MM.yyyy hh:mm:ss.zzz" : std::move(timestampFormat)),
+  minLevel(minLevel), bufferSize(bufferSize) {
 }
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -113,10 +115,6 @@ void Logger_p::Logger::log(const QtMsgType type, const QString& message, const Q
 	mutex.unlock();
 }
 
-void Logger_p::Logger::log_p(QtMsgType type, const QString& message, const QString& file, const QString& function, int line) {
-	this->log(type, message, file, function, line);
-}
-
 void Logger_p::Logger::installMsgHandler() {
 	defaultLogger = this;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
@@ -150,10 +148,6 @@ void Logger_p::Logger::clear(const bool buffer, const bool variables) {
 	mutex.unlock();
 }
 
-void Logger_p::Logger::clear_p(bool buffer, bool variables) {
-	this->clear(buffer, variables);
-}
-
 void Logger_p::Logger::write(const LogMessage* logMessage) {
 	fputs(qPrintable(logMessage->toString(msgFormat, timestampFormat)), stderr);
 	fflush(stderr);
@@ -164,7 +158,7 @@ void Logger_p::Logger::msgHandler(const QtMsgType type, const QString& message, 
 	recursiveMutex.lock();
 	// 当递归调用此方法时退回到 stderr
 	if (defaultLogger && nonRecursiveMutex.tryLock()) {
-		defaultLogger->log_p(type, message, file, function, line);
+		defaultLogger->log(type, message, file, function, line);
 		nonRecursiveMutex.unlock();
 	} else {
 		fputs(qPrintable(message), stderr);

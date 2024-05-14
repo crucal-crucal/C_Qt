@@ -5,10 +5,11 @@
 #include <QMutexLocker>
 #include <QObject>
 #include <QtWidgets/QApplication>
-#include "logglobal.hpp"
+#include "logger_redirection_global.hpp"
 
 /*
  * @brief: 用于重定向qDebug, qWarning, qInfo等函数的输出，将输出信息保存到日志文件
+ * 示例: LoggerRedirection::getInstance()->install(QApplication::applicationDirPath() + "/log");
  */
 class LOGGER_REDIRECTION_EXPORT LoggerRedirection final : public QObject {
 public:

@@ -18,6 +18,7 @@ target_link_libraries(${TARGET_NAME}
         mergedir_p
         SplashScreen
         logger_redirection
+        logger_p
 )
 
 add_subdirectory(framelessmainwindow)

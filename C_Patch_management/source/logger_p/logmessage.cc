@@ -1,10 +1,11 @@
 #include "logmessage.hpp"
 
 #include <QThread>
+#include <utility>
 
-Logger_p::LogMessage::LogMessage(const QtMsgType type, const QString& message, const QHash<QString, QString>* logVars, const QString& file,
-                                 const QString& function, const int line)
-: m_type(type), m_message(message), m_file(file), m_function(function), m_line(line) {
+Logger_p::LogMessage::LogMessage(const QtMsgType type, QString message, const QHash<QString, QString>* logVars, QString file,
+                                 QString function, const int line)
+: m_type(type), m_message(std::move(message)), m_file(std::move(file)), m_function(std::move(function)), m_line(line) {
 	m_timestamp = QDateTime::currentDateTime();
 	m_threadId = QThread::currentThreadId();
 	if (logVars) {
@@ -41,7 +42,7 @@ QString Logger_p::LogMessage::toString(const QString& msgFormat, const QString& 
 		}
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 		case QtInfoMsg: {
-			decorated.replace("{type}", "INFO     ");
+			decorated.replace("{type}", "INFO    ");
 			break;
 		}
 #endif
