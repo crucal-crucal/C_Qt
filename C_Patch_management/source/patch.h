@@ -217,7 +217,7 @@ private:
 	WINDOWTHEMESTYLE m_ThemeStyle{};               // 主题
 	QSystemTrayIcon* m_ptrayIcon{ nullptr };       // 系统托盘图标
 	std::unique_ptr<QMenu> m_ptrayMenu{ nullptr }; // 系统托盘菜单
-	QAction* m_pActShow{ nullptr };                 // 显示主界面按钮
+	QAction* m_pActShow{ nullptr };                // 显示主界面按钮
 	QAction* m_pActQuit{ nullptr };                // 退出按钮
 	std::string m_dirPath{};                       // 记录上一次打开的目录路径，方便使用命令行直接打开控制
 };

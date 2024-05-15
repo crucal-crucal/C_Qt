@@ -39,8 +39,7 @@ QString initializeConfigFile(const LoggerConfigData& loggerConfigData);
 InterfaceConfigData readConf();
 void readConf(const QString& configFilePath, std::vector<std::string>& lines);
 void writeConf(const QString& configFilePath, const std::vector<std::string>& lines, const std::vector<std::string>& newLines);
-void changeConf(const QString& configFilePath, WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
-                WINDOWTHEMESTYLE newThemeStyle);
+void changeConf(const QString& configFilePath, const InterfaceConfigData& interfaceConfigData);
 /*
  * @note: Linux 通过系统命令判断是否为深色主题
  */
@@ -84,14 +83,14 @@ int main(int argc, char* argv[]) {
 	// 将路径切换到上级目录
 	QDir dir(appFile.absolutePath());
 	dir.cdUp();
-	const QString appParPath = dir.absolutePath();
-	const QString strStyle_light = appParPath + QString::fromLatin1(qssFilePathLight);
-	const QString strStyle_dark = appParPath + QString::fromLatin1(qssFilePathDark);
-	const QString strRcc = appParPath + QString::fromLatin1(rccFilePath);
-	const QString strtrans_cn = appParPath + QString::fromLatin1(translationFilePath_CN);
-	const QString strtrans_en = appParPath + QString::fromLatin1(translationFilePath_EN);
+	const QString appParpath = dir.absolutePath();
+	const QString style_light = appParpath + QString::fromLatin1(qssFilePathLight);
+	const QString style_dark = appParpath + QString::fromLatin1(qssFilePathDark);
+	const QString rcc_path = appParpath + QString::fromLatin1(rccFilePath);
+	const QString trans_cn = appParpath + QString::fromLatin1(translationFilePath_CN);
+	const QString trans_en = appParpath + QString::fromLatin1(translationFilePath_EN);
 	// 加载rcc
-	Logger::instance().logInfo(loadResources(strRcc) ? "Load Resource Success!" : "Load Resource Failed!");
+	Logger::instance().logInfo(loadResources(rcc_path) ? "Load Resource Success!" : "Load Resource Failed!");
 	/*
 	 * @note: 加载重定向日志, 写入文件前需要将文件夹创建好, 因为Logger::instance()会创建好log文件夹，所以此处不再创建
 	 */
@@ -102,15 +101,13 @@ int main(int argc, char* argv[]) {
 	// 加载开始界面
 	g_splashScreen = createSplashScreen(QPixmap(":/icon/start.png"));
 	auto [language, progressBarStyle, themeStyle] = readConf();
-	windowLanguage = language;
-	progressbarstyle = progressBarStyle;
-	windowThemeStyle = themeStyle;
+	windowLanguage = language, progressbarstyle = progressBarStyle, windowThemeStyle = themeStyle;
 	// 加载样式表
-	QString str = (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark;
+	QString str = (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? style_light : style_dark;
 	g_splashScreen->showMessage(loadStyle(app, str) ? "Load Style Success!" : "Load Style Failed!", Qt::AlignBottom);
 	QThread::sleep(1);
 	// 加载翻译 & 加载Label大小
-	str = (windowLanguage == WINDOWLANAGUAGE::Chinese) ? strtrans_cn : strtrans_en;
+	str = (windowLanguage == WINDOWLANAGUAGE::Chinese) ? trans_cn : trans_en;
 	g_splashScreen->showMessage(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!", Qt::AlignBottom);
 	QThread::sleep(1);
 
@@ -119,17 +116,17 @@ int main(int argc, char* argv[]) {
 	QObject::connect(&w, &CPatch::ConfChanged, [&](const WINDOWLANAGUAGE lang, const WINDOWPROGRESSBARSTYLE prostyle) {
 		windowLanguage = lang;
 		progressbarstyle = prostyle;
-		changeConf(configFilePath, windowLanguage, progressbarstyle, windowThemeStyle);
+		changeConf(configFilePath, { windowLanguage, progressbarstyle, windowThemeStyle });
 	});
 	// 修改主题
 	QObject::connect(&w, &CPatch::ThemeChanged, [&](const WINDOWTHEMESTYLE windowthemestyle) {
 		windowThemeStyle = windowthemestyle;
-		loadStyle(app, (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? strStyle_light : strStyle_dark);
-		changeConf(configFilePath, windowLanguage, progressbarstyle, windowThemeStyle);
+		loadStyle(app, (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? style_light : style_dark);
+		changeConf(configFilePath, { windowLanguage, progressbarstyle, windowThemeStyle });
 	});
 	// 释放资源
 	QObject::connect(&w, &CPatch::destroyed, [&]() {
-		unloadResources(strRcc);
+		unloadResources(rcc_path);
 		unLoadTranslations();
 		g_sharedMemory.detach();
 		g_splashScreen->deleteLater();
@@ -316,11 +313,10 @@ void writeConf(const QString& configFilePath, const std::vector<std::string>& li
 	}
 }
 
-void changeConf(const QString& configFilePath, WINDOWLANAGUAGE newLanguage, WINDOWPROGRESSBARSTYLE newprogressBarStyle,
-                WINDOWTHEMESTYLE newThemeStyle) {
-	const int newLanguageInt = static_cast<int>(newLanguage);
-	const int newProgressBarStyleInt = static_cast<int>(newprogressBarStyle);
-	const int newThemeStyleInt = static_cast<int>(newThemeStyle);
+void changeConf(const QString& configFilePath, const InterfaceConfigData& interfaceConfigData) {
+	const int newLanguageInt = static_cast<int>(interfaceConfigData.lanaguage);
+	const int newProgressBarStyleInt = static_cast<int>(interfaceConfigData.progressbarstyle);
+	const int newThemeStyleInt = static_cast<int>(interfaceConfigData.themeStyle);
 
 	std::vector<std::string> lines;
 	readConf(configFilePath, lines);

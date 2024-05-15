@@ -289,8 +289,7 @@ void CPatch::onSystemTrayIconActivated(const QSystemTrayIcon::ActivationReason r
 		// 双击显示
 		this->isMinimized() ? this->showNormal() : this->showMinimized(); // 将主窗口显示出来
 		this->activateWindow();                                           // 激活主窗口，确保它位于顶部
-	} else if (reason == QSystemTrayIcon::Context) {
-		// 右键菜单
+	} else if (reason == QSystemTrayIcon::Context) {                      // 右键菜单
 		// 调整显示始终在鼠标之上
 		const auto pos = QCursor::pos();
 		const int offsetY = m_ptrayMenu->sizeHint().height();

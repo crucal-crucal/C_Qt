@@ -124,13 +124,21 @@ void Logger_p::Logger::installMsgHandler() {
 #endif
 }
 
-void Logger_p::Logger::set(const QString& name, const QString& value) {
-	mutex.lock();
+void Logger_p::Logger::initializeThreadLocalData() {
+	QMutexLocker locker(&mutex);
 	if (!logVars.hasLocalData()) {
 		logVars.setLocalData(new QHash<QString, QString>());
 	}
+}
+
+void Logger_p::Logger::setLogVar(const QString& name, const QString& value) {
+	initializeThreadLocalData();
 	logVars.localData()->insert(name, value);
-	mutex.unlock();
+}
+
+QString Logger_p::Logger::getLogVar(const QString& name) {
+	initializeThreadLocalData();
+	return logVars.localData()->value(name);
 }
 
 void Logger_p::Logger::clear(const bool buffer, const bool variables) {

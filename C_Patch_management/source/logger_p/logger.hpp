@@ -54,7 +54,12 @@ public:
 	 * @param: name 变量名
 	 * @param: value 变量值
 	 */
-	static void set(const QString& name, const QString& value);
+	static void setLogVar(const QString& name, const QString& value);
+	/*
+	 * @note: 获取可用于修饰日志消息的线程局部变量，此方法是线程安全的
+	 * @param: name 变量名
+	 */
+	static QString getLogVar(const QString& name);
 	/*
 	 * @note: 清除当前线程的线程本地数据，此方法是线程安全的
 	 * @param: buffer 是否清除回溯缓冲区
@@ -75,6 +80,10 @@ protected:
 
 private:
 	static Logger* defaultLogger; // 默认使用 msgHandler
+	/*
+	 * @note: 初始化线程本地数据，此方法是线程安全的
+	 */
+	static void initializeThreadLocalData();
 	/*
 	 * @note: 全局静态日志函数的消息处理程序, 转发对默认记录器的调用, 此方法是线程安全的
 	 * 如果出现致命消息，程序将中止。消息中的变量将被它们的值替换。
