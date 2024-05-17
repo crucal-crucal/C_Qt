@@ -117,16 +117,16 @@ private:
 	 */
 	template<typename T>
 	T* createWidget(QWidget* parent = nullptr, const QString& objName = "") {
-		T* widget = new T(parent);
+		QScopedPointer<T> widget(new T(parent));
 		widget->setObjectName(objName);
-		return widget;
+		return widget.take();
 	}
 
 	template<typename T>
 	T* createWidget(const QString& text, QWidget* parent = nullptr, const QString& objName = "") {
-		T* widget = new T(text, parent);
+		QScopedPointer<T> widget(new T(text, parent));
 		widget->setObjectName(objName);
-		return widget;
+		return widget.take();
 	}
 
 	void createCtrl();
