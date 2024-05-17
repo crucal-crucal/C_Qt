@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#include <QDebug>
+#include <QString>
+
 /*
  * @breif 重启代码
  */

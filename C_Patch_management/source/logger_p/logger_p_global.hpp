@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#include <qcompilerdetection.h>
+#include <qsystemdetection.h>
+
 /*
  * @note: 导出宏定义
  * 在Windows平台下，动态库中的符号默认情况下是不可见的，这意味着在编译动态库时，其内部的函数和类不会被自动导出到外部使用的程序中。这样做的目的是为了避免动态库中的内部实现细节被外部程序访问到，
