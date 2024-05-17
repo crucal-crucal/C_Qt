@@ -313,7 +313,8 @@ void CPatch::updateEndTimeOptions(const int _index) {
 QString CPatch::getFileCodec(const QString& _fileName) {
 	QFile file(_fileName);
 	QString codeType = "UTF-8";
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+#if 0
+	if (file.open(QIODevice::ReadOnly)) {
 		const QByteArray text = file.readAll();
 		QTextCodec::ConverterState state;
 		const QTextCodec* codec = QTextCodec::codecForName("UTF-8");
@@ -324,7 +325,27 @@ QString CPatch::getFileCodec(const QString& _fileName) {
 		}
 		file.close();
 	}
-
+#else
+	if (file.open(QIODevice::ReadOnly)) {
+		// 读取3字节用于判断
+		QByteArray buffer = file.read(3);
+		if (buffer.startsWith("\xFF\xFE")) {
+			codeType = "UTF-16LE";
+		} else if (buffer.startsWith("\xFE\xFF")) {
+			codeType = "UTF-16BE";
+		} else if (buffer.startsWith("\xEF\xBB\xBF")) {
+			codeType = "UTF-8BOM";
+		} else {
+			buffer = file.readAll();
+			// 尝试用 utf-8 转换，如果可用字数大于0，表示是 ANSI 编码
+			QTextCodec::ConverterState state;
+			const QTextCodec* codec = QTextCodec::codecForName("UTF-8");
+			codec->toUnicode(buffer.constData(), buffer.size(), &state);
+			codeType = state.invalidChars > 0 ? "GBK" : codeType;
+		}
+		file.close();
+	}
+#endif
 	return codeType;
 }
 
