@@ -8,8 +8,7 @@
 #include "logger/logger.h"
 
 CPatch::CPatch(const InterfaceConfigData& interfaceconfigdata, std::string dirPath, QWidget* parent)
-: FramelessMainWindow(parent), m_language(interfaceconfigdata.lanaguage), m_ProgressbarStyle(interfaceconfigdata.progressbarstyle),
-  m_ThemeStyle(interfaceconfigdata.themeStyle), m_dirPath(std::move(dirPath)) {
+: FramelessMainWindow(parent), m_configData(interfaceconfigdata), m_dirPath(std::move(dirPath)) {
 	createCtrl();
 	layOut();
 	init();
@@ -183,16 +182,16 @@ void CPatch::onBtnDoneClicked() {
 }
 
 void CPatch::onBtnStyleClicked() {
-	m_ThemeStyle = m_pBtnStyle->isChecked() ? WINDOWTHEMESTYLE::LIGHT : WINDOWTHEMESTYLE::DARK;
-	emit ThemeChanged(m_ThemeStyle);
+	m_configData.themeStyle = m_pBtnStyle->isChecked() ? WINDOWTHEMESTYLE::LIGHT : WINDOWTHEMESTYLE::DARK;
+	emit ThemeChanged(m_configData.themeStyle);
 }
 
 void CPatch::onActChineseClicked() {
 	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"),
 	                                                            tr("reboot applicaion to take effect")); nRes ==
 		QMessageBox::ButtonRole::AcceptRole) {
-		m_language = WINDOWLANAGUAGE::Chinese;
-		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		m_configData.lanaguage = WINDOWLANAGUAGE::Chinese;
+		emit ConfChanged(m_configData);
 		CPatch::restart();
 	} else {
 		recoveryStateWithAct();
@@ -203,8 +202,8 @@ void CPatch::onActEnglishClicked() {
 	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change language"),
 	                                                            tr("reboot applicaion to take effect")); nRes ==
 		QMessageBox::ButtonRole::AcceptRole) {
-		m_language = WINDOWLANAGUAGE::English;
-		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		m_configData.lanaguage = WINDOWLANAGUAGE::English;
+		emit ConfChanged(m_configData);
 		CPatch::restart();
 	} else {
 		recoveryStateWithAct();
@@ -215,8 +214,8 @@ void CPatch::onActProgressbar_normalClicked() {
 	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"),
 	                                                            tr("reboot applicaion to take effect")); nRes ==
 		QMessageBox::ButtonRole::AcceptRole) {
-		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::NORMAL;
-		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		m_configData.progressbarstyle = WINDOWPROGRESSBARSTYLE::NORMAL;
+		emit ConfChanged(m_configData);
 		CPatch::restart();
 	} else {
 		recoveryStateWithAct();
@@ -227,8 +226,8 @@ void CPatch::onActProgressbar_borderClicked() {
 	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"),
 	                                                            tr("reboot applicaion to take effect")); nRes ==
 		QMessageBox::ButtonRole::AcceptRole) {
-		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RED;
-		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		m_configData.progressbarstyle = WINDOWPROGRESSBARSTYLE::BORDER_RED;
+		emit ConfChanged(m_configData);
 		CPatch::restart();
 	} else {
 		recoveryStateWithAct();
@@ -239,8 +238,8 @@ void CPatch::onActProgressbar_border_radiusClicked() {
 	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"),
 	                                                            tr("reboot applicaion to take effect")); nRes ==
 		QMessageBox::ButtonRole::AcceptRole) {
-		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BORDER_RADIUS;
-		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		m_configData.progressbarstyle = WINDOWPROGRESSBARSTYLE::BORDER_RADIUS;
+		emit ConfChanged(m_configData);
 		CPatch::restart();
 	} else {
 		recoveryStateWithAct();
@@ -251,8 +250,8 @@ void CPatch::onActProgressbar_blockClicked() {
 	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"),
 	                                                            tr("reboot applicaion to take effect")); nRes ==
 		QMessageBox::ButtonRole::AcceptRole) {
-		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK;
-		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		m_configData.progressbarstyle = WINDOWPROGRESSBARSTYLE::BLOCK;
+		emit ConfChanged(m_configData);
 		CPatch::restart();
 	} else {
 		recoveryStateWithAct();
@@ -263,8 +262,8 @@ void CPatch::onActProgressbar_gradationClicked() {
 	if (const auto nRes = UVMessageBox::CUVMessageBox::question(this, tr("Change Progressbar Style"),
 	                                                            tr("reboot applicaion to take effect")); nRes ==
 		QMessageBox::ButtonRole::AcceptRole) {
-		m_ProgressbarStyle = WINDOWPROGRESSBARSTYLE::GRADATION;
-		emit ConfChanged(m_language, m_ProgressbarStyle, m_ThemeStyle);
+		m_configData.progressbarstyle = WINDOWPROGRESSBARSTYLE::GRADATION;
+		emit ConfChanged(m_configData);
 		CPatch::restart();
 	} else {
 		recoveryStateWithAct();
@@ -565,13 +564,13 @@ void CPatch::init() {
 	}
 
 	recoveryStateWithAct();
-	m_pLbGeneratePath->setFixedWidth(m_language == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH);
-	m_pLbThreadNum->setFixedWidth(m_language == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH);
-	m_pMenuBar->setFixedWidth(m_language == WINDOWLANAGUAGE::Chinese ? CHINESE_MENUBAR_WIDTH : ENGLISH_MENUBAR_WIDTH);
+	m_pLbGeneratePath->setFixedWidth(m_configData.lanaguage == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH);
+	m_pLbThreadNum->setFixedWidth(m_configData.lanaguage == WINDOWLANAGUAGE::Chinese ? CHINESE_LABEL_WIDTH : ENGLISH_LABEL_WIDTH);
+	m_pMenuBar->setFixedWidth(m_configData.lanaguage == WINDOWLANAGUAGE::Chinese ? CHINESE_MENUBAR_WIDTH : ENGLISH_MENUBAR_WIDTH);
 
-	m_pBtnStyle->setChecked(m_ThemeStyle == WINDOWTHEMESTYLE::LIGHT);
+	m_pBtnStyle->setChecked(m_configData.themeStyle == WINDOWTHEMESTYLE::LIGHT);
 
-	const int progressbarStyle = static_cast<int>(m_ProgressbarStyle);
+	const int progressbarStyle = static_cast<int>(m_configData.progressbarstyle);
 	m_pPbschedule->setProperty("customProgressBar", progressbarStyle);
 
 	if (!m_dirPath.empty()) {
@@ -717,14 +716,14 @@ void CPatch::restart() {
 }
 
 void CPatch::recoveryStateWithAct() const {
-	m_pActChinese->setChecked(m_language == WINDOWLANAGUAGE::Chinese);
-	m_pActEnglish->setChecked(m_language == WINDOWLANAGUAGE::English);
+	m_pActChinese->setChecked(m_configData.lanaguage == WINDOWLANAGUAGE::Chinese);
+	m_pActEnglish->setChecked(m_configData.lanaguage == WINDOWLANAGUAGE::English);
 
-	m_pActProgressbar_normal->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::NORMAL);
-	m_pActProgressbar_block->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BLOCK);
-	m_pActProgressbar_border->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BORDER_RED);
-	m_pActProgressbar_border_radius->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::BORDER_RADIUS);
-	m_pActProgressbar_gradation->setChecked(m_ProgressbarStyle == WINDOWPROGRESSBARSTYLE::GRADATION);
+	m_pActProgressbar_normal->setChecked(m_configData.progressbarstyle == WINDOWPROGRESSBARSTYLE::NORMAL);
+	m_pActProgressbar_block->setChecked(m_configData.progressbarstyle == WINDOWPROGRESSBARSTYLE::BLOCK);
+	m_pActProgressbar_border->setChecked(m_configData.progressbarstyle == WINDOWPROGRESSBARSTYLE::BORDER_RED);
+	m_pActProgressbar_border_radius->setChecked(m_configData.progressbarstyle == WINDOWPROGRESSBARSTYLE::BORDER_RADIUS);
+	m_pActProgressbar_gradation->setChecked(m_configData.progressbarstyle == WINDOWPROGRESSBARSTYLE::GRADATION);
 }
 
 void CPatch::setSystemTrayIcon() {

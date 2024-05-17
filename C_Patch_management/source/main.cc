@@ -113,9 +113,9 @@ int main(int argc, char* argv[]) {
 
 	CPatch w(g_configData, App_arg_dir);
 	// 修改配置文件
-	QObject::connect(&w, &CPatch::ConfChanged, [&](const WINDOWLANAGUAGE lang, const WINDOWPROGRESSBARSTYLE prostyle) {
-		g_configData.lanaguage = lang;
-		g_configData.progressbarstyle = prostyle;
+	QObject::connect(&w, &CPatch::ConfChanged, [&](const InterfaceConfigData& configData) {
+		g_configData.lanaguage = configData.lanaguage;
+		g_configData.progressbarstyle = configData.progressbarstyle;
 		changeConf(configFilePath, g_configData);
 	});
 	// 修改主题

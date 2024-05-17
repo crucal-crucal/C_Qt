@@ -27,7 +27,7 @@ public:
 	[[nodiscard]] QSystemTrayIcon* getTrayIcon() const { return m_ptrayIcon; }
 
 Q_SIGNALS:
-	void ConfChanged(WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE);
+	void ConfChanged(InterfaceConfigData);
 	void ThemeChanged(WINDOWTHEMESTYLE);
 
 private Q_SLOTS:
@@ -209,9 +209,7 @@ private:
 	QTimer* m_pGenerateTime{ nullptr };            // 生成时间定时器
 	qint64 m_localProcess{ 0 };                    // 当前进度
 	qint64 m_totalProcess{ 0 };                    // 总进度
-	WINDOWLANAGUAGE m_language{};                  // 语言
-	WINDOWPROGRESSBARSTYLE m_ProgressbarStyle{};   // 进度条样式
-	WINDOWTHEMESTYLE m_ThemeStyle{};               // 主题
+	InterfaceConfigData m_configData{};            // 界面配置数据
 	QSystemTrayIcon* m_ptrayIcon{ nullptr };       // 系统托盘图标
 	std::unique_ptr<QMenu> m_ptrayMenu{ nullptr }; // 系统托盘菜单
 	QAction* m_pActShow{ nullptr };                // 显示主界面按钮
