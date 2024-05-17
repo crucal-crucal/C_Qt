@@ -328,8 +328,7 @@ QString CPatch::getFileCodec(const QString& _fileName) {
 #else
 	if (file.open(QIODevice::ReadOnly)) {
 		// 读取3字节用于判断
-		QByteArray buffer = file.read(3);
-		if (buffer.startsWith("\xFF\xFE")) {
+		if (QByteArray buffer = file.read(3); buffer.startsWith("\xFF\xFE")) {
 			codeType = "UTF-16LE";
 		} else if (buffer.startsWith("\xFE\xFF")) {
 			codeType = "UTF-16BE";
@@ -485,14 +484,14 @@ void CPatch::createCtrl() {
 	m_pCentralLayout = this->createWidget<QVBoxLayout>(m_pCentralWidget);
 
 	m_pReadWidgetLayout = this->createWidget<QVBoxLayout>(m_pReadWidget);
-	m_pReadFirstRowLayout = this->createWidget<QHBoxLayout>(m_pReadWidget);
-	m_pReadSecondRowLayout = this->createWidget<QHBoxLayout>(m_pReadWidget);
-	m_pReadThirdRowLayout = this->createWidget<QHBoxLayout>(m_pReadWidget);
+	m_pReadFirstRowLayout = this->createWidget<QHBoxLayout>();
+	m_pReadSecondRowLayout = this->createWidget<QHBoxLayout>();
+	m_pReadThirdRowLayout = this->createWidget<QHBoxLayout>();
 
 	m_pRenewalWidgetLayout = this->createWidget<QVBoxLayout>(m_pRenewalWidget);
-	m_pRenewalFirstRowLayout = this->createWidget<QHBoxLayout>(m_pRenewalWidget);
-	m_pRenewalSecondRowLayout = this->createWidget<QHBoxLayout>(m_pRenewalWidget);
-	m_pRenewalThirdRowLayout = this->createWidget<QHBoxLayout>(m_pRenewalWidget);
+	m_pRenewalFirstRowLayout = this->createWidget<QHBoxLayout>();
+	m_pRenewalSecondRowLayout = this->createWidget<QHBoxLayout>();
+	m_pRenewalThirdRowLayout = this->createWidget<QHBoxLayout>();
 
 	setMenuWidget(m_pTitleBar);
 	setCentralWidget(m_pCentralWidget);
@@ -505,8 +504,6 @@ void CPatch::layOut() const {
 	m_plyHTitle->addWidget(m_pBtnMin);
 	m_plyHTitle->addWidget(m_pBtnClose);
 	m_plyHTitle->setContentsMargins(0, 0, 0, 0);
-
-	m_pTitleBar->setLayout(m_plyHTitle);
 
 	m_pCentralLayout->addWidget(m_pTitleBar);
 	m_pCentralLayout->addWidget(m_pTabWidget);
@@ -534,8 +531,6 @@ void CPatch::layOut() const {
 	m_pReadWidgetLayout->addLayout(m_pReadThirdRowLayout);
 	m_pReadWidgetLayout->addWidget(m_pPbschedule);
 
-	m_pReadWidget->setLayout(m_pReadWidgetLayout);
-
 	m_pRenewalFirstRowLayout->addWidget(m_pLbPatchVersion);
 	m_pRenewalFirstRowLayout->addWidget(m_pLePatchVersion);
 
@@ -550,8 +545,6 @@ void CPatch::layOut() const {
 	m_pRenewalWidgetLayout->addLayout(m_pRenewalSecondRowLayout);
 	m_pRenewalWidgetLayout->addWidget(m_pLwOutPatchList);
 	m_pRenewalWidgetLayout->addLayout(m_pRenewalThirdRowLayout);
-
-	m_pReadWidget->setLayout(m_pRenewalWidgetLayout);
 }
 
 void CPatch::init() {
