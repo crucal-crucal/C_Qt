@@ -1,7 +1,7 @@
 ﻿#include "framelessmainwindow.h"
 #include "qdatetime.h"
-#include "qevent.h"
 #include "qdebug.h"
+#include "qevent.h"
 
 #ifdef Q_OS_WIN
 #include "windows.h"
@@ -72,7 +72,7 @@ void FramelessMainWindow::doWindowStateChange(const QEvent* event) {
 #endif
 }
 
-void FramelessMainWindow::doResizeEvent(QEvent* event) {
+void FramelessMainWindow::doResizeEvent(QEvent* event) { // NOLINT
 	// 非win系统的无边框拉伸,win系统上已经采用了nativeEvent来处理拉伸
 	// 为何不统一用计算的方式因为在win上用这个方式往左拉伸会发抖妹的
 #ifndef Q_OS_WIN

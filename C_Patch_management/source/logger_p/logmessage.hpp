@@ -30,8 +30,7 @@ public:
 	 * @param: function 函数名
 	 * @param: line 行号
 	 */
-	LogMessage(QtMsgType type, QString  message, const QHash<QString, QString>* logVars, QString  file,
-	           QString  function, int line);
+	LogMessage(QtMsgType type, QString message, const QHash<QString, QString>* logVars, QString file, QString function, int line);
 	/*
 	 * @note: 将消息转换为字符串
 	 * @param: msgFormat装饰格式，可能包含变量和静态文本

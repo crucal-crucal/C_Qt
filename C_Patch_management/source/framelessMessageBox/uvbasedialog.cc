@@ -1,5 +1,7 @@
 ﻿#include "uvbasedialog.h"
 
+#include <QStyleOption>
+
 #ifdef Q_OS_WIN
 #include <Windowsx.h>
 #endif

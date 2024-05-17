@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include <QLabel>
 #include <QSplashScreen>
 
 #ifdef SPLASHSCREEN_LIB

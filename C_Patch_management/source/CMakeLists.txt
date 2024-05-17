@@ -8,6 +8,7 @@ FIlE(GLOB header "./*.h")
 add_executable(${TARGET_NAME} icon.rc
         ${header}
         ${source}
+        global/cglobal.h
 )
 
 target_link_libraries(${TARGET_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)

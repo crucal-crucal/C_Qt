@@ -18,7 +18,7 @@
 #include "logger/logger.h"
 #include "logger_p/filelogger.hpp"
 #include "logger_redirection/logger_redirection.hpp"
-#include "splashscreen/SplashScreen.h"
+#include "splashscreen/splashscreen.h"
 
 QTranslator* g_translator{ nullptr };
 QSharedMemory g_sharedMemory{ nullptr };

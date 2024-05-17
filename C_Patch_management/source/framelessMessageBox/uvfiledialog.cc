@@ -1,11 +1,11 @@
 ﻿#include "uvfiledialog.h"
 
-#include <QSettings>
-#include <QListView>
 #include <QHeaderView>
-#include <QTreeView>
-#include <QStandardItemModel>
 #include <QLineEdit>
+#include <QListView>
+#include <QSettings>
+#include <QStandardItemModel>
+#include <QTreeView>
 
 CUVFileBase::CUVFileBase(QString strRegisterName, QWidget* parent, const QString& caption,
                          const QString& directory, const QString& filter)

@@ -1,14 +1,13 @@
 ﻿#pragma once
 
+#include <QApplication>
+#include <QDesktopServices>
 #include <QDialog>
 #include <QDialogButtonBox>
-#include <QDesktopServices>
-#include <QStyleOption>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QMouseEvent>
-#include <QApplication>
 #include <utility>
 
 #ifdef Q_OS_WIN

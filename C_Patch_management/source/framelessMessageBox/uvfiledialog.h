@@ -1,9 +1,9 @@
 ﻿#pragma once
 
-#include <QFileDialog>
-#include <QDebug>
-#include <utility>
 #include <QComboBox>
+#include <QDebug>
+#include <QFileDialog>
+#include <utility>
 
 #include "uvbasedialog.h"
 
