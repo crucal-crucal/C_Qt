@@ -21,19 +21,16 @@ class CPatch final : public FramelessMainWindow {
 	Q_OBJECT
 
 public:
-	explicit CPatch(WINDOWLANAGUAGE Lanaguage = WINDOWLANAGUAGE::Chinese,
-	                WINDOWPROGRESSBARSTYLE ProgressbarStyle = WINDOWPROGRESSBARSTYLE::BLOCK,
-	                WINDOWTHEMESTYLE ThemeStyle = WINDOWTHEMESTYLE::LIGHT,
-	                std::string dirPath = "", QWidget* parent = nullptr);
+	explicit CPatch(const InterfaceConfigData& interfaceconfigdata, std::string dirPath = "", QWidget* parent = nullptr);
 	~CPatch() override;
 
 	[[nodiscard]] QSystemTrayIcon* getTrayIcon() const { return m_ptrayIcon; }
 
-signals:
+Q_SIGNALS:
 	void ConfChanged(WINDOWLANAGUAGE, WINDOWPROGRESSBARSTYLE, WINDOWTHEMESTYLE);
 	void ThemeChanged(WINDOWTHEMESTYLE);
 
-private slots:
+private Q_SLOTS:
 	void onBtnOpenClicked();
 	void showInTextEdit() const;
 	void onBtnRefreshClicked();

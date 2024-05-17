@@ -7,10 +7,9 @@
 
 #include "logger/logger.h"
 
-CPatch::CPatch(const WINDOWLANAGUAGE Lanaguage, const WINDOWPROGRESSBARSTYLE ProgressbarStyle,
-               const WINDOWTHEMESTYLE ThemeStyle, std::string dirPath, QWidget* parent)
-: FramelessMainWindow(parent), m_language(Lanaguage), m_ProgressbarStyle(ProgressbarStyle),
-  m_ThemeStyle(ThemeStyle), m_dirPath(std::move(dirPath)) {
+CPatch::CPatch(const InterfaceConfigData& interfaceconfigdata, std::string dirPath, QWidget* parent)
+: FramelessMainWindow(parent), m_language(interfaceconfigdata.lanaguage), m_ProgressbarStyle(interfaceconfigdata.progressbarstyle),
+  m_ThemeStyle(interfaceconfigdata.themeStyle), m_dirPath(std::move(dirPath)) {
 	createCtrl();
 	layOut();
 	init();
@@ -584,7 +583,7 @@ void CPatch::initConnect() {
 	connect(m_pBtnClose, &QPushButton::clicked, this, &CPatch::close);
 	connect(m_pBtnMin, &QPushButton::clicked, this, &CPatch::showMinimized);
 	connect(m_pActQuit, &QAction::triggered, this, &CPatch::close);
-	connect(m_pActShow, &QAction::triggered, this, &CPatch::show);
+	connect(m_pActShow, &QAction::triggered, this, &CPatch::showNormal);
 	connect(m_ptrayIcon, &QSystemTrayIcon::activated, this, &CPatch::onSystemTrayIconActivated);
 	connect(m_pBtnStyle, &QPushButton::clicked, this, &CPatch::onBtnStyleClicked);
 	connect(m_pBtnOpen, &QPushButton::clicked, this, &CPatch::onBtnOpenClicked);
@@ -733,10 +732,10 @@ void CPatch::setSystemTrayIcon() {
 		return;
 	}
 
-	m_ptrayIcon = new QSystemTrayIcon(this);
+	m_ptrayIcon = this->createWidget<QSystemTrayIcon>(this);
 	m_ptrayMenu = std::make_unique<QMenu>();
-	m_pActShow = new QAction(QObject::tr("Show"), m_ptrayMenu.get());
-	m_pActQuit = new QAction(QObject::tr("Exit"), m_ptrayMenu.get());
+	m_pActShow = this->createWidget<QAction>(QObject::tr("Show"), m_ptrayMenu.get());
+	m_pActQuit = this->createWidget<QAction>(QObject::tr("Exit"), m_ptrayMenu.get());
 	m_ptrayMenu->addAction(m_pActShow);
 	m_ptrayMenu->addAction(m_pActQuit);
 	m_ptrayMenu->setWindowFlag(Qt::FramelessWindowHint);

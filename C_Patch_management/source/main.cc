@@ -100,29 +100,29 @@ int main(int argc, char* argv[]) {
 	logger->installMsgHandler();
 	// 加载开始界面
 	g_splashScreen = createSplashScreen(QPixmap(":/icon/start.png"));
-	auto [language, progressBarStyle, themeStyle] = readConf();
-	windowLanguage = language, progressbarstyle = progressBarStyle, windowThemeStyle = themeStyle;
+	// 加载界面配置
+	g_configData = readConf();
 	// 加载样式表
-	QString str = (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? style_light : style_dark;
+	QString str = (g_configData.themeStyle == WINDOWTHEMESTYLE::LIGHT) ? style_light : style_dark;
 	g_splashScreen->showMessage(loadStyle(app, str) ? "Load Style Success!" : "Load Style Failed!", Qt::AlignBottom);
 	QThread::sleep(1);
 	// 加载翻译 & 加载Label大小
-	str = (windowLanguage == WINDOWLANAGUAGE::Chinese) ? trans_cn : trans_en;
+	str = (g_configData.lanaguage == WINDOWLANAGUAGE::Chinese) ? trans_cn : trans_en;
 	g_splashScreen->showMessage(loadTranslations(app, str) ? "Load Translation Success!" : "Load Translation Failed!", Qt::AlignBottom);
 	QThread::sleep(1);
 
-	CPatch w(windowLanguage, progressbarstyle, windowThemeStyle, App_arg_dir);
+	CPatch w(g_configData, App_arg_dir);
 	// 修改配置文件
 	QObject::connect(&w, &CPatch::ConfChanged, [&](const WINDOWLANAGUAGE lang, const WINDOWPROGRESSBARSTYLE prostyle) {
-		windowLanguage = lang;
-		progressbarstyle = prostyle;
-		changeConf(configFilePath, { windowLanguage, progressbarstyle, windowThemeStyle });
+		g_configData.lanaguage = lang;
+		g_configData.progressbarstyle = prostyle;
+		changeConf(configFilePath, g_configData);
 	});
 	// 修改主题
 	QObject::connect(&w, &CPatch::ThemeChanged, [&](const WINDOWTHEMESTYLE windowthemestyle) {
-		windowThemeStyle = windowthemestyle;
-		loadStyle(app, (windowThemeStyle == WINDOWTHEMESTYLE::LIGHT) ? style_light : style_dark);
-		changeConf(configFilePath, { windowLanguage, progressbarstyle, windowThemeStyle });
+		g_configData.themeStyle = windowthemestyle;
+		loadStyle(app, (g_configData.themeStyle == WINDOWTHEMESTYLE::LIGHT) ? style_light : style_dark);
+		changeConf(configFilePath, g_configData);
 	});
 	// 释放资源
 	QObject::connect(&w, &CPatch::destroyed, [&]() {
@@ -202,9 +202,9 @@ void unLoadTranslations() {
 }
 
 QString initializeConfigFile(const LoggerConfigData& loggerConfigData) {
-	const int language = static_cast<int>(windowLanguage);
-	const int progressBarStyle = static_cast<int>(progressbarstyle);
-	const int themeStyle = static_cast<int>(windowThemeStyle);
+	const int language = static_cast<int>(g_configData.lanaguage);
+	const int progressBarStyle = static_cast<int>(g_configData.progressbarstyle);
+	const int themeStyle = static_cast<int>(g_configData.themeStyle);
 
 	const QString appPath = QApplication::applicationDirPath();
 	const QString configDirPath = appPath + QDir::separator() + QString::fromStdString(configDir);
@@ -240,9 +240,9 @@ QString initializeConfigFile(const LoggerConfigData& loggerConfigData) {
 }
 
 InterfaceConfigData readConf() {
-	auto language = windowLanguage;           // 默认语言
-	auto progressBarStyle = progressbarstyle; // 默认进度条样式
-	auto themeStyle = windowThemeStyle;       // 默认主题样式
+	auto language = g_configData.lanaguage;                // 默认语言
+	auto progressBarStyle = g_configData.progressbarstyle; // 默认进度条样式
+	auto themeStyle = g_configData.themeStyle;             // 默认主题样式
 
 	if (std::ifstream configFile(configName); configFile) {
 		std::string line;
@@ -351,9 +351,9 @@ bool isDarkTheme() {
 void checkWindowThemeStyle() {
 #ifdef Q_OS_WIN
 	const QSettings settings(R"(HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)", QSettings::NativeFormat);
-	windowThemeStyle = settings.value("AppsUseLightTheme").toBool() ? WINDOWTHEMESTYLE::LIGHT : WINDOWTHEMESTYLE::DARK;
+	g_configData.themeStyle = settings.value("AppsUseLightTheme").toBool() ? WINDOWTHEMESTYLE::LIGHT : WINDOWTHEMESTYLE::DARK;
 #elif defined(Q_OS_LINUX)
-	windowThemeStyle = isDarkTheme() ? WINDOWTHEMESTYLE::DARK : WINDOWTHEMESTYLE::LIGHT;
+	g_configData.themeStyle = isDarkTheme() ? WINDOWTHEMESTYLE::DARK : WINDOWTHEMESTYLE::LIGHT;
 #endif
 }
 
