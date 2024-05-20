@@ -6,7 +6,7 @@
 #include <Windowsx.h>
 #endif
 
-#define NATIVE_DETECT_WIDTH 10
+constexpr int NATIVE_DETECT_WIDTH = 10;
 
 CUVBaseDialog::CUVBaseDialog(QWidget* parent) : QDialog(parent) {
 	setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinMaxButtonsHint | Qt::Dialog);

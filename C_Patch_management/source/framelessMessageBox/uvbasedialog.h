@@ -17,8 +17,9 @@
 /*
  * @brief 无边框带阴影Dialog
  */
-#define TITLE_HEIGHT            30
-#define BORDER_SHADOW_WIDTH        6
+
+constexpr int TITLE_HEIGHT = 30;
+constexpr int BORDER_SHADOW_WIDTH = 6;
 
 #ifdef FRAMELESSBASEDIALOG_LIB
 #define FRAMELESSBASEDIALOG_EXPORT Q_DECL_EXPORT
