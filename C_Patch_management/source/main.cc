@@ -72,6 +72,8 @@ int main(int argc, char* argv[]) {
 	QTextCodec::setCodecForLocale(codec);
 #endif
 	QApplication app(argc, argv);
+	// 无边框窗体无法拖动和定位，优先使用 xcb
+	qputenv("QT_QPA_PLATFORM", "xcb");
 	const LoggerConfigData loggerConfigData;
 	// 初始化配置文件
 	const QString configFilePath = initializeConfigFile(loggerConfigData);
