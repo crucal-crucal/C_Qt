@@ -18,7 +18,7 @@
 #include "logger/logger.h"
 #include "logger_p/filelogger.hpp"
 #include "logger_redirection/logger_redirection.hpp"
-#include "splashscreen/splashscreen.h"
+#include "splashscreen/splashscreen.hpp"
 
 QTranslator* g_translator{ nullptr };
 QSharedMemory g_sharedMemory{ nullptr };
@@ -72,8 +72,6 @@ int main(int argc, char* argv[]) {
 	QTextCodec::setCodecForLocale(codec);
 #endif
 	QApplication app(argc, argv);
-	// 无边框窗体无法拖动和定位，优先使用 xcb
-	qputenv("QT_QPA_PLATFORM", "xcb");
 	const LoggerConfigData loggerConfigData;
 	// 初始化配置文件
 	const QString configFilePath = initializeConfigFile(loggerConfigData);
