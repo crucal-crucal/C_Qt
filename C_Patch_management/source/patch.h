@@ -11,11 +11,12 @@
 #include <set>
 #include <utility>
 
-#include "framelessmainwindow/framelessmainwindow.h"
 #include "framelessMessageBox/uvfiledialog.h"
 #include "framelessMessageBox/uvmessagebox.h"
+#include "framelessmainwindow/framelessmainwindow.h"
 #include "global/cglobal.h"
 #include "mergedir/mergedir_p.h"
+#include "noticewidget/uvnoticewidget.hpp"
 
 class CPatch final : public FramelessMainWindow {
 	Q_OBJECT
@@ -186,6 +187,8 @@ private:
 
 	QLabel* m_pLbVersionPath{ nullptr };
 	QPushButton* m_pBtnVersionPatch{ nullptr };
+
+	CUVNoticeWidget* m_noticewidget{ nullptr };
 
 	QHBoxLayout* m_plyHTitle{ nullptr };
 	QVBoxLayout* m_pCentralLayout{ nullptr };

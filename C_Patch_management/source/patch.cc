@@ -375,6 +375,7 @@ QDateTime CPatch::GetDateTimeFromString(const QString& str) {
 }
 
 void CPatch::updatePage(const QString& begin, const QString& end, const QString& outputDir) {
+	m_noticewidget->notice(this, "success");
 	m_pBtnGenerate->setChecked(false);
 	m_pLwOutPatchList->clear();
 	auto beginIndex = m_localMap.find(begin);
@@ -477,6 +478,8 @@ void CPatch::createCtrl() {
 
 	m_pLbVersionPath = this->createWidget<QLabel>(tr("LAB_VERSION_PATH"), m_pRenewalWidget);
 	m_pBtnVersionPatch = this->createWidget<QPushButton>(tr("BTN_VERSION_PATH"), m_pRenewalWidget);
+
+	m_noticewidget = this->createWidget<CUVNoticeWidget>();
 
 	m_plyHTitle = this->createWidget<QHBoxLayout>(m_pTitleBar);
 	m_pCentralLayout = this->createWidget<QVBoxLayout>(m_pCentralWidget);
