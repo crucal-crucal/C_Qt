@@ -57,12 +57,12 @@ private:
 	QWidget* m_Parent{ nullptr };
 	QTimer* m_Timer{ nullptr };
 	int m_TimerCount{};
-	int m_BaseWidth{};              //按一行时算的宽度
-	int m_BaseHeight{};             //一行高度
-	int m_MinHeight{};              //最小高度
-	int m_TransparentVal{ 255 };    //透明度0~255，值越小越透明
+	int m_BaseWidth{};              // 按一行时算的宽度
+	int m_BaseHeight{};             // 一行高度
+	int m_MinHeight{};              // 最小高度
+	int m_TransparentVal{ 255 };    // 透明度0~255，值越小越透明
 	QString m_fontcolor{ "green" }; // 字体颜色
-	QList<int> m_ListLinesLen{};
+	QList<int> m_ListLinesLen{};    // 本地文字长度备份
 
 	int m_timer_interval_ms{ 50 };                                                   // 定时器间隔，单位ms
 	int m_notice_def_delay_cnt{ 1000 / m_timer_interval_ms };                        // 默认提示时间1s
