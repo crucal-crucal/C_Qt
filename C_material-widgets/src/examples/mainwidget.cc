@@ -1,6 +1,7 @@
 #include "mainwidget.hpp"
 
 MainWidget::MainWidget(QWidget* parent): QMainWindow(parent) {
+	setAttribute(Qt::WA_DeleteOnClose);
 	createCtrl();
 	layout();
 	initConnection();
