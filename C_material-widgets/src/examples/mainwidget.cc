@@ -1,9 +1,10 @@
 #include "mainwidget.hpp"
 
-MainWidget::MainWidget(QWidget* parent) {
+MainWidget::MainWidget(QWidget* parent): QMainWindow(parent) {
 	createCtrl();
 	layout();
 	initConnection();
+	resize(800, 600);
 }
 
 MainWidget::~MainWidget() = default;
