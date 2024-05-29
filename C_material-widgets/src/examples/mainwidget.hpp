@@ -1,16 +1,31 @@
 #pragma once
 
+#include <QListWidget>
 #include <QMainWindow>
+#include <QStackedLayout>
 
-class MainWidget : public QMainWindow {
+#include "uvappbarsettingseditor/uvappbarsettingseditor.hpp"
+
+class MainWidget final : public QMainWindow {
+	Q_OBJECT
+
 public:
 	explicit MainWidget(QWidget* parent = nullptr);
 	~MainWidget() override;
 
 private:
 	void createCtrl();
-	void layout();
+	void customLayout() const;
 	void initConnection();
+	void initData() const;
 
 private:
+	QWidget* m_pCenterWidget{ nullptr };
+	QListWidget* m_pListWidget{ nullptr };
+
+	QHBoxLayout* m_pHBoxLayout{ nullptr };
+	QStackedLayout* m_pStackedLayout{ nullptr };
+
+private:
+	CUVAppBarSettingsEditor* m_appBarSettingsEditor{ nullptr };
 };
