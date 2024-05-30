@@ -6,6 +6,7 @@
 
 #include "uvappbarsettingseditor/uvappbarsettingseditor.hpp"
 #include "uvautocompletesettingseditor/uvautocompletesettingseditor.hpp"
+#include "uvavatarsettingseditor/uvavatarsettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -30,4 +31,5 @@ private:
 private:
 	CUVAppBarSettingsEditor* m_pAppBarSettingsEditor{ nullptr };
 	CUVAutoCompleteSettingsEditor* m_pAutoCompleteSettingsEditor{ nullptr };
+	CUVAvatarSettingsEditor* m_pAvatarSettingsEditor{ nullptr };
 };

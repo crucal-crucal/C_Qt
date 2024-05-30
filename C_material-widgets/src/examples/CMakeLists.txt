@@ -39,6 +39,8 @@ include_directories(../components)
 set(examples_SOURCES
         mainwidget.hpp
         mainwidget.cc
+        uvavatarsettingseditor/uvavatarsettingseditor.hpp
+        uvavatarsettingseditor/uvavatarsettingseditor.cc
 )
 
 add_executable(${TARGET_NAME}
@@ -50,6 +52,7 @@ target_link_libraries(${TARGET_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
 target_link_libraries(${TARGET_NAME}
         uvappbarsettingseditor
         uvautocompletesettingseditor
+        uvavatarsettingseditor
 )
 
 install(TARGETS ${TARGET_NAME}
@@ -58,4 +61,5 @@ install(TARGETS ${TARGET_NAME}
 
 add_subdirectory(uvappbarsettingseditor)
 add_subdirectory(uvautocompletesettingseditor)
+add_subdirectory(uvavatarsettingseditor)
 

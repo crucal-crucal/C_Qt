@@ -1,4 +1,4 @@
-﻿set(TARGET_NAME uvautocompletesettingseditor)
+set(TARGET_NAME uvavatarsettingseditor)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -9,9 +9,9 @@ aux_source_directory(. SRC_LIST)
 
 add_library(${TARGET_NAME} SHARED ${SRC_LIST})
 target_link_libraries(${TARGET_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
-target_link_libraries(${TARGET_NAME} uvmaterialautocomplete)
+target_link_libraries(${TARGET_NAME} uvmaterialavatar)
 
-target_compile_definitions(${TARGET_NAME} PRIVATE CUVAUTOCOMPLETESETTINGSEDITOR_LIB)
+target_compile_definitions(${TARGET_NAME} PRIVATE CUVAVATARSETTINGSEDITOR_LIB)
 
 install(TARGETS ${TARGET_NAME}
         RUNTIME DESTINATION bin

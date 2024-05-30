@@ -39,7 +39,7 @@ enum ProgressType {
 };
 
 enum AvatarType {
-	ImageAvatar,
+	ImageAvatar = 0,
 	IconAvatar,
 	LetterAvatar
 };
