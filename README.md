@@ -1,6 +1,6 @@
-#### 介绍
-[English page](README.en.md)
+#### Introduction
+[Chinese page](README.cn.md)
 
-A_conf存储的Linux上vim以及tmux的常用配置
+Common configurations of vim and tmux on Linux stored by A_conf
 
 C_* CMake & qmake build project
