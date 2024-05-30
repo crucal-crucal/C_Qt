@@ -32,3 +32,9 @@ add_subdirectory(uvautocompletesettingseditor)
 add_subdirectory(uvavatarsettingseditor)
 add_subdirectory(uvbadgesettingseditor)
 
+#copy rcc file to execute directory
+add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/resource/resources.rcc
+        $<TARGET_FILE_DIR:${TARGET_NAME}>
+)
