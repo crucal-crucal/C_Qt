@@ -10,19 +10,20 @@
 #include <QWidget>
 
 #include "uvmaterialavatar/uvmaterialavatar.hpp"
+#include "uvmaterialbadge/uvmaterialbadge.hpp"
 
-#ifdef CUVAVATARSETTINGSEDITOR_LIB
-#define CUVAVATARSETTINGSEDITOR_EXPORT Q_DECL_EXPORT
+#ifdef CUVBADGESETTINGSEDITOR_LIB
+#define CUVBADGESETTINGSEDITOR_EXPORT Q_DECL_EXPORT
 #else
-#define CUVAVATARSETTINGSEDITOR_EXPORT Q_DECL_IMPORT
+#define CUVBADGESETTINGSEDITOR_EXPORT Q_DECL_IMPORT
 #endif
 
-class CUVAVATARSETTINGSEDITOR_EXPORT CUVAvatarSettingsEditor : public QWidget {
+class CUVBADGESETTINGSEDITOR_EXPORT CUVBadgeSettingsEditor final : public QWidget {
 	Q_OBJECT
 
 public:
-	explicit CUVAvatarSettingsEditor(QWidget* parent = nullptr);
-	~CUVAvatarSettingsEditor() override;
+	explicit CUVBadgeSettingsEditor(QWidget* parent = nullptr);
+	~CUVBadgeSettingsEditor() override;
 
 private:
 	void createCtrl();
@@ -51,8 +52,11 @@ private:
 	QLineEdit* m_pLeBackgroundColor{ nullptr };
 	QToolButton* m_pTbBackgroundColor{ nullptr };
 
-	QLabel* m_pLbSize{ nullptr };
-	QSpinBox* m_pSbSize{ nullptr };
+	QLabel* m_pLbHorizontalOffset{ nullptr };
+	QSpinBox* m_pSbHorizontalOffset{ nullptr };
+
+	QLabel* m_pLbVerticalOffset{ nullptr };
+	QSpinBox* m_pSbVerticalOffset{ nullptr };
 
 	QLabel* m_pLbType{ nullptr };
 	QComboBox* m_pCbType{ nullptr };
@@ -66,11 +70,13 @@ private:
 	QHBoxLayout* m_pHLayUseThemeColors{ nullptr };
 	QHBoxLayout* m_pHLayTextColor{ nullptr };
 	QHBoxLayout* m_pHLayBackgroundColor{ nullptr };
-	QHBoxLayout* m_pHLaySize{ nullptr };
+	QHBoxLayout* m_pHLayHorizontalOffset{ nullptr };
+	QHBoxLayout* m_pHLayVerticalOffset{ nullptr };
 	QHBoxLayout* m_pHLayType{ nullptr };
 
 	// lib
 	CUVMaterialAvatar* const m_pAvatar{ nullptr };
+	CUVMaterialBadge* const m_pBadge{ nullptr };
 
 private:
 	int m_nLabelWidth{ 140 };

@@ -7,6 +7,7 @@
 #include "uvappbarsettingseditor/uvappbarsettingseditor.hpp"
 #include "uvautocompletesettingseditor/uvautocompletesettingseditor.hpp"
 #include "uvavatarsettingseditor/uvavatarsettingseditor.hpp"
+#include "uvbadgesettingseditor/uvbadgesettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -32,4 +33,5 @@ private:
 	CUVAppBarSettingsEditor* m_pAppBarSettingsEditor{ nullptr };
 	CUVAutoCompleteSettingsEditor* m_pAutoCompleteSettingsEditor{ nullptr };
 	CUVAvatarSettingsEditor* m_pAvatarSettingsEditor{ nullptr };
+	CUVBadgeSettingsEditor* m_pBadgeSettingsEditor{ nullptr };
 };

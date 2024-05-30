@@ -113,7 +113,9 @@ void CUVAvatarSettingsEditor::initData() const {
 	m_pCbType->addItem(tr("ImageAvatar"));
 	m_pCbType->addItem(tr("IconAvatar"));
 
-	m_pSbSize->setValue(40);
+	m_pSbSize->setValue(60);
+
+	m_pCbUseThemeColors->setChecked(true);
 }
 
 void CUVAvatarSettingsEditor::setupForm() const {
