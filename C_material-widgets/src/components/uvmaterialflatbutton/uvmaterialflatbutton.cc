@@ -15,8 +15,7 @@
  *  \class CUVMaterialFlatButtonPrivate
  */
 
-CUVMaterialFlatButtonPrivate::CUVMaterialFlatButtonPrivate(CUVMaterialFlatButton* q)
-: q_ptr(q) {
+CUVMaterialFlatButtonPrivate::CUVMaterialFlatButtonPrivate(CUVMaterialFlatButton* q): q_ptr(q) {
 }
 
 CUVMaterialFlatButtonPrivate::~CUVMaterialFlatButtonPrivate() = default;
@@ -69,16 +68,14 @@ CUVMaterialFlatButton::CUVMaterialFlatButton(QWidget* parent, const Material::Bu
 }
 
 CUVMaterialFlatButton::CUVMaterialFlatButton(const QString& text, QWidget* parent, const Material::ButtonPreset preset)
-: QPushButton(text, parent),
-  d_ptr(new CUVMaterialFlatButtonPrivate(this)) {
+: QPushButton(text, parent), d_ptr(new CUVMaterialFlatButtonPrivate(this)) {
 	d_func()->init();
 
 	applyPreset(preset);
 }
 
 CUVMaterialFlatButton::CUVMaterialFlatButton(const QString& text, const Material::Role role, QWidget* parent, const Material::ButtonPreset preset)
-: QPushButton(text, parent),
-  d_ptr(new CUVMaterialFlatButtonPrivate(this)) {
+: QPushButton(text, parent), d_ptr(new CUVMaterialFlatButtonPrivate(this)) {
 	d_func()->init();
 
 	applyPreset(preset);

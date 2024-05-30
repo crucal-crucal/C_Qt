@@ -36,8 +36,8 @@ void CUVMaterialCheckablePrivate::init() {
 	checkedState = new QState;
 	disabledUncheckedState = new QState;
 	disabledCheckedState = new QState;
-	uncheckedTransition = new QSignalTransition(q, SIGNAL(toggled(bool)));
-	checkedTransition = new QSignalTransition(q, SIGNAL(toggled(bool)));
+	uncheckedTransition = new QSignalTransition(q, &CUVMaterialCheckable::toggled);
+	checkedTransition = new QSignalTransition(q, &CUVMaterialCheckable::toggled);
 	labelPosition = CUVMaterialCheckable::LabelPositionRight;
 	useThemeColors = true;
 
@@ -82,11 +82,11 @@ void CUVMaterialCheckablePrivate::init() {
 	transition->setTargetState(checkedState);
 	disabledCheckedState->addTransition(transition);
 
-	transition = new QSignalTransition(q, SIGNAL(toggled(bool)));
+	transition = new QSignalTransition(q, &CUVMaterialCheckable::toggled);
 	transition->setTargetState(disabledCheckedState);
 	disabledUncheckedState->addTransition(transition);
 
-	transition = new QSignalTransition(q, SIGNAL(toggled(bool)));
+	transition = new QSignalTransition(q, &CUVMaterialCheckable::toggled);
 	transition->setTargetState(disabledUncheckedState);
 	disabledCheckedState->addTransition(transition);
 

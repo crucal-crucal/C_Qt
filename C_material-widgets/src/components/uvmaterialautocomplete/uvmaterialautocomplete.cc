@@ -53,7 +53,7 @@ void CUVMaterialAutoCompletePrivate::init() {
 	menuLayout->setContentsMargins(0, 0, 0, 0);
 	menuLayout->setSpacing(0);
 
-	QObject::connect(q, SIGNAL(textEdited(QString)), q, SLOT(updateResults(QString)));
+	QObject::connect(q, &CUVMaterialAutoComplete::textEdited, q, &CUVMaterialAutoComplete::updateResults);
 
 	stateMachine->start();
 }
@@ -62,8 +62,7 @@ void CUVMaterialAutoCompletePrivate::init() {
  *  \class CUVMaterialAutoComplete
  */
 
-CUVMaterialAutoComplete::CUVMaterialAutoComplete(QWidget* parent)
-: CUVMaterialTextField(*new CUVMaterialAutoCompletePrivate(this), parent) {
+CUVMaterialAutoComplete::CUVMaterialAutoComplete(QWidget* parent): CUVMaterialTextField(*new CUVMaterialAutoCompletePrivate(this), parent) {
 	d_func()->init();
 }
 

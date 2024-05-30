@@ -11,8 +11,7 @@
  *  \class CUVMaterialIconButtonPrivate
  */
 
-CUVMaterialIconButtonPrivate::CUVMaterialIconButtonPrivate(CUVMaterialIconButton* q)
-: q_ptr(q) {
+CUVMaterialIconButtonPrivate::CUVMaterialIconButtonPrivate(CUVMaterialIconButton* q): q_ptr(q) {
 }
 
 CUVMaterialIconButtonPrivate::~CUVMaterialIconButtonPrivate() = default;
@@ -116,8 +115,7 @@ QColor CUVMaterialIconButton::disabledColor() const {
 }
 
 CUVMaterialIconButton::CUVMaterialIconButton(CUVMaterialIconButtonPrivate& d, QWidget* parent)
-: QAbstractButton(parent),
-  d_ptr(&d) {
+: QAbstractButton(parent), d_ptr(&d) {
 	d_func()->init();
 }
 

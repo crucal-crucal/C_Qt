@@ -17,15 +17,15 @@ CUVMaterialAutoCompleteStateMachine::CUVMaterialAutoCompleteStateMachine(QWidget
 	addState(m_closingState);
 	setInitialState(m_closedState);
 
-	auto transition = new QSignalTransition(this, SIGNAL(shouldOpen()));
+	auto transition = new QSignalTransition(this, &CUVMaterialAutoCompleteStateMachine::shouldOpen);
 	transition->setTargetState(m_openState);
 	m_closedState->addTransition(transition);
 
-	transition = new QSignalTransition(this, SIGNAL(shouldClose()));
+	transition = new QSignalTransition(this, &CUVMaterialAutoCompleteStateMachine::shouldClose);
 	transition->setTargetState(m_closedState);
 	m_openState->addTransition(transition);
 
-	transition = new QSignalTransition(this, SIGNAL(shouldFade()));
+	transition = new QSignalTransition(this, &CUVMaterialAutoCompleteStateMachine::shouldFade);
 	transition->setTargetState(m_closingState);
 	m_openState->addTransition(transition);
 
@@ -43,7 +43,7 @@ CUVMaterialAutoCompleteStateMachine::CUVMaterialAutoCompleteStateMachine(QWidget
 	animation->setDuration(240);
 	addDefaultAnimation(animation);
 
-	transition = new QSignalTransition(animation, SIGNAL(finished()));
+	transition = new QSignalTransition(animation, &QPropertyAnimation::finished);
 	transition->setTargetState(m_closedState);
 	m_closingState->addTransition(transition);
 }

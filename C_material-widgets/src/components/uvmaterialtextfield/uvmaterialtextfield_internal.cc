@@ -44,14 +44,12 @@ CUVMaterialTextFieldStateMachine::CUVMaterialTextFieldStateMachine(CUVMaterialTe
 
 	setupProperties();
 
-	connect(m_textField, SIGNAL(textChanged(QString)), this, SLOT(setupProperties()));
+	connect(m_textField, &CUVMaterialTextField::textChanged, this, &CUVMaterialTextFieldStateMachine::setupProperties);
 }
 
 CUVMaterialTextFieldStateMachine::~CUVMaterialTextFieldStateMachine() = default;
 
 void CUVMaterialTextFieldStateMachine::setLabel(CUVMaterialTextFieldLabel* label) {
-	delete m_label;
-
 	if (m_offsetAnimation) {
 		removeDefaultAnimation(m_offsetAnimation);
 		delete m_offsetAnimation;
@@ -62,15 +60,15 @@ void CUVMaterialTextFieldStateMachine::setLabel(CUVMaterialTextFieldLabel* label
 		delete m_colorAnimation;
 	}
 
-	m_label = label;
+	m_label.reset(label);
 
 	if (m_label) {
-		m_offsetAnimation = new QPropertyAnimation(m_label, "offset", this);
+		m_offsetAnimation = new QPropertyAnimation(m_label.get(), "offset", this);
 		m_offsetAnimation->setDuration(210);
 		m_offsetAnimation->setEasingCurve(QEasingCurve::OutCubic);
 		addDefaultAnimation(m_offsetAnimation);
 
-		m_colorAnimation = new QPropertyAnimation(m_label, "color", this);
+		m_colorAnimation = new QPropertyAnimation(m_label.get(), "color", this);
 		m_colorAnimation->setDuration(210);
 		addDefaultAnimation(m_colorAnimation);
 	}
@@ -78,19 +76,20 @@ void CUVMaterialTextFieldStateMachine::setLabel(CUVMaterialTextFieldLabel* label
 	setupProperties();
 }
 
-void CUVMaterialTextFieldStateMachine::setupProperties() const {
+void CUVMaterialTextFieldStateMachine::setupProperties(const QString& text) const {
+	Q_UNUSED(text)
 	if (m_label) {
 		const int m = m_textField->textMargins().top();
 
 		if (m_textField->text().isEmpty()) {
-			m_normalState->assignProperty(m_label, "offset", QPointF(0, 26));
+			m_normalState->assignProperty(m_label.get(), "offset", QPointF(0, 26));
 		} else {
-			m_normalState->assignProperty(m_label, "offset", QPointF(0, 0 - m));
+			m_normalState->assignProperty(m_label.get(), "offset", QPointF(0, 0 - m));
 		}
 
-		m_focusedState->assignProperty(m_label, "offset", QPointF(0, 0 - m));
-		m_focusedState->assignProperty(m_label, "color", m_textField->inkColor());
-		m_normalState->assignProperty(m_label, "color", m_textField->labelColor());
+		m_focusedState->assignProperty(m_label.get(), "offset", QPointF(0, 0 - m));
+		m_focusedState->assignProperty(m_label.get(), "color", m_textField->inkColor());
+		m_normalState->assignProperty(m_label.get(), "color", m_textField->labelColor());
 
 		if (0 != m_label->offset().y() && !m_textField->text().isEmpty()) {
 			m_label->setOffset(QPointF(0, 0 - m));

@@ -15,10 +15,12 @@ int main(int argc, char* argv[]) {
 	const QString appParPath = appFile.absolutePath();
 	const QString strRcc = appParPath + "/resources.rcc";
 	qInfo(loadResources(strRcc) ? "load resources success" : "load resources failed");
+
 	MainWidget mainWidget;
 	QObject::connect(&mainWidget, &MainWidget::destroyed, [&]() {
 		unloadResources(strRcc);
 	});
+
 	mainWidget.show();
 
 	return QApplication::exec();

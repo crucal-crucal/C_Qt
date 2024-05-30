@@ -22,8 +22,8 @@ void CUVMaterialRippleOverlay::addRipple(CUVMaterialRipple* ripple) {
 	m_ripples.push_back(ripple);
 	ripple->start();
 
-	connect(this, SIGNAL(destroyed(QObject*)), ripple, SLOT(stop()));
-	connect(this, SIGNAL(destroyed(QObject*)), ripple, SLOT(deleteLater()));
+	connect(this, &CUVMaterialRippleOverlay::destroyed, ripple, &CUVMaterialRipple::stop);
+	connect(this, &CUVMaterialRippleOverlay::destroyed, ripple, &CUVMaterialRipple::deleteLater);
 }
 
 void CUVMaterialRippleOverlay::addRipple(const QPoint& position, const qreal radius) {

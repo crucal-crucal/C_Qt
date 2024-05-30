@@ -17,7 +17,7 @@ public:
 	explicit CUVMaterialIconButton(const QIcon& icon, QWidget* parent = nullptr);
 	~CUVMaterialIconButton() override;
 
-	[[nodiscard]] QSize sizeHint() const Q_DECL_OVERRIDE;
+	[[nodiscard]] QSize sizeHint() const override;
 
 	void setUseThemeColors(bool value);
 	[[nodiscard]] bool useThemeColors() const;
@@ -31,10 +31,10 @@ public:
 protected:
 	explicit CUVMaterialIconButton(CUVMaterialIconButtonPrivate& d, QWidget* parent = nullptr);
 
-	bool event(QEvent* event) Q_DECL_OVERRIDE;
-	bool eventFilter(QObject* obj, QEvent* event) Q_DECL_OVERRIDE;
-	void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+	bool event(QEvent* event) override;
+	bool eventFilter(QObject* obj, QEvent* event) override;
+	void mousePressEvent(QMouseEvent* event) override;
+	void paintEvent(QPaintEvent* event) override;
 
 	const QScopedPointer<CUVMaterialIconButtonPrivate> d_ptr;
 

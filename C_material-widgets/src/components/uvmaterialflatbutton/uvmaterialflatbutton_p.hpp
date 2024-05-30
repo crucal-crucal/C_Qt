@@ -19,9 +19,9 @@ public:
 
 	void init();
 
-	CUVMaterialFlatButton* const q_ptr{nullptr};
-	CUVMaterialRippleOverlay* rippleOverlay{nullptr};
-	CUVMaterialFlatButtonStateMachine* stateMachine{nullptr};
+	CUVMaterialFlatButton* const q_ptr{ nullptr };
+	CUVMaterialRippleOverlay* rippleOverlay{ nullptr };
+	CUVMaterialFlatButtonStateMachine* stateMachine{ nullptr };
 	Material::Role role{};
 	Material::RippleStyle rippleStyle{};
 	Material::ButtonIconPlacement iconPlacement{};

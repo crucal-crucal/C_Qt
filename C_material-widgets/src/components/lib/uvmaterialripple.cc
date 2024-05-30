@@ -12,16 +12,9 @@ CUVMaterialRipple::CUVMaterialRipple(const QPoint& center, QObject* parent)
 	init();
 }
 
-CUVMaterialRipple::CUVMaterialRipple(const QPoint& center,
-                                     CUVMaterialRippleOverlay* overlay,
-                                     QObject* parent)
-: QParallelAnimationGroup(parent),
-  m_overlay(overlay),
-  m_radiusAnimation(animate("radius")),
-  m_opacityAnimation(animate("opacity")),
-  m_radius(0),
-  m_opacity(0),
-  m_center(center) {
+CUVMaterialRipple::CUVMaterialRipple(const QPoint& center, CUVMaterialRippleOverlay* overlay, QObject* parent)
+: QParallelAnimationGroup(parent), m_overlay(overlay), m_radiusAnimation(animate("radius")), m_opacityAnimation(animate("opacity")),
+  m_radius(0), m_opacity(0), m_center(center) {
 	init();
 }
 
@@ -72,9 +65,7 @@ void CUVMaterialRipple::destroy() {
 	m_overlay->removeRipple(this);
 }
 
-QPropertyAnimation* CUVMaterialRipple::animate(const QByteArray& property,
-                                               const QEasingCurve& easing,
-                                               const int duration) {
+QPropertyAnimation* CUVMaterialRipple::animate(const QByteArray& property, const QEasingCurve& easing, const int duration) {
 	const auto animation = new QPropertyAnimation;
 	animation->setTargetObject(this);
 	animation->setPropertyName(property);
@@ -93,5 +84,5 @@ void CUVMaterialRipple::init() {
 	m_brush.setColor(Qt::black);
 	m_brush.setStyle(Qt::SolidPattern);
 
-	connect(this, SIGNAL(finished()), this, SLOT(destroy()));
+	connect(this, &CUVMaterialRipple::finished, this, &CUVMaterialRipple::destroy);
 }

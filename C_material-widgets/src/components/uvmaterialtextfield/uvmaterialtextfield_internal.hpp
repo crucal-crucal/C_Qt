@@ -22,7 +22,7 @@ public:
 	[[nodiscard]] inline qreal progress() const;
 
 public slots:
-	void setupProperties() const;
+	void setupProperties(const QString& text = "") const;
 
 private:
 	Q_DISABLE_COPY(CUVMaterialTextFieldStateMachine)
@@ -30,7 +30,7 @@ private:
 	CUVMaterialTextField* const m_textField;
 	QState* const m_normalState;
 	QState* const m_focusedState;
-	CUVMaterialTextFieldLabel* m_label;
+	std::unique_ptr<CUVMaterialTextFieldLabel> m_label;
 	QPropertyAnimation* m_offsetAnimation;
 	QPropertyAnimation* m_colorAnimation;
 	qreal m_progress;
@@ -66,7 +66,7 @@ public:
 	[[nodiscard]] inline QColor color() const;
 
 protected:
-	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+	void paintEvent(QPaintEvent* event) override;
 
 private:
 	Q_DISABLE_COPY(CUVMaterialTextFieldLabel)

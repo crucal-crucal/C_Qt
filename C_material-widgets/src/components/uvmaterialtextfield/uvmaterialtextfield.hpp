@@ -52,8 +52,8 @@ public:
 protected:
 	explicit CUVMaterialTextField(CUVMaterialTextFieldPrivate& d, QWidget* parent = nullptr);
 
-	bool event(QEvent* event) Q_DECL_OVERRIDE;
-	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+	bool event(QEvent* event) override;
+	void paintEvent(QPaintEvent* event) override;
 
 	const QScopedPointer<CUVMaterialTextFieldPrivate> d_ptr;
 

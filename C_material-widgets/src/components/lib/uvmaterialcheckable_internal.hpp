@@ -22,7 +22,7 @@ public:
 	CUVMaterialCheckableIcon(QIcon  icon, CUVMaterialCheckable* parent);
 	~CUVMaterialCheckableIcon() override;
 
-	[[nodiscard]] QSize sizeHint() const Q_DECL_OVERRIDE;
+	[[nodiscard]] QSize sizeHint() const override;
 
 	inline void setIcon(const QIcon& icon);
 	[[nodiscard]] inline QIcon icon() const;
@@ -37,7 +37,7 @@ public:
 	[[nodiscard]] inline qreal opacity() const;
 
 protected:
-	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+	void paintEvent(QPaintEvent* event) override;
 
 private:
 	Q_DISABLE_COPY(CUVMaterialCheckableIcon)

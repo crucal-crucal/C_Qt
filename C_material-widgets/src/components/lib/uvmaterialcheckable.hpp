@@ -46,15 +46,15 @@ public:
 	void setUncheckedIcon(const QIcon& icon);
 	[[nodiscard]] QIcon uncheckedIcon() const;
 
-	[[nodiscard]] QSize sizeHint() const Q_DECL_OVERRIDE;
+	[[nodiscard]] QSize sizeHint() const override;
 
 protected:
 	explicit CUVMaterialCheckable(CUVMaterialCheckablePrivate& d, QWidget* parent = nullptr);
 
-	bool event(QEvent* event) Q_DECL_OVERRIDE;
-	bool eventFilter(QObject* obj, QEvent* event) Q_DECL_OVERRIDE;
-	void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+	bool event(QEvent* event) override;
+	bool eventFilter(QObject* obj, QEvent* event) override;
+	void mousePressEvent(QMouseEvent* event) override;
+	void paintEvent(QPaintEvent* event) override;
 
 	void setupProperties();
 

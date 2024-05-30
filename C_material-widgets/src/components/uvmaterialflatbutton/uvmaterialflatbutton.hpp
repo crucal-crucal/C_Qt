@@ -84,7 +84,7 @@ public:
 	void setTextAlignment(Qt::Alignment alignment);
 	[[nodiscard]] Qt::Alignment textAlignment() const;
 
-	[[nodiscard]] QSize sizeHint() const Q_DECL_OVERRIDE;
+	[[nodiscard]] QSize sizeHint() const override;
 
 protected:
 	enum {
@@ -93,11 +93,11 @@ protected:
 
 	explicit CUVMaterialFlatButton(CUVMaterialFlatButtonPrivate& d, QWidget* parent = nullptr, Material::ButtonPreset preset = Material::FlatPreset);
 
-	void checkStateSet() Q_DECL_OVERRIDE;
-	void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-	void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-	void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
-	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+	void checkStateSet() override;
+	void mousePressEvent(QMouseEvent* event) override;
+	void mouseReleaseEvent(QMouseEvent* event) override;
+	void resizeEvent(QResizeEvent* event) override;
+	void paintEvent(QPaintEvent* event) override;
 
 	virtual void paintBackground(QPainter* painter);
 	virtual void paintHalo(QPainter* painter);

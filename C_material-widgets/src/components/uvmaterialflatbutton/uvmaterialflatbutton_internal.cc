@@ -28,8 +28,7 @@ CUVMaterialFlatButtonStateMachine::CUVMaterialFlatButtonStateMachine(CUVMaterial
 	addState(m_topLevelState);
 	setInitialState(m_topLevelState);
 
-	m_checkableState->setInitialState(parent->isChecked() ? m_checkedState
-		                                  : m_uncheckedState);
+	m_checkableState->setInitialState(parent->isChecked() ? m_checkedState : m_uncheckedState);
 
 	auto transition = new CUVMaterialStateTransition(FlatButtonCheckedTransition);
 	transition->setTargetState(m_checkedState);
@@ -176,13 +175,11 @@ bool CUVMaterialFlatButtonStateMachine::eventFilter(QObject* watched, QEvent* ev
 	return QStateMachine::eventFilter(watched, event);
 }
 
-void CUVMaterialFlatButtonStateMachine::addTransition(QObject* object, const QEvent::Type eventType,
-                                                      QState* fromState, QState* toState) {
+void CUVMaterialFlatButtonStateMachine::addTransition(QObject* object, const QEvent::Type eventType, QState* fromState, QState* toState) {
 	addTransition(new QEventTransition(object, eventType), fromState, toState);
 }
 
-void CUVMaterialFlatButtonStateMachine::addTransition(QAbstractTransition* transition,
-                                                      QState* fromState, QState* toState) {
+void CUVMaterialFlatButtonStateMachine::addTransition(QAbstractTransition* transition, QState* fromState, QState* toState) {
 	transition->setTargetState(toState);
 
 	auto animation = new QPropertyAnimation(this, "overlayOpacity", this);
