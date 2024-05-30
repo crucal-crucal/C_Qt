@@ -48,7 +48,8 @@ add_executable(${TARGET_NAME}
 
 target_link_libraries(${TARGET_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
 target_link_libraries(${TARGET_NAME}
-        appbarsettingseditor
+        uvappbarsettingseditor
+        uvautocompletesettingseditor
 )
 
 install(TARGETS ${TARGET_NAME}
@@ -56,4 +57,5 @@ install(TARGETS ${TARGET_NAME}
 )
 
 add_subdirectory(uvappbarsettingseditor)
+add_subdirectory(uvautocompletesettingseditor)
 

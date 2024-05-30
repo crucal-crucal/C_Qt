@@ -5,6 +5,7 @@
 #include <QStackedLayout>
 
 #include "uvappbarsettingseditor/uvappbarsettingseditor.hpp"
+#include "uvautocompletesettingseditor/uvautocompletesettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -27,5 +28,6 @@ private:
 	QStackedLayout* m_pStackedLayout{ nullptr };
 
 private:
-	CUVAppBarSettingsEditor* m_appBarSettingsEditor{ nullptr };
+	CUVAppBarSettingsEditor* m_pAppBarSettingsEditor{ nullptr };
+	CUVAutoCompleteSettingsEditor* m_pAutoCompleteSettingsEditor{ nullptr };
 };

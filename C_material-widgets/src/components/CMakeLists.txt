@@ -33,5 +33,8 @@ find_package(${Qt}
 
 add_subdirectory(lib)
 add_subdirectory(uvmaterialappbar)
+add_subdirectory(uvmaterialautocomplete)
+add_subdirectory(uvmaterialflatbutton)
 add_subdirectory(uvmaterialiconbutton)
 add_subdirectory(uvmaterialsnackbar)
+add_subdirectory(uvmaterialtextfield)

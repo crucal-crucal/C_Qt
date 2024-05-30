@@ -15,7 +15,8 @@ void MainWidget::createCtrl() {
 	m_pListWidget = new QListWidget(this);
 	m_pListWidget->setFixedWidth(200);
 
-	m_appBarSettingsEditor = new CUVAppBarSettingsEditor(this);
+	m_pAppBarSettingsEditor = new CUVAppBarSettingsEditor(this);
+	m_pAutoCompleteSettingsEditor = new CUVAutoCompleteSettingsEditor(this);
 
 	m_pHBoxLayout = new QHBoxLayout;
 	m_pStackedLayout = new QStackedLayout;
@@ -28,7 +29,8 @@ void MainWidget::customLayout() const {
 	m_pHBoxLayout->addWidget(m_pListWidget);
 	m_pHBoxLayout->addLayout(m_pStackedLayout);
 
-	m_pStackedLayout->addWidget(m_appBarSettingsEditor);
+	m_pStackedLayout->addWidget(m_pAppBarSettingsEditor);
+	m_pStackedLayout->addWidget(m_pAutoCompleteSettingsEditor);
 }
 
 void MainWidget::initConnection() {
