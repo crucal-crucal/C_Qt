@@ -13,14 +13,4 @@ target_link_libraries(${TARGET_NAME} uvmateriallib)
 
 target_compile_definitions(${TARGET_NAME} PRIVATE CUVMATERIALICONBUTTON_LIB)
 
-install(TARGETS ${TARGET_NAME}
-        RUNTIME DESTINATION bin
-)
-
-install(TARGETS ${TARGET_NAME}
-        ARCHIVE DESTINATION lib OPTIONAL
-)
-
-if (WIN32)
-    install(FILES $<TARGET_PDB_FILE:${TARGET_NAME}> DESTINATION pdb OPTIONAL)
-endif ()
+installdll()
