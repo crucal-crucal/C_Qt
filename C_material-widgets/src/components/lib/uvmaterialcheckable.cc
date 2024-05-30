@@ -1,4 +1,4 @@
-#include "lib/uvmaterialcheckable.hpp"
+﻿#include "uvmaterialcheckable.hpp"
 
 #include <QColor>
 #include <QCoreApplication>
@@ -8,11 +8,11 @@
 #include <QSignalTransition>
 #include <QStateMachine>
 
-#include "lib/uvmaterialcheckable_internal.hpp"
-#include "lib/uvmaterialcheckable_p.hpp"
-#include "lib/uvmaterialripple.hpp"
-#include "lib/uvmaterialrippleoverlay.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvmaterialcheckable_internal.hpp"
+#include "uvmaterialcheckable_p.hpp"
+#include "uvmaterialripple.hpp"
+#include "uvmaterialrippleoverlay.hpp"
+#include "uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialCheckablePrivate

@@ -1,4 +1,4 @@
-#include <QApplication>
+ï»¿#include <QApplication>
 #include <QDebug>
 #include <QFileInfo>
 #include <QResource>
@@ -11,7 +11,7 @@ bool unloadResources(const QString& strPath);
 int main(int argc, char* argv[]) {
 	QApplication app(argc, argv);
 	const QFileInfo appFile(QApplication::applicationFilePath());
-	// ½«Â·¾¶ÇĞ»»µ½ÉÏ¼¶Ä¿Â¼
+	// å°†è·¯å¾„åˆ‡æ¢åˆ°ä¸Šçº§ç›®å½•
 	const QString appParPath = appFile.absolutePath();
 	const QString strRcc = appParPath + "/resources.rcc";
 	qInfo(loadResources(strRcc) ? "load resources success" : "load resources failed");

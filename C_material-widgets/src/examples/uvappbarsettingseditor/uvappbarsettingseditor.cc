@@ -1,4 +1,4 @@
-#include "uvappbarsettingseditor.hpp"
+﻿#include "uvappbarsettingseditor.hpp"
 
 #include <QColorDialog>
 

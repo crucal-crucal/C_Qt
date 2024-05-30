@@ -1,4 +1,4 @@
-#include "uvmaterialsnackbar_internal.hpp"
+﻿#include "uvmaterialsnackbar_internal.hpp"
 
 #include <QDebug>
 #include <QPropertyAnimation>

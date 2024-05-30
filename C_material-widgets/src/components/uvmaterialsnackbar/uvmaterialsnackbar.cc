@@ -1,4 +1,4 @@
-#include "uvmaterialsnackbar.hpp"
+﻿#include "uvmaterialsnackbar.hpp"
 
 #include <QDebug>
 #include <QPainter>

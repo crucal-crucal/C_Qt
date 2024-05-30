@@ -1,4 +1,4 @@
-#include "uvmaterialstatetransition.hpp"
+﻿#include "uvmaterialstatetransition.hpp"
 
 CUVMaterialStateTransition::CUVMaterialStateTransition(const ECUVMaterialStateTransitionType type): m_type(type) {
 }

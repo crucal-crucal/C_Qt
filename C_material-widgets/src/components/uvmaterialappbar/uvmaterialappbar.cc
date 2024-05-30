@@ -1,4 +1,4 @@
-#include "uvmaterialappbar.hpp"
+﻿#include "uvmaterialappbar.hpp"
 
 #include <QPainter>
 #include <QtWidgets/QGraphicsDropShadowEffect>

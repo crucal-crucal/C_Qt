@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QAbstractTransition>
 
@@ -11,7 +11,7 @@
 #endif
 
 /*
- * @brief ״̬��״̬ת����
+ * @brief 状态机状态转换类
  */
 class CUVMATERIAL_EXPORT CUVMaterialStateTransition final : public QAbstractTransition {
 	Q_OBJECT

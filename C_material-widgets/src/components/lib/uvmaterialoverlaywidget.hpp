@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtWidgets/QWidget>
 
@@ -9,7 +9,7 @@
 #endif
 
 /*
- * @brief �ڸ�����ϴ���һ�����ǲ㣬�����ݸ�������ƶ��͵�����С�¼�ʵʱ���¸��ǲ��λ�úʹ�С
+ * @brief 在父组件上创建一个覆盖层，并根据父组件的移动和调整大小事件实时更新覆盖层的位置和大小
  */
 class CUVMATERIAL_EXPORT CUVMaterialOverlayWidget : public QWidget {
 	Q_OBJECT

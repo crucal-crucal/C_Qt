@@ -1,4 +1,4 @@
-#include "uvmaterialstyle.hpp"
+﻿#include "uvmaterialstyle.hpp"
 
 #include <QFontDatabase>
 

@@ -1,4 +1,4 @@
-#include "uvmaterialcheckable_internal.hpp"
+﻿#include "uvmaterialcheckable_internal.hpp"
 
 #include <QIcon>
 #include <QPainter>

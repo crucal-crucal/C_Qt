@@ -1,4 +1,4 @@
-#include "uvmaterialoverlaywidget.hpp"
+﻿#include "uvmaterialoverlaywidget.hpp"
 
 #include <QEvent>
 

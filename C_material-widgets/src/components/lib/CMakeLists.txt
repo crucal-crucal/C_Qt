@@ -1,4 +1,4 @@
-set(TARGET_NAME uvmateriallib)
+﻿set(TARGET_NAME uvmateriallib)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

@@ -1,8 +1,8 @@
-set(CMAKE_AUTOMOC ON)
+﻿set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# �ӻ��������л�ȡ Qt ·�������� qmake
+# 从环境变量中获取 Qt 路径，查找 qmake
 if (WIN32 OR UNIX)
     set(QT_DIR $ENV{QTDIR})
     message(STATUS "QT_DIR=${QT_DIR}")
@@ -10,7 +10,7 @@ if (WIN32 OR UNIX)
     set(CMAKE_PREFIX_PATH ${QT_DIR})
 endif ()
 
-# ��ѯ Qt �汾 ���洢�� QT_VERSION ��
+# 查询 Qt 版本 并存储再 QT_VERSION 中
 execute_process(COMMAND ${QMAKE_EXECUTABLENAMES} -query QT_VERSION OUTPUT_VARIABLE QT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
 if (QT_VERSION)
     message(STATUS "Qt version: " ${QT_VERSION})

@@ -1,4 +1,4 @@
-#include "mainwidget.hpp"
+﻿#include "mainwidget.hpp"
 
 MainWidget::MainWidget(QWidget* parent): QMainWindow(parent) {
 	createCtrl();

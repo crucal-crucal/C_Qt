@@ -1,4 +1,4 @@
-#include "uvmaterialrippleoverlay.hpp"
+﻿#include "uvmaterialrippleoverlay.hpp"
 
 #include <QPainter>
 

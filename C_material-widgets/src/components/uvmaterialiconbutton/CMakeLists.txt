@@ -1,4 +1,4 @@
-set(TARGET_NAME uvmaterialiconbutton)
+﻿set(TARGET_NAME uvmaterialiconbutton)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
