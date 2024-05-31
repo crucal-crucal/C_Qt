@@ -28,8 +28,8 @@ private:
 
 protected:
 	void setUpForm() const;
-	void updateWidget(bool checked) const;
-	void selectColor() const;
+	void updateWidget() const;
+	void selectColor();
 
 private:
 	// Interface

@@ -33,7 +33,7 @@ private:
 protected slots:
 	void setupForm() const;
 	void updateWidget() const;
-	void selectColor() const;
+	void selectColor();
 
 private:
 	// Interface

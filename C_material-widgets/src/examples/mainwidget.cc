@@ -20,6 +20,7 @@ void MainWidget::createCtrl() {
 	m_pAvatarSettingsEditor = new CUVAvatarSettingsEditor(this);
 	m_pBadgeSettingsEditor = new CUVBadgeSettingsEditor(this);
 	m_pCheckBoxSettingsEditor = new CUVCheckBoxSettingsEditor(this);
+	m_pCircularProgressSettingsEditor = new CUVCircularProgressSettingsEditor(this);
 
 	m_pHBoxLayout = new QHBoxLayout;
 	m_pStackedLayout = new QStackedLayout;
@@ -37,6 +38,7 @@ void MainWidget::customLayout() const {
 	m_pStackedLayout->addWidget(m_pAvatarSettingsEditor);
 	m_pStackedLayout->addWidget(m_pBadgeSettingsEditor);
 	m_pStackedLayout->addWidget(m_pCheckBoxSettingsEditor);
+	m_pStackedLayout->addWidget(m_pCircularProgressSettingsEditor);
 }
 
 void MainWidget::initConnection() {

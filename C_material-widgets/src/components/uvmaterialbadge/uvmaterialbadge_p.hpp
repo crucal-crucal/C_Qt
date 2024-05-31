@@ -16,14 +16,14 @@ public:
 
 	void init();
 
-	CUVMaterialBadge* const q_ptr;
-	QString text;
-	QColor textColor;
-	QColor backgroundColor;
-	QSize size;
-	QIcon icon;
-	qreal x;
-	qreal y;
-	int padding;
-	bool useThemeColors;
+	CUVMaterialBadge* const q_ptr{ nullptr };
+	QString text{};
+	QColor textColor{};
+	QColor backgroundColor{};
+	QSize size{};
+	QIcon icon{};
+	qreal x{};
+	qreal y{};
+	int padding{};
+	bool useThemeColors{};
 };

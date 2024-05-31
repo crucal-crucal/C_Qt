@@ -7,7 +7,7 @@ endif ()
 include_directories(..)
 aux_source_directory(. SRC_LIST)
 
-add_library(${TARGET_NAME} SHARED ${SRC_LIST} uvmaterialtextfield.hpp uvmaterialtextfield.cc uvmaterialtextfield_internal.cc uvmaterialtextfield_internal.hpp uvmaterialtextfield_p.hpp)
+add_library(${TARGET_NAME} SHARED ${SRC_LIST})
 target_link_libraries(${TARGET_NAME} Qt5::Core Qt5::Gui Qt5::Widgets)
 target_link_libraries(${TARGET_NAME} uvmateriallib)
 

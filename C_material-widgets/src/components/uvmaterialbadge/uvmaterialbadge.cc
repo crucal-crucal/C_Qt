@@ -9,10 +9,6 @@
  *  \class CUVMaterialBadgePrivate
  *  \internal
  */
-
-/*!
- *  \internal
- */
 CUVMaterialBadgePrivate::CUVMaterialBadgePrivate(CUVMaterialBadge* q)
 : q_ptr(q) {
 }
@@ -20,8 +16,7 @@ CUVMaterialBadgePrivate::CUVMaterialBadgePrivate(CUVMaterialBadge* q)
 /*!
  *  \internal
  */
-CUVMaterialBadgePrivate::~CUVMaterialBadgePrivate() {
-}
+CUVMaterialBadgePrivate::~CUVMaterialBadgePrivate() = default;
 
 /*!
  *  \internal
@@ -47,33 +42,28 @@ void CUVMaterialBadgePrivate::init() {
 /*!
  *  \class CUVMaterialBadge
  */
-
 CUVMaterialBadge::CUVMaterialBadge(QWidget* parent)
-: CUVMaterialOverlayWidget(parent),
-  d_ptr(new CUVMaterialBadgePrivate(this)) {
+: CUVMaterialOverlayWidget(parent), d_ptr(new CUVMaterialBadgePrivate(this)) {
 	d_func()->init();
 }
 
 CUVMaterialBadge::CUVMaterialBadge(const QIcon& icon, QWidget* parent)
-: CUVMaterialOverlayWidget(parent),
-  d_ptr(new CUVMaterialBadgePrivate(this)) {
+: CUVMaterialOverlayWidget(parent), d_ptr(new CUVMaterialBadgePrivate(this)) {
 	d_func()->init();
 
 	setIcon(icon);
 }
 
 CUVMaterialBadge::CUVMaterialBadge(const QString& text, QWidget* parent)
-: CUVMaterialOverlayWidget(parent),
-  d_ptr(new CUVMaterialBadgePrivate(this)) {
+: CUVMaterialOverlayWidget(parent), d_ptr(new CUVMaterialBadgePrivate(this)) {
 	d_func()->init();
 
 	setText(text);
 }
 
-CUVMaterialBadge::~CUVMaterialBadge() {
-}
+CUVMaterialBadge::~CUVMaterialBadge() = default;
 
-void CUVMaterialBadge::setUseThemeColors(bool value) {
+void CUVMaterialBadge::setUseThemeColors(const bool value) {
 	Q_D(CUVMaterialBadge);
 
 	if (d->useThemeColors == value) {
@@ -132,7 +122,7 @@ void CUVMaterialBadge::setRelativePosition(const QPointF& pos) {
 	setRelativePosition(pos.x(), pos.y());
 }
 
-void CUVMaterialBadge::setRelativePosition(qreal x, qreal y) {
+void CUVMaterialBadge::setRelativePosition(const qreal x, const qreal y) {
 	Q_D(CUVMaterialBadge);
 
 	d->x = x;
@@ -143,10 +133,10 @@ void CUVMaterialBadge::setRelativePosition(qreal x, qreal y) {
 QPointF CUVMaterialBadge::relativePosition() const {
 	Q_D(const CUVMaterialBadge);
 
-	return QPointF(d->x, d->y);
+	return { d->x, d->y };
 }
 
-void CUVMaterialBadge::setRelativeXPosition(qreal x) {
+void CUVMaterialBadge::setRelativeXPosition(const qreal x) {
 	Q_D(CUVMaterialBadge);
 
 	d->x = x;
@@ -159,7 +149,7 @@ qreal CUVMaterialBadge::relativeXPosition() const {
 	return d->x;
 }
 
-void CUVMaterialBadge::setRelativeYPosition(qreal y) {
+void CUVMaterialBadge::setRelativeYPosition(const qreal y) {
 	Q_D(CUVMaterialBadge);
 
 	d->y = y;
@@ -177,7 +167,7 @@ qreal CUVMaterialBadge::relativeYPosition() const {
  */
 QSize CUVMaterialBadge::sizeHint() const {
 	const int s = getDiameter();
-	return QSize(s + 4, s + 4);
+	return { s + 4, s + 4 };
 }
 
 void CUVMaterialBadge::setIcon(const QIcon& icon) {

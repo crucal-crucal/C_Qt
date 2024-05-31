@@ -9,6 +9,7 @@
 #include "uvavatarsettingseditor/uvavatarsettingseditor.hpp"
 #include "uvbadgesettingseditor/uvbadgesettingseditor.hpp"
 #include "uvcheckboxsettingseditor/uvcheckboxsettingseditor.hpp"
+#include "uvcircularprogresssettingseditor/uvcircularprogresssettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -36,4 +37,5 @@ private:
 	CUVAvatarSettingsEditor* m_pAvatarSettingsEditor{ nullptr };
 	CUVBadgeSettingsEditor* m_pBadgeSettingsEditor{ nullptr };
 	CUVCheckBoxSettingsEditor* m_pCheckBoxSettingsEditor{ nullptr };
+	CUVCircularProgressSettingsEditor* m_pCircularProgressSettingsEditor{ nullptr };
 };

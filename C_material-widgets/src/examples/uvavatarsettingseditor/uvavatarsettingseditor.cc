@@ -160,8 +160,8 @@ void CUVAvatarSettingsEditor::updateWidget() const {
 	m_pAvatar->setSize(m_pSbSize->value());
 }
 
-void CUVAvatarSettingsEditor::selectColor() const {
-	if (QColorDialog dialog; dialog.exec()) {
+void CUVAvatarSettingsEditor::selectColor() {
+	if (QColorDialog dialog(this); dialog.exec()) {
 		const QColor color = dialog.selectedColor();
 		if (const QString senderName = sender()->objectName(); "textColorToolButton" == senderName) {
 			m_pAvatar->setTextColor(color);

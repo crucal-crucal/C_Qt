@@ -1,8 +1,10 @@
 #include "uvmaterialcheckbox.hpp"
-#include "uvmaterialcheckbox_p.hpp"
+
 #include <QPropertyAnimation>
 #include <QSignalTransition>
 #include <QState>
+
+#include "uvmaterialcheckbox_p.hpp"
 #include "lib/uvmaterialcheckable_internal.hpp"
 
 /*!
@@ -26,9 +28,7 @@ void CUVMaterialCheckBoxPrivate::init() {
 	checkedState->assignProperty(checkedIcon, "iconSize", 24);
 	uncheckedState->assignProperty(checkedIcon, "iconSize", 0);
 
-	QPropertyAnimation* animation;
-
-	animation = new QPropertyAnimation(checkedIcon, "iconSize", q);
+	auto animation = new QPropertyAnimation(checkedIcon, "iconSize", q);
 	animation->setDuration(300);
 	uncheckedTransition->addAnimation(animation);
 

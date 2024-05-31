@@ -4,7 +4,13 @@
 
 class CUVMaterialBadgePrivate;
 
-class CUVMaterialBadge : public CUVMaterialOverlayWidget {
+#ifdef CUVMATERIALBADGE_LIB
+#define CUVMATERIALBADGE_EXPORT Q_DECL_EXPORT
+#else
+#define CUVMATERIALBADGE_EXPORT Q_DECL_IMPORT
+#endif
+
+class CUVMATERIALBADGE_EXPORT CUVMaterialBadge final : public CUVMaterialOverlayWidget {
 	Q_OBJECT
 
 	Q_PROPERTY(QColor textColor WRITE setTextColor READ textColor)
@@ -12,42 +18,42 @@ class CUVMaterialBadge : public CUVMaterialOverlayWidget {
 	Q_PROPERTY(QPointF relativePosition WRITE setRelativePosition READ relativePosition)
 
 public:
-	explicit CUVMaterialBadge(QWidget* parent = 0);
-	explicit CUVMaterialBadge(const QIcon& icon, QWidget* parent = 0);
-	explicit CUVMaterialBadge(const QString& text, QWidget* parent = 0);
-	~CUVMaterialBadge();
+	explicit CUVMaterialBadge(QWidget* parent = nullptr);
+	explicit CUVMaterialBadge(const QIcon& icon, QWidget* parent = nullptr);
+	explicit CUVMaterialBadge(const QString& text, QWidget* parent = nullptr);
+	~CUVMaterialBadge() override;
 
 	void setUseThemeColors(bool value);
-	bool useThemeColors() const;
+	[[nodiscard]] bool useThemeColors() const;
 
 	void setTextColor(const QColor& color);
-	QColor textColor() const;
+	[[nodiscard]] QColor textColor() const;
 
 	void setBackgroundColor(const QColor& color);
-	QColor backgroundColor() const;
+	[[nodiscard]] QColor backgroundColor() const;
 
 	void setRelativePosition(const QPointF& pos);
 	void setRelativePosition(qreal x, qreal y);
-	QPointF relativePosition() const;
+	[[nodiscard]] QPointF relativePosition() const;
 
 	void setRelativeXPosition(qreal x);
-	qreal relativeXPosition() const;
+	[[nodiscard]] qreal relativeXPosition() const;
 
 	void setRelativeYPosition(qreal y);
-	qreal relativeYPosition() const;
+	[[nodiscard]] qreal relativeYPosition() const;
 
-	QSize sizeHint() const Q_DECL_OVERRIDE;
+	[[nodiscard]] QSize sizeHint() const Q_DECL_OVERRIDE;
 
 	void setIcon(const QIcon& icon);
-	QIcon icon() const;
+	[[nodiscard]] QIcon icon() const;
 
 	void setText(const QString& text);
-	QString text() const;
+	[[nodiscard]] QString text() const;
 
 protected:
 	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 
-	int getDiameter() const;
+	[[nodiscard]] int getDiameter() const;
 
 	const QScopedPointer<CUVMaterialBadgePrivate> d_ptr;
 

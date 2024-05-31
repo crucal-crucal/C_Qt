@@ -20,7 +20,7 @@ public:
 	~CUVAutoCompleteSettingsEditor() override;
 
 private:
-	QWidget* m_pcanvas{nullptr};
+	QWidget* m_pcanvas{ nullptr };
 
 	QVBoxLayout* m_pVLayCanvas{ nullptr };
 	QVBoxLayout* m_pVLayCenter{ nullptr };

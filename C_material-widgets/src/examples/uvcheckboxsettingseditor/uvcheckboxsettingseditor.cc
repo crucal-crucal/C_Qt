@@ -143,10 +143,10 @@ void CUVCheckBoxSettingsEditor::initConnection() {
 	connect(m_pLeLabelText, &QLineEdit::textChanged, this, &CUVCheckBoxSettingsEditor::updateWidget);
 	connect(m_pCbUseThemeColors, &QCheckBox::toggled, this, &CUVCheckBoxSettingsEditor::updateWidget);
 	connect(m_pCbChecked, &QCheckBox::toggled, this, &CUVCheckBoxSettingsEditor::updateWidget);
-	connect(m_pTbTextColor, &QToolButton::pressed, this, &CUVCheckBoxSettingsEditor::selectColor);
-	connect(m_pTbCheckedColor, &QToolButton::pressed, this, &CUVCheckBoxSettingsEditor::selectColor);
-	connect(m_pTbUnCheckedColor, &QToolButton::pressed, this, &CUVCheckBoxSettingsEditor::selectColor);
-	connect(m_pTbDisabledColor, &QToolButton::pressed, this, &CUVCheckBoxSettingsEditor::selectColor);
+	connect(m_pTbTextColor, &QToolButton::clicked, this, &CUVCheckBoxSettingsEditor::selectColor);
+	connect(m_pTbCheckedColor, &QToolButton::clicked, this, &CUVCheckBoxSettingsEditor::selectColor);
+	connect(m_pTbUnCheckedColor, &QToolButton::clicked, this, &CUVCheckBoxSettingsEditor::selectColor);
+	connect(m_pTbDisabledColor, &QToolButton::clicked, this, &CUVCheckBoxSettingsEditor::selectColor);
 	connect(m_pCheckBox, &CUVMaterialCheckBox::toggled, this, &CUVCheckBoxSettingsEditor::setupForm);
 }
 

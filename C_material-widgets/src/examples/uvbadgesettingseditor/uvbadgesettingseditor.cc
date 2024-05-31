@@ -164,8 +164,8 @@ void CUVBadgeSettingsEditor::updateWidget() const {
 	m_pBadge->setRelativeYPosition(m_pSbVerticalOffset->value());
 }
 
-void CUVBadgeSettingsEditor::selectColor() const {
-	if (QColorDialog dialog; dialog.exec()) {
+void CUVBadgeSettingsEditor::selectColor() {
+	if (QColorDialog dialog(this); dialog.exec()) {
 		const QColor color = dialog.selectedColor();
 		if (const QString senderName = sender()->objectName(); "textColorToolButton" == senderName) {
 			m_pBadge->setTextColor(color);

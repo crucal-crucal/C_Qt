@@ -89,13 +89,12 @@ void CUVAppBarSettingsEditor::setUpForm() const {
 	m_pCbuseThemeColor->setChecked(m_pMaterialAppBar->useThemeColors());
 }
 
-void CUVAppBarSettingsEditor::updateWidget(const bool checked) const {
-	Q_UNUSED(checked)
+void CUVAppBarSettingsEditor::updateWidget() const {
 	m_pMaterialAppBar->setUseThemeColors(m_pCbuseThemeColor->isChecked());
 }
 
-void CUVAppBarSettingsEditor::selectColor() const {
-	if (QColorDialog dialog; dialog.exec()) {
+void CUVAppBarSettingsEditor::selectColor() {
+	if (QColorDialog dialog(this); dialog.exec()) {
 		const QColor color = dialog.selectedColor();
 		if ("backgroundColorToolButton" == sender()->objectName()) {
 			m_pMaterialAppBar->setBackgroundColor(color);
