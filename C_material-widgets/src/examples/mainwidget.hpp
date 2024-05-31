@@ -8,6 +8,7 @@
 #include "uvautocompletesettingseditor/uvautocompletesettingseditor.hpp"
 #include "uvavatarsettingseditor/uvavatarsettingseditor.hpp"
 #include "uvbadgesettingseditor/uvbadgesettingseditor.hpp"
+#include "uvcheckboxsettingseditor/uvcheckboxsettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -34,4 +35,5 @@ private:
 	CUVAutoCompleteSettingsEditor* m_pAutoCompleteSettingsEditor{ nullptr };
 	CUVAvatarSettingsEditor* m_pAvatarSettingsEditor{ nullptr };
 	CUVBadgeSettingsEditor* m_pBadgeSettingsEditor{ nullptr };
+	CUVCheckBoxSettingsEditor* m_pCheckBoxSettingsEditor{ nullptr };
 };

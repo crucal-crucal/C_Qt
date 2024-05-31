@@ -356,9 +356,9 @@ void CUVMaterialCheckable::paintEvent(QPaintEvent* event) {
 	painter.setPen(pen);
 
 	if (CUVMaterialCheckable::LabelPositionLeft == d->labelPosition) {
-		painter.drawText(4, 25, text());
+		painter.drawText(4, 26, text());
 	} else {
-		painter.drawText(48, 25, text());
+		painter.drawText(48, 26, text());
 	}
 }
 

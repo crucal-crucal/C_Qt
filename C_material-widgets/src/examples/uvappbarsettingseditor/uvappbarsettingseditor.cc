@@ -9,8 +9,8 @@
 CUVAppBarSettingsEditor::CUVAppBarSettingsEditor(QWidget* parent) : QWidget(parent), m_pMaterialAppBar(new CUVMaterialAppBar) {
 	createCtrl();
 	customLayout();
-	initConnection();
 	setUpForm();
+	initConnection();
 }
 
 CUVAppBarSettingsEditor::~CUVAppBarSettingsEditor() = default;
@@ -27,6 +27,7 @@ void CUVAppBarSettingsEditor::createCtrl() {
 	m_pLeBackgroundColor = new QLineEdit(this);
 	m_pTbBackgroundColor = new QToolButton(this);
 	m_pTbBackgroundColor->setObjectName("backgroundColorToolButton");
+	m_pTbBackgroundColor->setText("...");
 
 	m_pLbInbox = new QLabel(this);
 	m_pLbInbox->setText(tr("Inbox"));

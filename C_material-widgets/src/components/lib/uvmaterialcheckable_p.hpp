@@ -10,7 +10,7 @@ class QSignalTransition;
 class CUVMaterialRippleOverlay;
 class CUVMaterialCheckableIcon;
 
-class CUVMaterialCheckablePrivate final {
+class CUVMaterialCheckablePrivate {
 	Q_DISABLE_COPY(CUVMaterialCheckablePrivate)
 	Q_DECLARE_PUBLIC(CUVMaterialCheckable)
 

@@ -7,9 +7,9 @@ CUVBadgeSettingsEditor::CUVBadgeSettingsEditor(QWidget* parent)
 : QWidget(parent), m_pAvatar(new CUVMaterialAvatar(QImage(":/images/assets/sikh.jpg"))), m_pBadge(new CUVMaterialBadge) {
 	createCtrl();
 	customLayout();
-	initConnection();
 	initData();
 	setupForm();
+	initConnection();
 }
 
 CUVBadgeSettingsEditor::~CUVBadgeSettingsEditor() = default;
@@ -28,12 +28,14 @@ void CUVBadgeSettingsEditor::createCtrl() {
 	m_pLeTextColor = new QLineEdit(this);
 	m_pTbTextColor = new QToolButton(this);
 	m_pTbTextColor->setObjectName("textColorToolButton");
+	m_pTbTextColor->setText("...");
 
 	m_pLbBackgroundColor = new QLabel(tr("Background color"), this);
 	m_pLbBackgroundColor->setFixedWidth(m_nLabelWidth);
 	m_pLeBackgroundColor = new QLineEdit(this);
 	m_pTbBackgroundColor = new QToolButton(this);
 	m_pTbBackgroundColor->setObjectName("backgroundColorToolButton");
+	m_pTbBackgroundColor->setText("...");
 
 	m_pLbHorizontalOffset = new QLabel(tr("Horizontal Offset"), this);
 	m_pLbHorizontalOffset->setFixedWidth(m_nLabelWidth);

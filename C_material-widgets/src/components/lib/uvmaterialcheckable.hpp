@@ -10,7 +10,7 @@ class CUVMaterialCheckablePrivate;
 #define CUVMATERIAL_EXPORT Q_DECL_IMPORT
 #endif
 
-class CUVMATERIAL_EXPORT CUVMaterialCheckable final : public QAbstractButton {
+class CUVMATERIAL_EXPORT CUVMaterialCheckable : public QAbstractButton {
 	Q_OBJECT
 
 public:

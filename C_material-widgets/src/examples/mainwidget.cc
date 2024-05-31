@@ -19,6 +19,7 @@ void MainWidget::createCtrl() {
 	m_pAutoCompleteSettingsEditor = new CUVAutoCompleteSettingsEditor(this);
 	m_pAvatarSettingsEditor = new CUVAvatarSettingsEditor(this);
 	m_pBadgeSettingsEditor = new CUVBadgeSettingsEditor(this);
+	m_pCheckBoxSettingsEditor = new CUVCheckBoxSettingsEditor(this);
 
 	m_pHBoxLayout = new QHBoxLayout;
 	m_pStackedLayout = new QStackedLayout;
@@ -35,6 +36,7 @@ void MainWidget::customLayout() const {
 	m_pStackedLayout->addWidget(m_pAutoCompleteSettingsEditor);
 	m_pStackedLayout->addWidget(m_pAvatarSettingsEditor);
 	m_pStackedLayout->addWidget(m_pBadgeSettingsEditor);
+	m_pStackedLayout->addWidget(m_pCheckBoxSettingsEditor);
 }
 
 void MainWidget::initConnection() {

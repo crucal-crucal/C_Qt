@@ -6,9 +6,9 @@
 CUVAvatarSettingsEditor::CUVAvatarSettingsEditor(QWidget* parent) : QWidget(parent), m_pAvatar(new CUVMaterialAvatar(QChar('C'))) {
 	createCtrl();
 	customLayout();
-	initConnection();
 	initData();
 	setupForm();
+	initConnection();
 }
 
 CUVAvatarSettingsEditor::~CUVAvatarSettingsEditor() = default;
@@ -27,12 +27,14 @@ void CUVAvatarSettingsEditor::createCtrl() {
 	m_pLeTextColor = new QLineEdit(this);
 	m_pTbTextColor = new QToolButton(this);
 	m_pTbTextColor->setObjectName("textColorToolButton");
+	m_pTbTextColor->setText("...");
 
 	m_pLbBackgroundColor = new QLabel(tr("Background color"), this);
 	m_pLbBackgroundColor->setFixedWidth(m_nLabelWidth);
 	m_pLeBackgroundColor = new QLineEdit(this);
 	m_pTbBackgroundColor = new QToolButton(this);
 	m_pTbBackgroundColor->setObjectName("backgroundColorToolButton");
+	m_pTbBackgroundColor->setText("...");
 
 	m_pLbSize = new QLabel(tr("Size"), this);
 	m_pLbSize->setFixedWidth(m_nLabelWidth);

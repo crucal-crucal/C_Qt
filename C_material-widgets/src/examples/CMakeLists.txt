@@ -21,6 +21,7 @@ target_link_libraries(${TARGET_NAME}
         uvautocompletesettingseditor
         uvavatarsettingseditor
         uvbadgesettingseditor
+        uvcheckboxsettingseditor
 )
 
 install(TARGETS ${TARGET_NAME}
@@ -31,6 +32,7 @@ add_subdirectory(uvappbarsettingseditor)
 add_subdirectory(uvautocompletesettingseditor)
 add_subdirectory(uvavatarsettingseditor)
 add_subdirectory(uvbadgesettingseditor)
+add_subdirectory(uvcheckboxsettingseditor)
 
 #copy rcc file to execute directory
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
