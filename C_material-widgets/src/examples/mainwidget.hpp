@@ -10,6 +10,7 @@
 #include "uvbadgesettingseditor/uvbadgesettingseditor.hpp"
 #include "uvcheckboxsettingseditor/uvcheckboxsettingseditor.hpp"
 #include "uvcircularprogresssettingseditor/uvcircularprogresssettingseditor.hpp"
+#include "uvflatbuttonsettingseditor/uvflatbuttonsettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -38,4 +39,5 @@ private:
 	CUVBadgeSettingsEditor* m_pBadgeSettingsEditor{ nullptr };
 	CUVCheckBoxSettingsEditor* m_pCheckBoxSettingsEditor{ nullptr };
 	CUVCircularProgressSettingsEditor* m_pCircularProgressSettingsEditor{ nullptr };
+	CUVFlatButtonSettingsEditor* m_pFloatingActionButtonSettingsEditor{ nullptr };
 };

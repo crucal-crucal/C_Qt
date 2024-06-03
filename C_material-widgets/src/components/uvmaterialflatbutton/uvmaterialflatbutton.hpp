@@ -12,7 +12,7 @@ class CUVMaterialFlatButtonPrivate;
 #define CUVMATERIALFLATBUTTON_EXPORT Q_DECL_IMPORT
 #endif
 
-class CUVMATERIALFLATBUTTON_EXPORT CUVMaterialFlatButton : public QPushButton { // NOLINT
+class CUVMATERIALFLATBUTTON_EXPORT CUVMaterialFlatButton : public QPushButton {
 	Q_OBJECT
 	Q_PROPERTY(QColor foregroundColor WRITE setForegroundColor READ foregroundColor)
 	Q_PROPERTY(QColor backgroundColor WRITE setBackgroundColor READ backgroundColor)

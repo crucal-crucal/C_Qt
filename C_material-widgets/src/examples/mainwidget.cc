@@ -21,6 +21,7 @@ void MainWidget::createCtrl() {
 	m_pBadgeSettingsEditor = new CUVBadgeSettingsEditor(this);
 	m_pCheckBoxSettingsEditor = new CUVCheckBoxSettingsEditor(this);
 	m_pCircularProgressSettingsEditor = new CUVCircularProgressSettingsEditor(this);
+	m_pFloatingActionButtonSettingsEditor = new CUVFlatButtonSettingsEditor(this);
 
 	m_pHBoxLayout = new QHBoxLayout;
 	m_pStackedLayout = new QStackedLayout;
@@ -39,6 +40,7 @@ void MainWidget::customLayout() const {
 	m_pStackedLayout->addWidget(m_pBadgeSettingsEditor);
 	m_pStackedLayout->addWidget(m_pCheckBoxSettingsEditor);
 	m_pStackedLayout->addWidget(m_pCircularProgressSettingsEditor);
+	m_pStackedLayout->addWidget(m_pFloatingActionButtonSettingsEditor);
 }
 
 void MainWidget::initConnection() {
@@ -56,10 +58,10 @@ void MainWidget::initData() const {
 	m_pListWidget->addItem("Badge");
 	m_pListWidget->addItem("Checkbox");
 	m_pListWidget->addItem("Circular Progress");
+	m_pListWidget->addItem("Flat Button");
+	m_pListWidget->addItem("Floating Action Button");
 	m_pListWidget->addItem("Dialog");
 	m_pListWidget->addItem("Drawer");
-	m_pListWidget->addItem("Floating Action Button");
-	m_pListWidget->addItem("Flat Button");
 	m_pListWidget->addItem("Icon Button");
 	m_pListWidget->addItem("Menu");
 	m_pListWidget->addItem("Progress");

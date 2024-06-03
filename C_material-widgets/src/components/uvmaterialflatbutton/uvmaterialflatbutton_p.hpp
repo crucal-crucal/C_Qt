@@ -9,7 +9,7 @@ class CUVMaterialFlatButton;
 class CUVMaterialRippleOverlay;
 class CUVMaterialFlatButtonStateMachine;
 
-class CUVMaterialFlatButtonPrivate final {
+class CUVMaterialFlatButtonPrivate {
 	Q_DISABLE_COPY(CUVMaterialFlatButtonPrivate)
 	Q_DECLARE_PUBLIC(CUVMaterialFlatButton)
 
