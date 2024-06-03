@@ -296,8 +296,8 @@ void CUVFlatButtonSettingsEditor::initData() const {
 	m_pCbIconPlacement->addItem("Left");
 	m_pCbIconPlacement->addItem("Right");
 
-	m_pCbTextAlignment->addItem("Center");
 	m_pCbTextAlignment->addItem("Left");
+	m_pCbTextAlignment->addItem("Center");
 }
 
 void CUVFlatButtonSettingsEditor::initConnection() {
