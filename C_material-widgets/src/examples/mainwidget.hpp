@@ -14,6 +14,7 @@
 #include "uvdrawersettingseditor/uvdrawersettingseditor.hpp"
 #include "uvfabsettingseditor/uvfabsettingseditor.hpp"
 #include "uvflatbuttonsettingseditor/uvflatbuttonsettingseditor.hpp"
+#include "uviconbuttonsettingseditor/uviconbuttonsettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -46,4 +47,5 @@ private:
 	CUVFlatButtonSettingsEditor* m_pFloatingActionButtonSettingsEditor{ nullptr };
 	CUVDialogSettingsEditor* m_pDialogSettingsEditor{ nullptr };
 	CUVDrawerSettingsEditor* m_pDrawerSettingsEditor{ nullptr };
+	CUVIconButtonSettingsEditor* m_pIconButtonSettingsEditor{ nullptr };
 };

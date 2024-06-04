@@ -25,6 +25,7 @@ void MainWidget::createCtrl() {
 	m_pFloatingActionButtonSettingsEditor = new CUVFlatButtonSettingsEditor(this);
 	m_pDialogSettingsEditor = new CUVDialogSettingsEditor(this);
 	m_pDrawerSettingsEditor = new CUVDrawerSettingsEditor(this);
+	m_pIconButtonSettingsEditor = new CUVIconButtonSettingsEditor(this);
 
 	m_pHBoxLayout = new QHBoxLayout;
 	m_pStackedLayout = new QStackedLayout;
@@ -47,6 +48,7 @@ void MainWidget::customLayout() const {
 	m_pStackedLayout->addWidget(m_pFloatingActionButtonSettingsEditor);
 	m_pStackedLayout->addWidget(m_pDialogSettingsEditor);
 	m_pStackedLayout->addWidget(m_pDrawerSettingsEditor);
+	m_pStackedLayout->addWidget(m_pIconButtonSettingsEditor);
 }
 
 void MainWidget::initConnection() {
