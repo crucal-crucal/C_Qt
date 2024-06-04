@@ -23,6 +23,7 @@ target_link_libraries(${TARGET_NAME}
         uvbadgesettingseditor
         uvcheckboxsettingseditor
         uvcircularprogress
+        uvfabsettingseditor
         uvflatbuttonsettingseditor
 )
 
@@ -36,6 +37,7 @@ add_subdirectory(uvavatarsettingseditor)
 add_subdirectory(uvbadgesettingseditor)
 add_subdirectory(uvcheckboxsettingseditor)
 add_subdirectory(uvcircularprogresssettingseditor)
+add_subdirectory(uvfabsettingseditor)
 add_subdirectory(uvflatbuttonsettingseditor)
 
 #copy rcc file to execute directory
