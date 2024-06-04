@@ -11,6 +11,7 @@
 #include "uvcheckboxsettingseditor/uvcheckboxsettingseditor.hpp"
 #include "uvcircularprogresssettingseditor/uvcircularprogresssettingseditor.hpp"
 #include "uvdialogsettingseditor/uvdialogsettingseditor.hpp"
+#include "uvdrawersettingseditor/uvdrawersettingseditor.hpp"
 #include "uvfabsettingseditor/uvfabsettingseditor.hpp"
 #include "uvflatbuttonsettingseditor/uvflatbuttonsettingseditor.hpp"
 
@@ -44,4 +45,5 @@ private:
 	CUVFabSettingsEditor* m_pFabSettingsEditor{ nullptr };
 	CUVFlatButtonSettingsEditor* m_pFloatingActionButtonSettingsEditor{ nullptr };
 	CUVDialogSettingsEditor* m_pDialogSettingsEditor{ nullptr };
+	CUVDrawerSettingsEditor* m_pDrawerSettingsEditor{ nullptr };
 };

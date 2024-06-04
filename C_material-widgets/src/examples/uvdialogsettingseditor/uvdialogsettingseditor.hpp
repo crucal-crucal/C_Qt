@@ -39,6 +39,6 @@ private:
 	QVBoxLayout* m_pVLayDialogWidget{ nullptr };
 
 	// lib
-	CUVMaterialDialog* m_pdialog{ nullptr };
+	CUVMaterialDialog* const m_pdialog{ nullptr };
 	CUVMaterialFlatButton* m_pCloseButton{ nullptr };
 };

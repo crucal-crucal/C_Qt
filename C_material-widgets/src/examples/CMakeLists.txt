@@ -26,6 +26,7 @@ target_link_libraries(${TARGET_NAME}
         uvfabsettingseditor
         uvflatbuttonsettingseditor
         uvdialogsettingseditor
+        uvdrawersettingseditor
 )
 
 install(TARGETS ${TARGET_NAME}
@@ -39,6 +40,7 @@ add_subdirectory(uvbadgesettingseditor)
 add_subdirectory(uvcheckboxsettingseditor)
 add_subdirectory(uvcircularprogresssettingseditor)
 add_subdirectory(uvdialogsettingseditor)
+add_subdirectory(uvdrawersettingseditor)
 add_subdirectory(uvfabsettingseditor)
 add_subdirectory(uvflatbuttonsettingseditor)
 

@@ -6,7 +6,13 @@
 class QLayout;
 class CUVMaterialDialogPrivate;
 
-class CUVMaterialDialog final : public CUVMaterialOverlayWidget {
+#ifdef CUVMATERIALDIALOG_LIB
+#define CUVMATERIALDIALOG_EXPORT Q_DECL_EXPORT
+#else
+#define CUVMATERIALDIALOG_EXPORT Q_DECL_IMPORT
+#endif
+
+class CUVMATERIALDIALOG_EXPORT CUVMaterialDialog final : public CUVMaterialOverlayWidget {
 	Q_OBJECT
 
 public:
