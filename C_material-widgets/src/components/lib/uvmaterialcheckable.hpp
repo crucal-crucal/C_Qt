@@ -56,7 +56,7 @@ protected:
 	void mousePressEvent(QMouseEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
-	void setupProperties();
+	virtual void setupProperties();
 
 	const QScopedPointer<CUVMaterialCheckablePrivate> d_ptr;
 

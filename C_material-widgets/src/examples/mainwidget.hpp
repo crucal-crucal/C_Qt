@@ -16,6 +16,7 @@
 #include "uvflatbuttonsettingseditor/uvflatbuttonsettingseditor.hpp"
 #include "uviconbuttonsettingseditor/uviconbuttonsettingseditor.hpp"
 #include "uvprogresssettingseditor/uvprogresssettingseditor.hpp"
+#include "uvradiobuttonsettingseditor/uvradiobuttonsettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -50,4 +51,5 @@ private:
 	CUVDrawerSettingsEditor* m_pDrawerSettingsEditor{ nullptr };
 	CUVIconButtonSettingsEditor* m_pIconButtonSettingsEditor{ nullptr };
 	CUVProgressSettingsEditor* m_pProgressSettingsEditor{ nullptr };
+	CUVRadioButtonSettingsEditor* m_pRadioButtonSettingsEditor{ nullptr };
 };
