@@ -30,6 +30,7 @@ target_link_libraries(${TARGET_NAME}
         uviconbuttonsettingseditor
         uvprogresssettingseditor
         uvradiobuttonsettingseditor
+        uvscrollbarsettingseditor
 )
 
 install(TARGETS ${TARGET_NAME}
@@ -49,6 +50,7 @@ add_subdirectory(uvflatbuttonsettingseditor)
 add_subdirectory(uviconbuttonsettingseditor)
 add_subdirectory(uvprogresssettingseditor)
 add_subdirectory(uvradiobuttonsettingseditor)
+add_subdirectory(uvscrollbarsettingseditor)
 
 #copy rcc file to execute directory
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
