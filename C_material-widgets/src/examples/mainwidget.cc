@@ -26,6 +26,7 @@ void MainWidget::createCtrl() {
 	m_pDialogSettingsEditor = new CUVDialogSettingsEditor(this);
 	m_pDrawerSettingsEditor = new CUVDrawerSettingsEditor(this);
 	m_pIconButtonSettingsEditor = new CUVIconButtonSettingsEditor(this);
+	m_pProgressSettingsEditor = new CUVProgressSettingsEditor(this);
 
 	m_pHBoxLayout = new QHBoxLayout;
 	m_pStackedLayout = new QStackedLayout;
@@ -49,6 +50,7 @@ void MainWidget::customLayout() const {
 	m_pStackedLayout->addWidget(m_pDialogSettingsEditor);
 	m_pStackedLayout->addWidget(m_pDrawerSettingsEditor);
 	m_pStackedLayout->addWidget(m_pIconButtonSettingsEditor);
+	m_pStackedLayout->addWidget(m_pProgressSettingsEditor);
 }
 
 void MainWidget::initConnection() {
@@ -71,7 +73,6 @@ void MainWidget::initData() const {
 	m_pListWidget->addItem("Dialog");
 	m_pListWidget->addItem("Drawer");
 	m_pListWidget->addItem("Icon Button");
-	m_pListWidget->addItem("Menu");
 	m_pListWidget->addItem("Progress");
 	m_pListWidget->addItem("Radio Button");
 	m_pListWidget->addItem("Raised Button");
