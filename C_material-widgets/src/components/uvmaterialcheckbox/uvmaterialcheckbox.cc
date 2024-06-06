@@ -1,4 +1,4 @@
-#include "uvmaterialcheckbox.hpp"
+﻿#include "uvmaterialcheckbox.hpp"
 
 #include <QPropertyAnimation>
 #include <QSignalTransition>

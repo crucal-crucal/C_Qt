@@ -1,4 +1,4 @@
-#include "uvcircularprogresssettingseditor.hpp"
+﻿#include "uvcircularprogresssettingseditor.hpp"
 
 #include <QColorDialog>
 

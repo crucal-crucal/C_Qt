@@ -1,4 +1,4 @@
-#include "uvmaterialscrollbar_internal.hpp"
+﻿#include "uvmaterialscrollbar_internal.hpp"
 
 #include <QEventTransition>
 #include <QPropertyAnimation>

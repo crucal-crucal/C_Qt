@@ -1,4 +1,4 @@
-set(TARGET_NAME uvtogglesettingseditor)
+﻿set(TARGET_NAME uvtogglesettingseditor)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

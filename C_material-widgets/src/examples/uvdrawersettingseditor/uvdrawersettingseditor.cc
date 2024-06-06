@@ -1,4 +1,4 @@
-#include "uvdrawersettingseditor.hpp"
+﻿#include "uvdrawersettingseditor.hpp"
 
 CUVDrawerSettingsEditor::CUVDrawerSettingsEditor(QWidget* parent): QWidget(parent), m_pdrawer(new CUVMaterialDrawer) {
 	createCtrl();

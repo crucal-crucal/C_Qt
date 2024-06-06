@@ -1,4 +1,4 @@
-#include "uviconbuttonsettingseditor.hpp"
+﻿#include "uviconbuttonsettingseditor.hpp"
 
 #include <QColorDialog>
 #include <lib/uvmaterialtheme.hpp>

@@ -1,4 +1,4 @@
-set(TARGET_NAME uvmaterialavatar)
+﻿set(TARGET_NAME uvmaterialavatar)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

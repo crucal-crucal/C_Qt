@@ -1,4 +1,4 @@
-#include "uvcheckboxsettingseditor.hpp"
+﻿#include "uvcheckboxsettingseditor.hpp"
 
 #include <QColorDialog>
 

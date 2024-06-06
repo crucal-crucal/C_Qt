@@ -1,4 +1,4 @@
-#include "uvtogglesettingseditor.hpp"
+﻿#include "uvtogglesettingseditor.hpp"
 
 #include <QColorDialog>
 

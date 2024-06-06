@@ -1,4 +1,4 @@
-#include "uvflatbuttonsettingseditor.hpp"
+﻿#include "uvflatbuttonsettingseditor.hpp"
 
 #include <QColorDialog>
 

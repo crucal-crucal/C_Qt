@@ -1,4 +1,4 @@
-#include "uvscrollbarsettingseditor.hpp"
+﻿#include "uvscrollbarsettingseditor.hpp"
 
 CUVScrollBarSettingsEditor::CUVScrollBarSettingsEditor(QWidget* parent)
 : QWidget(parent), m_pVerticalScrollBar(new CUVMaterialScrollBar), m_pHorizontalScrollBar(new CUVMaterialScrollBar) {

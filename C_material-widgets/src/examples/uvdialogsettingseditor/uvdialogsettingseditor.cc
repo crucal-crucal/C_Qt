@@ -1,4 +1,4 @@
-#include "uvdialogsettingseditor.hpp"
+﻿#include "uvdialogsettingseditor.hpp"
 
 CUVDialogSettingsEditor::CUVDialogSettingsEditor(QWidget* parent): QWidget(parent), m_pdialog(new CUVMaterialDialog) {
 	createCtrl();

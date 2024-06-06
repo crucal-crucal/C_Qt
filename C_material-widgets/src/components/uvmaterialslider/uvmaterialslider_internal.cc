@@ -1,4 +1,4 @@
-#include "uvmaterialslider_internal.hpp"
+﻿#include "uvmaterialslider_internal.hpp"
 
 #include <QEventTransition>
 #include <QPainter>

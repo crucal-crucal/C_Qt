@@ -1,4 +1,4 @@
-#include "uvmaterialprogress_internal.hpp"
+﻿#include "uvmaterialprogress_internal.hpp"
 
 /*!
  *  \class CUVMaterialProgressDelegate

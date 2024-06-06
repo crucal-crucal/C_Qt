@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "lib/uvmaterialcheckable_p.hpp"
 

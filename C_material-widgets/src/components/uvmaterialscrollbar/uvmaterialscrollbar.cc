@@ -1,4 +1,4 @@
-#include "uvmaterialscrollbar.hpp"
+﻿#include "uvmaterialscrollbar.hpp"
 
 #include <QDebug>
 #include <QPainter>

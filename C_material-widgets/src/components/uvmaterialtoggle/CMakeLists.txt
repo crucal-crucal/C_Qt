@@ -1,4 +1,4 @@
-set(TARGET_NAME uvmaterialtoggle)
+﻿set(TARGET_NAME uvmaterialtoggle)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

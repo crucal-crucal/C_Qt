@@ -1,4 +1,4 @@
-#include "uvmaterialtoggle_internal.hpp"
+﻿#include "uvmaterialtoggle_internal.hpp"
 
 #include <QEvent>
 #include <QPainter>

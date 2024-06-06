@@ -1,4 +1,4 @@
-#include "uvmaterialdrawer_internal.hpp"
+﻿#include "uvmaterialdrawer_internal.hpp"
 
 #include <QPainter>
 #include <QPropertyAnimation>

@@ -1,4 +1,4 @@
-#include "uvmaterialtabs_internal.hpp"
+﻿#include "uvmaterialtabs_internal.hpp"
 
 #include <QDebug>
 #include <QEvent>

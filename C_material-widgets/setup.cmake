@@ -1,6 +1,6 @@
-# setup.cmake
+ï»¿# setup.cmake
 
-# ´Ó»·¾³±äÁ¿ÖĞ»ñÈ¡ Qt Â·¾¶£¬²éÕÒ qmake
+# ä»ç¯å¢ƒå˜é‡ä¸­è·å– Qt è·¯å¾„ï¼ŒæŸ¥æ‰¾ qmake
 function(setupQt)
     if (WIN32 OR UNIX)
         set(QT_DIR $ENV{QTDIR})
@@ -9,7 +9,7 @@ function(setupQt)
         set(CMAKE_PREFIX_PATH ${QT_DIR})
     endif ()
 
-    # ²éÑ¯ Qt °æ±¾ ²¢´æ´¢ÔÙ QT_VERSION ÖĞ
+    # æŸ¥è¯¢ Qt ç‰ˆæœ¬ å¹¶å­˜å‚¨å† QT_VERSION ä¸­
     execute_process(COMMAND ${QMAKE_EXECUTABLENAMES} -query QT_VERSION OUTPUT_VARIABLE QT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
     if (QT_VERSION)
         message(STATUS "Qt version: " ${QT_VERSION})
@@ -34,7 +34,7 @@ function(setupQt)
     )
 endfunction()
 
-# °²×° DLL
+# å®‰è£… DLL
 function(installdll)
     install(TARGETS ${TARGET_NAME}
             RUNTIME DESTINATION bin

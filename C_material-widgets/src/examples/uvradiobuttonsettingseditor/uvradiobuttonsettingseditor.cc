@@ -1,4 +1,4 @@
-#include "uvradiobuttonsettingseditor.hpp"
+﻿#include "uvradiobuttonsettingseditor.hpp"
 
 #include <QColorDialog>
 

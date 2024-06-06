@@ -1,4 +1,4 @@
-#ifndef QTMATERIALAVATAR_H
+﻿#ifndef QTMATERIALAVATAR_H
 #define QTMATERIALAVATAR_H
 
 #include <QtWidgets/QWidget>

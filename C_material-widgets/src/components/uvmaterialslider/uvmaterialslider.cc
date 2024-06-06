@@ -1,4 +1,4 @@
-#include "uvmaterialslider.hpp"
+﻿#include "uvmaterialslider.hpp"
 
 #include <QMouseEvent>
 #include <QtWidgets/QApplication>

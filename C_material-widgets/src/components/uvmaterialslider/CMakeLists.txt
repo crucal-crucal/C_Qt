@@ -1,4 +1,4 @@
-set(TARGET_NAME uvmaterialslider)
+﻿set(TARGET_NAME uvmaterialslider)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

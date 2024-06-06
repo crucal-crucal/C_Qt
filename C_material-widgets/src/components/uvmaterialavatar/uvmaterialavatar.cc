@@ -1,4 +1,4 @@
-#include "uvmaterialavatar.hpp"
+﻿#include "uvmaterialavatar.hpp"
 
 #include <QPainter>
 #include <QPainterPath>

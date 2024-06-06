@@ -1,4 +1,4 @@
-set(TARGET_NAME uvavatarsettingseditor)
+﻿set(TARGET_NAME uvavatarsettingseditor)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

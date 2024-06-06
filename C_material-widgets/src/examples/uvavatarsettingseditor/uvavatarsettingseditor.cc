@@ -1,4 +1,4 @@
-#include "uvavatarsettingseditor.hpp"
+﻿#include "uvavatarsettingseditor.hpp"
 
 #include <QColorDialog>
 #include <QDebug>

@@ -1,4 +1,4 @@
-#include "uvmaterialbadge.hpp"
+﻿#include "uvmaterialbadge.hpp"
 
 #include <QPainter>
 

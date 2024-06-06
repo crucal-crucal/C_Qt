@@ -1,4 +1,4 @@
-#include "uvfabsettingseditor.hpp"
+﻿#include "uvfabsettingseditor.hpp"
 
 #include <QColorDialog>
 

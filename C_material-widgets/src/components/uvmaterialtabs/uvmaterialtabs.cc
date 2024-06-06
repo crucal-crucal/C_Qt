@@ -1,4 +1,4 @@
-#include "uvmaterialtabs.hpp"
+﻿#include "uvmaterialtabs.hpp"
 
 #include <QtWidgets/QHBoxLayout>
 

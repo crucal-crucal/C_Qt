@@ -1,4 +1,4 @@
-set(TARGET_NAME uvslidersettingseditor)
+﻿set(TARGET_NAME uvslidersettingseditor)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

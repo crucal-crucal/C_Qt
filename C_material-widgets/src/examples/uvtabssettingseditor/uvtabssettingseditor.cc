@@ -1,4 +1,4 @@
-#include "uvtabssettingseditor.hpp"
+﻿#include "uvtabssettingseditor.hpp"
 
 
 CUVTabsSettingsEditor::CUVTabsSettingsEditor(QWidget* parent): QWidget(parent), m_ptabs(new CUVMaterialTabs(this)) {

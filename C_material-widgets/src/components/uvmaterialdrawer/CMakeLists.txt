@@ -1,4 +1,4 @@
-set(TARGET_NAME uvmaterialdrawer)
+﻿set(TARGET_NAME uvmaterialdrawer)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

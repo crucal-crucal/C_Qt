@@ -1,4 +1,4 @@
-#ifndef QTMATERIALDIALOG_H
+﻿#ifndef QTMATERIALDIALOG_H
 #define QTMATERIALDIALOG_H
 
 #include "lib/uvmaterialoverlaywidget.hpp"

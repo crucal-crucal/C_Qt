@@ -1,4 +1,4 @@
-#include "uvslidersettingseditor.hpp"
+﻿#include "uvslidersettingseditor.hpp"
 
 CUVSliderSettingsEditor::CUVSliderSettingsEditor(QWidget* parent): QWidget(parent), m_pSlider(new CUVMaterialSlider) {
 	createCtrl();

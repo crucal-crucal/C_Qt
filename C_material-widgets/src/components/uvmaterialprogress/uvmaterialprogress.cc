@@ -1,4 +1,4 @@
-#include "uvmaterialprogress.hpp"
+﻿#include "uvmaterialprogress.hpp"
 
 #include <QPainter>
 #include <QPainterPath>

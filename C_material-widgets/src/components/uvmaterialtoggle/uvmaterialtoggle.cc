@@ -1,4 +1,4 @@
-#include "uvmaterialtoggle.hpp"
+﻿#include "uvmaterialtoggle.hpp"
 
 #include <QPropertyAnimation>
 #include <QSignalTransition>

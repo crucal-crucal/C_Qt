@@ -1,4 +1,4 @@
-#include "uvmaterialcircularprogress.hpp"
+﻿#include "uvmaterialcircularprogress.hpp"
 
 #include <QPainter>
 #include <QPainterPath>

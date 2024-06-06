@@ -1,4 +1,4 @@
-#include "uvmaterialdialog.hpp"
+﻿#include "uvmaterialdialog.hpp"
 
 #include <QPainter>
 #include <QPropertyAnimation>

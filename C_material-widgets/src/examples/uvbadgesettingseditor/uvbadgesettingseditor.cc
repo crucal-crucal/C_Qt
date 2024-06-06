@@ -1,4 +1,4 @@
-#include "uvbadgesettingseditor.hpp"
+﻿#include "uvbadgesettingseditor.hpp"
 
 #include <QColorDialog>
 #include <QDebug>

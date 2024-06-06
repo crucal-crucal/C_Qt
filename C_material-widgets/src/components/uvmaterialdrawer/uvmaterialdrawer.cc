@@ -1,4 +1,4 @@
-#include "uvmaterialdrawer.hpp"
+﻿#include "uvmaterialdrawer.hpp"
 
 #include <QDebug>
 #include <QMouseEvent>

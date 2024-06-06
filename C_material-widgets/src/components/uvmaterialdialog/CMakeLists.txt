@@ -1,4 +1,4 @@
-set(TARGET_NAME uvmaterialdialog)
+﻿set(TARGET_NAME uvmaterialdialog)
 
 if (WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

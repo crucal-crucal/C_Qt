@@ -1,4 +1,4 @@
-#include "uvsnackbarsettingseditor.hpp"
+﻿#include "uvsnackbarsettingseditor.hpp"
 
 
 CUVSnackBarSettingsEditor::CUVSnackBarSettingsEditor(QWidget* parent): QWidget(parent), m_pSnackBar(new CUVMaterialSnackbar(this)) {

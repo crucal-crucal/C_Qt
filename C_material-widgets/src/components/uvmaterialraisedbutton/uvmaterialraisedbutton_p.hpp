@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "uvmaterialflatbutton/uvmaterialflatbutton_p.hpp"
 
