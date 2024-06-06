@@ -19,6 +19,7 @@
 #include "uvradiobuttonsettingseditor/uvradiobuttonsettingseditor.hpp"
 #include "uvscrollbarsettingseditor/uvscrollbarsettingseditor.hpp"
 #include "uvslidersettingseditor/uvslidersettingseditor.hpp"
+#include "uvsnackbarsettingseditor/uvsnackbarsettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -56,4 +57,5 @@ private:
 	CUVRadioButtonSettingsEditor* m_pRadioButtonSettingsEditor{ nullptr };
 	CUVScrollBarSettingsEditor* m_pScrollBarSettingsEditor{ nullptr };
 	CUVSliderSettingsEditor* m_pSliderSettingsEditor{ nullptr };
+	CUVSnackBarSettingsEditor* m_pSnackBarSettingsEditor{ nullptr };
 };

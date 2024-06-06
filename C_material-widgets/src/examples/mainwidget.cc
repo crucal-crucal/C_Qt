@@ -30,6 +30,7 @@ void MainWidget::createCtrl() {
 	m_pRadioButtonSettingsEditor = new CUVRadioButtonSettingsEditor(this);
 	m_pScrollBarSettingsEditor = new CUVScrollBarSettingsEditor(this);
 	m_pSliderSettingsEditor = new CUVSliderSettingsEditor(this);
+	m_pSnackBarSettingsEditor = new CUVSnackBarSettingsEditor(this);
 
 	m_pHBoxLayout = new QHBoxLayout;
 	m_pStackedLayout = new QStackedLayout;
@@ -57,6 +58,7 @@ void MainWidget::customLayout() const {
 	m_pStackedLayout->addWidget(m_pRadioButtonSettingsEditor);
 	m_pStackedLayout->addWidget(m_pScrollBarSettingsEditor);
 	m_pStackedLayout->addWidget(m_pSliderSettingsEditor);
+	m_pStackedLayout->addWidget(m_pSnackBarSettingsEditor);
 }
 
 void MainWidget::initConnection() {
