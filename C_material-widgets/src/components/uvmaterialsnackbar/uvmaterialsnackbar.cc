@@ -19,10 +19,10 @@ CUVMaterialSnackbarPrivate::CUVMaterialSnackbarPrivate(CUVMaterialSnackbar* q): 
 
 CUVMaterialSnackbarPrivate::~CUVMaterialSnackbarPrivate() = default;
 
-void CUVMaterialSnackbarPrivate::init() {
+void CUVMaterialSnackbarPrivate::init(const CUVMaterialSnackbar::SnackBarPosition& postion) {
 	Q_Q(CUVMaterialSnackbar);
 
-	stateMachine = new CUVMaterialSnackbarStateMachine(q);
+	stateMachine = new CUVMaterialSnackbarStateMachine(q, postion);
 	bgOpacity = 0.9;
 	duration = 1000;
 	boxWidth = 300;
@@ -43,8 +43,9 @@ void CUVMaterialSnackbarPrivate::init() {
  *  \class CUVMaterialSnackbar
  */
 
-CUVMaterialSnackbar::CUVMaterialSnackbar(QWidget* parent): CUVMaterialOverlayWidget(parent), d_ptr(new CUVMaterialSnackbarPrivate(this)) {
-	d_func()->init();
+CUVMaterialSnackbar::CUVMaterialSnackbar(QWidget* parent, const SnackBarPosition position)
+: CUVMaterialOverlayWidget(parent), d_ptr(new CUVMaterialSnackbarPrivate(this)) {
+	d_func()->init(position);
 }
 
 CUVMaterialSnackbar::~CUVMaterialSnackbar() = default;
@@ -166,6 +167,12 @@ bool CUVMaterialSnackbar::clickToDismissMode() const {
 	return d->clickDismiss;
 }
 
+void CUVMaterialSnackbar::setSnackBarPosition(const SnackBarPosition position) {
+	Q_D(CUVMaterialSnackbar);
+
+	d->stateMachine->setPosition(position);
+}
+
 void CUVMaterialSnackbar::addMessage(const QString& message) {
 	Q_D(CUVMaterialSnackbar);
 
@@ -230,11 +237,13 @@ void CUVMaterialSnackbar::paintEvent(QPaintEvent* event) {
 	painter.setPen(Qt::NoPen);
 	r = br.united(r).adjusted(-10, -10, 10, 20);
 
-	const qreal s = d->stateMachine->offset();
-
-	// painter.translate((width()-(r.width()-20))/2,
-	//                   height()+10-s*(r.height()));
-	painter.translate(static_cast<float>(width() - (r.width() - 20)) / 2, -r.height() + s * (r.height() + 10));
+	if (d->stateMachine->position() == SnackBarPosition::TOP) {
+		const qreal s = d->stateMachine->offset();
+		painter.translate(static_cast<float>(width() - (r.width() - 20)) / 2, -r.height() + s * (r.height() + 10));
+	} else {
+		const qreal s = 1 - d->stateMachine->offset();
+		painter.translate((width() - (r.width() - 20)) / 2, height() + 10 - s * (r.height())); // NOLINT
+	}
 
 	br.moveCenter(r.center());
 	painter.drawRoundedRect(r.adjusted(0, 0, 0, 3), 3, 3);

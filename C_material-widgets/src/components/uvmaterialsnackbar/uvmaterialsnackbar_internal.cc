@@ -6,50 +6,50 @@
 #include "uvmaterialsnackbar.hpp"
 #include "lib/uvmaterialstatetransition.hpp"
 
-CUVMaterialSnackbarStateMachine::CUVMaterialSnackbarStateMachine(CUVMaterialSnackbar* parent): QStateMachine(parent), m_snackbar(parent) {
+CUVMaterialSnackbarStateMachine::CUVMaterialSnackbarStateMachine(CUVMaterialSnackbar* parent,
+                                                                 const CUVMaterialSnackbar::SnackBarPosition& position)
+: QStateMachine(parent), m_snackbar(parent), m_position(position) {
 	m_timer.setSingleShot(true);
 
-	const auto hiddenState = new QState;
-	const auto visibleState = new QState;
-	const auto finalState = new QState;
+	m_hiddenState = new QState;
+	m_visibleState = new QState;
+	m_finalState = new QState;
 
-	addState(hiddenState);
-	addState(visibleState);
-	addState(finalState);
+	addState(m_hiddenState);
+	addState(m_visibleState);
+	addState(m_finalState);
 
-	setInitialState(hiddenState);
+	setInitialState(m_hiddenState);
 
 	auto transition = new CUVMaterialStateTransition(SnackbarShowTransition);
-	transition->setTargetState(visibleState);
-	hiddenState->addTransition(transition);
+	transition->setTargetState(m_visibleState);
+	m_hiddenState->addTransition(transition);
 
 	transition = new CUVMaterialStateTransition(SnackbarHideTransition);
-	transition->setTargetState(visibleState);
-	hiddenState->addTransition(transition);
+	transition->setTargetState(m_visibleState);
+	m_hiddenState->addTransition(transition);
 
 	transition = new CUVMaterialStateTransition(SnackbarHideTransition);
-	transition->setTargetState(finalState);
-	visibleState->addTransition(transition);
+	transition->setTargetState(m_finalState);
+	m_visibleState->addTransition(transition);
 
 	transition = new CUVMaterialStateTransition(SnackbarWaitTransition);
-	transition->setTargetState(hiddenState);
-	finalState->addTransition(transition);
+	transition->setTargetState(m_hiddenState);
+	m_finalState->addTransition(transition);
 
 	transition = new CUVMaterialStateTransition(SnackbarNextTransition);
-	transition->setTargetState(visibleState);
-	finalState->addTransition(transition);
+	transition->setTargetState(m_visibleState);
+	m_finalState->addTransition(transition);
 
-	connect(visibleState, &QState::propertiesAssigned, this, &CUVMaterialSnackbarStateMachine::snackbarShown);
-	connect(finalState, &QState::propertiesAssigned, m_snackbar, &CUVMaterialSnackbar::dequeue);
+	connect(m_visibleState, &QState::propertiesAssigned, this, &CUVMaterialSnackbarStateMachine::snackbarShown);
+	connect(m_finalState, &QState::propertiesAssigned, m_snackbar, &CUVMaterialSnackbar::dequeue);
 
 	const auto animation = new QPropertyAnimation(this, "offset", this);
 	animation->setEasingCurve(QEasingCurve::OutCubic);
 	animation->setDuration(300);
 	addDefaultAnimation(animation);
 
-	hiddenState->assignProperty(this, "offset", 0);
-	visibleState->assignProperty(this, "offset", 1);
-	finalState->assignProperty(this, "offset", 0);
+	setStateProperty();
 
 	connect(&m_timer, &QTimer::timeout, this, &CUVMaterialSnackbarStateMachine::progress);
 
@@ -65,9 +65,26 @@ bool CUVMaterialSnackbarStateMachine::eventFilter(QObject* watched, QEvent* even
 	return QStateMachine::eventFilter(watched, event);
 }
 
+void CUVMaterialSnackbarStateMachine::setStateProperty() {
+	if (m_position == CUVMaterialSnackbar::TOP) {
+		m_hiddenState->assignProperty(this, "offset", 0);
+		m_visibleState->assignProperty(this, "offset", 1);
+		m_finalState->assignProperty(this, "offset", 0);
+	} else if (m_position == CUVMaterialSnackbar::BOTTOM) {
+		m_hiddenState->assignProperty(this, "offset", 1);
+		m_visibleState->assignProperty(this, "offset", 0);
+		m_finalState->assignProperty(this, "offset", 1);
+	}
+}
+
 void CUVMaterialSnackbarStateMachine::setOffset(const qreal offset) {
 	m_offset = offset;
 	m_snackbar->update();
+}
+
+void CUVMaterialSnackbarStateMachine::setPosition(const CUVMaterialSnackbar::SnackBarPosition position) {
+	m_position = position;
+	this->setStateProperty();
 }
 
 void CUVMaterialSnackbarStateMachine::progress() {

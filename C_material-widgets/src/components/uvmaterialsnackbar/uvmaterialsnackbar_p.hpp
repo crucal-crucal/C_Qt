@@ -3,6 +3,8 @@
 #include <QColor>
 #include <QObject>
 
+// #include "uvmaterialsnackbar.hpp"
+
 class CUVMaterialSnackbar;
 class CUVMaterialSnackbarStateMachine;
 
@@ -14,7 +16,7 @@ public:
 	explicit CUVMaterialSnackbarPrivate(CUVMaterialSnackbar* q);
 	~CUVMaterialSnackbarPrivate();
 
-	void init();
+	void init(const CUVMaterialSnackbar::SnackBarPosition& postion);
 
 	CUVMaterialSnackbar* const q_ptr{ nullptr };
 	CUVMaterialSnackbarStateMachine* stateMachine{ nullptr };

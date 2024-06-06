@@ -14,7 +14,11 @@ class CUVMATERIALSNACKBAR_EXPORT CUVMaterialSnackbar final : public CUVMaterialO
 	Q_OBJECT
 
 public:
-	explicit CUVMaterialSnackbar(QWidget* parent = nullptr);
+	enum SnackBarPosition {
+		BOTTOM,
+		TOP
+	};
+	explicit CUVMaterialSnackbar(QWidget* parent = nullptr, SnackBarPosition position = SnackBarPosition::TOP);
 	~CUVMaterialSnackbar() override;
 
 	void setAutoHideDuration(int duration);
@@ -40,6 +44,8 @@ public:
 
 	void setClickToDismissMode(bool value);
 	[[nodiscard]] bool clickToDismissMode() const;
+
+	void setSnackBarPosition(SnackBarPosition position);
 
 public slots:
 	void addMessage(const QString& message);
