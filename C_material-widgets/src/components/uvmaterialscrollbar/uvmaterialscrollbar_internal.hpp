@@ -18,8 +18,8 @@ public:
 	explicit CUVMaterialScrollBarStateMachine(CUVMaterialScrollBar* parent);
 	~CUVMaterialScrollBarStateMachine() override;
 
-	inline void setOpacity(qreal opacity);
-	[[nodiscard]] inline qreal opacity() const;
+	void setOpacity(qreal opacity);
+	[[nodiscard]] qreal opacity() const;
 
 private:
 	Q_DISABLE_COPY(CUVMaterialScrollBarStateMachine)
