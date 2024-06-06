@@ -12,7 +12,7 @@ class CUVMaterialRipple;
 #define CUVMATERIAL_EXPORT Q_DECL_IMPORT
 #endif
 
-class CUVMATERIAL_EXPORT CUVMaterialRippleOverlay final : public CUVMaterialOverlayWidget {
+class CUVMATERIAL_EXPORT CUVMaterialRippleOverlay : public CUVMaterialOverlayWidget {
 	Q_OBJECT
 
 public:

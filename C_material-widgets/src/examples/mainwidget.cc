@@ -31,6 +31,8 @@ void MainWidget::createCtrl() {
 	m_pScrollBarSettingsEditor = new CUVScrollBarSettingsEditor(this);
 	m_pSliderSettingsEditor = new CUVSliderSettingsEditor(this);
 	m_pSnackBarSettingsEditor = new CUVSnackBarSettingsEditor(this);
+	m_pTabsSettingsEditor = new CUVTabsSettingsEditor(this);
+	m_pToggleSettingsEditor = new CUVToggleSettingsEditor(this);
 
 	m_pHBoxLayout = new QHBoxLayout;
 	m_pStackedLayout = new QStackedLayout;
@@ -59,6 +61,8 @@ void MainWidget::customLayout() const {
 	m_pStackedLayout->addWidget(m_pScrollBarSettingsEditor);
 	m_pStackedLayout->addWidget(m_pSliderSettingsEditor);
 	m_pStackedLayout->addWidget(m_pSnackBarSettingsEditor);
+	m_pStackedLayout->addWidget(m_pTabsSettingsEditor);
+	m_pStackedLayout->addWidget(m_pToggleSettingsEditor);
 }
 
 void MainWidget::initConnection() {
@@ -87,7 +91,6 @@ void MainWidget::initData() const {
 	m_pListWidget->addItem("Slider");
 	m_pListWidget->addItem("Snackbar");
 	m_pListWidget->addItem("Tabs");
-	m_pListWidget->addItem("Text Field");
 	m_pListWidget->addItem("Toggle");
 
 	m_pListWidget->setCurrentRow(0);

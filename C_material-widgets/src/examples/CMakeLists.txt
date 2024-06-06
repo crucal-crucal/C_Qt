@@ -33,6 +33,8 @@ target_link_libraries(${TARGET_NAME}
         uvscrollbarsettingseditor
         uvslidersettingseditor
         uvsnackbarsettingseditor
+        uvtabssettingseditor
+        uvtogglesettingseditor
 )
 
 install(TARGETS ${TARGET_NAME}
@@ -55,6 +57,8 @@ add_subdirectory(uvradiobuttonsettingseditor)
 add_subdirectory(uvscrollbarsettingseditor)
 add_subdirectory(uvslidersettingseditor)
 add_subdirectory(uvsnackbarsettingseditor)
+add_subdirectory(uvtabssettingseditor)
+add_subdirectory(uvtogglesettingseditor)
 
 #copy rcc file to execute directory
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD

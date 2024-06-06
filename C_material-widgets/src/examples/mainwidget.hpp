@@ -20,6 +20,8 @@
 #include "uvscrollbarsettingseditor/uvscrollbarsettingseditor.hpp"
 #include "uvslidersettingseditor/uvslidersettingseditor.hpp"
 #include "uvsnackbarsettingseditor/uvsnackbarsettingseditor.hpp"
+#include "uvtabssettingseditor/uvtabssettingseditor.hpp"
+#include "uvtogglesettingseditor/uvtogglesettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -58,4 +60,6 @@ private:
 	CUVScrollBarSettingsEditor* m_pScrollBarSettingsEditor{ nullptr };
 	CUVSliderSettingsEditor* m_pSliderSettingsEditor{ nullptr };
 	CUVSnackBarSettingsEditor* m_pSnackBarSettingsEditor{ nullptr };
+	CUVTabsSettingsEditor* m_pTabsSettingsEditor{ nullptr };
+	CUVToggleSettingsEditor* m_pToggleSettingsEditor{ nullptr };
 };

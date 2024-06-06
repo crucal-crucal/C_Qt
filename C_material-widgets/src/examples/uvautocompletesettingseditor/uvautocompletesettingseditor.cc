@@ -28,6 +28,7 @@ CUVAutoCompleteSettingsEditor::CUVAutoCompleteSettingsEditor(QWidget* parent)
 	};
 
 	m_autocomplete->setDataSource(states);
+	m_autocomplete->setLabel("this is test");
 
 	m_pVLayCanvas->addSpacing(100);
 	m_pVLayCanvas->addWidget(m_autocomplete);
