@@ -2,7 +2,7 @@
 
 #include <QStateMachine>
 
-#include "lib/uvmaterialoverlaywidget.hpp"
+#include "uvshared/uvmaterialoverlaywidget.hpp"
 
 class CUVMaterialDrawer;
 class CUVMaterialDrawerWidget;

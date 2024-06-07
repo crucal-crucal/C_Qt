@@ -6,7 +6,7 @@
 
 #include "uvmaterialprogress_internal.hpp"
 #include "uvmaterialprogress_p.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialProgressPrivate

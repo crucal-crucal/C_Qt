@@ -315,13 +315,13 @@ enum Color {
 
 class CUVMaterialThemePrivate;
 
-#ifdef CUVMATERIAL_LIB
-#define CUVMATERIAL_EXPORT Q_DECL_EXPORT
+#ifdef CUVMATERIALSHARED_LIB
+#define CUVMATERIALSHARED_EXPORT Q_DECL_EXPORT
 #else
-#define CUVMATERIAL_EXPORT Q_DECL_IMPORT
+#define CUVMATERIALSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-class CUVMATERIAL_EXPORT CUVMaterialTheme final : public QObject {
+class CUVMATERIALSHARED_EXPORT CUVMaterialTheme final : public QObject {
 	Q_OBJECT
 
 public:

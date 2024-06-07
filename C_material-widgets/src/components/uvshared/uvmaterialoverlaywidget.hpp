@@ -2,16 +2,16 @@
 
 #include <QtWidgets/QWidget>
 
-#ifdef CUVMATERIAL_LIB
-#define CUVMATERIAL_EXPORT Q_DECL_EXPORT
+#ifdef CUVMATERIALSHARED_LIB
+#define CUVMATERIALSHARED_EXPORT Q_DECL_EXPORT
 #else
-#define CUVMATERIAL_EXPORT Q_DECL_IMPORT
+#define CUVMATERIALSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
 /*
  * @brief 在父组件上创建一个覆盖层，并根据父组件的移动和调整大小事件实时更新覆盖层的位置和大小
  */
-class CUVMATERIAL_EXPORT CUVMaterialOverlayWidget : public QWidget {
+class CUVMATERIALSHARED_EXPORT CUVMaterialOverlayWidget : public QWidget {
 	Q_OBJECT
 
 public:

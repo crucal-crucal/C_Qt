@@ -5,7 +5,7 @@
 #include <QState>
 
 #include "uvmaterialcheckbox_p.hpp"
-#include "lib/uvmaterialcheckable_internal.hpp"
+#include "uvshared/uvmaterialcheckable_internal.hpp"
 
 /*!
  *  \class CUVMaterialCheckBoxPrivate

@@ -7,7 +7,7 @@
 #include <QPixmap>
 #include <QtGlobal>
 
-#include "lib/uvmaterialtheme.hpp"
+#include "uvshared/uvmaterialtheme.hpp"
 
 class CUVMaterialAvatar;
 

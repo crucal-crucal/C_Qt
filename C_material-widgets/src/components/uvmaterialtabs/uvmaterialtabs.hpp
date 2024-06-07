@@ -3,7 +3,7 @@
 #include <QIcon>
 #include <QtWidgets/QWidget>
 
-#include "lib/uvmaterialtheme.hpp"
+#include "uvshared/uvmaterialtheme.hpp"
 
 class CUVMaterialTabsPrivate;
 class CUVMaterialTab;

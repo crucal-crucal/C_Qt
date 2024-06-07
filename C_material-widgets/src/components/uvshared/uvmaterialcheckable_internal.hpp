@@ -5,13 +5,13 @@
 
 class CUVMaterialCheckable;
 
-#ifdef CUVMATERIAL_LIB
-#define CUVMATERIAL_EXPORT Q_DECL_EXPORT
+#ifdef CUVMATERIALSHARED_LIB
+#define CUVMATERIALSHARED_EXPORT Q_DECL_EXPORT
 #else
-#define CUVMATERIAL_EXPORT Q_DECL_IMPORT
+#define CUVMATERIALSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-class CUVMATERIAL_EXPORT CUVMaterialCheckableIcon final : public QWidget {
+class CUVMATERIALSHARED_EXPORT CUVMaterialCheckableIcon final : public QWidget {
 	Q_OBJECT
 
 	Q_PROPERTY(QColor color READ color WRITE setColor)

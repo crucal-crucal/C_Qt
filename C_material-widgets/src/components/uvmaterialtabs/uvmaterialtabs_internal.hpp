@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "lib/uvmaterialoverlaywidget.hpp"
 #include "uvmaterialflatbutton/uvmaterialflatbutton.hpp"
+#include "uvshared/uvmaterialoverlaywidget.hpp"
 
 class QPropertyAnimation;
 class CUVMaterialTabs;

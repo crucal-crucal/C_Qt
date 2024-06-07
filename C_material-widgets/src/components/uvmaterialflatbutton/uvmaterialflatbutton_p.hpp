@@ -3,7 +3,7 @@
 #include <QColor>
 #include <QtGlobal>
 
-#include "lib/uvmaterialtheme.hpp"
+#include "uvshared/uvmaterialtheme.hpp"
 
 class CUVMaterialFlatButton;
 class CUVMaterialRippleOverlay;

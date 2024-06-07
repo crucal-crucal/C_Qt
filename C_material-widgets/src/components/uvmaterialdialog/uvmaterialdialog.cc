@@ -9,7 +9,7 @@
 
 #include "uvmaterialdialog_internal.hpp"
 #include "uvmaterialdialog_p.hpp"
-#include "lib/uvmaterialstatetransition.hpp"
+#include "uvshared/uvmaterialstatetransition.hpp"
 
 /*!
  *  \class CUVMaterialDialogPrivate

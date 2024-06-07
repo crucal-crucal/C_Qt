@@ -4,13 +4,13 @@
 
 class CUVMaterialCheckablePrivate;
 
-#ifdef CUVMATERIAL_LIB
-#define CUVMATERIAL_EXPORT Q_DECL_EXPORT
+#ifdef CUVMATERIALSHARED_LIB
+#define CUVMATERIALSHARED_EXPORT Q_DECL_EXPORT
 #else
-#define CUVMATERIAL_EXPORT Q_DECL_IMPORT
+#define CUVMATERIALSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-class CUVMATERIAL_EXPORT CUVMaterialCheckable : public QAbstractButton {
+class CUVMATERIALSHARED_EXPORT CUVMaterialCheckable : public QAbstractButton {
 	Q_OBJECT
 
 public:

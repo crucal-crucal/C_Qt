@@ -2,7 +2,7 @@
 
 #include <QVBoxLayout>
 
-#include "lib/uvmaterialoverlaywidget.hpp"
+#include "uvshared/uvmaterialoverlaywidget.hpp"
 
 class CUVMaterialAutoComplete;
 

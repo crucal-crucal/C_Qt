@@ -4,7 +4,7 @@
 #include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include "uvmaterialappbar_p.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialAppBarPrivate

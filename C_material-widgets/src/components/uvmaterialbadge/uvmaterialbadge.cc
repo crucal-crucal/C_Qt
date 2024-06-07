@@ -3,7 +3,7 @@
 #include <QPainter>
 
 #include "uvmaterialbadge_p.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialBadgePrivate

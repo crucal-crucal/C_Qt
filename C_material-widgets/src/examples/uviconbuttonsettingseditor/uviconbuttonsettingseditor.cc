@@ -1,7 +1,7 @@
 ﻿#include "uviconbuttonsettingseditor.hpp"
 
 #include <QColorDialog>
-#include <lib/uvmaterialtheme.hpp>
+#include <uvshared/uvmaterialtheme.hpp>
 
 CUVIconButtonSettingsEditor::CUVIconButtonSettingsEditor(QWidget* parent)
 : QWidget(parent), m_pButton(new CUVMaterialIconButton(CUVMaterialTheme::icon("toggle", "star"))) {

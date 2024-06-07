@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "lib/uvmaterialrippleoverlay.hpp"
+#include "uvshared/uvmaterialrippleoverlay.hpp"
 
 class CUVMaterialToggle;
 class CUVMaterialToggleThumb;

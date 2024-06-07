@@ -4,8 +4,8 @@
 #include <QPainter>
 
 #include "uvmaterialiconbutton_p.hpp"
-#include "lib/uvmaterialrippleoverlay.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialrippleoverlay.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialIconButtonPrivate

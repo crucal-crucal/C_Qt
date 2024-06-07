@@ -4,16 +4,16 @@
 
 #include "uvmaterialstatetransitionevent.hpp"
 
-#ifdef CUVMATERIAL_LIB
-#define CUVMATERIAL_EXPORT Q_DECL_EXPORT
+#ifdef CUVMATERIALSHARED_LIB
+#define CUVMATERIALSHARED_EXPORT Q_DECL_EXPORT
 #else
-#define CUVMATERIAL_EXPORT Q_DECL_IMPORT
+#define CUVMATERIALSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
 /*
  * @brief 状态机状态转换类
  */
-class CUVMATERIAL_EXPORT CUVMaterialStateTransition final : public QAbstractTransition {
+class CUVMATERIALSHARED_EXPORT CUVMaterialStateTransition final : public QAbstractTransition {
 	Q_OBJECT
 
 public:

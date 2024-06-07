@@ -6,7 +6,7 @@
 #include <QSequentialAnimationGroup>
 
 #include "uvmaterialflatbutton.hpp"
-#include "lib/uvmaterialstatetransition.hpp"
+#include "uvshared/uvmaterialstatetransition.hpp"
 
 /*!
  *  \class CUVMaterialFlatButtonStateMachine

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "lib/uvmaterialtheme.hpp"
+#include "uvshared/uvmaterialtheme.hpp"
 
 class CUVMaterialProgress;
 class CUVMaterialProgressDelegate;

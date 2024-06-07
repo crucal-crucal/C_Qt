@@ -5,8 +5,8 @@
 
 #include "uvmaterialslider_internal.hpp"
 #include "uvmaterialslider_p.hpp"
-#include "lib/uvmaterialstatetransitionevent.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstatetransitionevent.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialSliderPrivate

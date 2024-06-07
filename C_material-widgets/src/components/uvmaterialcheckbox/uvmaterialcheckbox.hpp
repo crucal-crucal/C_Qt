@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "lib/uvmaterialcheckable.hpp"
+#include "uvshared/uvmaterialcheckable.hpp"
 
 class CUVMaterialCheckBoxPrivate;
 

@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QPushButton>
 
-#include "lib/uvmaterialtheme.hpp"
+#include "uvshared/uvmaterialtheme.hpp"
 
 class CUVMaterialFlatButtonPrivate;
 

@@ -7,7 +7,7 @@
 
 #include "uvmaterialtoggle_internal.hpp"
 #include "uvmaterialtoggle_p.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialTogglePrivate

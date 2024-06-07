@@ -6,7 +6,7 @@
 
 #include "uvmaterialscrollbar_internal.hpp"
 #include "uvmaterialscrollbar_p.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialScrollBarPrivate

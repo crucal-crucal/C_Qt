@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "lib/uvmaterialcheckable_p.hpp"
+#include "uvshared/uvmaterialcheckable_p.hpp"
 
 class CUVMaterialRadioButton;
 

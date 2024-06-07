@@ -7,7 +7,7 @@
 
 #include "uvmaterialcircularprogress_internal.hpp"
 #include "uvmaterialcircularprogress_p.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialCircularProgressPrivate

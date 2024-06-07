@@ -4,7 +4,7 @@
 #include <QPropertyAnimation>
 
 #include "uvmaterialsnackbar.hpp"
-#include "lib/uvmaterialstatetransition.hpp"
+#include "uvshared/uvmaterialstatetransition.hpp"
 
 CUVMaterialSnackbarStateMachine::CUVMaterialSnackbarStateMachine(CUVMaterialSnackbar* parent, const CUVMaterialSnackbar::SnackBarPosition& position)
 : QStateMachine(parent), m_snackbar(parent), m_position(position) {

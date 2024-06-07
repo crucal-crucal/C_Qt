@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "lib/uvmaterialoverlaywidget.hpp"
+#include "uvshared/uvmaterialoverlaywidget.hpp"
 
 class CUVMaterialDrawerPrivate;
 class CUVMaterialDrawerStateMachine;

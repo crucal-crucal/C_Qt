@@ -4,7 +4,7 @@
 #include <QStateMachine>
 
 #include "uvmaterialradiobutton_p.hpp"
-#include "lib/uvmaterialcheckable_internal.hpp"
+#include "uvshared/uvmaterialcheckable_internal.hpp"
 
 /*!
  *  \class CUVMaterialRadioButtonPrivate

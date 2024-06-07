@@ -6,7 +6,7 @@
 #include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include "uvmaterialfab_p.hpp"
-#include "lib/uvmaterialrippleoverlay.hpp"
+#include "uvshared/uvmaterialrippleoverlay.hpp"
 
 /*!
  *  \class CUVMaterialFloatingActionButtonPrivate

@@ -7,13 +7,13 @@
 
 class CUVMaterialRippleOverlay;
 
-#ifdef CUVMATERIAL_LIB
-#define CUVMATERIAL_EXPORT Q_DECL_EXPORT
+#ifdef CUVMATERIALSHARED_LIB
+#define CUVMATERIALSHARED_EXPORT Q_DECL_EXPORT
 #else
-#define CUVMATERIAL_EXPORT Q_DECL_IMPORT
+#define CUVMATERIALSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-class CUVMATERIAL_EXPORT CUVMaterialRipple final : public QParallelAnimationGroup {
+class CUVMATERIALSHARED_EXPORT CUVMaterialRipple final : public QParallelAnimationGroup {
 	Q_OBJECT
 
 	Q_PROPERTY(qreal radius WRITE setRadius READ radius)

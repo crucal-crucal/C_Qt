@@ -6,7 +6,7 @@
 
 #include "uvmaterialtextfield_internal.hpp"
 #include "uvmaterialtextfield_p.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialTextFieldPrivate

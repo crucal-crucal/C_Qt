@@ -1,6 +1,6 @@
 ﻿setupQt()
 
-add_subdirectory(lib)
+add_subdirectory(uvshared)
 add_subdirectory(uvmaterialappbar)
 add_subdirectory(uvmaterialautocomplete)
 add_subdirectory(uvmaterialavatar)

@@ -4,7 +4,7 @@
 #include <QPainterPath>
 
 #include "uvmaterialavatar_p.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialAvatarPrivate

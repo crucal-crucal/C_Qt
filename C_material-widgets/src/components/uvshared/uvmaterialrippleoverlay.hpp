@@ -6,13 +6,13 @@
 
 class CUVMaterialRipple;
 
-#ifdef CUVMATERIAL_LIB
-#define CUVMATERIAL_EXPORT Q_DECL_EXPORT
+#ifdef CUVMATERIALSHARED_LIB
+#define CUVMATERIALSHARED_EXPORT Q_DECL_EXPORT
 #else
-#define CUVMATERIAL_EXPORT Q_DECL_IMPORT
+#define CUVMATERIALSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-class CUVMATERIAL_EXPORT CUVMaterialRippleOverlay : public CUVMaterialOverlayWidget {
+class CUVMATERIALSHARED_EXPORT CUVMaterialRippleOverlay : public CUVMaterialOverlayWidget {
 	Q_OBJECT
 
 public:

@@ -7,8 +7,8 @@
 #include <QState>
 
 #include "uvmaterialslider.hpp"
-#include "lib/uvmaterialstatetransition.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstatetransition.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialSliderStateMachine

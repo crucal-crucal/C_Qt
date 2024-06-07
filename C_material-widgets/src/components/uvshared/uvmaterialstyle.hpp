@@ -9,13 +9,13 @@
 
 class CUVMaterialTheme;
 
-#ifdef CUVMATERIAL_LIB
-#define CUVMATERIAL_EXPORT Q_DECL_EXPORT
+#ifdef CUVMATERIALSHARED_LIB
+#define CUVMATERIALSHARED_EXPORT Q_DECL_EXPORT
 #else
-#define CUVMATERIAL_EXPORT Q_DECL_IMPORT
+#define CUVMATERIALSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-class CUVMATERIAL_EXPORT CUVMaterialStyle final : public QCommonStyle {
+class CUVMATERIALSHARED_EXPORT CUVMaterialStyle final : public QCommonStyle {
 	Q_OBJECT
 
 public:

@@ -4,7 +4,7 @@
 
 #include "uvmaterialtabs_internal.hpp"
 #include "uvmaterialtabs_p.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \CUVMaterialTabsPrivate

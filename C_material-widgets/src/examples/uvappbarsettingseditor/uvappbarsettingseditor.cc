@@ -3,7 +3,7 @@
 #include <QColorDialog>
 
 #include "mainwidget.hpp"
-#include "lib/uvmaterialtheme.hpp"
+#include "uvshared/uvmaterialtheme.hpp"
 #include "uvmaterialappbar/uvmaterialappbar.hpp"
 
 CUVAppBarSettingsEditor::CUVAppBarSettingsEditor(QWidget* parent) : QWidget(parent), m_pMaterialAppBar(new CUVMaterialAppBar) {

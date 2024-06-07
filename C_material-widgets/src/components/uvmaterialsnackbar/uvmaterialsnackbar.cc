@@ -6,8 +6,8 @@
 
 #include "uvmaterialsnackbar_internal.hpp"
 #include "uvmaterialsnackbar_p.hpp"
-#include "lib/uvmaterialstatetransition.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialstatetransition.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialSnackbarPrivate

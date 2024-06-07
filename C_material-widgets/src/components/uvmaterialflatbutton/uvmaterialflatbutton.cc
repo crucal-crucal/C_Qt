@@ -7,9 +7,9 @@
 
 #include "uvmaterialflatbutton_internal.hpp"
 #include "uvmaterialflatbutton_p.hpp"
-#include "lib/uvmaterialripple.hpp"
-#include "lib/uvmaterialrippleoverlay.hpp"
-#include "lib/uvmaterialstyle.hpp"
+#include "uvshared/uvmaterialripple.hpp"
+#include "uvshared/uvmaterialrippleoverlay.hpp"
+#include "uvshared/uvmaterialstyle.hpp"
 
 /*!
  *  \class CUVMaterialFlatButtonPrivate

@@ -5,7 +5,7 @@
 #include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include "uvmaterialtoggle.hpp"
-#include "lib/uvmaterialripple.hpp"
+#include "uvshared/uvmaterialripple.hpp"
 
 /*!
  *  \class CUVMaterialToggleRippleOverlay
