@@ -22,6 +22,7 @@
 #include "uvsnackbarsettingseditor/uvsnackbarsettingseditor.hpp"
 #include "uvtabssettingseditor/uvtabssettingseditor.hpp"
 #include "uvtogglesettingseditor/uvtogglesettingseditor.hpp"
+#include "uvwatingwidgetsettingseditor/uvwatingwidgetsettingseditor.hpp"
 
 class MainWidget final : public QMainWindow {
 	Q_OBJECT
@@ -62,4 +63,5 @@ private:
 	CUVSnackBarSettingsEditor* m_pSnackBarSettingsEditor{ nullptr };
 	CUVTabsSettingsEditor* m_pTabsSettingsEditor{ nullptr };
 	CUVToggleSettingsEditor* m_pToggleSettingsEditor{ nullptr };
+	CUVWatingWidgetSettingsEditor* m_pWatingWidgetSettingsEditor{ nullptr };
 };

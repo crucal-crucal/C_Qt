@@ -33,6 +33,7 @@ void MainWidget::createCtrl() {
 	m_pSnackBarSettingsEditor = new CUVSnackBarSettingsEditor(this);
 	m_pTabsSettingsEditor = new CUVTabsSettingsEditor(this);
 	m_pToggleSettingsEditor = new CUVToggleSettingsEditor(this);
+	m_pWatingWidgetSettingsEditor = new CUVWatingWidgetSettingsEditor(this);
 
 	m_pHBoxLayout = new QHBoxLayout;
 	m_pStackedLayout = new QStackedLayout;
@@ -51,6 +52,7 @@ void MainWidget::customLayout() const {
 	m_pStackedLayout->addWidget(m_pBadgeSettingsEditor);
 	m_pStackedLayout->addWidget(m_pCheckBoxSettingsEditor);
 	m_pStackedLayout->addWidget(m_pCircularProgressSettingsEditor);
+	m_pStackedLayout->addWidget(m_pWatingWidgetSettingsEditor);
 	m_pStackedLayout->addWidget(m_pFabSettingsEditor);
 	m_pStackedLayout->addWidget(m_pFloatingActionButtonSettingsEditor);
 	m_pStackedLayout->addWidget(m_pDialogSettingsEditor);
@@ -80,6 +82,7 @@ void MainWidget::initData() const {
 	m_pListWidget->addItem("Badge");
 	m_pListWidget->addItem("Checkbox");
 	m_pListWidget->addItem("Circular Progress");
+	m_pListWidget->addItem("Waiting Widget");
 	m_pListWidget->addItem("Floating Action Button");
 	m_pListWidget->addItem("Flat Button");
 	m_pListWidget->addItem("Dialog");
