@@ -12,7 +12,6 @@
  *  \class CUVMaterialScrollBarPrivate
  *  \internal
  */
-
 CUVMaterialScrollBarPrivate::CUVMaterialScrollBarPrivate(CUVMaterialScrollBar* q) : q_ptr(q) {
 }
 

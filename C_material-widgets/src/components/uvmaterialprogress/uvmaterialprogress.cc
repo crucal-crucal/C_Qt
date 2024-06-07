@@ -39,7 +39,6 @@ void CUVMaterialProgressPrivate::init() {
 /*!
  *  \class CUVMaterialProgress
  */
-
 CUVMaterialProgress::CUVMaterialProgress(QWidget* parent)
 : QProgressBar(parent), d_ptr(new CUVMaterialProgressPrivate(this)) {
 	d_func()->init();

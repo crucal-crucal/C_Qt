@@ -10,7 +10,6 @@
 /*!
  *  \class CUVMaterialIconButtonPrivate
  */
-
 CUVMaterialIconButtonPrivate::CUVMaterialIconButtonPrivate(CUVMaterialIconButton* q): q_ptr(q) {
 }
 
@@ -43,10 +42,8 @@ void CUVMaterialIconButtonPrivate::updateRipple() {
 /*!
  *  \class CUVMaterialIconButton
  */
-
 CUVMaterialIconButton::CUVMaterialIconButton(const QIcon& icon, QWidget* parent)
-: QAbstractButton(parent),
-  d_ptr(new CUVMaterialIconButtonPrivate(this)) {
+: QAbstractButton(parent), d_ptr(new CUVMaterialIconButtonPrivate(this)) {
 	d_func()->init();
 
 	setIcon(icon);
@@ -145,13 +142,13 @@ bool CUVMaterialIconButton::event(QEvent* event) {
 /*!
  *  \reimp
  */
-bool CUVMaterialIconButton::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialIconButton::eventFilter(QObject* watched, QEvent* event) {
 	if (QEvent::Resize == event->type()) {
 		Q_D(CUVMaterialIconButton);
 
 		d->updateRipple();
 	}
-	return QAbstractButton::eventFilter(obj, event);
+	return QAbstractButton::eventFilter(watched, event);
 }
 
 /*!
@@ -160,9 +157,7 @@ bool CUVMaterialIconButton::eventFilter(QObject* obj, QEvent* event) {
 void CUVMaterialIconButton::mousePressEvent(QMouseEvent* event) {
 	Q_D(CUVMaterialIconButton);
 
-	d->rippleOverlay->addRipple(QPoint(d->rippleOverlay->width(),
-	                                   d->rippleOverlay->height()) / 2,
-	                            iconSize().width());
+	d->rippleOverlay->addRipple(QPoint(d->rippleOverlay->width(), d->rippleOverlay->height()) / 2, iconSize().width());
 	emit clicked();
 
 	QAbstractButton::mousePressEvent(event);

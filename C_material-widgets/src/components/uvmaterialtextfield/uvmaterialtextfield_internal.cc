@@ -10,7 +10,6 @@
  *  \class CUVMaterialTextFieldStateMachine
  *  \internal
  */
-
 CUVMaterialTextFieldStateMachine::CUVMaterialTextFieldStateMachine(CUVMaterialTextField* parent)
 : QStateMachine(parent), m_textField(parent), m_normalState(new QState), m_focusedState(new QState),
   m_label(nullptr), m_offsetAnimation(nullptr), m_colorAnimation(nullptr), m_progress(0.0) {
@@ -76,6 +75,15 @@ void CUVMaterialTextFieldStateMachine::setLabel(CUVMaterialTextFieldLabel* label
 	setupProperties();
 }
 
+void CUVMaterialTextFieldStateMachine::setProgress(const qreal progress) {
+	m_progress = progress;
+	m_textField->update();
+}
+
+qreal CUVMaterialTextFieldStateMachine::progress() const {
+	return m_progress;
+}
+
 void CUVMaterialTextFieldStateMachine::setupProperties(const QString& text) const {
 	Q_UNUSED(text)
 	if (m_label) {
@@ -105,14 +113,8 @@ void CUVMaterialTextFieldStateMachine::setupProperties(const QString& text) cons
  *  \class CUVMaterialTextFieldLabel
  *  \internal
  */
-
 CUVMaterialTextFieldLabel::CUVMaterialTextFieldLabel(CUVMaterialTextField* parent)
-: QWidget(parent),
-  m_textField(parent),
-  m_scale(1),
-  m_posX(0),
-  m_posY(26),
-  m_color(parent->labelColor()) {
+: QWidget(parent), m_textField(parent), m_scale(1), m_posX(0), m_posY(26), m_color(parent->labelColor()) {
 	Q_ASSERT(parent);
 
 	QFont font("Roboto", static_cast<int>(parent->labelFontSize()), QFont::Medium);

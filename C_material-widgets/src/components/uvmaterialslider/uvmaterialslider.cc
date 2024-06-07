@@ -12,7 +12,6 @@
  *  \class CUVMaterialSliderPrivate
  *  \internal
  */
-
 CUVMaterialSliderPrivate::CUVMaterialSliderPrivate(CUVMaterialSlider* q): q_ptr(q) {
 }
 
@@ -38,8 +37,7 @@ void CUVMaterialSliderPrivate::init() {
 	q->setFocusPolicy(Qt::StrongFocus);
 	q->setPageStep(1);
 
-	QSizePolicy sp(QSizePolicy::Expanding,
-	               QSizePolicy::Fixed);
+	QSizePolicy sp(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	if (q->orientation() == Qt::Vertical) {
 		sp.transpose();
@@ -81,7 +79,8 @@ int CUVMaterialSliderPrivate::valueFromPosition(const QPoint& pos) const {
 
 	const int span = Qt::Horizontal == q->orientation() ? q->width() - CUV_MATERIAL_SLIDER_MARGIN * 2 : q->height() - CUV_MATERIAL_SLIDER_MARGIN * 2;
 
-	return CUVMaterialStyle::sliderValueFromPosition(q->minimum(), q->maximum(), position - CUV_MATERIAL_SLIDER_MARGIN, span, q->invertedAppearance());
+	return CUVMaterialStyle::sliderValueFromPosition(q->minimum(), q->maximum(), position - CUV_MATERIAL_SLIDER_MARGIN, span,
+	                                                 q->invertedAppearance());
 }
 
 void CUVMaterialSliderPrivate::setHovered(const bool status) {
@@ -107,7 +106,6 @@ void CUVMaterialSliderPrivate::setHovered(const bool status) {
 /*!
  *  \class CUVMaterialSlider
  */
-
 CUVMaterialSlider::CUVMaterialSlider(QWidget* parent)
 : QAbstractSlider(parent), d_ptr(new CUVMaterialSliderPrivate(this)) {
 	d_func()->init();

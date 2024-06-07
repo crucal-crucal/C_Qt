@@ -19,7 +19,7 @@ class CUVMATERIAL_EXPORT CUVMaterialCheckableIcon final : public QWidget {
 	Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
 public:
-	CUVMaterialCheckableIcon(QIcon  icon, CUVMaterialCheckable* parent);
+	CUVMaterialCheckableIcon(QIcon icon, CUVMaterialCheckable* parent);
 	~CUVMaterialCheckableIcon() override;
 
 	[[nodiscard]] QSize sizeHint() const override;

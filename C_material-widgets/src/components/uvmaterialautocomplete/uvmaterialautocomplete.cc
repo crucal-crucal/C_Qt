@@ -61,7 +61,6 @@ void CUVMaterialAutoCompletePrivate::init() {
 /*!
  *  \class CUVMaterialAutoComplete
  */
-
 CUVMaterialAutoComplete::CUVMaterialAutoComplete(QWidget* parent): CUVMaterialTextField(*new CUVMaterialAutoCompletePrivate(this), parent) {
 	d_func()->init();
 }
@@ -169,8 +168,7 @@ bool CUVMaterialAutoComplete::eventFilter(QObject* watched, QEvent* event) {
 				painter.fillRect(d->frame->rect(), Qt::white);
 				break;
 			}
-			default:
-				break;
+			default: break;
 		}
 	} else if (d->menu == watched) {
 		switch (event->type()) {
@@ -188,8 +186,7 @@ bool CUVMaterialAutoComplete::eventFilter(QObject* watched, QEvent* event) {
 				d->frame->hide();
 				break;
 			}
-			default:
-				break;
+			default: break;
 		}
 	} else {
 		switch (event->type()) {
@@ -202,8 +199,7 @@ bool CUVMaterialAutoComplete::eventFilter(QObject* watched, QEvent* event) {
 				}
 				break;
 			}
-			default:
-				break;
+			default: break;
 		}
 	}
 	return CUVMaterialTextField::eventFilter(watched, event);

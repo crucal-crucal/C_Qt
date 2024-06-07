@@ -55,9 +55,7 @@ protected slots:
 private:
 	Q_DISABLE_COPY(CUVMaterialRipple)
 
-	QPropertyAnimation* animate(const QByteArray& property,
-	                            const QEasingCurve& easing = QEasingCurve::OutQuad,
-	                            int duration = 800);
+	QPropertyAnimation* animate(const QByteArray& property, const QEasingCurve& easing = QEasingCurve::OutQuad, int duration = 800);
 
 	void init();
 

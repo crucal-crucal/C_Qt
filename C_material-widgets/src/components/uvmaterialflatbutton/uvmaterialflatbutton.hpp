@@ -105,7 +105,7 @@ protected:
 
 	virtual void updateClipPath();
 
-	const QScopedPointer<CUVMaterialFlatButtonPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialFlatButtonPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialFlatButton)

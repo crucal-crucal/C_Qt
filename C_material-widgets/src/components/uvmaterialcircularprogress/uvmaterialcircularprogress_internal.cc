@@ -10,3 +10,30 @@ CUVMaterialCircularProgressDelegate::CUVMaterialCircularProgressDelegate(CUVMate
 }
 
 CUVMaterialCircularProgressDelegate::~CUVMaterialCircularProgressDelegate() = default;
+
+void CUVMaterialCircularProgressDelegate::setDashOffset(const qreal offset) {
+	m_dashOffset = offset;
+	m_progress->update();
+}
+
+qreal CUVMaterialCircularProgressDelegate::dashOffset() const {
+	return m_dashOffset;
+}
+
+void CUVMaterialCircularProgressDelegate::setDashLength(const qreal length) {
+	m_dashLength = length;
+	m_progress->update();
+}
+
+qreal CUVMaterialCircularProgressDelegate::dashLength() const {
+	return m_dashLength;
+}
+
+void CUVMaterialCircularProgressDelegate::setAngle(const int angle) {
+	m_angle = angle;
+	m_progress->update();
+}
+
+int CUVMaterialCircularProgressDelegate::angle() const {
+	return m_angle;
+}

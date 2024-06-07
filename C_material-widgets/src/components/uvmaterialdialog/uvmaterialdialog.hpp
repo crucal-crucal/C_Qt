@@ -1,5 +1,4 @@
-﻿#ifndef QTMATERIALDIALOG_H
-#define QTMATERIALDIALOG_H
+﻿#pragma once
 
 #include "lib/uvmaterialoverlaywidget.hpp"
 
@@ -29,11 +28,9 @@ public slots:
 protected:
 	void paintEvent(QPaintEvent* event) override;
 
-	const QScopedPointer<CUVMaterialDialogPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialDialogPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialDialog)
 	Q_DECLARE_PRIVATE(CUVMaterialDialog)
 };
-
-#endif // QTMATERIALDIALOG_H

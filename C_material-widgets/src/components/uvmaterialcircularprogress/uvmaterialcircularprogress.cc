@@ -27,8 +27,7 @@ void CUVMaterialCircularProgressPrivate::init() {
 	size = 64;
 	useThemeColors = true;
 
-	q->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding,
-	                             QSizePolicy::MinimumExpanding));
+	q->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
 
 	const auto group = new QParallelAnimationGroup(q);
 	group->setLoopCount(-1);

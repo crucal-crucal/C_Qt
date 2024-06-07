@@ -1,5 +1,4 @@
-﻿#ifndef QTMATERIALAVATAR_H
-#define QTMATERIALAVATAR_H
+﻿#pragma once
 
 #include <QtWidgets/QWidget>
 
@@ -46,11 +45,9 @@ public:
 protected:
 	void paintEvent(QPaintEvent* event) override;
 
-	const QScopedPointer<CUVMaterialAvatarPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialAvatarPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialAvatar)
 	Q_DECLARE_PRIVATE(CUVMaterialAvatar)
 };
-
-#endif // QTMATERIALAVATAR_H

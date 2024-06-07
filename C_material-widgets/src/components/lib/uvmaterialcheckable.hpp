@@ -52,7 +52,7 @@ protected:
 	explicit CUVMaterialCheckable(CUVMaterialCheckablePrivate& d, QWidget* parent = nullptr);
 
 	bool event(QEvent* event) override;
-	bool eventFilter(QObject* obj, QEvent* event) override;
+	bool eventFilter(QObject* watched, QEvent* event) override;
 	void mousePressEvent(QMouseEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 

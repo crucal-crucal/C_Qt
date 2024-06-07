@@ -15,7 +15,6 @@
  *  \class CUVMaterialDialogPrivate
  *  \internal
  */
-
 CUVMaterialDialogPrivate::CUVMaterialDialogPrivate(CUVMaterialDialog* q): q_ptr(q) {
 }
 
@@ -96,7 +95,6 @@ void CUVMaterialDialogPrivate::init() {
 /*!
  *  \class CUVMaterialDialog
  */
-
 CUVMaterialDialog::CUVMaterialDialog(QWidget* parent)
 : CUVMaterialOverlayWidget(parent), d_ptr(new CUVMaterialDialogPrivate(this)) {
 	d_func()->init();

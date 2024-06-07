@@ -52,7 +52,7 @@ protected:
 
 	void updateThumbOffset();
 
-	const QScopedPointer<CUVMaterialSliderPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialSliderPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialSlider)

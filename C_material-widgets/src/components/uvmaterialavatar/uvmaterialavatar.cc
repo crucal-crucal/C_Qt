@@ -39,7 +39,6 @@ void CUVMaterialAvatarPrivate::init() {
 /*!
  *  \class CUVMaterialAvatar
  */
-
 CUVMaterialAvatar::CUVMaterialAvatar(QWidget* parent)
 : QWidget(parent), d_ptr(new CUVMaterialAvatarPrivate(this)) {
 	d_func()->init();

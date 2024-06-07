@@ -20,19 +20,19 @@ public:
 private:
 	Q_DISABLE_COPY(CUVMaterialSliderStateMachine)
 
-	CUVMaterialSlider* const m_slider;
-	CUVMaterialSliderThumb* const m_thumb;
-	CUVMaterialSliderTrack* const m_track;
-	QState* const m_topState;
-	QState* const m_fstState;
-	QState* const m_sndState;
-	QState* const m_inactiveState;
-	QState* const m_focusState;
-	QState* const m_slidingState;
-	QState* const m_pulseOutState;
-	QState* const m_pulseInState;
-	QState* const m_minState;
-	QState* const m_normalState;
+	CUVMaterialSlider* const m_slider{ nullptr };
+	CUVMaterialSliderThumb* const m_thumb{ nullptr };
+	CUVMaterialSliderTrack* const m_track{ nullptr };
+	QState* const m_topState{ nullptr };
+	QState* const m_fstState{ nullptr };
+	QState* const m_sndState{ nullptr };
+	QState* const m_inactiveState{ nullptr };
+	QState* const m_focusState{ nullptr };
+	QState* const m_slidingState{ nullptr };
+	QState* const m_pulseOutState{ nullptr };
+	QState* const m_pulseInState{ nullptr };
+	QState* const m_minState{ nullptr };
+	QState* const m_normalState{ nullptr };
 };
 
 class CUVMaterialSliderThumb final : public CUVMaterialOverlayWidget {
@@ -71,20 +71,20 @@ public:
 	[[nodiscard]] inline int offset() const;
 
 protected:
-	bool eventFilter(QObject* obj, QEvent* event) override;
+	bool eventFilter(QObject* watched, QEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
 private:
 	Q_DISABLE_COPY(CUVMaterialSliderThumb)
 
-	const CUVMaterialSlider* const m_slider;
-	QColor m_borderColor;
-	QColor m_fillColor;
-	QColor m_haloColor;
-	qreal m_diameter;
-	qreal m_borderWidth;
-	qreal m_haloSize;
-	int m_offset;
+	const CUVMaterialSlider* const m_slider{ nullptr };
+	QColor m_borderColor{};
+	QColor m_fillColor{};
+	QColor m_haloColor{};
+	qreal m_diameter{};
+	qreal m_borderWidth{};
+	qreal m_haloSize{};
+	int m_offset{};
 };
 
 inline void CUVMaterialSliderThumb::setDiameter(const qreal diameter) {
@@ -166,16 +166,16 @@ public:
 	[[nodiscard]] inline int trackWidth() const;
 
 protected:
-	bool eventFilter(QObject* obj, QEvent* event) override;
+	bool eventFilter(QObject* watched, QEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
 private:
 	Q_DISABLE_COPY(CUVMaterialSliderTrack)
 
-	const CUVMaterialSlider* const m_slider;
-	CUVMaterialSliderThumb* const m_thumb;
-	QColor m_fillColor;
-	int m_trackWidth;
+	const CUVMaterialSlider* const m_slider{ nullptr };
+	CUVMaterialSliderThumb* const m_thumb{ nullptr };
+	QColor m_fillColor{};
+	int m_trackWidth{};
 };
 
 inline void CUVMaterialSliderTrack::setFillColor(const QColor& color) {

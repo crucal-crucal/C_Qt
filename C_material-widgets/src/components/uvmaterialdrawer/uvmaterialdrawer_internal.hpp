@@ -31,13 +31,13 @@ signals:
 private:
 	Q_DISABLE_COPY(CUVMaterialDrawerStateMachine)
 
-	CUVMaterialDrawerWidget* const m_drawer;
-	CUVMaterialDrawer* const m_main;
-	QState* const m_openingState;
-	QState* const m_openedState;
-	QState* const m_closingState;
-	QState* const m_closedState;
-	qreal m_opacity;
+	CUVMaterialDrawerWidget* const m_drawer{ nullptr };
+	CUVMaterialDrawer* const m_main{ nullptr };
+	QState* const m_openingState{ nullptr };
+	QState* const m_openedState{ nullptr };
+	QState* const m_closingState{ nullptr };
+	QState* const m_closedState{ nullptr };
+	qreal m_opacity{};
 };
 
 inline qreal CUVMaterialDrawerStateMachine::opacity() const {
@@ -62,7 +62,7 @@ protected:
 	[[nodiscard]] QRect overlayGeometry() const override;
 
 private:
-	int m_offset;
+	int m_offset{};
 };
 
 inline int CUVMaterialDrawerWidget::offset() const {

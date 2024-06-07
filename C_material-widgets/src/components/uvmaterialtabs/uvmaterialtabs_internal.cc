@@ -57,17 +57,16 @@ void CUVMaterialTabsInkBar::animate() {
 	m_animation->start();
 }
 
-bool CUVMaterialTabsInkBar::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialTabsInkBar::eventFilter(QObject* watched, QEvent* event) {
 	switch (event->type()) {
 		case QEvent::Move:
 		case QEvent::Resize: {
 			refreshGeometry();
 			break;
 		}
-		default:
-			break;
+		default: break;
 	}
-	return CUVMaterialOverlayWidget::eventFilter(obj, event);
+	return CUVMaterialOverlayWidget::eventFilter(watched, event);
 }
 
 void CUVMaterialTabsInkBar::paintEvent(QPaintEvent* event) {
@@ -83,7 +82,6 @@ void CUVMaterialTabsInkBar::paintEvent(QPaintEvent* event) {
  *  \class CUVMaterialTab
  *  \internal
  */
-
 CUVMaterialTab::CUVMaterialTab(CUVMaterialTabs* parent)
 : CUVMaterialFlatButton(parent),
   m_tabs(parent),
@@ -101,7 +99,7 @@ CUVMaterialTab::CUVMaterialTab(CUVMaterialTabs* parent)
 	setBackgroundMode(Qt::OpaqueMode);
 	setBaseOpacity(0.25);
 
-	connect(this, SIGNAL(clicked(bool)), this, SLOT(activateTab()));
+	connect(this, &CUVMaterialTab::clicked, this, &CUVMaterialTab::activateTab);
 }
 
 CUVMaterialTab::~CUVMaterialTab() = default;

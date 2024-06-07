@@ -27,7 +27,6 @@ void CUVMaterialToggleRippleOverlay::addToggleRipple() {
 	}
 
 	int t, w;
-
 	if (Qt::Horizontal == m_toggle->orientation()) {
 		t = m_toggle->height() / 2;
 		w = m_thumb->height() / 2 + 10;
@@ -44,7 +43,7 @@ void CUVMaterialToggleRippleOverlay::addToggleRipple() {
 	addRipple(ripple);
 }
 
-bool CUVMaterialToggleRippleOverlay::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialToggleRippleOverlay::eventFilter(QObject* watched, QEvent* event) {
 	if (QEvent::Paint == event->type()) {
 		setGeometry(overlayGeometry());
 		const QColor color = m_track->trackColor();
@@ -52,7 +51,7 @@ bool CUVMaterialToggleRippleOverlay::eventFilter(QObject* obj, QEvent* event) {
 			ripple->setColor(color);
 		}
 	}
-	return CUVMaterialRippleOverlay::eventFilter(obj, event);
+	return CUVMaterialRippleOverlay::eventFilter(watched, event);
 }
 
 QRect CUVMaterialToggleRippleOverlay::overlayGeometry() const {
@@ -68,7 +67,6 @@ QRect CUVMaterialToggleRippleOverlay::overlayGeometry() const {
  *  \class CUVMaterialToggleThumb
  *  \internal
  */
-
 CUVMaterialToggleThumb::CUVMaterialToggleThumb(CUVMaterialToggle* parent)
 : QWidget(parent), m_toggle(parent), m_shift(0), m_offset(0) {
 	Q_ASSERT(parent);
@@ -93,12 +91,12 @@ void CUVMaterialToggleThumb::setShift(const qreal shift) {
 	updateOffset();
 }
 
-bool CUVMaterialToggleThumb::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialToggleThumb::eventFilter(QObject* watched, QEvent* event) {
 	if (const QEvent::Type type = event->type(); QEvent::Resize == type || QEvent::Move == type) {
 		setGeometry(m_toggle->rect().adjusted(8, 8, -8, -8));
 		updateOffset();
 	}
-	return QWidget::eventFilter(obj, event);
+	return QWidget::eventFilter(watched, event);
 }
 
 void CUVMaterialToggleThumb::paintEvent(QPaintEvent* event) {
@@ -115,8 +113,7 @@ void CUVMaterialToggleThumb::paintEvent(QPaintEvent* event) {
 	painter.setPen(Qt::NoPen);
 
 	int s;
-	QRectF r;
-
+	QRectF r{};
 	if (Qt::Horizontal == m_toggle->orientation()) {
 		s = height() - 10;
 		r = QRectF(5 + m_offset, 5, s, s);
@@ -135,8 +132,7 @@ void CUVMaterialToggleThumb::paintEvent(QPaintEvent* event) {
 }
 
 void CUVMaterialToggleThumb::updateOffset() {
-	const QSize s(Qt::Horizontal == m_toggle->orientation()
-		              ? size() : size().transposed());
+	const QSize s(Qt::Horizontal == m_toggle->orientation() ? size() : size().transposed());
 	m_offset = m_shift * static_cast<qreal>(s.width() - s.height());
 	update();
 }
@@ -145,7 +141,6 @@ void CUVMaterialToggleThumb::updateOffset() {
  *  \class CUVMaterialToggleTrack
  *  \internal
  */
-
 CUVMaterialToggleTrack::CUVMaterialToggleTrack(CUVMaterialToggle* parent)
 : QWidget(parent), m_toggle(parent) {
 	Q_ASSERT(parent);
@@ -160,11 +155,11 @@ void CUVMaterialToggleTrack::setTrackColor(const QColor& color) {
 	update();
 }
 
-bool CUVMaterialToggleTrack::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialToggleTrack::eventFilter(QObject* watched, QEvent* event) {
 	if (const QEvent::Type type = event->type(); QEvent::Resize == type || QEvent::Move == type) {
 		setGeometry(m_toggle->rect());
 	}
-	return QWidget::eventFilter(obj, event);
+	return QWidget::eventFilter(watched, event);
 }
 
 void CUVMaterialToggleTrack::paintEvent(QPaintEvent* event) {

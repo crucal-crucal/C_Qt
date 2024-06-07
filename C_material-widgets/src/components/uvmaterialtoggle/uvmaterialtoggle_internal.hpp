@@ -17,7 +17,7 @@ protected slots:
 	void addToggleRipple();
 
 protected:
-	bool eventFilter(QObject* obj, QEvent* event) override;
+	bool eventFilter(QObject* watched, QEvent* event) override;
 	[[nodiscard]] QRect overlayGeometry() const override;
 
 private:
@@ -47,7 +47,7 @@ public:
 	[[nodiscard]] inline QColor thumbColor() const;
 
 protected:
-	bool eventFilter(QObject* obj, QEvent* event) override;
+	bool eventFilter(QObject* watched, QEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
 private:
@@ -91,7 +91,7 @@ public:
 	[[nodiscard]] inline QColor trackColor() const;
 
 protected:
-	bool eventFilter(QObject* obj, QEvent* event) override;
+	bool eventFilter(QObject* watched, QEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
 private:

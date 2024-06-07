@@ -36,7 +36,7 @@ public:
 
 protected:
 	bool event(QEvent* event) override;
-	bool eventFilter(QObject* obj, QEvent* event) override;
+	bool eventFilter(QObject* watched, QEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
 	void updateClipPath() override;

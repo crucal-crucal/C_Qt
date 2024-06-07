@@ -3,7 +3,6 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QWidget>
 
-
 #ifdef CUVMATERIALAPPBAR_LIB
 #define CUVMATERIALAPPBAR_EXPORT Q_DECL_EXPORT
 #else
@@ -38,7 +37,7 @@ public:
 protected:
 	void paintEvent(QPaintEvent* event) override;
 
-	const QScopedPointer<CUVMaterialAppBarPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialAppBarPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialAppBar)

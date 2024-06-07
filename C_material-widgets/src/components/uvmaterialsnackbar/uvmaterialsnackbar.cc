@@ -13,7 +13,6 @@
  *  \class CUVMaterialSnackbarPrivate
  *  \internal
  */
-
 CUVMaterialSnackbarPrivate::CUVMaterialSnackbarPrivate(CUVMaterialSnackbar* q): q_ptr(q) {
 }
 
@@ -42,7 +41,6 @@ void CUVMaterialSnackbarPrivate::init(const CUVMaterialSnackbar::SnackBarPositio
 /*!
  *  \class CUVMaterialSnackbar
  */
-
 CUVMaterialSnackbar::CUVMaterialSnackbar(QWidget* parent, const SnackBarPosition position)
 : CUVMaterialOverlayWidget(parent), d_ptr(new CUVMaterialSnackbarPrivate(this)) {
 	d_func()->init(position);

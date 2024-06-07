@@ -10,10 +10,6 @@
  *  \class CUVMaterialAppBarPrivate
  *  \internal
  */
-
-/*!
- *  \internal
- */
 CUVMaterialAppBarPrivate::CUVMaterialAppBarPrivate(CUVMaterialAppBar* q): q_ptr(q) {
 }
 
@@ -44,7 +40,6 @@ void CUVMaterialAppBarPrivate::init() {
 /*!
  *  \class CUVMaterialAppBar
  */
-
 CUVMaterialAppBar::CUVMaterialAppBar(QWidget* parent): QWidget(parent), d_ptr(new CUVMaterialAppBarPrivate(this)) {
 	d_func()->init();
 }

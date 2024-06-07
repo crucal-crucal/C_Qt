@@ -42,7 +42,7 @@ public:
 	void setRelativeYPosition(qreal y);
 	[[nodiscard]] qreal relativeYPosition() const;
 
-	[[nodiscard]] QSize sizeHint() const Q_DECL_OVERRIDE;
+	[[nodiscard]] QSize sizeHint() const override;
 
 	void setIcon(const QIcon& icon);
 	[[nodiscard]] QIcon icon() const;
@@ -51,11 +51,11 @@ public:
 	[[nodiscard]] QString text() const;
 
 protected:
-	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+	void paintEvent(QPaintEvent* event) override;
 
 	[[nodiscard]] int getDiameter() const;
 
-	const QScopedPointer<CUVMaterialBadgePrivate> d_ptr;
+	const QScopedPointer<CUVMaterialBadgePrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialBadge)

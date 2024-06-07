@@ -55,7 +55,7 @@ protected:
 	bool event(QEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
-	const QScopedPointer<CUVMaterialTextFieldPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialTextFieldPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialTextField)

@@ -52,7 +52,6 @@ void CUVMaterialDrawerPrivate::init() {
 /*!
  *  \class CUVMaterialDrawer
  */
-
 CUVMaterialDrawer::CUVMaterialDrawer(QWidget* parent)
 : CUVMaterialOverlayWidget(parent), d_ptr(new CUVMaterialDrawerPrivate(this)) {
 	d_func()->init();
@@ -162,7 +161,7 @@ bool CUVMaterialDrawer::event(QEvent* event) {
 	return CUVMaterialOverlayWidget::event(event);
 }
 
-bool CUVMaterialDrawer::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialDrawer::eventFilter(QObject* watched, QEvent* event) {
 	Q_D(CUVMaterialDrawer);
 	if (!event) {
 		return false;
@@ -186,7 +185,7 @@ bool CUVMaterialDrawer::eventFilter(QObject* obj, QEvent* event) {
 		default:
 			break;
 	}
-	return CUVMaterialOverlayWidget::eventFilter(obj, event);
+	return CUVMaterialOverlayWidget::eventFilter(watched, event);
 }
 
 void CUVMaterialDrawer::paintEvent(QPaintEvent* event) {

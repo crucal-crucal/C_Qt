@@ -33,7 +33,7 @@ bool CUVMaterialOverlayWidget::event(QEvent* event) {
 	return QWidget::event(event);
 }
 
-bool CUVMaterialOverlayWidget::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialOverlayWidget::eventFilter(QObject* watched, QEvent* event) {
 	switch (event->type()) {
 		case QEvent::Move:
 		case QEvent::Resize:
@@ -42,7 +42,7 @@ bool CUVMaterialOverlayWidget::eventFilter(QObject* obj, QEvent* event) {
 		default:
 			break;
 	}
-	return QWidget::eventFilter(obj, event);
+	return QWidget::eventFilter(watched, event);
 }
 
 QRect CUVMaterialOverlayWidget::overlayGeometry() const {

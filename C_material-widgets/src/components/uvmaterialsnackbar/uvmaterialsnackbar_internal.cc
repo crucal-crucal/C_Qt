@@ -6,8 +6,7 @@
 #include "uvmaterialsnackbar.hpp"
 #include "lib/uvmaterialstatetransition.hpp"
 
-CUVMaterialSnackbarStateMachine::CUVMaterialSnackbarStateMachine(CUVMaterialSnackbar* parent,
-                                                                 const CUVMaterialSnackbar::SnackBarPosition& position)
+CUVMaterialSnackbarStateMachine::CUVMaterialSnackbarStateMachine(CUVMaterialSnackbar* parent, const CUVMaterialSnackbar::SnackBarPosition& position)
 : QStateMachine(parent), m_snackbar(parent), m_position(position) {
 	m_timer.setSingleShot(true);
 

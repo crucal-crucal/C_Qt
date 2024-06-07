@@ -24,7 +24,6 @@ QColor CUVMaterialThemePrivate::rgba(int r, int g, int b, qreal a) { // NOLINT
 /*!
  *  \class CUVMaterialTheme
  */
-
 CUVMaterialTheme::CUVMaterialTheme(QObject* parent): QObject(parent), d_ptr(new CUVMaterialThemePrivate(this)) {
 	setColor("primary1", Material::cyan500);
 	setColor("primary2", Material::cyan700);

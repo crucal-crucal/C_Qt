@@ -53,7 +53,7 @@ protected:
 	void setTabActive(int index, bool active = true);
 	void updateTabs();
 
-	const QScopedPointer<CUVMaterialTabsPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialTabsPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialTabs)

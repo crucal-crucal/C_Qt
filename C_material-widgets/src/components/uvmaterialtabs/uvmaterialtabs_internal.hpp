@@ -22,17 +22,17 @@ public:
 	void animate();
 
 protected:
-	bool eventFilter(QObject* obj, QEvent* event) override;
+	bool eventFilter(QObject* watched, QEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
 private:
 	Q_DISABLE_COPY(CUVMaterialTabsInkBar)
 
-	CUVMaterialTabs* const m_tabs;
-	QPropertyAnimation* const m_animation;
-	QRect m_geometry;
-	QRect m_previousGeometry;
-	qreal m_tween;
+	CUVMaterialTabs* const m_tabs{ nullptr };
+	QPropertyAnimation* const m_animation{ nullptr };
+	QRect m_geometry{};
+	QRect m_previousGeometry{};
+	qreal m_tween{};
 };
 
 inline void CUVMaterialTabsInkBar::setTweenValue(const qreal value) {
@@ -65,8 +65,8 @@ protected:
 private:
 	Q_DISABLE_COPY(CUVMaterialTab)
 
-	CUVMaterialTabs* const m_tabs;
-	bool m_active;
+	CUVMaterialTabs* const m_tabs{ nullptr };
+	bool m_active{};
 };
 
 inline void CUVMaterialTab::setActive(const bool state) {

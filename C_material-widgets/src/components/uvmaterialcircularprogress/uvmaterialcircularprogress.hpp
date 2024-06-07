@@ -43,7 +43,7 @@ public:
 protected:
 	void paintEvent(QPaintEvent* event) override;
 
-	const QScopedPointer<CUVMaterialCircularProgressPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialCircularProgressPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialCircularProgress)

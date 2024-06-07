@@ -66,8 +66,7 @@ QRect CUVMaterialFloatingActionButtonPrivate::fabGeometry() const {
 		case Qt::BottomLeftCorner:
 			return { offsX, parent->height() - (offsY + s), s, s };
 		case Qt::BottomRightCorner:
-		default:
-			break;
+		default: break;
 	}
 	return { parent->width() - (offsX + s), parent->height() - (offsY + s), s, s };
 }
@@ -236,13 +235,13 @@ bool CUVMaterialFloatingActionButton::event(QEvent* event) {
 /*!
  *  \reimp
  */
-bool CUVMaterialFloatingActionButton::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialFloatingActionButton::eventFilter(QObject* watched, QEvent* event) {
 	if (const QEvent::Type type = event->type(); QEvent::Move == type || QEvent::Resize == type) {
 		Q_D(CUVMaterialFloatingActionButton);
 		setGeometry(d->fabGeometry());
 	}
 
-	return CUVMaterialRaisedButton::eventFilter(obj, event);
+	return CUVMaterialRaisedButton::eventFilter(watched, event);
 }
 
 /*!

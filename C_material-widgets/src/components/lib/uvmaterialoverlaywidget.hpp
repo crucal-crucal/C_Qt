@@ -20,7 +20,7 @@ public:
 
 protected:
 	bool event(QEvent* event) override;
-	bool eventFilter(QObject* obj, QEvent* event) override;
+	bool eventFilter(QObject* watched, QEvent* event) override;
 
 	[[nodiscard]] virtual QRect overlayGeometry() const;
 

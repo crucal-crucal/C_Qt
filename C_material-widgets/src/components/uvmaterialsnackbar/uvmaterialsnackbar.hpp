@@ -55,7 +55,7 @@ public slots:
 protected:
 	void paintEvent(QPaintEvent* event) override;
 
-	const QScopedPointer<CUVMaterialSnackbarPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialSnackbarPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialSnackbar)

@@ -41,7 +41,7 @@ public:
 protected:
 	void paintEvent(QPaintEvent* event) override;
 
-	const QScopedPointer<CUVMaterialScrollBarPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialScrollBarPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialScrollBar)

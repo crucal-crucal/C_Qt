@@ -11,7 +11,6 @@
  *  \class CUVMaterialDialogProxy
  *  \internal
  */
-
 CUVMaterialDialogProxy::CUVMaterialDialogProxy(CUVMaterialDialogWindow* source, QStackedLayout* layout, CUVMaterialDialog* dialog, QWidget* parent)
 : QWidget(parent), m_source(source), m_layout(layout), m_dialog(dialog), m_opacity(0), m_mode(Transparent) {
 }
@@ -68,7 +67,6 @@ void CUVMaterialDialogProxy::paintEvent(QPaintEvent* event) {
  *  \class CUVMaterialDialogWindow
  *  \internal
  */
-
 CUVMaterialDialogWindow::CUVMaterialDialogWindow(CUVMaterialDialog* dialog, QWidget* parent)
 : QWidget(parent), m_dialog(dialog) {
 }

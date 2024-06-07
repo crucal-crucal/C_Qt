@@ -46,7 +46,7 @@ protected:
 	bool event(QEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
-	const QScopedPointer<CUVMaterialTogglePrivate> d_ptr;
+	const QScopedPointer<CUVMaterialTogglePrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialToggle)

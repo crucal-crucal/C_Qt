@@ -18,8 +18,8 @@ public:
 
 	void setLabel(CUVMaterialTextFieldLabel* label);
 
-	inline void setProgress(qreal progress);
-	[[nodiscard]] inline qreal progress() const;
+	void setProgress(qreal progress);
+	[[nodiscard]] qreal progress() const;
 
 public slots:
 	void setupProperties(const QString& text = "") const;
@@ -27,23 +27,14 @@ public slots:
 private:
 	Q_DISABLE_COPY(CUVMaterialTextFieldStateMachine)
 
-	CUVMaterialTextField* const m_textField;
-	QState* const m_normalState;
-	QState* const m_focusedState;
-	std::unique_ptr<CUVMaterialTextFieldLabel> m_label;
-	QPropertyAnimation* m_offsetAnimation;
-	QPropertyAnimation* m_colorAnimation;
-	qreal m_progress;
+	CUVMaterialTextField* const m_textField{ nullptr };
+	QState* const m_normalState{ nullptr };
+	QState* const m_focusedState{ nullptr };
+	std::unique_ptr<CUVMaterialTextFieldLabel> m_label{ nullptr };
+	QPropertyAnimation* m_offsetAnimation{ nullptr };
+	QPropertyAnimation* m_colorAnimation{ nullptr };
+	qreal m_progress{};
 };
-
-inline void CUVMaterialTextFieldStateMachine::setProgress(const qreal progress) {
-	m_progress = progress;
-	m_textField->update();
-}
-
-inline qreal CUVMaterialTextFieldStateMachine::progress() const {
-	return m_progress;
-}
 
 class CUVMaterialTextFieldLabel final : public QWidget {
 	Q_OBJECT
@@ -71,11 +62,11 @@ protected:
 private:
 	Q_DISABLE_COPY(CUVMaterialTextFieldLabel)
 
-	CUVMaterialTextField* const m_textField;
-	qreal m_scale;
-	qreal m_posX;
-	qreal m_posY;
-	QColor m_color;
+	CUVMaterialTextField* const m_textField{ nullptr };
+	qreal m_scale{};
+	qreal m_posX{};
+	qreal m_posY{};
+	QColor m_color{};
 };
 
 inline void CUVMaterialTextFieldLabel::setScale(const qreal scale) {

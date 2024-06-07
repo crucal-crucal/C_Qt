@@ -19,8 +19,7 @@
  *  \internal
  */
 
-CUVMaterialCheckablePrivate::CUVMaterialCheckablePrivate(CUVMaterialCheckable* q)
-: q_ptr(q) {
+CUVMaterialCheckablePrivate::CUVMaterialCheckablePrivate(CUVMaterialCheckable* q): q_ptr(q) {
 }
 
 CUVMaterialCheckablePrivate::~CUVMaterialCheckablePrivate() = default;
@@ -55,17 +54,14 @@ void CUVMaterialCheckablePrivate::init() {
 	stateMachine->setInitialState(uncheckedState);
 
 	// Transition to checked
-
 	uncheckedTransition->setTargetState(checkedState);
 	uncheckedState->addTransition(uncheckedTransition);
 
 	// Transition to unchecked
-
 	checkedTransition->setTargetState(uncheckedState);
 	checkedState->addTransition(checkedTransition);
 
 	// Transitions enabled <==> disabled
-
 	QAbstractTransition* transition = new QEventTransition(q, QEvent::EnabledChange);
 	transition->setTargetState(disabledUncheckedState);
 	uncheckedState->addTransition(transition);
@@ -89,8 +85,6 @@ void CUVMaterialCheckablePrivate::init() {
 	transition = new QSignalTransition(q, &CUVMaterialCheckable::toggled);
 	transition->setTargetState(disabledUncheckedState);
 	disabledCheckedState->addTransition(transition);
-
-	//
 
 	checkedState->assignProperty(checkedIcon, "opacity", 1);
 	checkedState->assignProperty(uncheckedIcon, "opacity", 0);
@@ -120,7 +114,6 @@ void CUVMaterialCheckablePrivate::init() {
 /*!
  *  \class CUVMaterialCheckable
  */
-
 CUVMaterialCheckable::CUVMaterialCheckable(QWidget* parent)
 : QAbstractButton(parent), d_ptr(new CUVMaterialCheckablePrivate(this)) {
 	d_func()->init();
@@ -271,8 +264,7 @@ QSize CUVMaterialCheckable::sizeHint() const {
 }
 
 CUVMaterialCheckable::CUVMaterialCheckable(CUVMaterialCheckablePrivate& d, QWidget* parent)
-: QAbstractButton(parent),
-  d_ptr(&d) {
+: QAbstractButton(parent), d_ptr(&d) {
 	d_func()->init();
 }
 
@@ -304,13 +296,13 @@ bool CUVMaterialCheckable::event(QEvent* event) {
 /*!
  *  \reimp
  */
-bool CUVMaterialCheckable::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialCheckable::eventFilter(QObject* watched, QEvent* event) {
 	if (QEvent::Resize == event->type()) {
 		Q_D(CUVMaterialCheckable);
 
 		d->rippleOverlay->setGeometry(geometry().adjusted(-8, -8, 8, 8));
 	}
-	return QAbstractButton::eventFilter(obj, event);
+	return QAbstractButton::eventFilter(watched, event);
 }
 
 /*!

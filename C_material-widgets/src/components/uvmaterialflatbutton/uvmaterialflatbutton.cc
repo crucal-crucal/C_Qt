@@ -14,7 +14,6 @@
 /*!
  *  \class CUVMaterialFlatButtonPrivate
  */
-
 CUVMaterialFlatButtonPrivate::CUVMaterialFlatButtonPrivate(CUVMaterialFlatButton* q): q_ptr(q) {
 }
 
@@ -59,7 +58,6 @@ void CUVMaterialFlatButtonPrivate::init() {
 /*!
  *  \class CUVMaterialFlatButton
  */
-
 CUVMaterialFlatButton::CUVMaterialFlatButton(QWidget* parent, const Material::ButtonPreset preset)
 : QPushButton(parent), d_ptr(new CUVMaterialFlatButtonPrivate(this)) {
 	d_func()->init();
@@ -597,13 +595,11 @@ void CUVMaterialFlatButton::paintForeground(QPainter* painter) {
 		painter->setPen(foregroundColor());
 		if (const qreal progress = d->stateMachine->checkedOverlayProgress(); isCheckable() && progress > 0) {
 			QColor source = foregroundColor();
-			QColor dest = Qt::TransparentMode == d->bgMode ? Qt::white
-				              : backgroundColor();
+			QColor dest = Qt::TransparentMode == d->bgMode ? Qt::white : backgroundColor();
 			if (qFuzzyCompare(1, progress)) {
 				painter->setPen(dest);
 			} else {
-				painter->setPen(QColor(COLOR_INTERPOLATE(red), COLOR_INTERPOLATE(green),
-				                       COLOR_INTERPOLATE(blue), COLOR_INTERPOLATE(alpha)));
+				painter->setPen(QColor(COLOR_INTERPOLATE(red), COLOR_INTERPOLATE(green), COLOR_INTERPOLATE(blue), COLOR_INTERPOLATE(alpha)));
 			}
 		}
 	} else {

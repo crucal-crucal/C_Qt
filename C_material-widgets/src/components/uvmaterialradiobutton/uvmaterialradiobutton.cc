@@ -10,7 +10,6 @@
  *  \class CUVMaterialRadioButtonPrivate
  *  \internal
  */
-
 CUVMaterialRadioButtonPrivate::CUVMaterialRadioButtonPrivate(CUVMaterialRadioButton* q) : CUVMaterialCheckablePrivate(q) {
 }
 
@@ -44,8 +43,6 @@ void CUVMaterialRadioButtonPrivate::init() {
 
 	checkedIcon->setIconSize(0);
 
-	//
-
 	checkedState->assignProperty(checkedIcon, "color", q->checkedColor());
 	checkedState->assignProperty(uncheckedIcon, "color", q->uncheckedColor());
 	uncheckedState->assignProperty(uncheckedIcon, "color", q->uncheckedColor());
@@ -70,7 +67,6 @@ void CUVMaterialRadioButtonPrivate::init() {
 /*!
  *  \class CUVMaterialRadioButton
  */
-
 CUVMaterialRadioButton::CUVMaterialRadioButton(QWidget* parent): CUVMaterialCheckable(*new CUVMaterialRadioButtonPrivate(this), parent) {
 	d_func()->init();
 }

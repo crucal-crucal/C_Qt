@@ -76,7 +76,6 @@ void CUVMaterialRaisedButtonPrivate::init() {
 /*!
  *  \class CUVMaterialRaisedButton
  */
-
 CUVMaterialRaisedButton::CUVMaterialRaisedButton(QWidget* parent)
 : CUVMaterialFlatButton(*new CUVMaterialRaisedButtonPrivate(this), parent) {
 	d_func()->init();

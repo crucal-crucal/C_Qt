@@ -39,10 +39,10 @@ public slots:
 
 protected:
 	bool event(QEvent* event) override;
-	bool eventFilter(QObject* obj, QEvent* event) override;
+	bool eventFilter(QObject* watched, QEvent* event) override;
 	void paintEvent(QPaintEvent* event) override;
 
-	const QScopedPointer<CUVMaterialDrawerPrivate> d_ptr;
+	const QScopedPointer<CUVMaterialDrawerPrivate> d_ptr{ nullptr };
 
 private:
 	Q_DISABLE_COPY(CUVMaterialDrawer)

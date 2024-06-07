@@ -212,12 +212,12 @@ CUVMaterialSliderThumb::CUVMaterialSliderThumb(CUVMaterialSlider* slider)
 
 CUVMaterialSliderThumb::~CUVMaterialSliderThumb() = default;
 
-bool CUVMaterialSliderThumb::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialSliderThumb::eventFilter(QObject* watched, QEvent* event) {
 	if (QEvent::ParentChange == event->type()) {
 		setParent(m_slider->parentWidget());
 	}
 
-	return CUVMaterialOverlayWidget::eventFilter(obj, event);
+	return CUVMaterialOverlayWidget::eventFilter(watched, event);
 }
 
 void CUVMaterialSliderThumb::paintEvent(QPaintEvent* event) {
@@ -237,22 +237,16 @@ void CUVMaterialSliderThumb::paintEvent(QPaintEvent* event) {
 		                     ? QPointF(CUV_MATERIAL_SLIDER_MARGIN + m_offset, m_slider->height() / 2) // NOLINT
 		                     : QPointF(m_slider->width() / 2, CUV_MATERIAL_SLIDER_MARGIN + m_offset); // NOLINT
 
-	const QRectF halo((m_slider->pos() - QPointF(m_haloSize, m_haloSize) / 2) + disp,
-	                  QSizeF(m_haloSize, m_haloSize));
+	const QRectF halo((m_slider->pos() - QPointF(m_haloSize, m_haloSize) / 2) + disp, QSizeF(m_haloSize, m_haloSize));
 
 	painter.setOpacity(0.15);
 	painter.drawEllipse(halo);
 
 	// Knob
-
 	const bool isMin = m_slider->value() == m_slider->minimum();
 
-	brush.setColor(m_slider->isEnabled()
-		               ? m_fillColor
-		               : m_slider->disabledColor());
-	painter.setBrush(!m_slider->isEnabled() && isMin
-		                 ? Qt::NoBrush
-		                 : brush);
+	brush.setColor(m_slider->isEnabled() ? m_fillColor : m_slider->disabledColor());
+	painter.setBrush(!m_slider->isEnabled() && isMin ? Qt::NoBrush : brush);
 
 	if (m_slider->isEnabled() || isMin) {
 		QPen pen;
@@ -296,12 +290,12 @@ CUVMaterialSliderTrack::CUVMaterialSliderTrack(CUVMaterialSliderThumb* thumb, CU
 
 CUVMaterialSliderTrack::~CUVMaterialSliderTrack() = default;
 
-bool CUVMaterialSliderTrack::eventFilter(QObject* obj, QEvent* event) {
+bool CUVMaterialSliderTrack::eventFilter(QObject* watched, QEvent* event) {
 	if (QEvent::ParentChange == event->type()) {
 		setParent(m_slider->parentWidget());
 	}
 
-	return CUVMaterialOverlayWidget::eventFilter(obj, event);
+	return CUVMaterialOverlayWidget::eventFilter(watched, event);
 }
 
 void CUVMaterialSliderTrack::paintEvent(QPaintEvent* event) {
@@ -312,12 +306,10 @@ void CUVMaterialSliderTrack::paintEvent(QPaintEvent* event) {
 
 	QBrush fg;
 	fg.setStyle(Qt::SolidPattern);
-	fg.setColor(m_slider->isEnabled() ? m_slider->thumbColor()
-		            : m_slider->disabledColor());
+	fg.setColor(m_slider->isEnabled() ? m_slider->thumbColor() : m_slider->disabledColor());
 	QBrush bg;
 	bg.setStyle(Qt::SolidPattern);
-	bg.setColor(m_slider->isEnabled() ? m_fillColor
-		            : m_slider->disabledColor());
+	bg.setColor(m_slider->isEnabled() ? m_fillColor : m_slider->disabledColor());
 
 	const qreal offset = m_thumb->offset();
 
@@ -335,8 +327,8 @@ void CUVMaterialSliderTrack::paintEvent(QPaintEvent* event) {
 		                        ? QRectF(0, 0, m_slider->width() - CUV_MATERIAL_SLIDER_MARGIN * 2, m_trackWidth)
 		                        : QRectF(0, 0, m_trackWidth, m_slider->height() - CUV_MATERIAL_SLIDER_MARGIN * 2);
 
-	QRectF bgRect;
-	QRectF fgRect;
+	QRectF bgRect{};
+	QRectF fgRect{};
 
 	if (Qt::Horizontal == m_slider->orientation()) {
 		fgRect = QRectF(0, 0, offset, m_trackWidth);

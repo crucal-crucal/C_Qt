@@ -13,7 +13,6 @@
  *  \class CUVMaterialTogglePrivate
  *  \internal
  */
-
 CUVMaterialTogglePrivate::CUVMaterialTogglePrivate(CUVMaterialToggle* q): q_ptr(q) {
 }
 
@@ -235,9 +234,7 @@ Qt::Orientation CUVMaterialToggle::orientation() const {
 QSize CUVMaterialToggle::sizeHint() const {
 	Q_D(const CUVMaterialToggle);
 
-	return Qt::Horizontal == d->orientation
-		       ? QSize(64, 48)
-		       : QSize(48, 64);
+	return Qt::Horizontal == d->orientation ? QSize(64, 48) : QSize(48, 64);
 }
 
 bool CUVMaterialToggle::event(QEvent* event) {
@@ -250,8 +247,7 @@ bool CUVMaterialToggle::event(QEvent* event) {
 			}
 			break;
 		}
-		default:
-			break;
+		default: break;
 	}
 	return QAbstractButton::event(event);
 }

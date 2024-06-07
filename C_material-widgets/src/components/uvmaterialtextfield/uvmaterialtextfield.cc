@@ -12,7 +12,6 @@
  *  \class CUVMaterialTextFieldPrivate
  *  \internal
  */
-
 CUVMaterialTextFieldPrivate::CUVMaterialTextFieldPrivate(CUVMaterialTextField* q): q_ptr(q) {
 }
 
@@ -43,7 +42,6 @@ void CUVMaterialTextFieldPrivate::init() {
 /*!
  *  \class CUVMaterialTextField
  */
-
 CUVMaterialTextField::CUVMaterialTextField(QWidget* parent)
 : QLineEdit(parent), d_ptr(new CUVMaterialTextFieldPrivate(this)) {
 	d_func()->init();
@@ -223,8 +221,7 @@ bool CUVMaterialTextField::hasInputLine() const {
 }
 
 CUVMaterialTextField::CUVMaterialTextField(CUVMaterialTextFieldPrivate& d, QWidget* parent)
-: QLineEdit(parent),
-  d_ptr(&d) {
+: QLineEdit(parent), d_ptr(&d) {
 	d_func()->init();
 }
 

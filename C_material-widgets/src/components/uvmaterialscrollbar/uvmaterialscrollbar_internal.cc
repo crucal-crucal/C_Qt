@@ -7,10 +7,6 @@
  *  \class CUVMaterialScrollBarStateMachine
  *  \internal
  */
-
-/*!
- *  \internal
- */
 CUVMaterialScrollBarStateMachine::CUVMaterialScrollBarStateMachine(CUVMaterialScrollBar* parent)
 : QStateMachine(parent), m_scrollBar(parent), m_focusState(new QState), m_blurState(new QState), m_opacity(0) {
 	Q_ASSERT(parent);

@@ -12,7 +12,6 @@
  *  \class CUVMaterialFlatButtonStateMachine
  *  \internal
  */
-
 CUVMaterialFlatButtonStateMachine::CUVMaterialFlatButtonStateMachine(CUVMaterialFlatButton* parent)
 : QStateMachine(parent), m_button(parent), m_topLevelState(new QState(QState::ParallelStates)), m_configState(new QState(m_topLevelState)),
   m_checkableState(new QState(m_topLevelState)), m_checkedState(new QState(m_checkableState)), m_uncheckedState(new QState(m_checkableState)),
