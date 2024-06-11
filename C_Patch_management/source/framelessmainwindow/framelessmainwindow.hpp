@@ -11,8 +11,11 @@
 #define FRAMELESSMAINWINDOW_EXPORT Q_DECL_IMPORT
 #endif
 
+class FramelessMainWindowPrivate;
+
 class FRAMELESSMAINWINDOW_EXPORT FramelessMainWindow : public QMainWindow {
 	Q_OBJECT
+	Q_DECLARE_PRIVATE(FramelessMainWindow)
 
 public:
 	explicit FramelessMainWindow(QWidget* parent = nullptr);
@@ -25,6 +28,8 @@ protected:
 	void doWindowStateChange(const QEvent* event);
 	void doResizeEvent(QEvent* event);
 	bool eventFilter(QObject* watched, QEvent* event) override;
+
+	const QScopedPointer<FramelessMainWindowPrivate> d_ptr{ nullptr };
 
 	// 拦截系统事件用于修复系统休眠后唤醒程序的bug
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
@@ -39,30 +44,6 @@ protected:
 	bool winEvent(MSG *message, long *result);
 #endif
 #endif
-
-private:
-	// 边距+可移动+可拉伸
-	int padding{};
-	bool moveEnable{};
-	bool resizeEnable{};
-
-	// 标题栏控件
-	QWidget* titleBar{ nullptr };
-
-	// 鼠标是否按下、按下坐标、按下时窗体区域
-	bool mousePressed{};
-	QPoint mousePoint{};
-	QRect mouseRect{};
-
-	// 鼠标是否按下某个区域、按下区域的大小
-	// 依次为 左、右、上、下、左上、右上、左下、右下
-	QList<bool> pressedArea{};
-	QList<QRect> pressedRect{};
-
-	// 记录是否最小化
-	bool isMin{};
-	// 存储窗体默认的属性
-	Qt::WindowFlags flags{};
 
 public Q_SLOTS:
 	// 设置边距+可拖动+可拉伸

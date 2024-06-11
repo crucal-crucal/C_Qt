@@ -34,3 +34,17 @@ add_subdirectory(logger_p)
 install(TARGETS ${TARGET_NAME}
         RUNTIME DESTINATION bin
 )
+
+# Get all subdirectories in bin directory
+file(GLOB SUBDIRS RELATIVE ${CMAKE_SOURCE_DIR}/bin ${CMAKE_SOURCE_DIR}/bin/*)
+
+foreach (SUBDIR ${SUBDIRS})
+    if (IS_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${SUBDIR})
+        add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E echo "Copying directory ${SUBDIR} from ${CMAKE_SOURCE_DIR}/bin to $<TARGET_FILE_DIR:${TARGET_NAME}>/.."
+                COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/bin/${SUBDIR}
+                $<TARGET_FILE_DIR:${TARGET_NAME}>/../${SUBDIR}
+        )
+    endif ()
+endforeach ()
