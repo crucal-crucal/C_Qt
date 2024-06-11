@@ -41,6 +41,9 @@ void FramelessMainWindowPrivate::init() {
 	titleBar = nullptr;
 }
 
+/*!
+ *  \FramelessMainWindow
+ */
 FramelessMainWindow::FramelessMainWindow(QWidget* parent) : QMainWindow(parent), d_ptr(new FramelessMainWindowPrivate(this)) {
 	d_func()->init();
 	// 设置背景透明 官方在5.3以后才彻底修复 WA_TranslucentBackground+FramelessWindowHint 并存不绘制的bug
