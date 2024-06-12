@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QWidget>
 
@@ -15,26 +15,26 @@ public:
 	void init();
 
 	FramelessMainWindow* const q_ptr{ nullptr };
-	// ±ß¾à+¿ÉÒÆ¶¯+¿ÉÀ­Éì
+	// è¾¹è·+å¯ç§»åŠ¨+å¯æ‹‰ä¼¸
 	int padding{};
 	bool moveEnable{};
 	bool resizeEnable{};
 
-	// ±êÌâÀ¸¿Ø¼ş
+	// æ ‡é¢˜æ æ§ä»¶
 	QWidget* titleBar{ nullptr };
 
-	// Êó±êÊÇ·ñ°´ÏÂ¡¢°´ÏÂ×ø±ê¡¢°´ÏÂÊ±´°ÌåÇøÓò
+	// é¼ æ ‡æ˜¯å¦æŒ‰ä¸‹ã€æŒ‰ä¸‹åæ ‡ã€æŒ‰ä¸‹æ—¶çª—ä½“åŒºåŸŸ
 	bool mousePressed{};
 	QPoint mousePoint{};
 	QRect mouseRect{};
 
-	// Êó±êÊÇ·ñ°´ÏÂÄ³¸öÇøÓò¡¢°´ÏÂÇøÓòµÄ´óĞ¡
-	// ÒÀ´ÎÎª ×ó¡¢ÓÒ¡¢ÉÏ¡¢ÏÂ¡¢×óÉÏ¡¢ÓÒÉÏ¡¢×óÏÂ¡¢ÓÒÏÂ
+	// é¼ æ ‡æ˜¯å¦æŒ‰ä¸‹æŸä¸ªåŒºåŸŸã€æŒ‰ä¸‹åŒºåŸŸçš„å¤§å°
+	// ä¾æ¬¡ä¸º å·¦ã€å³ã€ä¸Šã€ä¸‹ã€å·¦ä¸Šã€å³ä¸Šã€å·¦ä¸‹ã€å³ä¸‹
 	QList<bool> pressedArea{};
 	QList<QRect> pressedRect{};
 
-	// ¼ÇÂ¼ÊÇ·ñ×îĞ¡»¯
+	// è®°å½•æ˜¯å¦æœ€å°åŒ–
 	bool isMin{};
-	// ´æ´¢´°ÌåÄ¬ÈÏµÄÊôĞÔ
+	// å­˜å‚¨çª—ä½“é»˜è®¤çš„å±æ€§
 	Qt::WindowFlags flags{};
 };

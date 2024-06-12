@@ -4,55 +4,18 @@
 #include <QDir>
 #include <QTimerEvent>
 
-Logger_p::FileLogger::FileLogger(QSettings* settings, const int refreshInterval, QObject* parent) : Logger(parent) {
-	Q_ASSERT(settings != nullptr);
-	Q_ASSERT(refreshInterval >= 0);
-	this->m_settings = settings;
-	this->m_file = nullptr;
-	if (refreshInterval > 0) {
-		m_refreshTimer.start(refreshInterval, this);
-	}
-	m_flushTimer.start(1000, this);
-	refreshSettings();
-}
-Logger_p::FileLogger::~FileLogger() {
-	close();
+#include "filelogger_p.hpp"
+
+/*!
+ *  \FileLoggerPrivate
+ *  \internal
+ */
+Logger_p::FileLoggerPrivate::FileLoggerPrivate(FileLogger* q): q_ptr(q) {
 }
 
-void Logger_p::FileLogger::write(const LogMessage* logMessage) {
-	if (m_file) {
-		m_file->write(qPrintable(logMessage->toString(msgFormat, timestampFormat)));
-		if (logMessage->getType() >= QtCriticalMsg) {
-			m_file->flush();
-		}
-		if (m_file->error()) {
-			qWarning("Cannot write to log file %s: %s",qPrintable(m_fileName),qPrintable(m_file->errorString()));
-			close();
-		}
-	}
-	Logger::write(logMessage);
-}
+Logger_p::FileLoggerPrivate::~FileLoggerPrivate() = default;
 
-void Logger_p::FileLogger::timerEvent(QTimerEvent* event) {
-	if (!event) {
-		return;
-	}
-
-	if (event->timerId() == m_refreshTimer.timerId()) {
-		refreshSettings();
-	} else if (event->timerId() == m_flushTimer.timerId() && m_file) {
-		mutex.lock();
-		m_file->flush();
-		if (m_maxSize > 0 && m_file->size() >= m_maxSize) {
-			close();
-			rotate();
-			open();
-		}
-		mutex.unlock();
-	}
-}
-
-void Logger_p::FileLogger::open() {
+void Logger_p::FileLoggerPrivate::open() {
 	if (m_fileName.isEmpty()) {
 		qWarning("Name of logFile is empty");
 	} else {
@@ -65,7 +28,7 @@ void Logger_p::FileLogger::open() {
 	}
 }
 
-void Logger_p::FileLogger::close() {
+void Logger_p::FileLoggerPrivate::close() {
 	if (m_file) {
 		m_file->close();
 		delete m_file;
@@ -73,7 +36,7 @@ void Logger_p::FileLogger::close() {
 	}
 }
 
-void Logger_p::FileLogger::rotate() const {
+void Logger_p::FileLoggerPrivate::rotate() const {
 	int count{};
 	forever {
 		if (QFile bakFile(QString("%1.%2").arg(m_fileName).arg(count + 1)); bakFile.exists()) {
@@ -95,8 +58,10 @@ void Logger_p::FileLogger::rotate() const {
 	QFile::rename(m_fileName, m_fileName + ".1");
 }
 
-void Logger_p::FileLogger::refreshSettings() {
-	mutex.lock();
+void Logger_p::FileLoggerPrivate::refreshSettings() {
+	Q_Q(FileLogger);
+
+	Logger_p::FileLogger::mutex.lock();
 	const QString oldFileName = m_fileName;
 	m_settings->sync();
 	m_fileName = m_settings->value("fileName").toString();
@@ -111,21 +76,21 @@ void Logger_p::FileLogger::refreshSettings() {
 	}
 	m_maxSize = m_settings->value("maxSize", 0).toLongLong();
 	m_maxBackups = m_settings->value("maxBackups", 0).toInt();
-	msgFormat = m_settings->value("msgFormat", "{timestamp} {type} {message}").toString();
-	timestampFormat = m_settings->value("timestampFormat", "yyyy-MM-dd hh:mm:ss.zzz").toString();
-	bufferSize = m_settings->value("bufferSize", 0).toInt();
+	q->msgFormat = m_settings->value("msgFormat", "{timestamp} {type} {message}").toString();
+	q->timestampFormat = m_settings->value("timestampFormat", "yyyy-MM-dd hh:mm:ss.zzz").toString();
+	q->bufferSize = m_settings->value("bufferSize", 0).toInt();
 
 	if (const QByteArray minLevelStr = m_settings->value("minLevel", "ALL").toByteArray(); minLevelStr == "ALL" || minLevelStr == "DEBUG" ||
 		minLevelStr == "0") {
-		minLevel = QtDebugMsg;
+		q->minLevel = QtDebugMsg;
 	} else if (minLevelStr == "WARNING" || minLevelStr == "WARN" || minLevelStr == "1") {
-		minLevel = QtWarningMsg;
+		q->minLevel = QtWarningMsg;
 	} else if (minLevelStr == "CRITICAL" || minLevelStr == "ERROR" || minLevelStr == "2") {
-		minLevel = QtCriticalMsg;
+		q->minLevel = QtCriticalMsg;
 	} else if (minLevelStr == "FATAL" || minLevelStr == "3") {
-		minLevel = QtFatalMsg;
+		q->minLevel = QtFatalMsg;
 	} else if (minLevelStr == "INFO" || minLevelStr == "4") {
-		minLevel = QtInfoMsg;
+		q->minLevel = QtInfoMsg;
 	}
 
 	if (oldFileName != m_fileName) {
@@ -133,5 +98,62 @@ void Logger_p::FileLogger::refreshSettings() {
 		close();
 		open();
 	}
-	mutex.unlock();
+	Logger_p::FileLogger::mutex.unlock();
+}
+
+/*!
+ *  \FileLogger
+ */
+Logger_p::FileLogger::FileLogger(QSettings* settings, const int refreshInterval, QObject* parent)
+: Logger(parent), d_ptr(new FileLoggerPrivate(this)) {
+	Q_ASSERT(settings != nullptr);
+	Q_ASSERT(refreshInterval >= 0);
+	d_ptr->m_settings = settings;
+	if (refreshInterval > 0) {
+		d_ptr->m_refreshTimer.start(refreshInterval, this);
+	}
+	d_ptr->m_flushTimer.start(1000, this);
+	d_ptr->refreshSettings();
+}
+Logger_p::FileLogger::~FileLogger() {
+	Q_D(FileLogger);
+
+	d->close();
+}
+
+void Logger_p::FileLogger::write(const LogMessage* logMessage) {
+	Q_D(FileLogger);
+
+	if (d->m_file) {
+		d->m_file->write(qPrintable(logMessage->toString(msgFormat, timestampFormat)));
+		if (logMessage->getType() >= QtCriticalMsg) {
+			d->m_file->flush();
+		}
+		if (d->m_file->error()) {
+			qWarning("Cannot write to log file %s: %s",qPrintable(d->m_fileName),qPrintable(d->m_file->errorString()));
+			d->close();
+		}
+	}
+	Logger::write(logMessage);
+}
+
+void Logger_p::FileLogger::timerEvent(QTimerEvent* event) {
+	Q_D(FileLogger);
+
+	if (!event) {
+		return;
+	}
+
+	if (event->timerId() == d->m_refreshTimer.timerId()) {
+		d->refreshSettings();
+	} else if (event->timerId() == d->m_flushTimer.timerId() && d->m_file) {
+		mutex.lock();
+		d->m_file->flush();
+		if (d->m_maxSize > 0 && d->m_file->size() >= d->m_maxSize) {
+			d->close();
+			d->rotate();
+			d->open();
+		}
+		mutex.unlock();
+	}
 }

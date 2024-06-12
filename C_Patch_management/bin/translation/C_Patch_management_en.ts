@@ -350,6 +350,31 @@
 <context>
     <name>CUVFileBase</name>
     <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <source>Name</source>
+        <translation type="unfinished">Name</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <source>Size</source>
+        <translation type="unfinished">Size</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <source>Type</source>
+        <translation type="unfinished">Type</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <source>Date Modified</source>
+        <translation type="unfinished">Date Modified</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="249"/>
+        <source>Save File</source>
+        <translation type="unfinished">Save File</translation>
+    </message>
+    <message>
         <location filename="../../source/framelessMessageBox-1/uvfiledialog.cc" line="91"/>
         <source>IDS_SELECT</source>
         <translation type="unfinished">Select</translation>
@@ -374,30 +399,53 @@
         <source>IDS_TYPE</source>
         <translation type="unfinished">Type</translation>
     </message>
+</context>
+<context>
+    <name>CUVFileBasePrivate</name>
     <message>
-        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="31"/>
+        <source>IDS_SELECT</source>
+        <translation type="unfinished">Select</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="32"/>
+        <source>IDS_CANCEL</source>
+        <translation type="unfinished">Cancel</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="33"/>
+        <source>IDS_DIRECTORY</source>
+        <translation type="unfinished">Directory</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="34"/>
+        <source>IDS_NAME</source>
+        <translation type="unfinished">Name</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="35"/>
+        <source>IDS_TYPE</source>
+        <translation type="unfinished">Type</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="51"/>
         <source>Name</source>
         <translation type="unfinished">Name</translation>
     </message>
     <message>
-        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="51"/>
         <source>Size</source>
         <translation type="unfinished">Size</translation>
     </message>
     <message>
-        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="51"/>
         <source>Type</source>
         <translation type="unfinished">Type</translation>
     </message>
     <message>
-        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="51"/>
         <source>Date Modified</source>
         <translation type="unfinished">Date Modified</translation>
-    </message>
-    <message>
-        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="249"/>
-        <source>Save File</source>
-        <translation type="unfinished">Save File</translation>
     </message>
 </context>
 <context>

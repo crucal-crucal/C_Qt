@@ -7,6 +7,8 @@
 #include "logger.hpp"
 
 namespace Logger_p {
+class FileLoggerPrivate;
+
 /*
  * @brief 使用文本文件作为输出的记录器。设置从使用QSettings对象创建配置文件。可以在运行时更改配置设置
  * <p>
@@ -35,52 +37,32 @@ namespace Logger_p {
 class LOGGER_P_EXPORT FileLogger final : public Logger {
 	Q_OBJECT
 	Q_DISABLE_COPY(FileLogger)
+	Q_DECLARE_PRIVATE(FileLogger)
 
 public:
-	/*
-	 * @note: 配置设置，通常存储在INI文件中。不能是0。设置是从当前组读取的，因此调用者必须调用Settings ->beginGroup()。
+	/**
+	 * @note 配置设置，通常存储在INI文件中。不能是0。设置是从当前组读取的，因此调用者必须调用Settings ->beginGroup()。
 	 * 因为组在运行时期间不能更改，所以建议提供单独的QSettings实例，该实例不被程序的其他部分使用。
 	 * FileLogger不接管QSettings实例的所有权，因此调用者应该在关机时销毁它。
+	 * @param settings 配置
 	 * @param refreshInterval 刷新配置的时间间隔(以毫秒为单位)。默认值为10000, 0 = 禁用
+	 * @param parent 父对象
 	 */
 	explicit FileLogger(QSettings* settings, int refreshInterval = 10000, QObject* parent = nullptr);
 	~FileLogger() override;
-	/*
-	 * @note: 写入日志文件
+	/**
+	 * @note 写入日志文件
+	 * @param logMessage 一条日志消息对象
 	 */
 	void write(const LogMessage* logMessage) override;
 
 protected:
 	/*
-	 * @note: 根据事件刷新配置设置或同步I/O缓冲区。
+	 * @note 根据事件刷新配置设置或同步I/O缓冲区。
 	 * 这个方法是线程安全的。
 	 */
 	void timerEvent(QTimerEvent* event) override;
 
-private:
-	QString m_fileName{};         // 日志文件名
-	qlonglong m_maxSize{};        // 文件的最大大小(以字节为单位), 0 =无限
-	int m_maxBackups{};           // 备份文件的最大数量, 0 = 无限
-	QSettings* m_settings{};      // 配置设置
-	QFile* m_file{};              // 日志文件, 0 = 禁用
-	QBasicTimer m_refreshTimer{}; // 刷新配置设置的定时器
-	QBasicTimer m_flushTimer{};   // 刷新文件I/O缓冲区的定时器
-	/*
-	 * @note: 打开输出文件
-	 */
-	void open();
-	/*
-	 * @note: 关闭输出文件
-	 */
-	void close();
-	/*
-	 * @note: 转换文件名, 限制数量在 maxBackups 内
-	 */
-	void rotate() const;
-	/*
-	 * @note: 刷新配置设置。
-	 * 这个方法是线程安全的。
-	 */
-	void refreshSettings();
+	const QScopedPointer<FileLoggerPrivate> d_ptr{ nullptr };
 };
 }

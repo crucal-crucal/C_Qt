@@ -345,31 +345,6 @@
 <context>
     <name>CUVFileBase</name>
     <message>
-        <location filename="../../source/framelessMessageBox-1/uvfiledialog.cc" line="91"/>
-        <source>IDS_SELECT</source>
-        <translation type="unfinished">选择</translation>
-    </message>
-    <message>
-        <location filename="../../source/framelessMessageBox-1/uvfiledialog.cc" line="92"/>
-        <source>IDS_CANCEL</source>
-        <translation type="unfinished">取消</translation>
-    </message>
-    <message>
-        <location filename="../../source/framelessMessageBox-1/uvfiledialog.cc" line="93"/>
-        <source>IDS_DIRECTORY</source>
-        <translation type="unfinished">目录</translation>
-    </message>
-    <message>
-        <location filename="../../source/framelessMessageBox-1/uvfiledialog.cc" line="94"/>
-        <source>IDS_NAME</source>
-        <translation type="unfinished">名称</translation>
-    </message>
-    <message>
-        <location filename="../../source/framelessMessageBox-1/uvfiledialog.cc" line="95"/>
-        <source>IDS_TYPE</source>
-        <translation type="unfinished">类型</translation>
-    </message>
-    <message>
         <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="109"/>
         <source>Name</source>
         <translation type="unfinished">名称</translation>
@@ -393,6 +368,74 @@
         <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="249"/>
         <source>Save File</source>
         <translation type="unfinished">保存文件</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvfiledialog.cc" line="92"/>
+        <source>IDS_CANCEL</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvfiledialog.cc" line="93"/>
+        <source>IDS_DIRECTORY</source>
+        <translation type="unfinished">目录</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvfiledialog.cc" line="94"/>
+        <source>IDS_NAME</source>
+        <translation type="unfinished">名称</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox-1/uvfiledialog.cc" line="95"/>
+        <source>IDS_TYPE</source>
+        <translation type="unfinished">类型</translation>
+    </message>
+</context>
+<context>
+    <name>CUVFileBasePrivate</name>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="31"/>
+        <source>IDS_SELECT</source>
+        <translation type="unfinished">选择</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="32"/>
+        <source>IDS_CANCEL</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="33"/>
+        <source>IDS_DIRECTORY</source>
+        <translation type="unfinished">目录</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="34"/>
+        <source>IDS_NAME</source>
+        <translation type="unfinished">名称</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="35"/>
+        <source>IDS_TYPE</source>
+        <translation type="unfinished">类型</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="51"/>
+        <source>Name</source>
+        <translation type="unfinished">名称</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="51"/>
+        <source>Size</source>
+        <translation type="unfinished">大小</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="51"/>
+        <source>Type</source>
+        <translation type="unfinished">类型</translation>
+    </message>
+    <message>
+        <location filename="../../source/framelessMessageBox/uvfiledialog.cc" line="51"/>
+        <source>Date Modified</source>
+        <translation type="unfinished">修改日期</translation>
     </message>
 </context>
 <context>

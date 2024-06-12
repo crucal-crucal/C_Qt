@@ -16,8 +16,8 @@ public:
 	static LoggerRedirection* getInstance();
 
 	void install(const QString& logDirpath = QApplication::applicationDirPath() + QDir::separator() + logDirectory); // 安装信息处理函数
-	static void uninstall();                                                               // 卸载信息处理函数
-	void deletelog() const;                                                                // 删除过期日志
+	static void uninstall();                                                                                         // 卸载信息处理函数
+	void deletelog() const;                                                                                          // 删除过期日志
 
 protected:
 	// 此函数用于注册

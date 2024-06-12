@@ -13,6 +13,7 @@
 #endif
 
 class LOGGER_EXPORT Logger {
+	Q_DISABLE_COPY(Logger)
 public:
 	static Logger& instance();
 
@@ -22,7 +23,6 @@ public:
 
 private:
 	Logger();
-	Q_DISABLE_COPY(Logger)
 	~Logger();
 
 	void logToFile(const QString& level, const QString& message);

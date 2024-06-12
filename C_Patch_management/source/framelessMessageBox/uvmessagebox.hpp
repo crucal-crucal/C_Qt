@@ -4,13 +4,15 @@
 #include <QMessageBox>
 #include <QObject>
 
-#include "uvbasedialog.h"
+#include "uvbasedialog.hpp"
 
 #ifdef FRAMELESSMESSAGEBOX_LIB
 #define FRAMELESSMESSAGEBOX_EXPORT Q_DECL_EXPORT
 #else
 #define FRAMELESSMESSAGEBOX_EXPORT Q_DECL_IMPORT
 #endif
+
+class CUVMessageBoxPrivate;
 
 namespace UVMessageBox {
 enum class LXRobotMsgBoxType {
@@ -29,14 +31,13 @@ enum LXRobotMessageButton {
 
 class FRAMELESSMESSAGEBOX_EXPORT CUVMessageBox : public CUVBaseDialog {
 	Q_OBJECT
+	Q_DISABLE_COPY(CUVMessageBox)
+	Q_DECLARE_PRIVATE(CUVMessageBox)
 
 public:
-	CUVMessageBox(QMessageBox::Icon icon,
-	              const QString& title,
-	              const QString& text,
+	CUVMessageBox(QMessageBox::Icon icon, const QString& title, const QString& text,
 	              QMessageBox::StandardButtons buttons = QMessageBox::NoButton,
-	              QWidget* parent = Q_NULLPTR,
-	              Qt::WindowFlags flags = Qt::Widget | Qt::FramelessWindowHint);
+	              QWidget* parent = nullptr, Qt::WindowFlags flags = Qt::Widget | Qt::FramelessWindowHint);
 	~CUVMessageBox() override;
 
 public:
@@ -78,13 +79,8 @@ protected slots:
 	void closeDialog() override;
 	void onMsgBoxButtonClicked(const QAbstractButton* button);
 
-private:
-	static QMessageBox::ButtonRole standardConvertToRole(QMessageBox::StandardButton button);
-
 protected:
-	QMessageBox* m_pMessageBox{ nullptr };
-	QMessageBox::StandardButtons buttons_;
-	Qt::WindowFlags flags_;
+	const QScopedPointer<CUVMessageBoxPrivate> d_ptr{ nullptr };
 };
 
 class FRAMELESSMESSAGEBOX_EXPORT CUVCountdownMessageBox final : public CUVMessageBox {
@@ -92,7 +88,7 @@ class FRAMELESSMESSAGEBOX_EXPORT CUVCountdownMessageBox final : public CUVMessag
 
 public:
 	explicit CUVCountdownMessageBox(QMessageBox::Icon icon, const QString& title, const QString& text,
-	                                QWidget* parent = Q_NULLPTR);
+	                                QWidget* parent = nullptr);
 	~CUVCountdownMessageBox() override;
 
 	int exec(int nSecond);

@@ -7,7 +7,6 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPushButton>
-#include <QVBoxLayout>
 #include <utility>
 
 #ifdef Q_OS_WIN
@@ -27,14 +26,12 @@ constexpr int BORDER_SHADOW_WIDTH = 6;
 #define FRAMELESSBASEDIALOG_EXPORT Q_DECL_IMPORT
 #endif
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QPushButton;
-class QPainter;
+class CUVBaseDialogPrivate;
 
 class FRAMELESSBASEDIALOG_EXPORT CUVBaseDialog : public QDialog {
 	Q_OBJECT
 	Q_DISABLE_COPY(CUVBaseDialog)
+	Q_DECLARE_PRIVATE(CUVBaseDialog)
 
 public:
 	enum TitleButtonRole {
@@ -90,28 +87,5 @@ protected:
 	QPushButton* insertTitleButton(int nIndex, TitleButtonRole emButtonRole);
 	void insertTitleButton(QAbstractButton* pButton, int nIndex, TitleButtonRole emButtonRole);
 
-private slots:
-	void switchSize();
-
-private:
-	QDialogButtonBox* m_pDialogBtnBox{ nullptr };
-	QVBoxLayout* m_plyVTotal{ nullptr };
-	QHBoxLayout* m_plyHTitle{ nullptr };
-	QHBoxLayout* m_plyHContent{ nullptr };
-
-private:
-	QString m_strTitle;
-	QString m_strIconPath;
-	QPixmap m_icon;
-	QPoint m_PressTitlePoint;
-	QRect m_rtTitle;
-	bool m_bPressTitle{ false };
-	bool m_bResizeable{ false };
-	bool m_bIconScaled{ false };
-	bool m_bEscEnable{ false };
-	bool m_bMoveEnable{ true };
-	bool m_bTitleVisible{ true };
-	bool m_bShadowVisible{ true };
-	bool m_bEnterEnable{ true };
-	QHash<TitleButtonRole, QAbstractButton*> m_hashTitleButtons;
+	const QScopedPointer<CUVBaseDialogPrivate> d_ptr{ nullptr };
 };

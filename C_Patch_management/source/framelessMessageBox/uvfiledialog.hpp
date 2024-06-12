@@ -5,7 +5,7 @@
 #include <QFileDialog>
 #include <utility>
 
-#include "uvbasedialog.h"
+#include "uvbasedialog.hpp"
 
 #ifdef FRAMELESSFILEDIALOG_LIB
 #define FRAMELESSFILEDIALOG_EXPORT Q_DECL_EXPORT
@@ -13,11 +13,15 @@
 #define FRAMELESSFILEDIALOG_EXPORT Q_DECL_IMPORT
 #endif
 
+class CUVFileBasePrivate;
+
 class FRAMELESSFILEDIALOG_EXPORT CUVFileBase final : public CUVBaseDialog {
 	Q_OBJECT
+	Q_DISABLE_COPY(CUVFileBase)
+	Q_DECLARE_PRIVATE(CUVFileBase)
 
 public:
-	explicit CUVFileBase(QString strRegisterName, QWidget* parent = Q_NULLPTR,
+	explicit CUVFileBase(const QString& strRegisterName, QWidget* parent = nullptr,
 	                     const QString& caption = QString(), const QString& directory = QString(),
 	                     const QString& filter = QString());
 	~CUVFileBase() override;
@@ -80,12 +84,8 @@ public:
 
 	void saveFileContent(const QByteArray& fileContent, const QString& fileNameHint = QString());
 
-private:
-	void init();
-
-private:
-	QFileDialog* m_pFileDialog{ nullptr };
-	QString m_strRegisterName{ "" };
+protected:
+	const QScopedPointer<CUVFileBasePrivate> d_ptr{ nullptr };
 };
 
 class FRAMELESSFILEDIALOG_EXPORT CUVFileDialog final : public CUVBaseDialog {
@@ -156,6 +156,5 @@ public:
 	static void getOpenFileContent(const QString& nameFilter,
 	                               const std::function<void(const QString&, const QByteArray&)>& fileContentsReady);
 
-	static void
-	saveFileContent(const QByteArray& fileContent, const QString& fileNameHint = QString());
+	static void saveFileContent(const QByteArray& fileContent, const QString& fileNameHint = QString());
 };

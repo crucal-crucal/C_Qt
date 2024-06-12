@@ -7,12 +7,13 @@
 #include <QProgressBar>
 #include <QSystemTrayIcon>
 #include <QTextEdit>
+#include <QVBoxLayout>
 #include <set>
 #include <utility>
 
 #include "framelessmainwindow/framelessmainwindow.hpp"
-#include "framelessMessageBox/uvfiledialog.h"
-#include "framelessMessageBox/uvmessagebox.h"
+#include "framelessMessageBox/uvfiledialog.hpp"
+#include "framelessMessageBox/uvmessagebox.hpp"
 #include "global/cglobal.h"
 #include "mergedir/mergedir_p.h"
 #include "noticewidget/uvnoticewidget.hpp"
