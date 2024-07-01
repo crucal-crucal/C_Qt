@@ -1,0 +1,3 @@
+[submodule "uv-materialwidgets"]
+	path = uv-materialwidgets
+	url = https://github.com/crucal-crucal/uv-materialwidgets.git
