@@ -37,6 +37,7 @@ endif ()
 
 set(ffmpeg_libs_DIR ${CMAKE_SOURCE_DIR}/bin/ffmpeg-5.0.1/Windows/lib)
 set(ffmpeg_headers_DIR ${CMAKE_SOURCE_DIR}/bin/ffmpeg-5.0.1/Windows/include)
+set(ffmpeg_bin_DIR ${CMAKE_SOURCE_DIR}/bin/ffmpeg-5.0.1/Windows/bin)
 include_directories(${QT_DIR}/include)
 
 find_package(${Qt}

@@ -35,3 +35,16 @@ add_subdirectory(codec)
 install(TARGETS ${TARGET_NAME}
         RUNTIME DESTINATION bin
 )
+
+file(GLOB FFMPEG_DLLS ${ffmpeg_bin_DIR}/*.dll)
+
+add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${FFMPEG_DLLS} ${CMAKE_SOURCE_DIR}/bin/resource/C_testffmpeg.rcc
+        $<TARGET_FILE_DIR:${TARGET_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/bin/style $<TARGET_FILE_DIR:${TARGET_NAME}>/style
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/bin/translation $<TARGET_FILE_DIR:${TARGET_NAME}>/translation
+        COMMENT "Copying FFmpeg DLLs, resource file, style and translation directories to output directory"
+)

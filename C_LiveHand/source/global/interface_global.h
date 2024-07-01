@@ -48,7 +48,7 @@ constexpr static auto AppID = "crucal_app_id";
  */
 constexpr static auto qssFilePathLight = "/style/C_testffmpeg_light.qss";
 constexpr static auto qssFilePathDark = "/style/C_testffmpeg_dark.qss";
-constexpr static auto rccFilePath = "/resource/C_testffmpeg.rcc";
+constexpr static auto rccFilePath = "/C_testffmpeg.rcc";
 constexpr static auto translationFilePath_CN = "/translation/C_testffmpeg_cn.qm";
 constexpr static auto translationFilePath_EN = "/translation/C_testffmpeg_en.qm";
 /*

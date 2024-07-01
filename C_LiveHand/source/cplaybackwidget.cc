@@ -31,7 +31,7 @@ void CPlayBackWidget::openFile(const QString& strFile, const bool bLoop, const b
 	// stStream.strAddress = "srt://127.0.0.1:22071?mode=listener";
 	// stStream.strAddress = "udp://127.0.0.1:5200";
 	// stStream.strAddress = "rtmp://172.20.4.129:1935/live/test1";
-	stStream.strAddress = "rtmp://101.201.49.214:1935/livedfs/ssl";
+	stStream.strAddress = "rtmp://172.20.4.84:1935/livedfs/ssl";
 	stStream.nWidth = 1920;
 	stStream.nHeight = 1080;
 	stStream.nAudioSampleRate = 44100;
@@ -218,7 +218,8 @@ void CPlayBackWidget::createCtrl() {
 	QPalette palette{};
 	palette.setBrush(QPalette::Window, Qt::black);
 	m_pLbDisplay->setPalette(palette);
-	m_pLbDisplay->setAutoFillBackground(true);
+	// m_pLbDisplay->setAutoFillBackground(true);
+	m_pLbDisplay->setStyleSheet("background-color: black;");
 
 	m_pBtnPlay = new QPushButton(this);
 	m_pBtnPlay->setObjectName("CPlayBackWidget_BtnPlay");
