@@ -7,5 +7,5 @@ C_* CMake & qmake build project
 
 # 克隆示例
 ```
-git clone --recurse-submodules git@github.com:crucal-crucal/C_Qt.git
+git clone --recurse-submodules https://github.com/crucal-crucal/C_Qt.git
 ```
